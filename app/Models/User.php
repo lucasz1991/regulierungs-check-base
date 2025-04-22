@@ -131,10 +131,7 @@ class User extends Authenticatable
         )->withPivot('date')->withTimestamps(); // Zusätzliche Pivot-Daten
     }
 
-    public function likedProducts()
-    {
-        return $this->belongsToMany(Product::class, 'liked_products')->withTimestamps();
-    }
+ 
     
     public function sendEmailVerificationNotification()
     {
