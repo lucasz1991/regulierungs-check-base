@@ -9,7 +9,7 @@
     @endif
     
     {{-- Step 0: Versicherungstyp --}}
-    @if ($step === 0)
+    <div x-show="step == 0"  x-cloak  x-collapse.duration.1000ms>
         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
         <div>
             <h2 class="text-lg mb-4">Wähle deine Versicherungskategorie</h2>
@@ -31,7 +31,7 @@
                 <x-button wire:click="nextStep">Weiter</x-button>
             @endif
         </div>
-    @endif
+    </div>
 
     {{-- Step 1: Konkrete Versicherung auswählen --}}
         <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
