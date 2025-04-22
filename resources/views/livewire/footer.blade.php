@@ -106,7 +106,7 @@
                     </ul>
                 </div>
 
-                <p class='text-gray-700 text-sm md:ml-auto'>&copy; {{ date("Y") }} Shop Spaze. Alle Rechte vorbehalten.</p>
+                <p class='text-gray-700 text-sm md:ml-auto'>&copy; {{ date("Y") }} Regulierungs-Check. Alle Rechte vorbehalten.</p>
             </div>
         </div>
 </footer>

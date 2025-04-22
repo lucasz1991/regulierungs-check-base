@@ -1,18 +1,18 @@
 <div>
     <section class="">
       <div class="lg:grid lg:min-h-[70vh] lg:grid-cols-12">
-        <section class="relative flex h-32 items-center justify-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+        <section class="relative flex h-32 items-center justify-end lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt=""
             src="{{ asset('site-images/background.webp') }}"
             class="absolute inset-0 h-full w-full object-cover opacity-80"
           />
             <!-- Overlay -->
-            <div class="absolute inset-0" style="background-color:var(--secondary-color); opacity:0.9;"></div>
+            <div class="absolute inset-0 auth-image-overlay" ></div>
             <div class="hidden lg:relative lg:block lg:p-12">
                 <a class="block text-white" href="#">
                     <span class="sr-only">Home</span>
-                    <div class="w-20">
+                    <div class="w-[300px]">
                         <x-application-logo />
                     </div>
                 </a>
@@ -22,7 +22,9 @@
                 </h2>
 
                 <p class="mt-4 text-xl font-bold leading-relaxed color-primary">
-                </p>
+    Willkommen zurück bei Regulierungscheck! Melde dich jetzt an, um auf deine Bewertungen zuzugreifen, neue Erfahrungen mit Versicherungen zu teilen oder den aktuellen Stand deiner Einreichungen zu verfolgen. Transparent, unabhängig und einfach.
+</p>
+
             </div>
         </section>
     
@@ -46,7 +48,9 @@
               </h1>
     
               <p class="mt-4 text-xl font-bold leading-relaxed color-primary">
-              </p>
+    Willkommen zurück bei Regulierungscheck! Melde dich jetzt an, um auf deine Bewertungen zuzugreifen, neue Erfahrungen mit Versicherungen zu teilen oder den aktuellen Stand deiner Einreichungen zu verfolgen. Transparent, unabhängig und einfach.
+</p>
+
             </div>
     
             <div  class="mt-8 ">

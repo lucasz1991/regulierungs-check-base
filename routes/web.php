@@ -30,6 +30,7 @@ use App\Livewire\Customer\ExtendShelfRental;
 
 
 
+use App\Livewire\Customer\Rating\ClaimRatingSuccess;
 
 
 
@@ -43,9 +44,6 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Http\Controllers\PayPalController;
 
-Route::post('/api/orders', [PayPalController::class, 'createOrder'])->name('paypal.createOrder');
-Route::post('/api/orders/{orderID}/authorize', [PayPalController::class, 'authorizeOrder'])->name('paypal.authorizeOrder');
-Route::post('/api/authorizations/{authorizationId}/capture', [PayPalController::class, 'captureAuthorize'])->name('paypal.captureAuthorize');
 
 
 
@@ -66,6 +64,8 @@ Route::post('/api/authorizations/{authorizationId}/capture', [PayPalController::
     Route::get('/contact', Contact::class)->name('contact');
     Route::get('/sitemap', Sitemap::class)->name('sitemap');
     Route::get('/wishlist/{userId}', WishlistShow::class)->name('wishlist.show');
+    Route::get('/claim-rating/success/{hash}', ClaimRatingSuccess::class)->name('claim-rating.success');
+
 
 
 

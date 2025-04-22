@@ -4,8 +4,8 @@
 
 :root {
   /* Eigene Farben */
-  --primary-color: #65765f; 
-  --secondary-color: #e5d4bc; 
+  --primary-color: #084058; 
+  --secondary-color: #0c968e; 
   --primary-font-color: #414141;
 }
 @font-face {
@@ -152,6 +152,12 @@ body:hover::-webkit-scrollbar {
 
 .burger-container.open .bar3,.burger-container.is-open .bar3  {
   transform: rotate(-45deg);
+}
+
+.auth-image-overlay{
+  background-color:var(--primary-color);
+  opacity:0.2;
+
 }
 
 .toasti{

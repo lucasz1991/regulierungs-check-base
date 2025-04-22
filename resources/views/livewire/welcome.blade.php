@@ -7,14 +7,7 @@
     <p class="text-lg md:text-xl text-gray-700 mb-8">
       Bewerte deine Versicherung – fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
     </p>
-    <div class="max-w-xl mx-auto">
-      <form action="/suche" method="GET" class="flex flex-col sm:flex-row gap-3">
-        <input type="text" name="q" placeholder="Welche Versicherung möchtest du bewerten?" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        <button type="submit" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
-          Suchen
-        </button>
-      </form>
-    </div>
+    <livewire:customer.rating.rating-form />
     <div class="mt-10">
       <p class="text-gray-600 mb-3">Top-Versicherungen im Ranking:</p>
       <div class="flex flex-wrap justify-center gap-4">

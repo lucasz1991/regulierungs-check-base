@@ -46,268 +46,7 @@ wire:loading.class="cursor-wait"
                 @endif
                 <!-- Likes and Inbox Buttons -->
                 <div class="flex items-center space-x-6 mr-2">
-                    <!-- Likes Button -->
-                    @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/liked-products'))
-                        <div class="" x-data="{ wishListOpen: false }">
-
-                            <a  @click.prevent="wishListOpen = !wishListOpen"  @click.away="open = false"  class="block">
-                                <span class="relative" style="top:-2px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="23px" class="cursor-pointer fill-gray-800 inline" viewBox="0 0 512 512" stroke-width="1.5">
-                                        <g id="Layer_20">
-                                            <path d="M397.254,60.047C349.52,49.268,290.07,62.347,256,113.182c-34.07-50.835-93.52-63.9-141.254-53.135   
-                                            C60.405,72.295,5.57,118.771,5.57,194.978c0,139.283,235.088,267.75,245.096,273.151c3.329,1.795,7.338,1.795,10.667,0   
-                                            c10.008-5.401,245.096-133.867,245.096-273.151C506.43,118.771,451.595,72.295,397.254,60.047z 
-                                            M256,445.364   
-                                            C221.151,425.504,28.044,310.14,28.044,194.978c0-68.17,49.367-103.483,91.647-113.012c8.981-2.003,18.156-3.008,27.358-2.996   
-                                            c42.374-1.183,81.322,23.172,98.809,61.787c2.671,5.602,9.377,7.978,14.979,5.307c2.325-1.109,4.199-2.982,5.307-5.307   
-                                            c27.627-58.139,85.25-67.997,126.166-58.768c42.28,9.506,91.647,44.827,91.647,112.989C483.957,310.14,290.849,425.504,256,445.364   
-                                            z"/>
-                                        </g>
-                                    </svg>
-                                    <!-- Anzahl der geliketen Produkte anzeigen -->
-                                    @if(Auth::check() && Auth::user()->likedProducts->count() > 0)
-                                        <span class="absolute right-[-6px] -ml-1 top-[-5px] rounded-full bg-red-400 px-1.5 py-0.2 text-xs text-white">
-                                            {{ Auth::user()->likedProducts->count() }}
-                                        </span>
-                                    @endif
-                                </span>
-                            </a>
-                            <!-- sidebar wunschliste -->
-                            <div class="">
-                                    <div x-show="wishListOpen" 
-                                    x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0"
-                                    x-transition:enter-end="opacity-100"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100"
-                                    x-transition:leave-end="opacity-0"
-                                    @click="wishListOpen = false"
-                                    x-cloak
-                                    :style="navHeight > 0 ? 'top: ' + navHeight + 'px;' : ''"
-                                    class="fixed  inset-0 bg-black bg-opacity-50 z-20"></div>
-                                <div  
-                                    class="bg-white min-w-80 w-80 md:min-w-96 md:w-96 max-w-full transition-transform transition-all ease-out duration-200  absolute right-0  z-30"
-                                    :class="wishListOpen ? 'translate-x-0' : 'translate-x-full'"
-                                    :style="{ top: navHeight > 0 ? navHeight + 'px' : '', height: 'calc(100vh - ' + navHeight + 'px)' }"
-                                    x-cloak
-                                    >
-                                    
-                                    <div class="p-4   flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            <h3>Deine Wunschliste</h3>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" class="ml-2 aspect-square  transition-colors duration-300 fill-red-800 text-red-800" viewBox="0 0 64 64">
-                                                <path d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="flex space-x-4">
-                        
-
-                                        <div x-data="{ open: false }" class="relative">
-                                            <!-- Button zum Öffnen des Dropdowns -->
-                                            <button @click="open = !open"
-                                                    class="flex items-center justify-center p-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-primary-700 focus:ring-4 focus:ring-gray-100">
-                                                <svg class="w-5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M49.54,44.34a7.81327,7.81327,0,0,0-6.59,3.61L21.69,35.67a7.797,7.797,0,0,0-.22-6.48l-.0011-.002L43.3233,16.57391A7.81769,7.81769,0,1,0,41.71,11.83a7.56556,7.56556,0,0,0,.61,3.01l.00128.00268L20.35907,27.519A7.837,7.837,0,1,0,20.69,37.4L42.09,49.76a7.69578,7.69578,0,0,0-.38,2.41,7.83,7.83,0,1,0,7.83-7.83Z"/>
-                                                </svg>
-                                            </button>
-
-                                            <!-- Dropdown Menu -->
-                                            <div x-show="open" @click.away="open = false" class="absolute right-4 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                                                <ul>
-                                                    @php
-                                                     $wishlistUrl = route('wishlist.show', Auth::user()->id);
-                                                    @endphp
-                                                    <!-- WhatsApp Share -->
-                                                    <li>
-                                                    <a href="https://api.whatsapp.com/send?text={{ urlencode('Meine Wunschliste - Minifinds: ' . $wishlistUrl) }}" 
-                                                    target="_blank"
-                                                        class="flex items-center  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                            <svg class="w-5 h-5 mr-1 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                            <path fill="currentColor" stroke-width="1.5" fill-rule="evenodd" d="M12 4a8 8 0 0 0-6.895 12.06l.569.718-.697 2.359 2.32-.648.379.243A8 8 0 1 0 12 4ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.016-1.347l-4.948 1.382 1.426-4.829-.006-.007-.033-.055A9.958 9.958 0 0 1 2 12Z" clip-rule="evenodd"/>
-                                                            <path fill="currentColor" stroke-width="1.5" d="M16.735 13.492c-.038-.018-1.497-.736-1.756-.83a1.008 1.008 0 0 0-.34-.075c-.196 0-.362.098-.49.291-.146.217-.587.732-.723.886-.018.02-.042.045-.057.045-.013 0-.239-.093-.307-.123-1.564-.68-2.751-2.313-2.914-2.589-.023-.04-.024-.057-.024-.057.005-.021.058-.074.085-.101.08-.079.166-.182.249-.283l.117-.14c.121-.14.175-.25.237-.375l.033-.066a.68.68 0 0 0-.02-.64c-.034-.069-.65-1.555-.715-1.711-.158-.377-.366-.552-.655-.552-.027 0 0 0-.112.005-.137.005-.883.104-1.213.311-.35.22-.94.924-.94 2.16 0 1.112.705 2.162 1.008 2.561l.041.06c1.161 1.695 2.608 2.951 4.074 3.537 1.412.564 2.081.63 2.461.63.16 0 .288-.013.4-.024l.072-.007c.488-.043 1.56-.599 1.804-1.276.192-.534.243-1.117.115-1.329-.088-.144-.239-.216-.43-.308Z"/>
-                                                            </svg>
-                                                            WhatsApp
-                                                        </a>
-                                                    </li>
-                                                    <!-- Instagram Share -->
-                                                    <li>
-                                                    <a href="javascript:void(0)" onclick="copyToClipboard('{{ $wishlistUrl }}')" 
-                                                    target="_blank"
-                                                        class="flex items-center  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                            <svg class="w-5 h-5 mr-1 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                            <path fill="currentColor" stroke-width="1.5" fill-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" clip-rule="evenodd"/>
-                                                            </svg>
-                                                            Instagram
-                                                        </a>
-                                                    </li>
-                                                    <!-- Facebook Share -->
-                                                    <li>
-                                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($wishlistUrl) }}" 
-                                                    target="_blank"
-                                                        class="flex items-center  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                            <svg class="w-5 h-5 mr-1 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                            <path fill-rule="evenodd" stroke-width="1.5" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clip-rule="evenodd"/>
-                                                            </svg>
-                                                            Facebook
-                                                        </a>
-                                                    </li>
-                                                    <!-- Copy Link -->
-                                                    <li>
-                                                        <a href="javascript:void(0)" 
-                                                        @click="copyToClipboard('{{ $wishlistUrl }}')"
-                                                        class="flex items-center  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                        <svg class="w-5 h-5 mr-1 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
-                                                        </svg>
-
-                                                            Link kopieren
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <!-- Script zum Kopieren des Links -->
-                                        <script>
-                                            function copyToClipboard(text) {
-                                                navigator.clipboard.writeText(text).then(() => {
-                                                    alert('Link wurde in die Zwischenablage kopiert!');
-                                                });
-                                            }
-                                        </script>
-
-                                            <button type="button" @click="wishListOpen = false" class="md:hidden flex items-center justify-center p-2  text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-primary-700 focus:ring-4 focus:ring-gray-100">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 aspect-square fill-[#333]  hover:fill-[#077bff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="border-t border-gray-200"></div>
-                                    @if($likedProducts->isNotEmpty())
-                                        <div class="p-4">
-                                            <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 " role="alert">
-                                                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                                                </svg>
-                                                <span class="sr-only">Info</span>
-                                                <div>
-                                                    <span class="font-medium">Deine Wunschliste enthält {{ $likedProducts->count() }} Produkt(e). 
-                                                    Teile die Liste mit Freunden und Familie, damit sie dir eine Freude machen können! 🎁</span> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                         <!-- "Alle ansehen"-Button -->
-                                         <!--<div class="p-4">
-                                            <a  href="{{ route('liked.products') }}"  wire:navigate 
-                                                class="pointer-events-auto rounded-md px-4 py-2 text-center font-medium ring-1 shadow-xs ring-slate-700/10 hover:bg-slate-50 block">
-                                                Komplette Wunschliste ansehen
-                                            </a>
-                                        </div>-->
-                                        <div class="p-4">
-                                            <div class="scroll-smooth scroll-container snap-mandatory h-96 overflow-y-auto overflow-x-hidden will-change-scroll snap-y touch-pan-y">
-
-                                                @foreach($likedProducts as $likedProduct)
-                                                <div class="snap-start h-24 snap-always grid grid-cols-12  gap-4  content-center border-b border-gray-200">
-                                                    <!-- Produktbild -->
-                                                    <div class="col-span-3 block w-full">
-                                                        <img 
-                                                            src="{{ url($likedProduct->getImageUrl(0,'m')) }}" 
-                                                            alt="{{ $likedProduct->name }}" 
-                                                            class="aspect-square w-full object-cover rounded-full" />
-                                                    </div>
-                                                    <!-- Produktdetails -->
-                                                    <div class="col-span-7 grid content-center">
-                                                        <div class="flex items-center mb-2 ">
-        
-                                                            <p class="text-xs  px-2 py-0.5 bg-green-100  rounded-md mr-2  border border-green-700">
-                                                                
-                                                                <span class="text-green-800  font-medium "> {{ $likedProduct->shelfRental->shelf->floor_number ?? '???' }}</span>
-                                                            </p>
-                                                            <p class="text-xs tracking-tighter text-gray-600 decoration-indigo-500 pr-2">
-                                                                @if ($likedProduct->shelfRental && $likedProduct->shelfRental->rental_end)
-                                                                    @php
-                                                                        $rentalEnd = \Carbon\Carbon::parse($likedProduct->shelfRental->rental_end)->setTime(16, 0); // Mietende auf 16:00 Uhr setzen
-                                                                        $now = \Carbon\Carbon::now();
-                            
-                                                                        $remainingDays = $now->diffInDays($rentalEnd, false);
-                                                                        $remainingHours = $now->diffInHours($rentalEnd, false); // Gesamte verbleibende Stunden
-                                                                    @endphp
-                            
-                                                                    @if ($remainingDays > 0)
-                                                                        <span>
-                                                                            Noch {{ $remainingDays }} Tag(e)
-                                                                        </span>
-                                                                    @elseif ($remainingDays === 0 && $remainingHours > 0)
-                                                                        <span class="text-red-600">
-                                                                            Noch {{ $remainingHours }} Stunde(n)
-                                                                        </span>
-                                                                    @else
-                                                                        <span class="text-red-600">Nicht mehr verfügbar</span>
-                                                                    @endif
-                                                                @else
-                                                                    <span class="text-gray-500">Keine Angaben</span>
-                                                                @endif
-                                                            </p>
-                                                        </div>
-                                                        
-                                                        <div class="flex-none font-medium text-gray-900 truncate">{{ Str::limit(strip_tags($likedProduct->name), 30) }}</div>
-                                                        
-                                                    </div>
-                                                    <div x-data="{ open: false }" class="col-span-2 relative">
-                                                        <button @click="open = !open" class="text-gray-600 hover:text-gray-900 focus:outline-none">
-                                                            <svg class="w-6 h-10 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M12 6h.01M12 12h.01M12 18h.01"/>
-                                                            </svg>
-        
-                                                        </button>
-                                                        <!-- Dropdown-Menü -->
-                                                        <div x-show="open" @click.away="open = false" class="absolute right-full top-1/2 transform -translate-y-1/2 object-center shadow-lg bg-white  rounded-md ring-1 ring-black ring-opacity-5 z-50">
-                                                            <div class="py-1">
-                                                                <!-- Ansehen-Option -->
-                                                                <a href="{{ route('product.show', $likedProduct->id) }}" wire:navigate  class="flex items-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                                <svg class="w-5 aspect-square mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                    <path stroke="currentColor" stroke-width="1.5" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
-                                                                    <path stroke="currentColor" stroke-width="1.5" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                                                                </svg>
-                                                                    Ansehen
-                                                                </a>
-                                                                <div class="border-t border-gray-100"></div>
-                                                                <a  wire:click="toggleLikedProduct({{ $likedProduct->id }})"  class="flex items-center block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                                                <svg class="w-5 aspect-square mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                                                                </svg>
-        
-                                                                    Entfernen
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                       
-                                       
-                                    @else
-                                    <div class="p-4">
-                                        <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 " role="alert">
-                                            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                                            </svg>
-                                            <span class="sr-only">Info</span>
-                                            <div>
-                                                <span class="font-medium">Deine Wunschliste enthält noch keine Produkte. 
-                                                Stöbere weiter und füge welche hinzu – teile deine Liste mit Freunden und Familie, damit sie dir etwas Besonderes schenken können! 🎁</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endif
-        
-                                </div>
-                            </div>
-                        </div>
-                    @endif
+                    
                     @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/messages'))
                    
                     <div class="relative" x-data="{ open: false, modalOpen: false, selectedMessage: null  }">
@@ -535,28 +274,55 @@ wire:loading.class="cursor-wait"
                                     :style="isPadded ? 'top: ' + navHeight + 'px; height: calc(100vh - ' + navHeight + 'px);' : ''"
                             x-cloak  class="grid  content-between transition-transform  ease-out duration-400  max-md:bg-white max-md:min-w-80 max-md:right-0  max-md:fixed max-md:overflow-y-auto max-md:py-5 max-md:px-3  max-md:border-r max-md:border-gray-200">
                         <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex  w-full  " >
-                           <!-- Gäste-Spezifische Navigation -->
-                           <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
-                                <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
-                                </svg>
+                            <!-- Gäste-Spezifische Navigation -->
+                            <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
+                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+                                    </svg>
 
-                               {{ __('Home') }}
-                           </x-nav-link>
+                                {{ __('Home') }}
+                            </x-nav-link>
+                            <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
+                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+                                    </svg>
 
-                            <div x-data="{ open: false }" @click.away="open = false"  class="relative md:px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 md:hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" >
-                                    <div class="flex items-center cursor-pointer max-md:text-lg max-md:px-3" @click="open = !open">
-                                        <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                                        </svg>
-                                            {{ __('Über uns') }}
-                                        <svg class="w-4 h-4 ml-2  transition-all ease-in duration-200" :class="open ? 'transform rotate-180' : ''" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m19 9-7 7-7-7"/>
-                                        </svg>
+                                {{ __('Versicherungen') }}
+                            </x-nav-link>
+                            <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
+                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+                                    </svg>
 
-                                    </div>
-                                    <div x-show="open" x-transition x-cloak class="md:bg-white md:right-0 mt-3  z-30"
-                                                                            :class="screenWidth <= 768 ? 'relative' : 'absolute rounded-lg shadow w-44 z-10 overflow-hidden'">
+                                {{ __('Bewertungen') }}
+                            </x-nav-link>
+                            <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
+                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+                                    </svg>
+
+                                {{ __('Ranking ') }}
+                            </x-nav-link>
+                            <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
+                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+                                    </svg>
+
+                                {{ __('Premium ') }}
+                            </x-nav-link>
+
+                                <div x-data="{ open: false }" @click.away="open = false"  class="relative md:px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 md:hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" >
+                                        <div class="flex items-center cursor-pointer max-md:text-lg max-md:px-3" @click="open = !open">
+                                            <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                            </svg>
+                                                {{ __('Über uns') }}
+                                            <svg class="w-4 h-4 ml-2  transition-all ease-in duration-200" :class="open ? 'transform rotate-180' : ''" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m19 9-7 7-7-7"/>
+                                            </svg>
+
+                                        </div>
+                                        <div x-show="open" x-transition x-cloak class="md:bg-white md:right-0 mt-3  z-30" :class="screenWidth <= 768 ? 'relative' : 'absolute rounded-lg shadow w-44 z-10 overflow-hidden'">
                                             <ul class=" max-md:space-y-4 max-md:pt-4 text-sm text-gray-500 hover:text-gray-700" :class="screenWidth <= 768 ? '' : 'divide-y divide-gray-100'">
                                                 <li>
                                                     <a href="/aboutus" wire:navigate class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
@@ -597,15 +363,6 @@ wire:loading.class="cursor-wait"
                                                     Preise
                                                     </a>
                                                 </li>
-                                                <!--<li >
-                                                    <a  href="/jobs" wire:navigate  class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
-                                                        <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                           <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                                                        </svg>
- 
-                                                    Karriere
-                                                    </a>
-                                                </li>-->
                                                 <li >
                                                     <a  href="/contact" wire:navigate  class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
                                                         <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -617,7 +374,7 @@ wire:loading.class="cursor-wait"
                                                 </li>
                                             </ul>
                                         </div>
-                            </div>
+                                </div>
                            @auth
                            <!-- Kunden-Spezifische Navigation -->
                            @if (optional(Auth::user())->role === 'guest')
