@@ -1,4 +1,7 @@
-<div class="max-w-xl mx-auto px-4 py-6">
+<div class="max-w-xl mx-auto px-4 py-6"
+    x-data="{ 
+     step: @entangle('step')
+    }">
     @if (session('message'))
     <div class="bg-green-100 text-green-800 p-4 rounded mb-6">
         {{ session('message') }}
@@ -31,8 +34,7 @@
     @endif
 
     {{-- Step 1: Konkrete Versicherung auswählen --}}
-    @if ($step === 1)
-        <div>
+        <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
             <h2 class="text-lg font-bold mb-4">Welche Versicherungsgesellschaft?</h2>
 
             <select wire:model.live="insuranceId" class="w-full border rounded px-4 py-2">
@@ -45,19 +47,17 @@
             @error('insuranceId')
                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
             @enderror
+            <div class="flex justify-between mt-6">
+                <x-button wire:click="previousStep">Zurück</x-button>
+                @if ($insuranceId)
+                    <x-button wire:click="nextStep">Weiter</x-button>
+                @endif
+            </div>
         </div>
 
-        <div class="flex justify-between mt-6">
-            <x-button wire:click="previousStep">Zurück</x-button>
-            @if ($insuranceId)
-                <x-button wire:click="nextStep">Weiter</x-button>
-            @endif
-        </div>
-    @endif
 
     {{-- Step 2: Fallstatus --}}
-    @if ($step === 2)
-        <div>
+        <div x-show="step == 2"  x-cloak  x-collapse.duration.1000ms>
             <h2 class="text-lg font-bold mb-4">Wurde der Fall bereits abgeschlossen?</h2>
 
             <label class="inline-flex items-center mr-6">
@@ -70,18 +70,16 @@
             @error('is_closed')
                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
             @enderror
+            <div class="flex justify-between mt-6">
+                <x-button wire:click="previousStep">Zurück</x-button>
+                @if (!is_null($is_closed))
+                    <x-button wire:click="nextStep">Weiter</x-button>
+                @endif
+            </div>
         </div>
-
-        <div class="flex justify-between mt-6">
-            <x-button wire:click="previousStep">Zurück</x-button>
-            @if (!is_null($is_closed))
-                <x-button wire:click="nextStep">Weiter</x-button>
-            @endif
-        </div>
-    @endif
 
     {{-- Step 3: Zeitraum --}}
-    @if ($step === 3)
+    <div x-show="step == 3"  x-cloak  x-collapse.duration.1000ms>
         <div>
             <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
 
@@ -109,33 +107,32 @@
                 <x-button wire:click="nextStep">Weiter</x-button>
             @endif
         </div>
-    @endif
+    </div>
 
     {{-- Step 1+: Fragen durchgehen --}}
-    @if ($step >= $standardSteps && isset($questions[$step - $standardSteps]))
-        <form wire:submit.prevent="{{ $step === $totalSteps ? 'submit' : 'nextStep' }}">
-            <div class="">
-                @php
-                    $q = $questions[$step - $standardSteps];
-                    $fieldName = "answers." . $q->id;
-                @endphp
-                <h2 class="text-lg font-bold mb-2">Frage {{ $step+1 }} von {{ $totalSteps+1 }}</h2>
-                <p class="text-md text-gray-800 mb-2 font-semibold">{{ $questions[$step - $standardSteps]->question_text }}</p>
+        @foreach ($questions as $index => $q)
+            @php
+                $currentStep = $standardSteps + $index;
+                $fieldName = "answers." . $q->id;
+            @endphp
 
+            <div x-show="step === {{ $currentStep }}" x-collapse.duration.1000ms x-cloak >
+                <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps + 1 }}</h2>
+                <p class="text-md text-gray-800 mb-2 font-semibold">{{ $q->question_text }}</p>
 
                 {{-- Eingabefeld je nach Typ --}}
-                @switch($questions[$step - $standardSteps]->type)
+                @switch($q->type)
                     @case('text')
                     @case('number')
                     @case('date')
-                        <input type="{{ $questions[$step - $standardSteps]->type }}"
-                               wire:model.defer="{{ $fieldName }}"
-                               class="mt-2 w-full border px-3 py-2 rounded">
+                        <input type="{{ $q->type }}"
+                            wire:model.defer="{{ $fieldName }}"
+                            class="mt-2 w-full border px-3 py-2 rounded">
                         @break
 
                     @case('textarea')
                         <textarea wire:model.defer="{{ $fieldName }}"
-                                  class="mt-2 w-full border px-3 py-2 rounded" rows="4"></textarea>
+                                class="mt-2 w-full border px-3 py-2 rounded" rows="4"></textarea>
                         @break
 
                     @case('boolean')
@@ -157,7 +154,7 @@
                         @break
 
                     @default
-                        <p class="text-sm text-red-500">Unbekannter Fragetyp: {{ $questions[$step - $standardSteps]->type }}</p>
+                        <p class="text-sm text-red-500">Unbekannter Fragetyp: {{ $q->type }}</p>
                 @endswitch
 
                 @error($fieldName)
@@ -170,11 +167,11 @@
                         <x-button type="button" wire:click="previousStep">Zurück</x-button>
                     @endif
 
-                    <x-button type="submit">
-                        {{ $step === $totalSteps ? 'Absenden' : 'Weiter' }}
+                    <x-button type="button" wire:click="{{ $currentStep === $totalSteps ? 'submit' : 'nextStep' }}">
+                        {{ $currentStep === $totalSteps ? 'Absenden' : 'Weiter' }}
                     </x-button>
                 </div>
             </div>
-        </form>
-    @endif
+        @endforeach
+
 </div>
