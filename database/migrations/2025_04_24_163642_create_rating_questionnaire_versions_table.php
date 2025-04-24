@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rating_questionnaire_versions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('insurance_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('insurance_subtype_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('version_number');
             $table->json('snapshot'); // kompletter Fragen- & Antwortzustand
             $table->boolean('is_active')->default(true); // aktuell verwendete Version

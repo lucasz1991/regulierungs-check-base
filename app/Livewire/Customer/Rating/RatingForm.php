@@ -5,6 +5,7 @@ namespace App\Livewire\Customer\Rating;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Models\InsuranceSubtype;
 use App\Models\InsuranceType;
 use App\Models\RatingQuestion;
 use App\Models\RatingQuestionnaireVersion;
@@ -169,7 +170,7 @@ class RatingForm extends Component
 
     public function render()
     {
-        $types = InsuranceType::whereHas('latestVersion', function ($query) {
+        $types = InsuranceSubtype::whereHas('latestVersion', function ($query) {
             $query->where('is_active', true);
         })->get();
     

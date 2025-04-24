@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('insurance_type_rating_question', function (Blueprint $table) {
+        Schema::create('insurance_subtype_rating_question', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('insurance_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('insurance_subtype_id')->constrained()->onDelete('cascade');
             $table->foreignId('rating_question_id')->constrained()->cascadeOnDelete();
             $table->json('visibility_conditions')->nullable();
             $table->unsignedInteger('order_column')->default(0); // Sortierung
-            $table->text('notes')->nullable(); // optionale Info
+            $table->text('notes')->nullable(); 
+            $table->decimal('weight', 4, 2)->default(1.0);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('insurance_type_rating_question');
+        Schema::dropIfExists('insurance_subtype_rating_question');
     }
 };

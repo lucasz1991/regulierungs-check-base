@@ -16,9 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             InsuranceTypeSeeder::class,
             InsuranceSeeder::class,
+            InsuranceSubtypeSeeder::class,
             InsuranceInsuranceTypeSeeder::class,
+            InsuranceTypeInsuranceSubtypeSeeder::class,
             RatingQuestionSeeder::class,
-            InsuranceTypeRatingQuestionSeeder::class,
             
         ]);
     }

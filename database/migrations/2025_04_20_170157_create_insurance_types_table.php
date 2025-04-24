@@ -16,9 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->decimal('average_rating_speed', 3, 2)->nullable();
-            $table->decimal('average_rating_fairness', 3, 2)->nullable();
-            $table->decimal('average_rating_service', 3, 2)->nullable();
+            $table->decimal('weight', 4, 2)->default(1.0);
             $table->boolean('is_active')->default(true);
             $table->unsignedInteger('order_column')->nullable();
             $table->timestamps();

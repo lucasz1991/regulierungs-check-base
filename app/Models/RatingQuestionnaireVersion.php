@@ -11,7 +11,7 @@ class RatingQuestionnaireVersion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'insurance_type_id',
+        'insurance_subtype_id',
         'version_number',
         'snapshot',
         'is_active',
@@ -22,8 +22,8 @@ class RatingQuestionnaireVersion extends Model
         'is_active' => 'boolean',
     ];
 
-    public function insuranceType()
+    public function insuranceSubtype()
     {
-        return $this->belongsTo(InsuranceType::class);
+        return $this->belongsTo(InsuranceSubtype::class);
     }
 }

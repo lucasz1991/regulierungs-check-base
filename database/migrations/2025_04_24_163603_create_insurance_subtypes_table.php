@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('insurances', function (Blueprint $table) {
+        Schema::create('insurance_subtypes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->string('initials', 20)->nullable();
-            $table->string('color', 7)->nullable();
+            $table->decimal('average_rating_speed', 3, 2)->nullable();
+            $table->decimal('average_rating_fairness', 3, 2)->nullable();
+            $table->decimal('average_rating_service', 3, 2)->nullable();            
+            $table->decimal('weight', 4, 2)->default(1.0);
             $table->boolean('is_active')->default(true);
             $table->unsignedInteger('order_column')->nullable();
             $table->timestamps();
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('insurances');
+        Schema::dropIfExists('insurance_subtypes');
     }
 };

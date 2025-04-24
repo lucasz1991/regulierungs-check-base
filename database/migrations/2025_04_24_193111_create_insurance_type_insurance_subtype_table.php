@@ -11,23 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('insurance_insurance_type', function (Blueprint $table) {
+        Schema::create('insurance_type_insurance_subtype', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('insurance_id')->constrained()->onDelete('cascade');
             $table->foreignId('insurance_type_id')->constrained()->onDelete('cascade');
-            $table->unsignedInteger('order_column')->nullable(); // für Sortierung
+            $table->foreignId('insurance_subtype_id')->constrained()->onDelete('cascade');
+            $table->decimal('weight', 4, 2)->default(1.0);
+            $table->unsignedInteger('order_id')->nullable();
             $table->timestamps();
-            $table->unique(['insurance_id', 'insurance_type_id']);
         });
     }
-    
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('insurance_insurance_type');
+        Schema::dropIfExists('insurance_type_insurance_subtype');
     }
 };

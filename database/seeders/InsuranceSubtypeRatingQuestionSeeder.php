@@ -3,14 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\InsuranceType;
+use App\Models\InsuranceSubtype;
 use App\Models\RatingQuestion;
 
-class InsuranceTypeRatingQuestionSeeder extends Seeder
+class InsuranceSubtypeRatingQuestionSeeder extends Seeder
 {
     public function run(): void
     {
-        $types = InsuranceType::all();
+        $types = InsuranceSubtype::all();
         $questions = RatingQuestion::all();
 
         if ($types->isEmpty() || $questions->isEmpty()) {

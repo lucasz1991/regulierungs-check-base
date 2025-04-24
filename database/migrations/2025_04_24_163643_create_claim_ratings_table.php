@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('claim_ratings', function (Blueprint $table) {
             $table->id();
-        
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('insurance_subtype_id')->constrained()->onDelete('cascade');
             $table->foreignId('insurance_type_id')->constrained()->onDelete('cascade');
             $table->foreignId('rating_questionnaire_versions_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('insurance_id')->constrained()->onDelete('cascade');
