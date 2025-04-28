@@ -7,8 +7,11 @@
         {{ session('message') }}
     </div>
     @endif
-    
-    {{-- Step 0: Versicherungstyp --}}
+    <div>
+        {{ $step }}
+
+    </div>
+    {{-- Step 0: Versicherungs typ --}}
     <div x-show="step == 0"  x-cloak  x-collapse.duration.1000ms>
         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
         <div>
@@ -33,13 +36,38 @@
         </div>
     </div>
 
-    {{-- Step 1: Konkrete Versicherung auswählen --}}
-        <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
+    {{-- Step 1: Versicherungs SubType --}}
+    <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
+        <div>
+            <h2 class="text-lg mb-4">Wähle deine Versicherungsart</h2>
+
+            <select wire:model.live="insuranceSubTypeId" class="w-full border rounded px-4 py-2">
+                <option value="">Bitte auswählen</option>
+                @foreach ($insuranceSubTypes as $insuranceSubType)
+                    <option value="{{ $insuranceSubType->id }}">{{ $insuranceSubType->name }}</option>
+                @endforeach
+            </select>
+
+            @error('insuranceSubTypeId')
+                <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="flex justify-between mt-6">
+            <x-button wire:click="previousStep">Zurück</x-button>
+            @if ($insuranceSubTypeId)
+                <x-button wire:click="nextStep">Weiter</x-button>
+            @endif
+        </div>
+    </div>
+
+    {{-- Step 2: Konkrete Versicherung auswählen --}}
+        <div x-show="step == 2"  x-cloak  x-collapse.duration.1000ms>
             <h2 class="text-lg font-bold mb-4">Welche Versicherungsgesellschaft?</h2>
 
             <select wire:model.live="insuranceId" class="w-full border rounded px-4 py-2">
                 <option value="">Bitte auswählen</option>
-                @foreach ($insuranceType->insurances ?? [] as $insurance)
+                @foreach ($insurances ?? [] as $insurance)
                     <option value="{{ $insurance->id }}">{{ $insurance->name }}</option>
                 @endforeach
             </select>
@@ -56,8 +84,8 @@
         </div>
 
 
-    {{-- Step 2: Fallstatus --}}
-        <div x-show="step == 2"  x-cloak  x-collapse.duration.1000ms>
+    {{-- Step 3: Fallstatus --}}
+        <div x-show="step == 3"  x-cloak  x-collapse.duration.1000ms>
             <h2 class="text-lg font-bold mb-4">Wurde der Fall bereits abgeschlossen?</h2>
 
             <label class="inline-flex items-center mr-6">
@@ -78,8 +106,8 @@
             </div>
         </div>
 
-    {{-- Step 3: Zeitraum --}}
-    <div x-show="step == 3"  x-cloak  x-collapse.duration.1000ms>
+    {{-- Step 4: Zeitraum --}}
+    <div x-show="step == 4"  x-cloak  x-collapse.duration.1000ms>
         <div>
             <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
 
@@ -109,7 +137,7 @@
         </div>
     </div>
 
-    {{-- Step 1+: Fragen durchgehen --}}
+    {{-- Step 5: Fragen durchgehen --}}
         @foreach ($questions as $index => $q)
             @php
                 $currentStep = $standardSteps + $index;
@@ -117,7 +145,7 @@
             @endphp
 
             <div x-show="step === {{ $currentStep }}" x-collapse.duration.1000ms x-cloak >
-                <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps + 1 }}</h2>
+                <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps  }}</h2>
                 <p class="text-md text-gray-800 mb-2 font-semibold">{{ $q->question_text }}</p>
 
                 {{-- Eingabefeld je nach Typ --}}
@@ -167,7 +195,7 @@
                         <x-button type="button" wire:click="previousStep">Zurück</x-button>
                     @endif
 
-                    <x-button type="button" wire:click="{{ $currentStep === $totalSteps ? 'submit' : 'nextStep' }}">
+                    <x-button type="button" wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}">
                         {{ $currentStep === $totalSteps ? 'Absenden' : 'Weiter' }}
                     </x-button>
                 </div>

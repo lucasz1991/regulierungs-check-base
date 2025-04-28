@@ -29,8 +29,8 @@ class InsuranceType extends Model
     public function subtypes()
     {
         return $this->belongsToMany(InsuranceSubtype::class, 'insurance_type_insurance_subtype')
-                    ->withPivot('order_column')
-                    ->orderBy('insurance_type_insurance_subtype.order_column');
+                    ->withPivot('order_id')
+                    ->orderBy('insurance_type_insurance_subtype.order_id');
     }
-
+ 
 }

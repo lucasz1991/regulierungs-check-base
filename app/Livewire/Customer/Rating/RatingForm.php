@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\InsuranceSubtype;
 use App\Models\InsuranceType;
+use App\Models\Insurance;
 use App\Models\RatingQuestion;
 use App\Models\RatingQuestionnaireVersion;
 use App\Models\ClaimRating;
@@ -15,39 +16,56 @@ class RatingForm extends Component
 {
     public $insuranceTypeId = null;
     public $insuranceType;
+    public $insuranceSubTypeId = null;
+    public $insuranceSubType;
+    public $insuranceSubTypes = [];
+    public $insurances = [];
     public $insuranceId = null;
 
-    public $is_closed = null;       // abgeschlossen: true/false
-    public $started_at = null;      // Startdatum
-    public $ended_at = null;        // Enddatum
+    public $is_closed = null;
+    public $started_at = null;
+    public $ended_at = null;
     public $questions = [];
     public $step = 0;
-    public $standardSteps = 4;
+    public $standardSteps = 5;
     public $totalSteps = 0;
     public $answers = [];
 
     public function updatedInsuranceTypeId()
     {
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
-        $this->loadQuestions();
+        $this->insuranceSubTypes = $this->insuranceType->subtypes()->get();
         $this->step = 1;
+    }
+
+    public function updatedInsuranceSubTypeId()
+    {
+        $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
+        $this->insurances = $this->insuranceSubType->insurances()->get();
+        $this->loadQuestions();
+        $this->step = 2;
+    }
+
+    public function updatedInsuranceId()
+    {
+        $this->insurance = Insurance::find($this->insuranceId);
+        $this->step = 3;
     }
 
     public function loadQuestions()
     {
-        $this->questions = $this->insuranceType
+        $this->questions = $this->insuranceSubType
             ->ratingQuestions()
-            ->orderBy('insurance_type_rating_question.order_column')
+            ->orderBy('insurance_subtype_rating_question.order_column')
             ->get();
-        $this->totalSteps = $this->standardSteps + ($this->questions->count()-1); 
-
+        $this->totalSteps = $this->standardSteps + ($this->questions->count()); 
     }
 
     public function nextStep()
     {
         $this->validate($this->rules());
         $this->saveAnswers();
-        if ($this->step < count($this->questions)+3) {
+        if ($this->step < count($this->questions)+($this->standardSteps)) {
             $this->step++;
         }
     }
@@ -117,11 +135,12 @@ class RatingForm extends Component
     {
         $this->validate($this->rules());
         $this->saveAnswers();
-        $ratingquestionnaireversions = RatingQuestionnaireVersion::where('insurance_type_id', $this->insuranceTypeId)->latest()->first();
+        $ratingquestionnaireversions = RatingQuestionnaireVersion::where('insurance_subtype_id', $this->insuranceSubTypeId)->latest()->first();
     
         $claimRating = ClaimRating::create([
             'user_id' => Auth::check() ? Auth::id() : null,
             'insurance_type_id' => $this->insuranceTypeId,
+            'insurance_subtype_id' => $this->insuranceSubTypeId,
             'insurance_id' => $this->insuranceType->id,
             'rating_questionnaire_versions_id' => optional($ratingquestionnaireversions)->id,
             'answers' => $this->answers,
@@ -144,20 +163,23 @@ class RatingForm extends Component
             $rules['insuranceTypeId'] = 'required';
         }
         if ($this->step >= 1) {
-            $rules['insuranceId'] = 'required';
+            $rules['insuranceSubTypeId'] = 'required';
         }
         if ($this->step >= 2) {
+            $rules['insuranceId'] = 'required';
+        }
+        if ($this->step >= 3) {
             $rules['is_closed'] = 'required|boolean';
         }
     
-        if ($this->step >= 3) {
+        if ($this->step >= 4) {
             $rules['started_at'] = 'required|date';
             if ($this->is_closed) {
                 $rules['ended_at'] = 'required|date|after_or_equal:started_at';
             }
         }
     
-        if ($this->step >= 4) {
+        if ($this->step >= 5) {
             foreach ($this->questions as $q) {
                 if ($q->is_required) {
                     $rules["answers.{$q->id}"] = 'required';
@@ -170,12 +192,15 @@ class RatingForm extends Component
 
     public function render()
     {
-        $types = InsuranceSubtype::whereHas('latestVersion', function ($query) {
-            $query->where('is_active', true);
+        $types = InsuranceType::whereHas('subtypes', function ($query) {
+            $query->whereHas('latestVersion', function ($q) {
+                $q->where('is_active', true);
+            });
         })->get();
     
         return view('livewire.customer.rating.rating-form', [
             'types' => $types,
         ]);
     }
+    
 }

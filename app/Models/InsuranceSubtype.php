@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\RatingQuestion;
 use App\Models\RatingQuestionnaireVersion;
 use App\Models\InsuranceType;
+use App\Models\Insurance;
 
 class InsuranceSubtype extends Model
 {
@@ -29,6 +30,15 @@ class InsuranceSubtype extends Model
         return $this->belongsToMany(InsuranceType::class)
         ->withPivot('order_id')
         ->orderBy('pivot_order_id');
+    }
+
+    public function insurances()
+    {
+        return Insurance::whereHas('insuranceTypes', function ($query) {
+            $query->whereHas('subtypes', function ($subQuery) {
+                $subQuery->where('insurance_subtypes.id', $this->id);
+            });
+        });
     }
 
     public function ratingQuestions()
