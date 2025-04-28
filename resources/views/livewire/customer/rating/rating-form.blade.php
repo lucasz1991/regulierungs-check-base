@@ -7,10 +7,7 @@
         {{ session('message') }}
     </div>
     @endif
-    <div>
-        {{ $step }}
-
-    </div>
+    
     {{-- Step 0: Versicherungs typ --}}
     <div x-show="step == 0"  x-cloak  x-collapse.duration.1000ms>
         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
