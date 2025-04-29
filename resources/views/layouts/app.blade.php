@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         
         <x-meta-page-header />
-        <title>@yield('title') | {{ config('app.name', 'ShopSpaze') }}</title>
+        <title>@yield('title') | {{ config('app.name', 'Regulierungs-check') }}</title>
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('site-images/favicon/apple-touch-icon.png') }}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('site-images/favicon/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('site-images/favicon/favicon-16x16.png') }}">

@@ -35,7 +35,7 @@ class RatingForm extends Component
     {
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
         $this->insuranceSubTypes = $this->insuranceType->subtypes()->get();
-        $this->step = 1;
+        
     }
 
     public function updatedInsuranceSubTypeId()
@@ -43,13 +43,13 @@ class RatingForm extends Component
         $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
         $this->insurances = $this->insuranceSubType->insurances()->get();
         $this->loadQuestions();
-        $this->step = 2;
+        
     }
 
     public function updatedInsuranceId()
     {
         $this->insurance = Insurance::find($this->insuranceId);
-        $this->step = 3;
+        
     }
 
     public function loadQuestions()

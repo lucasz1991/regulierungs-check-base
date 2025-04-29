@@ -26,24 +26,7 @@ wire:loading.class="cursor-wait"
            
 
             <div class="flex items-center space-x-4  md:order-2" >
-                @if ($currentUrl !== url('/products') && false)
-                    <!-- Search Bar -->
-                    <div x-data="{ focused: false }" @click.away="focused = false" x-cloak class="relative">
-                        <form action="/search" method="GET"
-                            class="flex items-center border border-gray-300 rounded-full overflow-hidden transition-all duration-300"
-                            :class="focused ? 'w-[300px] border-gray-500' : 'w-[40px] border-gray-300'">
-                            <input type="text" name="query" placeholder="Suchen..."
-                                class="w-full px-2 py-1 text-sm focus:outline-none bg-transparent border-none outline-none"
-                                x-ref="searchInput" @click="focused = true" :class="focused ? 'block' : 'hidden'" />
-                            <button type="button" @click="focused = true; $refs.searchInput.focus()"
-                                class="flex items-center justify-center w-[40px] h-[40px] text-gray-400 hover:text-gray-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" class="h-4 w-4">
-                                    <path d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z"></path>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                @endif
+                
                 <!-- Likes and Inbox Buttons -->
                 <div class="flex items-center space-x-6 mr-2">
                     
@@ -303,13 +286,7 @@ wire:loading.class="cursor-wait"
 
                                 {{ __('Ranking ') }}
                             </x-nav-link>
-                            <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
-                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
-                                    </svg>
-
-                                {{ __('Premium ') }}
-                            </x-nav-link>
+                            
 
                                 <div x-data="{ open: false }" @click.away="open = false"  class="relative md:px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 md:hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" >
                                         <div class="flex items-center cursor-pointer max-md:text-lg max-md:px-3" @click="open = !open">
@@ -353,17 +330,6 @@ wire:loading.class="cursor-wait"
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a  href="/prices" wire:navigate class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
-                                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.891 15.107 15.11 8.89m-5.183-.52h.01m3.089 7.254h.01M14.08 3.902a2.849 2.849 0 0 0 2.176.902 2.845 2.845 0 0 1 2.94 2.94 2.849 2.849 0 0 0 .901 2.176 2.847 2.847 0 0 1 0 4.16 2.848 2.848 0 0 0-.901 2.175 2.843 2.843 0 0 1-2.94 2.94 2.848 2.848 0 0 0-2.176.902 2.847 2.847 0 0 1-4.16 0 2.85 2.85 0 0 0-2.176-.902 2.845 2.845 0 0 1-2.94-2.94 2.848 2.848 0 0 0-.901-2.176 2.848 2.848 0 0 1 0-4.16 2.849 2.849 0 0 0 .901-2.176 2.845 2.845 0 0 1 2.941-2.94 2.849 2.849 0 0 0 2.176-.901 2.847 2.847 0 0 1 4.159 0Z"/>
-                                                    </svg>
-
-
-
-                                                    Preise
-                                                    </a>
-                                                </li>
-                                                <li >
                                                     <a  href="/contact" wire:navigate  class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
                                                         <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
@@ -375,6 +341,13 @@ wire:loading.class="cursor-wait"
                                             </ul>
                                         </div>
                                 </div>
+                                <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
+                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+                                    </svg>
+
+                                {{ __('Premium ') }}
+                            </x-nav-link>
                            @auth
                            <!-- Kunden-Spezifische Navigation -->
                            @if (optional(Auth::user())->role === 'guest')

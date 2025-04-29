@@ -6,27 +6,17 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\Dashboard;
-use App\Livewire\ProductList;
 use App\Livewire\MessageBox;
-use App\Livewire\Booking;
-use App\Livewire\BookingSuccess;
-use App\Livewire\ProductManager;
-use App\Livewire\ProductShow;
-use App\Livewire\LikedProducts;
-use App\Livewire\ShelfShow;
-use App\Livewire\ShelfRentalShow;
-use App\Livewire\WishlistShow;
+
+
 use App\Livewire\Pages\TermsAndConditions;
 use App\Livewire\Pages\PrivacyPolicy;
 use App\Livewire\Pages\Imprint;
-use App\Livewire\Pages\Prices;
 use App\Livewire\Pages\HowTo;
 use App\Livewire\Pages\AboutUs;
 use App\Livewire\Pages\Contact;
 use App\Livewire\Pages\Faqs;
 use App\Livewire\Pages\Sitemap;
-use App\Livewire\Pages\Jobs;
-use App\Livewire\Customer\ExtendShelfRental;
 
 
 
@@ -49,12 +39,6 @@ use App\Http\Controllers\PayPalController;
 
     // Routen für alle
     Route::get('/', Welcome::class)->name('home');
-    Route::get('/booking', Booking::class)->name('booking');
-    Route::get('/booking/success/{shelfRentalId}', BookingSuccess::class)->name('booking.success');
-    Route::get('/products', ProductList::class)->name('products');
-    Route::get('/product/{id}', ProductShow::class)->name('product.show');
-    Route::get('/shelf/{shelfRentalId}', ShelfShow::class)->name('shelf.show');
-    Route::get('/prices', Prices::class)->name('prices');
     Route::get('/howto', HowTo::class)->name('howto');
     Route::get('/aboutus', AboutUs::class)->name('aboutus');
     Route::get('/faqs', Faqs::class)->name('faqs');
@@ -63,7 +47,6 @@ use App\Http\Controllers\PayPalController;
     Route::get('/privacypolicy', PrivacyPolicy::class)->name('privacypolicy');
     Route::get('/contact', Contact::class)->name('contact');
     Route::get('/sitemap', Sitemap::class)->name('sitemap');
-    Route::get('/wishlist/{userId}', WishlistShow::class)->name('wishlist.show');
     Route::get('/claim-rating/success/{hash}', ClaimRatingSuccess::class)->name('claim-rating.success');
 
 
@@ -95,11 +78,6 @@ use App\Http\Controllers\PayPalController;
         Route::middleware(['role:guest'])->group(function () {
             Route::get('/dashboard', Dashboard::class)->name('dashboard');
             Route::get('/messages', MessageBox::class)->name('messages');
-            Route::get('/shelf-rental/{shelfRentalId}', ShelfRentalShow::class)->name('shelfrental.show');
-            Route::get('/{shelfRental}/product/create', ProductManager::class)->name('product.create');
-            Route::get('/product/edit/{product}', ProductManager::class)->name('product.edit');
-            Route::get('/liked-products', LikedProducts::class)->name('liked.products');
-            Route::get('/customer/shelf-rental/{rentalId}/extend', ExtendShelfRental::class)->name('customer.shelf-rental.extend');
         });
 
     });

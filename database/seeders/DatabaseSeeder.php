@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             InsuranceTypeInsuranceSubtypeSeeder::class,
             RatingQuestionSeeder::class,
             InsuranceSubtypeRatingQuestionSeeder::class,
-            
+            SettingsSeeder::class,
+            WebPagesSeeder::class, 
         ]);
     }
 
