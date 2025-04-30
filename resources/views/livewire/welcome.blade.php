@@ -1,11 +1,11 @@
 <div  wire:loading.class="cursor-wait">
 <section class="bg-gradient-to-br from-blue-50 to-blue-100 py-16 px-6 md:px-12">
   <div class="max-w-4xl mx-auto text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-      Regulierungs-Check
-    </h1>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+      Bewerte deine Versicherung
+    </h2>
     <p class="text-lg md:text-xl text-gray-700 mb-8">
-      Bewerte deine Versicherung – fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
+      – fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
     </p>
     <livewire:customer.rating.rating-form />
     <div class="mt-10">
