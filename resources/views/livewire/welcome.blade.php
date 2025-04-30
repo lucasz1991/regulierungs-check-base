@@ -5,7 +5,7 @@
       Bewerte deine Versicherung
     </h2>
     <p class="text-lg md:text-xl text-gray-700 mb-8">
-      – fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
+      fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
     </p>
     <livewire:customer.rating.rating-form />
     <div class="mt-10">
