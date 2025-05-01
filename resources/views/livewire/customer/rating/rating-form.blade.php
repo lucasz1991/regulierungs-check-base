@@ -27,7 +27,7 @@
                             slidesPerView: '3',
                             initialSlide: 1,
                             coverflowEffect: {
-                                rotate: 30,
+                                rotate: 50,
                                 stretch: 0,
                                 depth: 100,
                                 modifier: 1,
@@ -41,6 +41,7 @@
                     }
                 }"
                 x-init="initSwiper()"
+                x-effect="initSwiper()"
                 class="relative w-full"
             >
                 {{-- Navigation links/rechts außerhalb --}}
@@ -60,8 +61,8 @@
                                     :class="insuranceTypeId == {{ $type->id }} 
                                         ? 'bg-blue-100 border-blue-500' 
                                         : 'hover:bg-gray-100 bg-white'"
-                                    class="border rounded p-4 text-center cursor-pointer w-64 h-20 flex justify-center items-center  shadow-md transition duration-300 ease-in-out ">
-                                    <h3 class="font-bold text-lg h-auto">{{ $type->name }}</h3>
+                                    class="border rounded p-2 text-center cursor-pointer w-[90%] h-16 flex justify-center items-center  shadow-md transition duration-300 ease-in-out ">
+                                    <h3 class="font-bold text-md h-auto">{{ $type->name }}</h3>
                                 </div>
                             </div>
                         @endforeach
@@ -302,7 +303,7 @@
                                         <span class="text-xl transition-colors duration-150
                                             {{ $fieldName && (data_get($this, $fieldName) >= $i) ? 'text-yellow-400' : 'text-gray-300' }}">
                                             <svg
-                                                    class="w-6 h-6 transition-colors duration-150
+                                                    class="w-12 h-12 transition-colors duration-150
                                                         {{ $fieldName && (data_get($this, $fieldName) >= $i) ? 'text-yellow-400' : 'text-gray-300' }}"
                                                     fill="currentColor"
                                                     viewBox="0 0 20 20"
