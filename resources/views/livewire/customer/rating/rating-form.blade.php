@@ -204,13 +204,34 @@
     {{-- Step 4: Zeitraum --}}
     <div x-show="step == 4"  x-cloak  x-collapse.duration.1000ms>
         <div>
-            <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
-            <label class="block text-sm font-medium text-gray-700">Startdatum</label>
-            <input type="date" wire:model.live="started_at" class="w-full border rounded px-4 py-2">
-            @if ($is_closed)
-                <label class="block text-sm font-medium text-gray-700 mt-4">Enddatum</label>
-                <input type="date" wire:model.live="ended_at" class="w-full border rounded px-4 py-2">
-            @endif
+        <div x-data="{
+                started_at: @entangle('started_at'),
+                ended_at: @entangle('ended_at'),
+                initDatepicker(refName, bindTo) {
+                    flatpickr(refName, {
+                        dateFormat: 'Y-m-d',
+                        defaultDate: bindTo,
+                        onChange: function(selectedDates, dateStr) {
+                            bindTo = dateStr;
+                        }
+                    });
+                }
+            }" x-init="initDatepicker($refs.started, started_at); 
+                    $nextTick(() => { if ({{ $is_closed ? 'true' : 'false' }}) initDatepicker($refs.ended, ended_at); })">
+                
+                <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
+
+                {{-- Startdatum --}}
+                <label class="block text-sm font-medium text-gray-700">Startdatum</label>
+                <input type="text" x-ref="started" wire:model.live="started_at" class="max-w-md border rounded px-4 py-2" />
+
+                {{-- Enddatum (optional) --}}
+                @if ($is_closed)
+                    <label class="block text-sm font-medium text-gray-700 mt-4">Enddatum</label>
+                    <input type="text" x-ref="ended" wire:model.live="ended_at" class="max-w-md border rounded px-4 py-2" />
+                @endif
+            </div>
+
             @error('started_at')
                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
             @enderror
@@ -247,7 +268,7 @@
                         @break
                     @case('textarea')
                         <textarea wire:model.defer="{{ $fieldName }}"
-                                class="mt-2 w-full border px-3 py-2 rounded" rows="4"></textarea>
+                                class="mt-2 max-w-md mx-auto border px-3 py-2 rounded" rows="4"></textarea>
                         @break
                     @case('boolean')
                         <div class="mt-2 space-x-4">
@@ -255,16 +276,46 @@
                             <label><input type="radio" wire:model="{{ $fieldName }}" value="0"> Nein</label>
                         </div>
                         @break
-                    @case('rating')
-                        <div class="flex space-x-1 mt-2">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <label>
-                                    <input type="radio" wire:model="{{ $fieldName }}" value="{{ $i }}">
-                                    <span class="text-yellow-400 text-lg">★</span>
-                                </label>
-                            @endfor
-                        </div>
-                        @break
+                        @case('rating')
+                            <style>
+                                .rating-group:hover label span {
+                                    color: #d1d5db; /* text-gray-300 */
+                                }
+                                .rating-group label:hover ~ label span {
+                                    color: #d1d5db !important;
+                                }
+                                .rating-group label:hover span,
+                                .rating-group label:hover ~ label span {
+                                    color: #facc15 !important; /* text-yellow-400 */
+                                }
+                            </style>
+
+                            <div class="flex justify-center space-x-1 mt-2 rating-group">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <label class="cursor-pointer relative">
+                                        <input 
+                                            type="radio" 
+                                            wire:model.live="{{ $fieldName }}" 
+                                            value="{{ $i }}" 
+                                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                        >
+                                        <span class="text-xl transition-colors duration-150
+                                            {{ $fieldName && (data_get($this, $fieldName) >= $i) ? 'text-yellow-400' : 'text-gray-300' }}">
+                                            <svg
+                                                    class="w-6 h-6 transition-colors duration-150
+                                                        {{ $fieldName && (data_get($this, $fieldName) >= $i) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.204 3.698a1 1 0 00.95.69h3.894c.969 0 1.371 1.24.588 1.81l-3.15 2.286a1 1 0 00-.364 1.118l1.204 3.698c.3.921-.755 1.688-1.54 1.118l-3.15-2.286a1 1 0 00-1.176 0l-3.15 2.286c-.784.57-1.838-.197-1.539-1.118l1.203-3.698a1 1 0 00-.364-1.118L2.414 9.125c-.783-.57-.38-1.81.588-1.81h3.894a1 1 0 00.951-.69l1.202-3.698z"/>
+                                                </svg>
+                                        </span>
+                                    </label>
+                                @endfor
+                            </div>
+                            @break
+
+
                     @default
                         <p class="text-sm text-red-500">Unbekannter Fragetyp: {{ $q->type }}</p>
                 @endswitch
@@ -282,9 +333,10 @@
                 </div>
             </div>
         @endforeach
-            <link rel="stylesheet" href="{{ URL::asset('adminresources/flatpickr/flatpickr/flatpickr.min.css') }}">
-            <link href="{{ URL::asset('adminresources//choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet" type="text/css" />
+            <link rel="stylesheet" href="{{ URL::asset('adminresources/flatpickr/flatpickr.min.css') }}">
+            <link href="{{ URL::asset('adminresources/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet" type="text/css" />
         
-            <script src="{{ URL::asset('adminresources//choices.js/public/assets/scripts/choices.min.js') }}"></script>
+            <script src="{{ URL::asset('adminresources/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+            <script src="{{ URL::asset('adminresources/flatpickr/flatpickr.min.js') }}"></script>
         
 </div>
