@@ -44,10 +44,10 @@
                 class="relative w-full"
             >
                 {{-- Navigation links/rechts außerhalb --}}
-                <div class="absolute top-1/2 -left-8 transform -translate-y-1/2 z-10 mt-3">
+                <div class="absolute top-1/2 -left-12 transform -translate-y-1/2 z-10 mt-3">
                     <div class="swiper-button-prev !static" x-ref="prev"></div>
                 </div>
-                <div class="absolute top-1/2 -right-8 transform -translate-y-1/2 z-10 mt-3">
+                <div class="absolute top-1/2 -right-12 transform -translate-y-1/2 z-10 mt-3">
                     <div class="swiper-button-next !static" x-ref="next"></div>
                 </div>
                 <div class="swiper w-full" x-ref="swiper" wire:ignore>
