@@ -268,7 +268,7 @@
                         @break
                     @case('textarea')
                         <textarea wire:model.defer="{{ $fieldName }}"
-                                class="mt-2 max-w-md mx-auto border px-3 py-2 rounded" rows="4"></textarea>
+                                class="mt-2 max-w-lg mx-auto border px-3 py-2 rounded" rows="4"></textarea>
                         @break
                     @case('boolean')
                         <div class="mt-2 space-x-4">
