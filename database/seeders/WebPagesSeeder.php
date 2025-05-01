@@ -26,8 +26,8 @@ class WebPagesSeeder extends Seeder
             ['id' => 10, 'title' => 'Login', 'slug' => 'login'],
             ['id' => 11, 'title' => 'Passwort zurücksetzen', 'slug' => 'passwordreset'],
             ['id' => 12, 'title' => '404 - Seite nicht gefunden', 'slug' => '404'],
-            ['id' => 13, 'title' => 'Versicherungen', 'slug' => 'versicherungen'],
-            ['id' => 14, 'title' => 'Bewertungen', 'slug' => 'bewertungen'],
+            ['id' => 13, 'title' => 'Versicherungen', 'slug' => 'insurances'],
+            ['id' => 14, 'title' => 'Bewertungen', 'slug' => 'reviews'],
             ['id' => 15, 'title' => 'Ranking', 'slug' => 'ranking'],
             ['id' => 16, 'title' => 'Premium', 'slug' => 'premium'],
         ];

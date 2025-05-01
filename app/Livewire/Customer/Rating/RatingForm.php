@@ -35,11 +35,13 @@ class RatingForm extends Component
     {
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
         $this->insuranceSubTypes = $this->insuranceType->subtypes()->get();
-        
     }
 
     public function updatedInsuranceSubTypeId()
-    {
+    {   
+        if (is_array($this->insuranceSubTypeId)) {
+            $this->insuranceSubTypeId = $this->insuranceSubTypeId['value'];
+        }
         $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
         $this->insurances = $this->insuranceSubType->insurances()->get();
         $this->loadQuestions();
@@ -48,8 +50,10 @@ class RatingForm extends Component
 
     public function updatedInsuranceId()
     {
+        if (is_array($this->insuranceId)) {
+            $this->insuranceId = $this->insuranceId['value'];
+        }
         $this->insurance = Insurance::find($this->insuranceId);
-        
     }
 
     public function loadQuestions()

@@ -1,6 +1,6 @@
 <div  wire:loading.class="cursor-wait">
 <section class="relative" style="background-image: url('/site-images/background.jpg'); background-size: cover; background-position: 50% 80%;">
-  <div class="absolute inset-0 bg-blue-50 opacity-70"></div>
+  <div class="absolute inset-0 bg-blue-50 opacity-80"></div>
   <div class="max-w-4xl mx-auto text-center  py-16 px-6 md:px-12 relative z-10">
     <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
       Bewerte deine Versicherung

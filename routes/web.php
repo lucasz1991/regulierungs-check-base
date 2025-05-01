@@ -31,6 +31,12 @@ use App\Livewire\Auth\RequestPasswordResetLink;
 use App\Livewire\Auth\ResetPassword;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Livewire\Pages\Insurances;
+use App\Livewire\Pages\Reviews;
+use App\Livewire\Pages\Ranking;
+use App\Livewire\Pages\Premium;
+
+
 
 use App\Http\Controllers\PayPalController;
 
@@ -48,7 +54,10 @@ use App\Http\Controllers\PayPalController;
     Route::get('/contact', Contact::class)->name('contact');
     Route::get('/sitemap', Sitemap::class)->name('sitemap');
     Route::get('/claim-rating/success/{hash}', ClaimRatingSuccess::class)->name('claim-rating.success');
-
+    Route::get('/insurances', Insurances::class)->name('insurances');
+    Route::get('/reviews', Reviews::class)->name('reviews');
+    Route::get('/ranking', Ranking::class)->name('ranking');
+    Route::get('/premium', Premium::class)->name('premium');
 
 
 
