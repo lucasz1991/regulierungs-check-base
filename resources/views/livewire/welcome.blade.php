@@ -9,6 +9,7 @@
       fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
     </p>
     <livewire:customer.rating.rating-form />
+    
     <div class="mt-10">
       <p class="text-gray-600 mb-3">Top-Versicherungen im Ranking:</p>
       <div class="flex flex-wrap justify-center gap-4">
