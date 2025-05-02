@@ -35,7 +35,7 @@
                                 stretch: 0,
                                 depth: 100,
                                 modifier: 1,
-                                slideShadows: true,
+                                slideShadows: false,
                             },
                             navigation: {
                                 nextEl: this.$refs.next,
@@ -67,7 +67,7 @@
                                         ? 'bg-blue-100 border-blue-500' 
                                         : 'hover:bg-gray-100 bg-white'"
                                     class="border rounded p-2 text-center cursor-pointer w-[90%] h-16 flex justify-center items-center  shadow-md transition duration-300 ease-in-out ">
-                                    <h3 class="font-bold text-md h-auto">{{ $type->name }}</h3>
+                                    <h3 class="font-bold text-xs md:text-base h-auto">{{ $type->name }}</h3>
                                 </div>
                             </div>
                         @endforeach
