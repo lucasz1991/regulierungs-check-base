@@ -99,11 +99,9 @@
                                 searchChoices: true,
                                 itemSelectText: '',
                             });
-    
                             $el.addEventListener('change', (e) => {
                                 insuranceSubTypeId = e.target.value;
                             });
-    
                             $nextTick(() => {
                                 if (insuranceSubTypeId > 0) {
                                     choices.setChoiceByValue(insuranceSubTypeId);

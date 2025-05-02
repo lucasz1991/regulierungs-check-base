@@ -18,13 +18,7 @@ use App\Livewire\Pages\Contact;
 use App\Livewire\Pages\Faqs;
 use App\Livewire\Pages\Sitemap;
 
-
-
 use App\Livewire\Customer\Rating\ClaimRatingSuccess;
-
-
-
-
 
 
 use App\Livewire\Auth\RequestPasswordResetLink;
@@ -35,12 +29,6 @@ use App\Livewire\Pages\Insurances;
 use App\Livewire\Pages\Reviews;
 use App\Livewire\Pages\Ranking;
 use App\Livewire\Pages\Premium;
-
-
-
-use App\Http\Controllers\PayPalController;
-
-
 
 
     // Routen für alle
