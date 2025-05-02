@@ -25,7 +25,7 @@ class PagebuilderProjectController extends Controller
             ]);
 
             $path = $request->file('file')->store('pagebuilder_images', 'public');
-            $fullUrl = rtrim('https://shopspaze.com', '/') . '/storage/' . str_replace('public/', '', $path); // Fixierte Base-URL
+            $fullUrl = rtrim(config('app.url'), '/') . '/storage/' . str_replace('public/', '', $path); // Dynamische Base-URL basierend auf der aktuellen App-URL
 
             Log::info('Bild erfolgreich hochgeladen', ['path' => $path, 'url' => $fullUrl]);
 
@@ -51,7 +51,7 @@ class PagebuilderProjectController extends Controller
             $files = Storage::files("public/pagebuilder_images");
 
             $assets = collect($files)->map(function ($file) {
-                return ['src' => 'https://shopspaze.com/storage/' . str_replace('public/', '', $file)];
+                return ['src' => config('app.url').'/storage/' . str_replace('public/', '', $file)];
             });
 
             Log::info('Bilder erfolgreich geladen', ['count' => count($assets)]);
