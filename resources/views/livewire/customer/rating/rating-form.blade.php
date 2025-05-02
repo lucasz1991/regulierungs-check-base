@@ -7,6 +7,11 @@
         {{ session('message') }}
     </div>
     @endif
+    <div x-show="step == -1"  x-cloak  x-collapse.duration.1000ms>
+        <a href="#" wire:click="$set('step', 0)" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
+            Jetzt bewerten
+        </a>
+    </div>
     {{-- Step 0: Versicherungs typ --}}
     <div x-show="step == 0"  x-cloak  x-collapse.duration.1000ms>
         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
@@ -16,8 +21,7 @@
                 }">
             <link rel="stylesheet" href="/adminresources/css/swiper-bundle.min.css">
             <script src="/adminresources/js/swiper-bundle.min.js"></script>
-            <div 
-                x-data="{
+            <div x-data="{
                     swiper: null,
                     initSwiper() {
                         this.swiper = new Swiper(this.$refs.swiper, {
@@ -43,6 +47,7 @@
                 x-init="initSwiper()"
                 x-effect="initSwiper()"
                 class="relative w-full"
+                wire:ignore
             >
                 {{-- Navigation links/rechts außerhalb --}}
                 <div class="absolute top-1/2 -left-12 transform -translate-y-1/2 z-10 mt-3">
@@ -51,7 +56,7 @@
                 <div class="absolute top-1/2 -right-12 transform -translate-y-1/2 z-10 mt-3">
                     <div class="swiper-button-next !static" x-ref="next"></div>
                 </div>
-                <div class="swiper w-full" x-ref="swiper" wire:ignore>
+                <div class="swiper w-full" x-ref="swiper">
                     <div class="swiper-wrapper">
                         @foreach ($types as $type)
                             <div class="swiper-slide h-full" wire:key="type-{{ $type->id }}">

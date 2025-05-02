@@ -26,7 +26,7 @@ class RatingForm extends Component
     public $started_at = null;
     public $ended_at = null;
     public $questions = [];
-    public $step = 0;
+    public $step = -1;
     public $standardSteps = 5;
     public $totalSteps = 0;
     public $answers = [];
