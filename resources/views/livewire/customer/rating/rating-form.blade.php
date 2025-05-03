@@ -286,13 +286,13 @@
                                             value="{{ $i }}" 
                                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                         >
-                                        <span class="text-xl transition-colors duration-150 text-gray-200"
+                                        <span class="text-xl transition-colors duration-150 text-gray-300"
                                             >
                                             <svg
                                                     class="w-12 h-12 transition-colors duration-150 "
                                                         :class="{
                                                             'text-yellow-400': hovered >= {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} >= {{ $i }},
-                                                            'text-gray-200': hovered < {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} < {{ $i }}
+                                                            'text-gray-300': hovered < {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} < {{ $i }}
                                                         }"
                                                     fill="currentColor"
                                                     viewBox="0 0 20 20"
