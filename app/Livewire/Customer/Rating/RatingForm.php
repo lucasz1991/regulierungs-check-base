@@ -12,6 +12,7 @@ use App\Models\Insurance;
 use App\Models\RatingQuestion;
 use App\Models\RatingQuestionnaireVersion;
 use App\Models\ClaimRating;
+use Illuminate\Support\Facades\Log;
 
 class RatingForm extends Component
 {
@@ -197,9 +198,32 @@ class RatingForm extends Component
                 if ($q->is_required) {
                     $rules["answers.{$q->id}"] = 'required';
                 }
+                if ($q->type == 'boolean') {
+                    $rules["answers.{$q->id}"] = 'boolean';
+                } elseif ($q->type == 'number') {
+                    $rules["answers.{$q->id}"] = 'numeric';
+                } elseif ($q->type == 'rating') {
+                    $rules["answers.{$q->id}"] = 'integer';
+                } elseif ($q->type == 'date') {
+                    $rules["answers.{$q->id}"] = '';
+                } elseif ($q->type == 'select') {
+                    $rules["answers.{$q->id}"] = 'string';
+                } elseif ($q->type == 'text') {
+                    $rules["answers.{$q->id}"] = 'string|max:255';
+                }
+                if ($q->input_constraints) {
+                    foreach ($q->input_constraints as $key => $value) {
+                        Log::info("Constraint: {$key} => {$value}");
+                        if ($key == 'min') {
+                            $rules["answers.{$q->id}"] .= '|min:' . $value;
+                        } elseif ($key == 'max') {
+                            $rules["answers.{$q->id}"] .= '|max:' . $value;
+                        }
+                    }
+                }
             }
         }
-    
+        
         return $rules;
     }
 
