@@ -30,7 +30,7 @@
                             effect: 'coverflow',
                             grabCursor: true,
                             centeredSlides: true,
-                            slidesPerView: '3',
+                            slidesPerView: '2',
                             initialSlide: 1,
                             breakpoints: {
                                 640: {
