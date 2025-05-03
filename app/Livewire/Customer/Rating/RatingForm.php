@@ -65,7 +65,11 @@ class RatingForm extends Component
         }
         $this->insurance = Insurance::find($this->insuranceId);
     }
-
+    public function resetDates()
+    {
+        $this->started_at = null;
+        $this->ended_at = null;
+    }
     public function loadQuestions()
     {
         $this->questions = $this->insuranceSubType

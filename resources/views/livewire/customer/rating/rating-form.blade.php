@@ -203,26 +203,63 @@
         <div x-data="{
                 started_at: @entangle('started_at'),
                 ended_at: @entangle('ended_at'),
+                is_closed: @entangle('is_closed'),
                 initDatepicker(refName, bindTo) {
                     flatpickr(refName, {
                         dateFormat: 'd.m.Y',
-                        defaultDate: bindTo ? bindTo : new Date(new Date().setMonth(new Date().getMonth() - 6)),
+                        defaultDate: bindTo || null,
                         locale: 'de',
+                        inline: true,
+                        allowInput: true,
+                        disableMobile: true,
                         onChange: function(selectedDates, dateStr) {
                             bindTo = dateStr;
+                        },
+                        onReady: function(selectedDates, dateStr, instance) {
+                            if (!bindTo) {
+                                const targetDate = new Date();
+                                targetDate.setMonth(targetDate.getMonth() - 6);
+                                instance.changeMonth(targetDate.getMonth(), false);
+                                instance.changeYear(targetDate.getFullYear());
+                            }
                         }
                     });
                 }
             }" x-init="initDatepicker($refs.started, started_at); 
-                    $nextTick(() => { if ({{ $is_closed ? 'true' : 'false' }}) initDatepicker($refs.ended, ended_at); })">
-                <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
-                {{-- Startdatum --}}
-                <label class="block text-sm font-medium text-gray-700">Startdatum</label>
-                <input type="text" x-ref="started" wire:model.live="started_at" readonly="readonly" class="max-w-md border rounded px-4 py-2 text-center flatpickr flatpickr-input" />
-                {{-- Enddatum (optional) --}}
+            $nextTick(() => { if ({{ $is_closed ? 'true' : 'false' }}) initDatepicker($refs.ended, ended_at); })" class="flex flex-col items-center">
                 @if ($is_closed)
-                    <label class="block text-sm font-medium text-gray-700 mt-4">Enddatum</label>
-                    <input type="text" x-ref="ended" wire:model.live="ended_at" readonly="readonly" class="max-w-md border rounded px-4 py-2 text-center flatpickr flatpickr-input" />
+                    <div class="inline-flex mb-5">
+                        <button type="button" wire:click="resetDates"
+                            :class="{ 'opacity-50 cursor-not-allowed': !started_at }"
+                            :disabled="!started_at"
+                            class="px-2 py-1 text-sm font-medium bg-white border border-l btn rounded-r-none rounded-l border-r-0  text-blue-500 border-blue-500 hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:z-10 focus:ring-2 focus:ring-blue-500/30 focus:text-white ">
+                            {{ $started_at ?? 'Start' }}
+                        </button>
+                        <button type="button"
+                            :class="{ 'opacity-50 cursor-not-allowed': !started_at }"
+                            :disabled="!started_at"
+                            wire:click="$set('ended_at', null)"
+                            class="px-2 py-1 text-sm font-medium bg-white border rounded-r btn rounded-l-none text-blue-500 border-blue-500 hover:bg-blue-500 hover:text-white focus:z-10 focus:ring-2 focus:bg-blue-500 focus:ring-blue-500/30 focus:text-white">
+                            {{ $ended_at ?? 'Ende' }}
+                        </button>
+                    </div>
+                @endif
+                <div x-show="!started_at || !is_closed"  x-cloak  x-collapse.duration.1000ms>    
+                    <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
+                    {{-- Startdatum --}}
+                    <label  class="block text-sm font-medium text-gray-700" wire:ignore>
+                        <input type="text" data-input data-id="inline" readonly="readonly" x-ref="started" wire:model.live="started_at"  class="hidden max-w-md border rounded px-4 py-2 text-center flatpickr flatpickr-input" />
+                    </label>
+                </div> 
+                @if ($is_closed)
+                    <div x-show="started_at"  x-cloak  x-collapse.duration.1000ms>   
+                        {{-- Enddatum (optional) --}}
+                        <h2 class="text-lg font-bold mb-4 mt-6">Wann wurde der Fall abgeschlossen?</h2>
+                        {{-- Enddatum --}}
+                        <label class="block text-sm font-medium text-gray-700 mt-4" wire:ignore>
+                            <input type="text" data-input data-id="inline" readonly="readonly"  x-ref="ended" wire:model.live="ended_at"  class="hidden max-w-md border rounded px-4 py-2 text-center flatpickr flatpickr-input" />
+                        </label>
+                    </div>
                 @endif
             </div>
             @error('started_at')
@@ -260,8 +297,13 @@
                             class="mt-2 w-full border px-3 py-2 rounded">
                         @break
                     @case('textarea')
-                        <textarea wire:model.defer="{{ $fieldName }}"
-                                class="mt-2 max-w-lg mx-auto border px-3 py-2 rounded" rows="4"></textarea>
+                        <div x-data="{ charCount: 0 }">
+                            <textarea wire:model.defer="{{ $fieldName }}"
+                                    class="mt-2 w-full mx-auto border px-3 py-2 rounded" rows="4"
+                                    x-on:input="charCount = $event.target.value.length"
+                                    maxlength="255"></textarea>
+                            <span x-text="`${charCount}/255 Zeichen`" class="text-sm " :class="charCount >= 255 ? 'text-red-600' : 'text-gray-500 '"></span>
+                        </div>
                         @break
                     @case('boolean')
                         <div class="mt-2 space-x-4">
