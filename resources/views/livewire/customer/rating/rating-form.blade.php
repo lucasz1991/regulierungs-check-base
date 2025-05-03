@@ -265,7 +265,8 @@
                     </label>
                 </div> 
                 @if ($is_closed)
-                    <div x-show="started_at"  x-cloak  x-collapse.duration.1000ms>   
+                    <div x-show="started_at"  x-cloak  x-collapse.duration.1000ms class="text-center">
+                        {{-- Startdatum (optional) --}}
                         {{-- Enddatum (optional) --}}
                         <h2 class="text-lg font-bold mb-4 mt-6">Wann wurde der Fall abgeschlossen?</h2>
                         {{-- Enddatum --}}
