@@ -12,6 +12,15 @@
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('site-images/favicon/favicon-16x16.png') }}">
         <link rel="manifest" href="{{ asset('site-images/favicon/site.webmanifest') }}">
 
+        <link rel="stylesheet" href="/adminresources/css/swiper-bundle.min.css">
+        <script src="/adminresources/js/swiper-bundle.min.js"></script>
+        <link href="{{ URL::asset('adminresources/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ URL::asset('adminresources/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet" type="text/css" />
+        <script src="{{ URL::asset('adminresources/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+        <script src="{{ URL::asset('adminresources/flatpickr/flatpickr.min.js') }}"></script>
+        <script src="{{ URL::asset('adminresources/flatpickr/l10n/de.js') }}"></script>
+
+        
         <!-- Styles -->
         @vite(['resources/css/app.css'])
 

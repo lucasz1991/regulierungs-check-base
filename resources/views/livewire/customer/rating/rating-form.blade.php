@@ -2,6 +2,9 @@
     x-data="{ 
      step: @entangle('step')
     }">
+
+
+
     @if (session('message'))
     <div class="bg-green-100 text-green-800 p-4 rounded mb-6">
         {{ session('message') }}
@@ -19,8 +22,7 @@
         <div x-data="{
                     insuranceTypeId: null
                 }">
-            <link rel="stylesheet" href="/adminresources/css/swiper-bundle.min.css">
-            <script src="/adminresources/js/swiper-bundle.min.js"></script>
+            
             <div x-data="{
                     swiper: null,
                     initSwiper() {
@@ -203,8 +205,9 @@
                 ended_at: @entangle('ended_at'),
                 initDatepicker(refName, bindTo) {
                     flatpickr(refName, {
-                        dateFormat: 'Y-m-d',
-                        defaultDate: bindTo,
+                        dateFormat: 'd.m.Y',
+                        defaultDate: bindTo ? bindTo : new Date(new Date().setMonth(new Date().getMonth() - 6)),
+                        locale: 'de',
                         onChange: function(selectedDates, dateStr) {
                             bindTo = dateStr;
                         }
@@ -215,11 +218,11 @@
                 <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
                 {{-- Startdatum --}}
                 <label class="block text-sm font-medium text-gray-700">Startdatum</label>
-                <input type="text" x-ref="started" wire:model.live="started_at" class="max-w-md border rounded px-4 py-2" />
+                <input type="text" x-ref="started" wire:model.live="started_at" readonly="readonly" class="max-w-md border rounded px-4 py-2 text-center flatpickr flatpickr-input" />
                 {{-- Enddatum (optional) --}}
                 @if ($is_closed)
                     <label class="block text-sm font-medium text-gray-700 mt-4">Enddatum</label>
-                    <input type="text" x-ref="ended" wire:model.live="ended_at" class="max-w-md border rounded px-4 py-2" />
+                    <input type="text" x-ref="ended" wire:model.live="ended_at" readonly="readonly" class="max-w-md border rounded px-4 py-2 text-center flatpickr flatpickr-input" />
                 @endif
             </div>
             @error('started_at')
@@ -267,32 +270,30 @@
                         </div>
                         @break
                         @case('rating')
-                            <style>
-                                .rating-group:hover label span {
-                                    color: #d1d5db; /* text-gray-300 */
-                                }
-                                .rating-group label:hover ~ label span {
-                                    color: #d1d5db !important;
-                                }
-                                .rating-group label:hover span,
-                                .rating-group label:hover ~ label span {
-                                    color: #facc15 !important; /* text-yellow-400 */
-                                }
-                            </style>
-                            <div class="flex justify-center space-x-1 mt-2 rating-group">
+                            
+                            
+                            <div class="flex justify-center space-x-1 mt-6 rating-group"     
+                                x-data="{ hovered: 0 }"
+                                >
                                 @for ($i = 1; $i <= 5; $i++)
-                                    <label class="cursor-pointer relative">
+                                    <label class="cursor-pointer relative" 
+                                        @mouseover="hovered = {{ $i }}"
+                                        @mouseleave="hovered = 0"
+                                        >
                                         <input 
                                             type="radio" 
                                             wire:model.live="{{ $fieldName }}" 
                                             value="{{ $i }}" 
                                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                         >
-                                        <span class="text-xl transition-colors duration-150
-                                            {{ $fieldName && (data_get($this, $fieldName) >= $i) ? 'text-yellow-400' : 'text-gray-300' }}">
+                                        <span class="text-xl transition-colors duration-150 text-gray-200"
+                                            >
                                             <svg
-                                                    class="w-12 h-12 transition-colors duration-150
-                                                        {{ $fieldName && (data_get($this, $fieldName) >= $i) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                    class="w-12 h-12 transition-colors duration-150 "
+                                                        :class="{
+                                                            'text-yellow-400': hovered >= {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} >= {{ $i }},
+                                                            'text-gray-200': hovered < {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} < {{ $i }}
+                                                        }"
                                                     fill="currentColor"
                                                     viewBox="0 0 20 20"
                                                 >
@@ -320,8 +321,6 @@
                 </div>
             </div>
         @endforeach
-    <link href="{{ URL::asset('adminresources/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('adminresources/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet" type="text/css" />
-    <script src="{{ URL::asset('adminresources/choices.js/public/assets/scripts/choices.min.js') }}"></script>
-    <script src="{{ URL::asset('adminresources/flatpickr/flatpickr.min.js') }}"></script>
+    
+
 </div>

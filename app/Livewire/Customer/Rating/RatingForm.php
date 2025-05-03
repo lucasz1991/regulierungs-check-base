@@ -5,6 +5,7 @@ namespace App\Livewire\Customer\Rating;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Setting;
 use App\Models\InsuranceSubtype;
 use App\Models\InsuranceType;
 use App\Models\Insurance;
@@ -14,6 +15,7 @@ use App\Models\ClaimRating;
 
 class RatingForm extends Component
 {
+
     public $insuranceTypeId = null;
     public $insuranceType;
     public $insuranceSubTypeId = null;
@@ -24,13 +26,20 @@ class RatingForm extends Component
 
     public $is_closed = null;
     public $started_at = null;
+    public $setting_available_started_at = null;
     public $ended_at = null;
+    public $setting_available_ended_at = null;
     public $questions = [];
     public $step = -1;
     public $standardSteps = 5;
     public $totalSteps = 0;
     public $answers = [];
 
+    public function mount()
+    {
+        $this->setting_available_started_at = Setting::getValue('rating_form', 'available_started_at') ?? null;
+        $this->setting_available_ended_at = Setting::getValue('rating_form', 'available_ended_at') ?? null;
+    }
     public function updatedInsuranceTypeId()
     {
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
@@ -177,9 +186,9 @@ class RatingForm extends Component
         }
     
         if ($this->step >= 4) {
-            $rules['started_at'] = 'required|date';
+            $rules['started_at'] = 'required|date|after_or_equal:setting_available_started_at|before_or_equal:today';
             if ($this->is_closed) {
-                $rules['ended_at'] = 'required|date|after_or_equal:started_at';
+                $rules['ended_at'] = 'required|date|after_or_equal:started_at|before_or_equal:today';
             }
         }
     
