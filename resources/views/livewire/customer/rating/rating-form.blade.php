@@ -275,7 +275,7 @@
                             <div class="flex justify-center space-x-1 mt-6 rating-group"     
                                 x-data="{ hovered: 0 }"
                                 >
-                                @for ($i = 1; $i <= 5; $i++)
+                                @for ($i = 1; $i <= 6; $i++)
                                     <label class="cursor-pointer relative" 
                                         @mouseover="hovered = {{ $i }}"
                                         @mouseleave="hovered = 0"
