@@ -49,14 +49,14 @@
                                 modifier: 1,
                                 slideShadows: false,
                             },
-                            navigation: {
-                                nextEl: this.$refs.next,
-                                prevEl: this.$refs.prev,
+                            pagination: {
+                                el: '.swiper-pagination',
+                                dynamicBullets: true,
                             },
                         });
                     }
                 }"
-                x-init="initSwiper()"
+                x-init="initSwiper() "
                 x-effect="initSwiper()"
                 class="max-w-full relative w-full"
                 wire:ignore
@@ -68,8 +68,8 @@
                 <div class="hidden md:block absolute top-1/2 -right-12 transform -translate-y-1/2 z-10 mt-3">
                     <div class="swiper-button-next !static" x-ref="next"></div>
                 </div>
-                <div class="swiper w-full" x-ref="swiper">
-                    <div class="swiper-wrapper">
+                <div class="swiper w-full" x-ref="swiper" >
+                    <div class="swiper-wrapper" >
                         @foreach ($types as $type)
                             <div class="swiper-slide h-full" wire:key="type-{{ $type->id }}">
                                 <div 
@@ -83,6 +83,9 @@
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+                    <div class="mt-10">
+                        <div class="swiper-pagination"></div>
                     </div>
                 </div>
             </div>
