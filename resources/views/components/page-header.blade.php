@@ -1,6 +1,6 @@
     @if ($isWebPage && $showHeader)
         <header class="relative bg-cover bg-center min-h-32" 
-        style="background-image: url('{{ $header_image ? url('public/' . $header_image) : asset('site-images/background.webp') }}');">
+        style="background-image: url('{{ $header_image ? url('public/' . $header_image) : asset('site-images/background.jpg') }}');">
         <div class="absolute inset-0 "></div>
             <div class="relative container mx-auto py-4 text-2xl px-4 sm:px-6 lg:px-8 space-y-12">
                 <x-back-button />
