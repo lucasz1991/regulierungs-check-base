@@ -32,6 +32,16 @@
                             centeredSlides: true,
                             slidesPerView: '3',
                             initialSlide: 1,
+                            breakpoints: {
+                                640: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 20,
+                                },
+                                768: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 40,
+                                },
+                            },
                             coverflowEffect: {
                                 rotate: 50,
                                 stretch: 0,
@@ -68,8 +78,8 @@
                                     :class="insuranceTypeId == {{ $type->id }} 
                                         ? 'bg-blue-100 border-blue-500' 
                                         : 'hover:bg-gray-100 bg-white'"
-                                    class="border rounded p-2 text-center cursor-pointer w-[90%] h-16 flex justify-center items-center  shadow-md transition duration-300 ease-in-out ">
-                                    <h3 class="font-bold text-xs md:text-base h-auto">{{ $type->name }}</h3>
+                                    class="border rounded p-2 text-center cursor-pointer w-full h-16 flex justify-center items-center  shadow-md transition duration-300 ease-in-out ">
+                                    <h3 class="font-bold max-w-full overflow-hidden text-xs md:text-base h-auto break-words">{{ $type->name }}</h3>
                                 </div>
                             </div>
                         @endforeach
