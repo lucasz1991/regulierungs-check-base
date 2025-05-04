@@ -239,7 +239,8 @@
                     });
                 }
             }" x-init="initDatepicker($refs.started, started_at); 
-            $nextTick(() => { if ({{ $is_closed ? 'true' : 'false' }}) initDatepicker($refs.ended, ended_at); })" class="flex flex-col items-center">
+                $nextTick(() => { if ({{ $is_closed ? 'true' : 'false' }}) initDatepicker($refs.ended, ended_at); })" 
+                class="flex flex-col items-center">
                 @if ($is_closed)
                     <div class="inline-flex mb-5">
                         <button type="button" wire:click="resetDates"
