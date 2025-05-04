@@ -41,6 +41,7 @@ class RatingForm extends Component
         $this->setting_available_started_at = Setting::getValue('rating_form', 'available_started_at') ?? null;
         $this->setting_available_ended_at = Setting::getValue('rating_form', 'available_ended_at') ?? null;
     }
+    
     public function updatedInsuranceTypeId()
     {
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
