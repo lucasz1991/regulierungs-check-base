@@ -261,7 +261,7 @@
                     <h2 class="text-lg font-bold mb-4">Wann hat der Fall begonnen?</h2>
                     {{-- Startdatum --}}
                     <label  class="block text-sm font-medium text-gray-700" wire:ignore>
-                        <input type="text" data-input data-id="inline" readonly="readonly" x-ref="started" wire:model.live="started_at"  class="hidden max-w-md border rounded px-4 py-2 text-center flatpickr flatpickr-input" />
+                        <input type="text" data-input data-id="inline" readonly="readonly" x-ref="started" wire:model.live="started_at"  class="hidden max-w-md border rounded px-4 py-2 text-center" />
                     </label>
                 </div> 
                 @if ($is_closed)

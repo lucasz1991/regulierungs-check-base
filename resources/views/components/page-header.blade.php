@@ -2,7 +2,7 @@
         <header class="relative bg-cover bg-center min-h-32" 
         style="background-image: url('{{ $header_image ? url('public/' . $header_image) : asset('site-images/background.jpg') }}');">
         <div class="absolute inset-0 bg-blue-50 opacity-80"></div>
-            <div class="relative container mx-auto py-12 text-2xl px-4 sm:px-6 lg:px-8 space-x-6 flex justify-start  items-center">
+            <div class="relative container mx-auto py-12 text-2xl  space-x-6 flex justify-start  items-center">
                 <x-back-button />
                 <h1 class="font-semibold text-2xl text-gray-800 leading-tight flex items-center">
                     {{ $title }}
