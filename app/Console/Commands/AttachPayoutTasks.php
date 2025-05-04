@@ -21,7 +21,7 @@ class AttachPayoutTasks extends Command
             $existingTask = AdminTask::where('shelf_rental_id', $payout->shelf_rental_id)
                 ->where('task_type', 'Auszahlung')
                 ->exists();
-            if (!$existingTask) {
+            if (!$existingTask){
                 AdminTask::create([
                     'task_type' => 'Auszahlung',
                     'description' => "Auszahlung für Regalbuchung #{$payout->shelf_rental_id} in Höhe von " . number_format($payout->amount, 2, ',', '.') . " € angefordert",
