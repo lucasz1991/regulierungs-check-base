@@ -1,4 +1,4 @@
-<a  onclick="window.history.back()"  
+<a onclick="window.history.back()"  
     wire:navigate  
     class="shadow transition-all duration-100 inline-flex items-center content-center px-2 py-1 text-sm border border-blue-300 bg-white text-gray-600 rounded-full aspect-square hover:bg-blue-200 cursor-pointer waves-effect"
             x-data="{ isClicked: false }" 
