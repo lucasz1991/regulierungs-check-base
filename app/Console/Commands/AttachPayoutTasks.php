@@ -14,16 +14,13 @@ class AttachPayoutTasks extends Command
     public function handle()
     {
         $this->info("Starte das Erstellen von AdminTasks für bestehende Payouts...");
-
         $payouts = Payout::whereNotNull('shelf_rental_id')->get();
         $taskCount = 0;
-
         foreach ($payouts as $payout) {
             // Prüfen, ob bereits ein AdminTask für diese Auszahlung existiert
             $existingTask = AdminTask::where('shelf_rental_id', $payout->shelf_rental_id)
                 ->where('task_type', 'Auszahlung')
                 ->exists();
-
             if (!$existingTask) {
                 AdminTask::create([
                     'task_type' => 'Auszahlung',
@@ -32,18 +29,15 @@ class AttachPayoutTasks extends Command
                     'assigned_to' => null,
                     'shelf_rental_id' => $payout->shelf_rental_id,
                 ]);
-
                 $this->info("AdminTask für Regalbuchung #{$payout->shelf_rental_id} erstellt.");
                 $taskCount++;
             }
         }
-
         if ($taskCount > 0) {
             $this->info("Insgesamt wurden {$taskCount} AdminTasks erstellt.");
         } else {
             $this->info("Es wurden keine neuen AdminTasks erstellt. Alle Payouts haben bereits eine Aufgabe.");
         }
-
         return Command::SUCCESS;
     }
 }

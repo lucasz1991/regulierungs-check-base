@@ -72,15 +72,14 @@
                 x-transition:leave-start="translate-x-0 "
                 x-transition:leave-end="translate-x-full"
                 x-on:click.away="showChat = false"
-                
                 class="fixed bottom-4 right-0 mx-[3vw] bg-white p-3 md:p-5 transition rounded-lg border border-[#e5e7eb] w-[440px] max-w-[94vw] h-auto shadow-xl z-50" >
                 <!-- Header -->
                 <div class="flex justify-between  pb-4">
-                <div>
-                    <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
-                    <p class="text-sm text-[#6b7280]">Hier kannst du Fragen zu Regulierungs-Check stellen.</p>
-                </div>
-                <button wire:click="clearChat()" x-on:click="showChat = false" class="text-gray-500 hover:text-gray-700">&times;</button>
+                    <div>
+                        <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
+                        <p class="text-sm text-[#6b7280]">Hier kannst du Fragen zu Regulierungs-Check stellen.</p>
+                    </div>
+                    <button wire:click="clearChat()" x-on:click="showChat = false" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
             
                 <!-- Chat-Messages -->
