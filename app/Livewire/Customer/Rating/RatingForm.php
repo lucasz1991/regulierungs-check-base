@@ -156,6 +156,7 @@ class RatingForm extends Component
     {
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
         $this->insuranceSubTypes = $this->insuranceType->subtypes()->get();
+        $this->answers['insuranceTypeId'] = $this->insuranceTypeId;
     }
 
     public function updatedInsuranceSubTypeId()
@@ -164,6 +165,7 @@ class RatingForm extends Component
             $this->insuranceSubTypeId = $this->insuranceSubTypeId['value'];
         }
         $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
+        $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
         $this->insurances = $this->insuranceSubType->insurances()->get();
         $this->loadQuestions();
     }
@@ -173,7 +175,25 @@ class RatingForm extends Component
         if (is_array($this->insuranceId)) {
             $this->insuranceId = $this->insuranceId['value'];
         }
+        $this->answers['insuranceId'] = $this->insuranceId;
         $this->insurance = Insurance::find($this->insuranceId);
+    }
+
+    public function updatedIsClosed()
+    {
+        $this->answers['is_closed'] = $this->is_closed;
+        if ($this->is_closed) {
+            $this->ended_at = null;
+        }
+    }
+    public function updatedStartedAt()
+    {
+        $this->answers['started_at'] = $this->started_at;
+    }
+    public function updatedEndedAt()
+    {
+        $this->answers['ended_at'] = $this->ended_at;
+        
     }
 
     public function resetDates()
