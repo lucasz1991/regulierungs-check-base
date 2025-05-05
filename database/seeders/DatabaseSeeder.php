@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             RatingQuestionSeeder::class,
             InsuranceSubtypeRatingQuestionSeeder::class,
             SettingsSeeder::class,
-            WebPagesSeeder::class, 
+            // WebPagesSeeder::class, 
         ]);
     }
 
