@@ -14,7 +14,7 @@
 
             <br><br>
             <span class="block text-sm text-red-700 font-semibold">
-                Um deine Bewertung zu verifizieren und öffentlich sichtbar zu machen,
+                Um deine Bewertung zu verifizieren und anonymisiert öffentlich sichtbar zu machen,
                 musst du dich registrieren oder einloggen.
             </span>
 

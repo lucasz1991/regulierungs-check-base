@@ -17,7 +17,7 @@ use App\Models\RatingQuestionnaire;
 
 class ClaimRatingController extends Controller
 {
-    public function evaluateScore(ClaimRating $claimRating)
+    static function evaluateScore(ClaimRating $claimRating)
     {
         // Versicherungstyp abrufen
         $subtype = $claimRating->insuranceSubtype;
@@ -41,21 +41,45 @@ class ClaimRatingController extends Controller
             $difference = 0;
             $rating_speed_score = 1;
         }
-    
-        // Berechnung des Scores
-    
+        // Berechnung des Scores für Variable Fragen 
+        
+        $questionnaireVersion = $claimRating->questionnaireVersion()->first();
+        $questionnaireVersionSnapshot = $questionnaireVersion->snapshot;
+        $variableQuestionScore = 0;
+        foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
+            $score = ClaimRatingController::calculateScore($claimRating, $snapshotQuestion);
+            $variableQuestionScore += $score * $snapshotQuestion['pivot']['weight'];
+        }
+        $variableQuestionScore = $variableQuestionScore / count($questionnaireVersionSnapshot);
+
+        // Kombinieren der Scores mit den entsprechenden Gewichtungen
+        $score = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
+
         // Speichern
         $claimRating->rating_score = $score;
-        $claimRating->save();
+        $claimRating->saveQuietly();
     
         return response()->json([
             'success' => true,
             'rating_score' => $score,
-            'standard_days' => $standardDays,
-            'actual_days' => $actualDays,
-            'difference' => $difference,
         ]);
     }
-    
+    /**
+     * Calculate the score based on the type of question and its value.
+     *
+     * @param array $snapshotQuestion
+     * @return float
+     */
+    static function calculateScore(ClaimRating $claimRating , $snapshotQuestion){
+        $value = $claimRating->answers[$snapshotQuestion['title']] ?? null;
+        switch ($snapshotQuestion['type']) {
+            case 'rating':
+                return $value / 5;
+            case 'textarea':
+                return strlen($value) > 3 ? 0.5 : 1;
+            default:
+                return 0;
+        }
+    }
 
 }

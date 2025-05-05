@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Controllers\Customer\ClaimRatingController;
 
 class ClaimRating extends Model
 {
@@ -34,7 +35,17 @@ class ClaimRating extends Model
         'is_public' => 'boolean',
     ];
 
-    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($claimRating) {
+            ClaimRatingController::evaluateScore($claimRating);
+        });
+        static::updated(function ($claimRating) {
+            ClaimRatingController::evaluateScore($claimRating);
+        });
+    }
 
     public function user()
     {
@@ -58,6 +69,6 @@ class ClaimRating extends Model
 
     public function questionnaireVersion()
     {
-        return $this->belongsTo(RatingQuestionnaireVersion::class);
+        return $this->belongsTo(RatingQuestionnaireVersion::class, 'rating_questionnaire_versions_id');
     }
 }
