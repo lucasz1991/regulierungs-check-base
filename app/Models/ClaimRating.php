@@ -34,6 +34,8 @@ class ClaimRating extends Model
         'is_public' => 'boolean',
     ];
 
+    
+
     public function user()
     {
         return $this->belongsTo(User::class);

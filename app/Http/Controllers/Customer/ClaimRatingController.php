@@ -21,40 +21,28 @@ class ClaimRatingController extends Controller
     {
         // Versicherungstyp abrufen
         $subtype = $claimRating->insuranceSubtype;
-    
-        if (!$subtype || !isset($subtype->average_rating_speed)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kein Standardwert für Regulierungsdauer hinterlegt.',
-            ], 422);
-        }
+        $insuranceSubtype_average_rating_speed = $subtype->average_rating_speed ?? 30;
     
         // Regulierungstage aus den Antworten extrahieren
         $answers = $claimRating->answers;
-        $actualDays = $answers['regulation_days'] ?? null;
-    
-        if ($actualDays === null) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Keine tatsächliche Regulierungsdauer angegeben.',
-            ], 422);
-        }
-    
-        $standardDays = $subtype->default_regulation_days;
-        $difference = $actualDays - $standardDays;
-    
-        // Score-Berechnung: je weniger Abweichung, desto besser
-        if ($difference <= 0) {
-            $score = 5; // schneller oder pünktlich
-        } elseif ($difference <= 3) {
-            $score = 4;
-        } elseif ($difference <= 7) {
-            $score = 3;
-        } elseif ($difference <= 14) {
-            $score = 2;
+        if (isset($answers['ended_at'])) {
+            $actualDays = (new \DateTime($answers['started_at']))->diff(new \DateTime($answers['ended_at']))->days;
         } else {
-            $score = 1;
+            $actualDays = (new \DateTime($answers['started_at']))->diff(new \DateTime())->days;
         }
+        // Überprüfen, ob $actualDays größer ist als $insuranceSubtype_average_rating_speed
+        // Wenn ja, dann berechnen Sie den Unterschied
+        // Wenn nein, dann setzen Sie den Unterschied auf 0
+
+        if ($actualDays > $insuranceSubtype_average_rating_speed) {
+            $difference = $actualDays - $insuranceSubtype_average_rating_speed;
+            $rating_speed_score = max(0, 0.99 - ($difference / $insuranceSubtype_average_rating_speed));
+        } else {
+            $difference = 0;
+            $rating_speed_score = 1;
+        }
+    
+        // Berechnung des Scores
     
         // Speichern
         $claimRating->rating_score = $score;
