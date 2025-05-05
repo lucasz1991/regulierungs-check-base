@@ -31,6 +31,7 @@ class RatingForm extends Component
     public $ended_at = null;
     public $setting_available_ended_at = null;
     public $questions = [];
+    public $variableQuestions = [];
     public $step = -1;
     public $standardSteps = 5;
     public $totalSteps = 0;
@@ -40,8 +41,117 @@ class RatingForm extends Component
     {
         $this->setting_available_started_at = Setting::getValue('rating_form', 'available_started_at') ?? null;
         $this->setting_available_ended_at = Setting::getValue('rating_form', 'available_ended_at') ?? null;
+        $this->questions = collect();
+
+        // Standardfragen hinzufügen (hardcodiert)
+        $standardQuestions = collect([
+            (object)[
+                'id' => 1,
+                'title' => 'insuranceTypeId',
+                'question_text' => ' Bitte wählen Sie den Versicherungstyp aus.',
+                'type' => 'select',
+                'is_required' => true,
+                'meta' => null,
+                'help_text' => null,
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 1,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+            (object)[
+                'id' => 2,
+                'title' => 'insuranceSubTypeId',
+                'question_text' => ' Bitte wählen Sie die Versicherungsart aus.',
+                'type' => 'select',
+                'is_required' => true,
+                'meta' => null,
+                'help_text' => null,
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 2,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+            (object)[
+                'id' => 3,
+                'title' => 'insuranceId',
+                'question_text' => ' Bitte wählen Sie die Versicherung aus.',
+                'type' => 'select',
+                'is_required' => true,
+                'meta' => null,
+                'help_text' => null,
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 3,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+            (object)[
+                'id' => 4,
+                'title' => 'is_closed',
+                'question_text' => 'Wurde der Fall bereits abgeschlossen?',
+                'type' => 'boolean',
+                'is_required' => true,
+                'meta' => null,
+                'help_text' => null,
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 4,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+            (object)[
+                'id' => 5,
+                'title' => 'started_at',
+                'question_text' => 'Wann hat der Fall begonnen?',
+                'type' => 'date',
+                'is_required' => true,
+                'meta' => null,
+                'help_text' => null,
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 5,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+            (object)[
+                'id' => 6,
+                'title' => 'ended_at',
+                'question_text' => 'Wann hat der Fall geendet?',
+                'type' => 'date',
+                'is_required' => false,
+                'meta' => null,
+                'help_text' => null,
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 6,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+        ]);
+        $this->questions = $this->questions->merge($standardQuestions);
+        $this->answers = array_fill_keys($this->questions->pluck('title')->toArray(), null);
     }
-    
+
     public function updatedInsuranceTypeId()
     {
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
@@ -56,7 +166,6 @@ class RatingForm extends Component
         $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
         $this->insurances = $this->insuranceSubType->insurances()->get();
         $this->loadQuestions();
-        
     }
 
     public function updatedInsuranceId()
@@ -66,6 +175,7 @@ class RatingForm extends Component
         }
         $this->insurance = Insurance::find($this->insuranceId);
     }
+
     public function resetDates()
     {
         $this->started_at = null;
@@ -73,18 +183,26 @@ class RatingForm extends Component
     }
     public function loadQuestions()
     {
-        $this->questions = $this->insuranceSubType
+
+        // Variablen Ratingfragen hinzufügen
+        $this->variableQuestions = $this->insuranceSubType
             ->ratingQuestions()
             ->orderBy('insurance_subtype_rating_question.order_column')
             ->get();
-        $this->totalSteps = $this->standardSteps + ($this->questions->count()); 
+        $this->questions = $this->questions->merge($this->variableQuestions);
+        
+        $this->totalSteps = $this->questions->count()-1; 
     }
 
     public function nextStep()
     {
         $this->validate($this->rules());
         $this->saveAnswers();
-        if ($this->step < count($this->questions)+($this->standardSteps)) {
+        if(count($this->questions) > 0) {
+            if ($this->step < count($this->questions)+1) {
+                $this->step++;
+            }
+        }else {
             $this->step++;
         }
     }
@@ -98,8 +216,9 @@ class RatingForm extends Component
 
     public function saveAnswers()
     {
+        $this->validate($this->rules());
         foreach ($this->questions as $question) {
-            $key = (string) $question->id;
+            $key = (string) $question->title;
     
             // Sicherstellen, dass jede Frage im Array enthalten ist
             if (!array_key_exists($key, $this->answers)) {
@@ -138,7 +257,11 @@ class RatingForm extends Component
                     // Auswahl beibehalten (z. B. String-Wert aus Dropdown)
                     $this->answers[$key] = $value;
                     break;
-    
+                case 'textarea':
+                    // Textarea: String oder null
+                    $this->answers[$key] = is_string($value) ? trim($value) : null;
+                    break;
+                    
                 case 'text':
                 default:
                     // Standard: String oder null
@@ -199,30 +322,29 @@ class RatingForm extends Component
         }
     
         if ($this->step >= 5) {
-            foreach ($this->questions as $q) {
+            foreach ($this->variableQuestions as $q) {
                 if ($q->is_required) {
-                    $rules["answers.{$q->id}"] = 'required';
+                    $rules["answers.{$q->title}"] = 'required';
                 }
                 if ($q->type == 'boolean') {
-                    $rules["answers.{$q->id}"] = 'boolean';
+                    $rules["answers.{$q->title}"] = 'boolean';
                 } elseif ($q->type == 'number') {
-                    $rules["answers.{$q->id}"] = 'numeric';
+                    $rules["answers.{$q->title}"] = 'numeric';
                 } elseif ($q->type == 'rating') {
-                    $rules["answers.{$q->id}"] = 'integer';
+                    $rules["answers.{$q->title}"] = 'integer';
                 } elseif ($q->type == 'date') {
-                    $rules["answers.{$q->id}"] = '';
+                    $rules["answers.{$q->title}"] = '';
                 } elseif ($q->type == 'select') {
-                    $rules["answers.{$q->id}"] = 'string';
+                    $rules["answers.{$q->title}"] = 'string';
                 } elseif ($q->type == 'text') {
-                    $rules["answers.{$q->id}"] = 'string|max:255';
+                    $rules["answers.{$q->title}"] = 'string|max:255';
                 }
                 if ($q->input_constraints) {
                     foreach ($q->input_constraints as $key => $value) {
-                        Log::info("Constraint: {$key} => {$value}");
                         if ($key == 'min') {
-                            $rules["answers.{$q->id}"] .= '|min:' . $value;
+                            $rules["answers.{$q->title}"] .= '|min:' . $value;
                         } elseif ($key == 'max') {
-                            $rules["answers.{$q->id}"] .= '|max:' . $value;
+                            $rules["answers.{$q->title}"] .= '|max:' . $value;
                         }
                     }
                 }

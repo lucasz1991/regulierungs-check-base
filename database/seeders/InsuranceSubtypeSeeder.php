@@ -34,7 +34,7 @@ class InsuranceSubtypeSeeder extends Seeder
             'average_rating_fairness' => null,
             'average_rating_service' => null,
             'order_column' => null
-        ]);
+        ]); 
         InsuranceSubtype::firstOrCreate([
             'name' => 'Haftpflicht für Landfahrzeuge mit eigenem Antrieb - a) Kraftfahrzeughaftpflicht'
         ], [

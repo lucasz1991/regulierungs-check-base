@@ -294,10 +294,10 @@
         </div>
     </div>
     {{-- Step 5: Fragen durchgehen --}}
-        @foreach ($questions as $index => $q)
+        @foreach ($variableQuestions as $index => $q)
             @php
                 $currentStep = $standardSteps + $index;
-                $fieldName = "answers." . $q->id;
+                $fieldName = "answers." . $q->title;
             @endphp
             <div x-show="step === {{ $currentStep }}" x-collapse.duration.1000ms x-cloak >
                 <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps  }}</h2>
@@ -360,6 +360,9 @@
                                     </label>
                                 @endfor
                             </div>
+                            @error($fieldName)
+                                <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                            @enderror
                             @break
                     @default
                         <p class="text-sm text-red-500">Unbekannter Fragetyp: {{ $q->type }}</p>
