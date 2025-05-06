@@ -11,9 +11,14 @@
     </div>
     @endif
     <div x-show="step == -1"  x-cloak  x-collapse.duration.1000ms>
-        <a href="#" wire:click="$set('step', 0)" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
-            Jetzt bewerten
-        </a>
+        <div class="flex space-x-4 items-center justify-center mb-4 w-full">
+            <a href="#" wire:click="$set('step', 0)" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
+                Jetzt bewerten
+            </a>
+            <a href="/insurances"  class="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition">
+                Vergleichen 
+            </a>
+        </div>
     </div>
     {{-- Step 0: Versicherungs typ --}}
     <div x-show="step == 0"  x-cloak  x-collapse.duration.1000ms>
@@ -327,8 +332,6 @@
                         </div>
                         @break
                         @case('rating')
-                            
-                            
                             <div class="flex justify-center space-x-1 mt-6 rating-group"     
                                 x-data="{ hovered: 0 }"
                                 >
