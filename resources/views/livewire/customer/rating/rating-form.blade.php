@@ -23,7 +23,7 @@
     {{-- Step 0: Versicherungs typ --}}
     <div x-show="step == 0"  x-cloak  x-collapse.duration.1000ms>
         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
-        <h2 class="text-lg mb-4">Wähle Ihre Versicherungskategorie</h2>
+        <h2 class="text-lg mb-4">Versicherungskategorie auswählen</h2>
         <div x-data="{
                     insuranceTypeId: null
                 }">
@@ -107,7 +107,7 @@
     {{-- Step 1: Versicherungs SubType --}}
     <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
         <div x-data="{ insuranceSubTypeId: @entangle('insuranceSubTypeId') }">
-            <h2 class="text-lg mb-4">Wähle Ihre Versicherungsart</h2>
+            <h2 class="text-lg mb-4">Versicherungsart auswählen</h2>
             <div class="max-w-md mx-auto">
                 <select wire:model.live="insuranceSubTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 
                     x-init="
