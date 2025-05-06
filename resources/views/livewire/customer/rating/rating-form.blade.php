@@ -118,6 +118,7 @@
                                 placeholder: true,
                                 searchChoices: true,
                                 itemSelectText: '',
+                                searchPlaceholderValue: 'Suchen...',
                             });
                             $el.addEventListener('change', (e) => {
                                 insuranceSubTypeId = e.target.value;
@@ -159,6 +160,7 @@
                                 placeholder: true,
                                 searchChoices: true,
                                 itemSelectText: '',
+                                searchPlaceholderValue: 'Suchen...',
                             });
                             $el.addEventListener('change', (e) => {
                                 insuranceId = e.target.value;
