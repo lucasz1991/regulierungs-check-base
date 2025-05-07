@@ -1,5 +1,5 @@
 <div class="bg-gray-100">
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto p-4 pt-10 pb-8">
         <div class="mb-6 flex gap-2">
             <input wire:model.live="search"
                    type="text"
