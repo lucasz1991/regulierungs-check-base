@@ -13,18 +13,16 @@
             @endforeach
         </select>
     </div>
-
     @if($insurances->count())
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($insurances as $insurance)
                 <div class="bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition-shadow duration-300 p-4">
                     <h2 class="text-xl font-semibold mb-2 ">
                         <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-base font-bold float-start mr-2" style="background-color: {{ $insurance->color ?? '#ccc' }};">
-                            {{ strtoupper(substr( $insurance->initials, 0 ,3)) }}
+                            {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
                         </div>
                         {{ $insurance->name }}
                     </h2>
-
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <span class="font-medium">Score:</span>
@@ -39,10 +37,6 @@
                             </span>
                         </div>
                     </div>
-
-                    <a href="#" class="inline-block text-sm text-blue-500 hover:text-blue-700">
-                        Details ansehen &rarr;
-                    </a>
                 </div>
             @endforeach
         </div>
@@ -51,7 +45,6 @@
             Keine Versicherungen gefunden.
         </div>
     @endif
-
     <div class="mt-6">
         {{ $insurances->links() }}
     </div>
