@@ -6,7 +6,7 @@
 }" 
 x-init="navHeight = $el.offsetHeight" 
 x-resize="screenWidth = $width; " 
-class="fixed max-h-24 top-0 w-screen bg-white border-b border-gray-100 shadow-lg  z-40"  
+class="fixed max-h-24 top-0 w-screen bg-white border-b border-gray-100 shadow-lg px-8 z-40"  
 wire:loading.class="cursor-wait"
 >
     <!-- Primary Navigation Menu -->
