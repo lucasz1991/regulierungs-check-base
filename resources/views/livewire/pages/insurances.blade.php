@@ -18,10 +18,10 @@
             @foreach($insurances as $insurance)
                 <div class="bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition-shadow duration-300 p-4 flex flex-col justify-between h-full">
                         <div class="grid grid-cols-12 gap-4 mb-4">
-                            <div class="col-span-3 aspect-square w-full rounded-full flex items-center justify-center text-white text-base font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
+                            <div class="col-span-2 aspect-square w-12 rounded-full flex items-center justify-center text-white text-base font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
                                 {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
                             </div>
-                            <div class="col-span-9">
+                            <div class="col-span-10">
                                 <h2 class="text-xl break-words font-semibold mb-2">
                                     {{ $insurance->name }}
                                 </h2>
