@@ -19,8 +19,10 @@
                 @foreach($insurances as $insurance)
                     <div class="bg-white rounded-lg border border-gray-200 shadow  transition-shadow duration-300 p-4 flex flex-col justify-between h-full @if($insurance->claim_ratings_count <= 0) disabled opacity-30 @else hover:shadow-lg @endif">
                         <div class="grid grid-cols-12 gap-4 mb-4">
-                            <div class="col-span-2 aspect-square w-12 rounded-full flex items-center justify-center text-white text-base font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
-                                {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
+                            <div class="col-span-2">
+                                <div class="col-span-2 aspect-square w-12 rounded-full flex items-center justify-center text-white text-base font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
+                                    {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
+                                </div>
                             </div>
                             <div class="col-span-10">
                                 <h2 class="text-xl break-words font-semibold mb-2">
