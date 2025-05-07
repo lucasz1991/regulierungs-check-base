@@ -1,44 +1,58 @@
 <div class="container mx-auto p-4">
-    <div class="mb-4 flex gap-2">
+    <div class="mb-6 flex gap-2">
         <input wire:model.live="search"
                type="text"
                placeholder="Versicherung suchen..."
-               class="w-full border border-gray-300 rounded px-4 py-2">
+               class="w-full border border-gray-300 rounded px-4 py-2 shadow-sm">
+        
         <select wire:model.live="type"
-                class="border border-gray-300 rounded px-4 py-2">
+                class="border border-gray-300 rounded px-4 py-2 shadow-sm">
             <option value="">Alle Typen</option>
             @foreach($insuranceTypes as $type)
                 <option value="{{ $type->id }}">{{ $type->name }}</option>
             @endforeach
         </select>
     </div>
-    <table class="table-auto w-full border-collapse border border-gray-200 shadow-sm">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="border border-gray-200 px-4 py-2 text-left">Name</th>
-                <th class="border border-gray-200 px-4 py-2 text-left">Score</th>
-                <th class="border border-gray-200 px-4 py-2 text-left">Anzahl Bewertungen</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($insurances as $insurance)
-                <tr>
-                    <td class="border border-gray-200 px-4 py-2">{{ $insurance->name }}</td>
-                    <td class="border border-gray-200 px-4 py-2">
-                        {{ number_format($insurance->ratings_avg_score() ?? 0, 1) }} ⭐
-                    </td>
-                    <td class="border border-gray-200 px-4 py-2">
-                        {{ $insurance->ratings_count() ?? 0 }}
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="text-center py-4">Keine Versicherungen gefunden.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-    <div class="mt-4">
+
+    @if($insurances->count())
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($insurances as $insurance)
+                <div class="bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition-shadow duration-300 p-4">
+                    <h2 class="text-xl font-semibold mb-2 ">
+                        <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-base font-bold float-start mr-2" style="background-color: {{ $insurance->color ?? '#ccc' }};">
+                            {{ strtoupper(substr( $insurance->initials, 0 ,3)) }}
+                        </div>
+                        {{ $insurance->name }}
+                    </h2>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <span class="font-medium">Score:</span>
+                            <span class="text-yellow-500">
+                                {{ number_format($insurance->claim_ratings_avg_rating_score ?? 0, 1) }} ⭐
+                            </span>
+                        </div>
+                        <div>
+                            <span class="font-medium">Bewertungen:</span>
+                            <span class="text-gray-700">
+                                {{ $insurance->claim_ratings_count ?? 0 }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <a href="#" class="inline-block text-sm text-blue-500 hover:text-blue-700">
+                        Details ansehen &rarr;
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center py-10 text-gray-500">
+            Keine Versicherungen gefunden.
+        </div>
+    @endif
+
+    <div class="mt-6">
         {{ $insurances->links() }}
     </div>
 </div>

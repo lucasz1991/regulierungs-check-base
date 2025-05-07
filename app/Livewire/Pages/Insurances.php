@@ -43,7 +43,7 @@ class Insurances extends Component
                     $query->where('insurance_types.id', (int) $this->type);
                 });
             })
-            ->paginate(10);
+            ->paginate(9);
     
         $insuranceTypes = InsuranceType::all();
     
