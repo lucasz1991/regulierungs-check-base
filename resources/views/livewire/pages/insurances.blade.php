@@ -37,10 +37,12 @@
                                 @endif
                             </div>
                             <div>
-                                <span class="font-medium">Bewertungen:</span>
-                                <span class="text-gray-700">
-                                    {{ $insurance->claim_ratings_count ?? 0 }}
-                                </span>
+                                @if($insurance->claim_ratings_count > 0)
+                                    <span class="font-medium">Bewertungen:</span>
+                                    <span class="text-gray-700">
+                                        {{ $insurance->claim_ratings_count ?? 0 }}
+                                    </span> 
+                                @endif
                             </div>
                         </div>
                     </div>
