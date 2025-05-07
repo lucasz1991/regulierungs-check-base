@@ -38,15 +38,19 @@ class Insurances extends Component
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->when($this->type, function ($query) {
-                $query->where('insurance_type_id', $this->type);
+                $query->whereHas('insuranceTypes', function ($query) {
+                    // Klarer Verweis auf die Tabelle insurance_types
+                    $query->where('insurance_types.id', (int) $this->type);
+                });
             })
             ->paginate(10);
-
-        $insuranceTypes = []    ;
-
+    
+        $insuranceTypes = InsuranceType::all();
+    
         return view('livewire.pages.insurances', [
             'insurances' => $insurances,
             'insuranceTypes' => $insuranceTypes,
         ])->layout('layouts.app');
     }
+    
 }

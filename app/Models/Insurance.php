@@ -31,4 +31,12 @@ class Insurance extends Model
     {
         return $this->hasMany(ClaimRating::class);
     }
+    public function ratings_avg_score()
+    {
+        return $this->hasMany(ClaimRating::class)->avg('rating_score');
+    }
+    public function ratings_count()
+    {
+        return $this->hasMany(ClaimRating::class)->count();
+    }
 }

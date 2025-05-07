@@ -8,7 +8,7 @@
                 class="border border-gray-300 rounded px-4 py-2">
             <option value="">Alle Typen</option>
             @foreach($insuranceTypes as $type)
-                <option value="{{ $type }}">{{ $type }}</option>
+                <option value="{{ $type->id }}">{{ $type->name }}</option>
             @endforeach
         </select>
     </div>
@@ -25,10 +25,10 @@
                 <tr>
                     <td class="border border-gray-200 px-4 py-2">{{ $insurance->name }}</td>
                     <td class="border border-gray-200 px-4 py-2">
-                        {{ number_format($insurance->ratings_avg_score ?? 0, 1) }} ⭐
+                        {{ number_format($insurance->ratings_avg_score() ?? 0, 1) }} ⭐
                     </td>
                     <td class="border border-gray-200 px-4 py-2">
-                        {{ $insurance->ratings_count }}
+                        {{ $insurance->ratings_count() ?? 0 }}
                     </td>
                 </tr>
             @empty
