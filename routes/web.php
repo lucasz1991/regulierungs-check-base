@@ -30,6 +30,9 @@ use App\Livewire\Pages\Reviews;
 use App\Livewire\Pages\Ranking;
 use App\Livewire\Pages\Premium;
 
+use App\Livewire\Insurance\ShowInsurance;  
+
+
 
     // Routen für alle
     Route::get('/', Welcome::class)->name('home');
@@ -46,6 +49,8 @@ use App\Livewire\Pages\Premium;
     Route::get('/reviews', Reviews::class)->name('reviews');
     Route::get('/ranking', Ranking::class)->name('ranking');
     Route::get('/premium', Premium::class)->name('premium');
+    Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');;
+
 
 
 

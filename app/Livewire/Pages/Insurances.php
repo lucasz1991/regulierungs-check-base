@@ -13,6 +13,8 @@ class Insurances extends Component
 
     public $search = '';
     public $type = '';
+    public $perPage = 3;
+    public $pages = 1;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -29,6 +31,11 @@ class Insurances extends Component
         $this->resetPage();
     }
 
+    public function loadMore()
+    {
+        $this->pages++;
+    }
+
     public function render()
     {
         $insurances = Insurance::query()
@@ -43,7 +50,7 @@ class Insurances extends Component
                     $query->where('insurance_types.id', (int) $this->type);
                 });
             })
-            ->paginate(9);
+            ->paginate($this->perPage*$this->pages);
     
         $insuranceTypes = InsuranceType::all();
     
