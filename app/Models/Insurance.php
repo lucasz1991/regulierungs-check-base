@@ -26,4 +26,9 @@ class Insurance extends Model
                     ->withPivot('order_column')
                     ->orderBy('insurance_insurance_type.order_column');
     }
+
+    public function claimRatings()
+    {
+        return $this->hasMany(ClaimRating::class);
+    }
 }

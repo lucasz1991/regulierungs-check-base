@@ -14,6 +14,7 @@ class ClaimRating extends Model
     // - pending: The claim rating is awaiting review.
     // - approved: The claim rating has been approved.
     // - rejected: The claim rating has been rejected.
+    
     protected $fillable = [
         'user_id',
         'insurance_subtype_id',
