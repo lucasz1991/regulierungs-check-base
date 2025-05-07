@@ -16,27 +16,31 @@
     @if($insurances->count())
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($insurances as $insurance)
-                <div class="bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition-shadow duration-300 p-4">
-                    <h2 class="text-xl font-semibold mb-2 ">
-                        <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-base font-bold float-start mr-2" style="background-color: {{ $insurance->color ?? '#ccc' }};">
-                            {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
+                <div class="bg-white rounded-lg border border-gray-200 shadow hover:shadow-lg transition-shadow duration-300 p-4 flex flex-col justify-between h-full">
+                        <div class="grid grid-cols-12 gap-4 mb-4">
+                            <div class="col-span-3 aspect-square w-full rounded-full flex items-center justify-center text-white text-base font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
+                                {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
+                            </div>
+                            <div class="col-span-9">
+                                <h2 class="text-xl break-words font-semibold mb-2">
+                                    {{ $insurance->name }}
+                                </h2>
+                            </div>
                         </div>
-                        {{ $insurance->name }}
-                    </h2>
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="font-medium">Score:</span>
-                            <span class="text-yellow-500">
-                                {{ number_format($insurance->claim_ratings_avg_rating_score ?? 0, 1) }} ⭐
-                            </span>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-medium">Score:</span>
+                                <span class="text-yellow-500">
+                                    {{ number_format($insurance->claim_ratings_avg_rating_score ?? 0, 1) }} ⭐
+                                </span>
+                            </div>
+                            <div>
+                                <span class="font-medium">Bewertungen:</span>
+                                <span class="text-gray-700">
+                                    {{ $insurance->claim_ratings_count ?? 0 }}
+                                </span>
+                            </div>
                         </div>
-                        <div>
-                            <span class="font-medium">Bewertungen:</span>
-                            <span class="text-gray-700">
-                                {{ $insurance->claim_ratings_count ?? 0 }}
-                            </span>
-                        </div>
-                    </div>
                 </div>
             @endforeach
         </div>
