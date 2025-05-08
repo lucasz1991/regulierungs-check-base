@@ -77,7 +77,7 @@
                             },
                         });
                         this.swiper.slideNext();
-                    }
+                    },
                     stopSwiper() {
                         this.swiper.autoplay.stop();
                     }
