@@ -33,7 +33,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     @if($insurance->claim_ratings_count > 0)
-                                     <x-insurance.insurance-rating-stars :score="$insurance->claim_ratings_avg_rating_score" />
+                                        <x-insurance.insurance-rating-stars :score="$insurance->claim_ratings_avg_rating_score" />
                                     @else
                                         <span class="text-gray-500">Keine Bewertungen</span>
                                     @endif
