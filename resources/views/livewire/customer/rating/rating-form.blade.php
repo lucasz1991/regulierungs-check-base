@@ -24,6 +24,14 @@
     <div x-show="step == 0"  x-cloak  x-collapse.duration.1000ms>
         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
         <h2 class="text-lg mb-4">Versicherungskategorie auswählen</h2>
+        <style>
+            .swiper{
+                padding: 0px 0px 40px 0px;
+            }
+            .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets {
+                
+            }
+        </style>
         <div x-data="{
                     insuranceTypeId: null
                 }">
@@ -33,10 +41,20 @@
                     initSwiper() {
                         this.swiper = new Swiper(this.$refs.swiper, {
                             effect: 'coverflow',
+                            freeMode: {
+                                enabled: true,
+                                sticky: true,
+                            },
+                            autoplay: {
+                                delay: 1500,
+                            },
+                            disableOnInteraction: true,
+                            pauseOnMouseEnter: true,
+                            speed: 800,
+                            loop: true,
                             grabCursor: true,
                             centeredSlides: true,
                             slidesPerView: '2',
-                            initialSlide: 1,
                             breakpoints: {
                                 640: {
                                     slidesPerView: 2,
@@ -56,23 +74,19 @@
                             },
                             pagination: {
                                 el: '.swiper-pagination',
-                                dynamicBullets: true,
+                                clickable: true,
                             },
                         });
+                        this.swiper.slideNext();
                     }
                 }"
                 x-init="initSwiper() "
-                x-effect="initSwiper()"
+                    x-on:click="this.swiper.autoplay.stop()"
                 class="max-w-full relative w-full"
                 wire:ignore
             >
                 {{-- Navigation links/rechts außerhalb --}}
-                <div class="hidden md:block absolute top-1/2 -left-12 transform -translate-y-1/2 z-10 mt-3">
-                    <div class="swiper-button-prev !static" x-ref="prev"></div>
-                </div>
-                <div class="hidden md:block absolute top-1/2 -right-12 transform -translate-y-1/2 z-10 mt-3">
-                    <div class="swiper-button-next !static" x-ref="next"></div>
-                </div>
+                
                 <div class="swiper w-full" x-ref="swiper" >
                     <div class="swiper-wrapper" >
                         @foreach ($types as $type)
@@ -89,9 +103,10 @@
                             </div>
                         @endforeach
                     </div>
-                    <div class="mt-10">
-                        <div class="swiper-pagination"></div>
-                    </div>
+                      <!-- If we need pagination -->
+                    <div class="swiper-pagination"></div>
+
+
                 </div>
             </div>
             @error('insuranceTypeId')

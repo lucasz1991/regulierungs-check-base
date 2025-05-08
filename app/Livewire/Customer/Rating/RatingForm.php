@@ -26,6 +26,10 @@ class RatingForm extends Component
     public $insuranceId = null;
 
     public $is_closed = null;
+    public $regulationType = '';         // z. B. 'voll', 'teil', 'abgelehnt'
+    public $regulationDetail = null;     // z. B. 'innerhalb von 1 Woche', 'nur teilweise anerkannt'
+    public $regulationComment = null;    // Freitext dazu
+
     public $started_at = null;
     public $setting_available_started_at = null;
     public $ended_at = null;
@@ -98,10 +102,27 @@ class RatingForm extends Component
             ],
             (object)[
                 'id' => 4,
-                'title' => 'is_closed',
-                'question_text' => 'Wurde der Fall bereits abgeschlossen?',
-                'type' => 'boolean',
+                'title' => 'regulationType',
+                'question_text' => 'Wie wurde der Schaden reguliert?',
+                'type' => 'select',
                 'is_required' => true,
+                'meta' => null,
+                'help_text' => null,
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 4,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+            (object)[
+                'id' => 4,
+                'title' => 'regulationDetail',
+                'question_text' => 'Bitte geben Sie Details zur Regulierung an.',
+                'type' => 'textarea',
+                'is_required' => false,
                 'meta' => null,
                 'help_text' => null,
                 'default_value' => null,
