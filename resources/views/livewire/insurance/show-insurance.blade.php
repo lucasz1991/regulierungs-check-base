@@ -1,5 +1,5 @@
 <div>
-    <x-page-header :title="$insurance->name" :icon="$insurance->icon" :header_image="$insurance->header_image" />
+    
     <div class="container mx-auto px-4 pt-12 py-6">
         <div class="">
             <div class="flex items-center mb-4">
