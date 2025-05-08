@@ -46,11 +46,11 @@
                                 sticky: true,
                             },
                             autoplay: {
-                                delay: 1500,
+                                delay: 1800,
                             },
                             disableOnInteraction: true,
                             pauseOnMouseEnter: true,
-                            speed: 800,
+                            speed: 1000,
                             loop: true,
                             grabCursor: true,
                             centeredSlides: true,
