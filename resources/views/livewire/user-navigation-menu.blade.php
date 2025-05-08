@@ -11,27 +11,20 @@ wire:loading.class="cursor-wait"
 >
     <!-- Primary Navigation Menu -->
     <div class="container mx-auto flex flex-wrap justify-between items-center">
-
-
-
-
-            
-            <div class="shrink-0 flex items-center h-full py-2" >
+            <div class="max-md:order-1">
+                <div>
+                    search
+                </div>
+            </div>
+            <div class="shrink-0 flex items-center h-full py-2 max-md:order-2" >
                 <a href="/" wire:navigate   class="h-full flex items-center max-sm:max-w-[120px]">
                     <x-application-mark />
                 </a>
             </div>
-
-
-           
-
-            <div class="flex items-center space-x-4  md:order-2" >
-                
+            <div class="flex items-center space-x-4 max-md:order-3 md:order-2" >
                 <!-- Likes and Inbox Buttons -->
                 <div class="flex items-center space-x-6 mr-2">
-                    
                     @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/messages'))
-                   
                     <div class="relative" x-data="{ open: false, modalOpen: false, selectedMessage: null  }">
                         <!-- Button zum Öffnen des Popups -->
                         <button @click="open = !open" class="block">
@@ -64,7 +57,6 @@ wire:loading.class="cursor-wait"
                                 @endif
                             </span>
                         </button>
-
                         <!-- Popup -->
                         <div 
                             x-show="open" 
@@ -85,8 +77,7 @@ wire:loading.class="cursor-wait"
                                     <div class="block h-10 w-10 size-4 flex-none rounded-full">
                                         <x-application-logo class="w-10" />
                                     </div>
-                                    <div class="ml-4 flex-auto">
-                                        
+                                    <div class="ml-4 flex-auto">    
                                         <div class="font-medium">{{ $message->subject }}</div>
                                         <div class="mt-1 text-slate-700">
                                             {{ Str::limit(strip_tags($message->message), 40) }}
@@ -98,7 +89,6 @@ wire:loading.class="cursor-wait"
                                     Keine  Nachrichten
                                 </div>
                                 @endforelse
-    
                                 <!-- "Alle ansehen"-Button -->
                                 <div class="p-4">
                                     <a href="{{ route('messages') }}" 
@@ -108,7 +98,6 @@ wire:loading.class="cursor-wait"
                                 </div>
                             </div>
                         </div>
-
                         <!-- Modal -->
                         <div 
                             x-show="modalOpen" 
@@ -143,7 +132,6 @@ wire:loading.class="cursor-wait"
                                         :style="isClicked ? 'transform:scale(0.7);' : 'transform:scale(1);'"
                                         class="transition-all duration-100 py-2.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">Schließen</button>
                                     </div>
-                                
                             </div>
                         </div>
                     </div>
@@ -231,15 +219,9 @@ wire:loading.class="cursor-wait"
                     </div>
                     <span class="sr-only">Öffnen Hauptmenü</span>
                 </a>
-
-               
             </div>
-
-
             <!-- Navigation Links -->
-             
-
-                 <div x-show="isMobileMenuOpen || screenWidth >= 768" 
+            <div x-show="isMobileMenuOpen || screenWidth >= 768" 
                     x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
@@ -250,7 +232,7 @@ wire:loading.class="cursor-wait"
                           isPadded:  (navHeight > 0 && screenWidth <= 768 ? true : false)              
                     }"
                     :style="isPadded ? 'top: ' + navHeight + 'px; height: calc(100vh - ' + navHeight + 'px);' : ''"
-                    x-cloak   class="md:order-1 max-md:fixed  max-md:inset-0   max-md:block  max-md:bg-black max-md:bg-opacity-50 max-md:z-30" >
+                    x-cloak   class="max-md:order-3 md:order-1 max-md:fixed  max-md:inset-0   max-md:block  max-md:bg-black max-md:bg-opacity-50 max-md:z-30" >
                     
                     <div @click.away="isMobileMenuOpen = false"  
                                     :class="isMobileMenuOpen ? 'max-md:translate-x-0' : 'max-md:translate-x-full'"

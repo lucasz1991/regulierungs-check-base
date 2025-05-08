@@ -49,7 +49,6 @@
                                 delay: 1800,
                             },
                             disableOnInteraction: true,
-                            pauseOnMouseEnter: true,
                             speed: 1000,
                             loop: true,
                             grabCursor: true,
@@ -79,9 +78,12 @@
                         });
                         this.swiper.slideNext();
                     }
+                    stopSwiper() {
+                        this.swiper.autoplay.stop();
+                    }
                 }"
                 x-init="initSwiper() "
-                    x-on:click="this.swiper.autoplay.stop()"
+                    x-on:click="swiper.autoplay.stop()"
                 class="max-w-full relative w-full"
                 wire:ignore
             >
