@@ -20,7 +20,9 @@ class PagebuilderModule extends Component
             $page = trim(Request::path(), '/') ?: 'start';
         }
         $this->page = $page;
+
         $this->position = $position;
+
         // Aktuelles Datum/Zeit für die Prüfung
         $now = Carbon::now();
 

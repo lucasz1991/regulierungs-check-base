@@ -22,16 +22,16 @@ class PageHeader extends Component
      */
     public function __construct()
     {
-        $this->page = trim(Request::path(), '/');
-        if ($this->page === '') {
-            $this->page = 'start';
-        } else {
-            $segments = explode('/', Request::path());
-            $lastSegment = end($segments);
-            if (is_numeric($lastSegment)) {
-                $this->page = $segments[count($segments) - 2] ?? 'start';
+        $segments = explode('/', Request::path());
+            $this->page = end($segments);
+            if ($this->page === '') {
+                $this->page = 'start';
+            } else {
+                $lastSegment = end($segments);
+                if (is_numeric($lastSegment)) {
+                    $this->page = $segments[count($segments) - 2];
+                }
             }
-        }
         $webPage = WebPage::where('slug', $this->page)->first();
         $this->isWebPage = $webPage !== null;
         if ($webPage) {

@@ -1,12 +1,12 @@
 <div class="bg-gray-100">
     <div class="container mx-auto p-4 pt-10 pb-8">
-        <div class="mb-6 flex gap-2">
+        <div class="mb-6 grid  grid-cols-12 gap-2">
             <input wire:model.live="search"
                    type="text"
                    placeholder="Versicherung suchen..."
-                   class="w-full border border-gray-300 rounded px-4 py-2 shadow-sm">
+                   class=" col-span-9 w-full border border-gray-300 rounded px-4 py-2 shadow-sm">
             <select wire:model.live="type"
-                    class="border border-gray-300 rounded px-4 py-2 shadow-sm">
+                    class="col-span-3 border border-gray-300 rounded px-4 py-2 shadow-sm">
                 <option value="">Alle Typen</option>
                 @foreach($insuranceTypes as $type)
                     <option value="{{ $type->id }}">{{ $type->name }}</option>
