@@ -11,7 +11,7 @@ wire:loading.class="cursor-wait"
 >
     <!-- Primary Navigation Menu -->
     <div class="container mx-auto flex flex-wrap justify-between items-center">
-            <div class="max-md:order-1">
+            <div class="max-md:order-1 md:hidden">
                 <div>
                     search
                 </div>
