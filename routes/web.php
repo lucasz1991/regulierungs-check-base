@@ -53,7 +53,6 @@ use App\Livewire\Insurance\ShowInsurance;
 
 
 
-
     Route::get('/forgot-password', RequestPasswordResetLink::class)->name('password.request');
     // Route::post('/forgot-password', [RequestPasswordResetLink::class, 'sendResetLink'])->name('password.email');
     Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
