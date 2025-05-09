@@ -25,8 +25,8 @@ class RatingForm extends Component
     public $insurances = [];
     public $insuranceId = null;
 
-    public $is_closed = null;
-    public $regulationType = '';         // z. B. 'voll', 'teil', 'abgelehnt'
+    public $is_closed = null;               // falls der fall noch nicht abgeschlossen ist
+    public $regulationType = null;         // z. B. 'voll', 'teil', 'abgelehnt'
     public $regulationDetail = null;     // z. B. 'innerhalb von 1 Woche', 'nur teilweise anerkannt'
     public $regulationComment = null;    // Freitext dazu
 
@@ -34,11 +34,14 @@ class RatingForm extends Component
     public $setting_available_started_at = null;
     public $ended_at = null;
     public $setting_available_ended_at = null;
-    public $questions = [];
-    public $variableQuestions = [];
-    public $step = -1;
+    
+    public $showFormModal = false;
+    public $step = 0;
     public $standardSteps = 5;
     public $totalSteps = 0;
+    
+    public $questions = [];
+    public $variableQuestions = [];
     public $answers = [];
 
     public function mount()
@@ -200,10 +203,13 @@ class RatingForm extends Component
         $this->insurance = Insurance::find($this->insuranceId);
     }
 
-    public function updatedIsClosed()
+    public function updatedRegulationType()
     {
-        $this->answers['is_closed'] = $this->is_closed;
-        if ($this->is_closed) {
+        $this->answers['regulationType'] = $this->regulationType;
+        if ($this->regulationType == 'austehend') {
+            $this->is_closed = true;
+            $this->answers['is_closed'] = $this->is_closed;
+
             $this->ended_at = null;
         }
     }
