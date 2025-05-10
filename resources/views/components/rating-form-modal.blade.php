@@ -15,7 +15,7 @@ $maxWidth = [
     x-data="{ show: @entangle($attributes->wire('model')) }"
     x-show="show"
     id="{{ $id }}"
-    class="jetstream-modal fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50 flex items-center justify-center"
+    class="jetstream-modal fixed inset-0 overflow-y-auto px-4 py-6  z-50 flex items-center justify-center"
     style="display: none; z-index: 9999 !important;"
     {{ $attributes }} >
     <div x-show="show" class="fixed inset-0 transform transition-all"  
