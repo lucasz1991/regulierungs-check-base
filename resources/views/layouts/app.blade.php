@@ -27,7 +27,7 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="font-sans antialiased ">
+    <body class=" antialiased ">
         <div id="main" class="snap-y">
             @livewire('user-alert')
             <header class="snap-start pt-14">

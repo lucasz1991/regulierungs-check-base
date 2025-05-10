@@ -30,14 +30,15 @@ class RatingForm extends Component
     public $regulationDetail = null;     // z. B. 'innerhalb von 1 Woche', 'nur teilweise anerkannt'
     public $regulationComment = null;    // Freitext dazu
 
+    public $selectedDates = null;
     public $started_at = null;
     public $setting_available_started_at = null;
     public $ended_at = null;
     public $setting_available_ended_at = null;
-    
+
     public $showFormModal = false;
     public $step = 0;
-    public $standardSteps = 5;
+    public $standardSteps = 6;
     public $totalSteps = 0;
     
     public $questions = [];
@@ -207,26 +208,37 @@ class RatingForm extends Component
     {
         $this->answers['regulationType'] = $this->regulationType;
         if ($this->regulationType == 'austehend') {
+            $this->is_closed = false;
+            $this->resetDates();
+        }else {
             $this->is_closed = true;
-            $this->answers['is_closed'] = $this->is_closed;
-
-            $this->ended_at = null;
         }
+        $this->answers['is_closed'] = $this->is_closed;
+        $this->regulationDetail = null;
+        $this->answers['regulationDetail'] = null;
     }
-    public function updatedStartedAt()
-    {
+
+    public function updatedSelectedDates()
+    {   
+        $dates = explode(' bis ', $this->selectedDates);
+        if (count($dates) >= 2) {
+            $this->started_at = \Carbon\Carbon::parse($dates[0])->format('d.m.Y');
+            $this->ended_at = \Carbon\Carbon::parse($dates[1])->format('d.m.Y');
+        } else {
+            $this->started_at = $this->selectedDates;
+        }
         $this->answers['started_at'] = $this->started_at;
-    }
-    public function updatedEndedAt()
-    {
         $this->answers['ended_at'] = $this->ended_at;
-        
     }
+
 
     public function resetDates()
     {
         $this->started_at = null;
+        $this->answers['started_at'] = null;
         $this->ended_at = null;
+        $this->answers['ended_at'] = null;
+        $this->selectedDates = null;
     }
     public function loadQuestions()
     {
@@ -358,17 +370,20 @@ class RatingForm extends Component
             $rules['insuranceId'] = 'required';
         }
         if ($this->step >= 3) {
-            $rules['is_closed'] = 'required|boolean';
+            $rules['regulationType'] = 'required';
+        }
+        if ($this->step >= 4) {
+            $rules['regulationDetail'] = 'required';
         }
     
-        if ($this->step >= 4) {
+        if ($this->step >= 5) {
             $rules['started_at'] = 'required|date|after_or_equal:setting_available_started_at|before_or_equal:today';
             if ($this->is_closed) {
                 $rules['ended_at'] = 'required|date|after_or_equal:started_at|before_or_equal:today';
             }
         }
     
-        if ($this->step >= 5) {
+        if ($this->step >= 6) {
             foreach ($this->variableQuestions as $q) {
                 if ($q->is_required) {
                     $rules["answers.{$q->title}"] = 'required';
