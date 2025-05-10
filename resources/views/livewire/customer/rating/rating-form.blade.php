@@ -487,7 +487,11 @@
                         
                     >
                         <h2 class="text-lg font-bold mb-12">
-                            Wann hat der Fall begonnen?
+                            @if ($is_closed)
+                                In welchem Zeitraum wurde der Fall reguliert?
+                            @else
+                                Wann hast du den Fall gemeldet?
+                            @endif
                         </h2>
                         <div class="inline-flex mb-5">
                             <button type="button" 
