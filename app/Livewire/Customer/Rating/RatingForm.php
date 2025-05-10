@@ -233,7 +233,7 @@ class RatingForm extends Component
             ->get();
         $this->questions = $this->questions->merge($this->variableQuestions);
         
-        $this->totalSteps = $this->questions->count()-1; 
+        $this->totalSteps = $this->questions->count(); 
     }
 
     public function nextStep()
