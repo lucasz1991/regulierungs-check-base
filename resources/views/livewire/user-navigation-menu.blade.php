@@ -11,8 +11,8 @@
 >
     <!-- Primary Navigation Menu -->
     <div class="container mx-auto flex flex-wrap justify-between items-center">
-            <div class="max-md:order-1 md:hidden">
-                <div class="flex items-center h-full py-2 pr-4 mr-2">
+            <div class="max-md:order-1 md:hidden ">
+                <div class="flex items-center h-full py-2 pr-4 mr-8">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 18a8 8 0 100-16 8 8 0 000 16zm8-2l4 4" />
                     </svg>
