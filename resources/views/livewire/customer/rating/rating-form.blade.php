@@ -3,13 +3,10 @@
      step: @entangle('step'),
      showFormModal: @entangle('showFormModal'),
     }">
-
-
-
     @if (session('message'))
-    <div class="bg-green-100 text-green-800 p-4 rounded mb-6">
-        {{ session('message') }}
-    </div>
+        <div class="bg-green-100 text-green-800 p-4 rounded mb-6">
+            {{ session('message') }}
+        </div>
     @endif
     <div>
         <div class="flex space-x-4 items-center justify-center mb-4 w-full">
@@ -54,9 +51,9 @@
                                     },
                                     disableOnInteraction: true,
                                     speed: 1000,
-                                    loop: true,
                                     centeredSlides: true,
-                                    slidesPerView: '2',
+                                    slidesPerView: '3',
+                                    disableOnMobile: true,
                                     breakpoints: {
                                         640: {
                                             slidesPerView: 2,
@@ -86,8 +83,8 @@
                             }
                         }"
                         x-init="initSwiper() "
-                            x-on:click="stopSwiper()"
-                        class="max-w-full relative w-full"
+                        x-on:click="stopSwiper()"
+                        class=" relative w-full"
                         wire:ignore
                     >
                         {{-- Navigation links/rechts außerhalb --}}
@@ -95,7 +92,7 @@
                         <div class="swiper w-full" x-ref="swiper" >
                             <div class="swiper-wrapper pointer-events-none">
                                 @foreach ($types as $type)
-                                    <div class="swiper-slide h-full !z-10" wire:key="type-{{ $type->id }}"
+                                    <div class="swiper-slide h-full " wire:key="type-{{ $type->id }}"
                                             wire:click="$set('insuranceTypeId', {{ $type->id }})"
                                             @click="insuranceTypeId = {{ $type->id }}">
                                         <div 
@@ -434,7 +431,7 @@
                         </div>
                         <div x-data="{ charCount: 0 }" >
                             <h3 class="text-lg text-left font-semibold mb-2">Zusätzliche Informationen</h3>
-                            <textarea wire:model="$regulationComment"
+                            <textarea wire:model="regulationComment"
                                     
                                     class="focus:shadow-blue-300 min-h-unset text-sm leading-5.6 ease-soft block h-auto w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-300 focus:outline-none" rows="6"
                                     x-on:input="charCount = $event.target.value.length"
