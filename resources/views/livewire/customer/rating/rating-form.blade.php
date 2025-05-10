@@ -534,7 +534,7 @@
                         $currentStep = $standardSteps + $index;
                         $fieldName = "answers." . $q->title;
                     @endphp
-                    <div x-show="step === {{ $currentStep }}" x-collapse.duration.1000ms x-cloak >
+                    <div x-data="expression" x-show="step === {{ $currentStep }}" x-collapse.duration.1000ms x-cloak >
                         <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps  }}</h2>
                         <p class="text-md text-gray-800 mb-12 font-semibold">{{ $q->question_text }}</p>
                         {{-- Eingabefeld je nach Typ --}}
@@ -608,9 +608,7 @@
                             @if ($step > 0)
                             <x-backbutton wire:click="previousStep" />
                             @endif
-                            @if ( $fieldName !== null )
                                 <x-furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
-                            @endif
                         </div>
                     </div>
                 @endforeach
