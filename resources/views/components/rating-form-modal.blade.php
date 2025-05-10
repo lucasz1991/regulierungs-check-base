@@ -15,10 +15,11 @@ $maxWidth = [
     x-data="{ show: @entangle($attributes->wire('model')) }"
     x-show="show"
     id="{{ $id }}"
-    class="jetstream-modal fixed inset-0 overflow-y-auto px-4 py-6  z-50 flex items-center justify-center"
+    class="jetstream-modal fixed inset-0 overflow-y-auto px-4 py-6  z-50 "
     style="display: none; z-index: 9999 !important;"
     {{ $attributes }} >
     <div x-show="show" class="fixed inset-0 transform transition-all"  
+    x-trap.inert.noscroll="show"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100"
@@ -27,7 +28,7 @@ $maxWidth = [
             x-transition:leave-end="opacity-0">
         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
     </div>
-    <div x-show="show" class="mb-6 bg-white rounded-lg  shadow-xl transform transition-all w-full {{ $maxWidth }} mx-auto relative select-none"
+    <div x-show="show" class="my-12 top-12 bg-white rounded-lg  shadow-xl transform transition-all container {{ $maxWidth }} mx-auto relative select-none"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
