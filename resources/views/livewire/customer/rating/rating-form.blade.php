@@ -608,8 +608,9 @@
                             @if ($step > 0)
                             <x-backbutton wire:click="previousStep" />
                             @endif
-                            <x-furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
-
+                            @if ( $fieldName !== null )
+                                <x-furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
+                            @endif
                         </div>
                     </div>
                 @endforeach
