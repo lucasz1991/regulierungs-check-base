@@ -101,7 +101,7 @@
                                                 ? 'bg-blue-100 border-blue-500' 
                                                 : 'hover:bg-gray-100 bg-slate-100'"
                                             class="border rounded p-2 text-center cursor-pointer w-[95%] h-24 flex justify-center items-center shadow-md transition duration-300 ease-in-out pointer-events-auto">
-                                            <h3 class="font-bold max-w-full overflow-hidden text-xs md:text-base h-auto break-words">{{ $type->name }}</h3>
+                                            <h3 class="font-semibold max-w-full overflow-hidden text-xs md:text-base h-auto break-words">{{ $type->name }}</h3>
                                         </div>
                                     </div>
                                 @endforeach
