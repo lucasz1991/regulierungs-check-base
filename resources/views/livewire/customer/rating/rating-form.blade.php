@@ -51,8 +51,9 @@
                                     },
                                     disableOnInteraction: true,
                                     speed: 1000,
+                                    loop: true,
                                     centeredSlides: true,
-                                    slidesPerView: '3',
+                                    slidesPerView: '2',
                                     disableOnMobile: true,
                                     breakpoints: {
                                         640: {
