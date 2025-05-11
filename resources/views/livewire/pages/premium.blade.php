@@ -33,30 +33,30 @@
             </div>
 
             <div class="flex flex-wrap justify-evenly -m-4">
-            @foreach($modelle as $index => $modell)
-    <div class="p-4 xl:w-1/4 md:w-1/2 w-full">
-        <div class="h-full p-6 rounded-lg border-2 {{ $index === 1 ? 'border-indigo-500' : 'border-gray-300' }} flex flex-col relative overflow-hidden">
-            @if($index === 1)
-                <span class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">BELIEBT</span>
-            @endif
-            <h2 class="text-sm tracking-widest title-font mb-1 font-medium">{{ strtoupper($modell['name']) }}</h2>
-            <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">{{ $modell['preis'] }}/Monat</h1>
-            @foreach($modell['features'] as $feature)
-                <p class="flex items-center text-gray-600 mb-2">
-                    <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    {{ $feature }}
-                </p>
-            @endforeach
-            <button type="button" class="flex items-center mt-auto text-white {{ $index === 1 ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-gray-400 hover:bg-gray-500' }} border-0 py-2 px-4 w-full focus:outline-none rounded">
-                Modell anzeigen
-            </button>
-            <p class="text-xs text-gray-500 mt-3">Modell „{{ $modell['name'] }}“ basiert auf echten Nutzererfahrungen.</p>
-        </div>
-    </div>
-@endforeach
-
+                @foreach($modelle as $index => $modell)
+                    <div class="p-4 xl:w-1/4 md:w-1/2 w-full">
+                        <div class="h-full p-6 rounded-lg border-2 {{ $index === 1 ? 'border-indigo-500' : 'border-gray-300' }} flex flex-col relative overflow-hidden">
+                            @if($index === 1)
+                                <span class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">BELIEBT</span>
+                            @endif
+                            <h2 class="text-sm tracking-widest title-font mb-1 font-medium">{{ strtoupper($modell['name']) }}</h2>
+                            <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">{{ $modell['preis'] }}/Monat</h1>
+                            @foreach($modell['features'] as $feature)
+                                <p class="flex items-center text-gray-600 mb-2">
+                                    <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    {{ $feature }}
+                                </p>
+                            @endforeach
+                            <button type="button" class="flex items-center mt-auto text-white {{ $index === 1 ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-gray-400 hover:bg-gray-500' }} border-0 py-2 px-4 w-full focus:outline-none rounded">
+                                Modell anzeigen
+                            </button>
+                            <p class="text-xs text-gray-500 mt-3">Modell „{{ $modell['name'] }}“ basiert auf echten Nutzererfahrungen.</p>
+                        </div>
+                    </div>
+                @endforeach
+                
             </div>
         </div>
     </section>
