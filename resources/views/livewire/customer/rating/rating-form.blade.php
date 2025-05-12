@@ -10,7 +10,7 @@
 
     <div x-cloak x-show="modalIsOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false" class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
         <!-- Modal Dialog -->
-        <div x-show="modalIsOpen" x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative  mx-auto rounded-lg my-12 shadow-xl transform transition-all container max-w-4xl border border-outline bg-white  w-full  px-6 py-4" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+        <div x-show="modalIsOpen" x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative  mx-auto rounded-lg my-12 shadow-xl transform transition-all container max-w-4xl border border-outline bg-gray-50  w-full  px-6 py-4" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <div class=" ">
 
 
@@ -118,9 +118,28 @@
                 </div>
                 {{-- Step 1: Versicherungs SubType --}}
                 <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
+                    <style>
+                        .choices__list.choices__list--dropdown .choices__list{
+                            margin-top:25px;
+                            padding: 10px 15px;
+                            background-color:#fff;
+                            border: 1px solid #cfcfcf !important;
+                            box-shadow: inset 0 2px 2px 0 rgba(0,0,0,.14), inset 0 3px 1px -2px rgba(0,0,0,.2), inset 0 1px 5px 0 rgba(0,0,0,.12);
+                            border-radius: .5em;
+                            overflow:hidden ;
+                            overflow-y: auto;
+                        }
+                        .choices[data-type*=select-one] .choices__input {
+                            border:1px solid #ddd;
+                            border-bottom:1px solid #ddd!important;
+                            background-color:#fff;
+                            box-shadow: inset 0 2px 2px 0 rgba(0,0,0,.14), inset 0 3px 1px -2px rgba(0,0,0,.2), inset 0 1px 5px 0 rgba(0,0,0,.12);
+
+                        }
+                    </style>
                     <div x-data="{ insuranceSubTypeId: @entangle('insuranceSubTypeId') }" >
                         <h2 class="text-lg mb-12">Versicherungsart auswählen</h2>
-                        <div class="max-w-md mx-auto">
+                        <div class="max-w-md mx-auto" :class="{ 'selected': insuranceSubTypeId != null }">
                             <select wire:model.live="insuranceSubTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 
                                 x-init="
                                         let choices = new Choices($el, {
@@ -150,11 +169,11 @@
                                             }
                                         });
                                     "
-                                    
+                                    wire:ignore
                                 >
                                 <option value="">Bitte auswählen</option>
                                 @foreach ($insuranceSubTypes as $insuranceSubType)
-                                    <option value="{{ $insuranceSubType->id }}">{{ $insuranceSubType->name }}</option>
+                                    <option value="{{ $insuranceSubType->id }}" :class="{ 'selected': insuranceSubTypeId != null }">{{ $insuranceSubType->name }}</option>
                                 @endforeach
                             </select>
                             <div id="spacerInsuranceSubTypeId" class="transform transition-all" ></div>
@@ -174,7 +193,7 @@
                 {{-- Step 2: Konkrete Versicherung auswählen --}}
                 <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak  x-collapse.duration.1000ms >
                     <h2 class="text-lg font-bold mb-12">Welche Versicherungsgesellschaft?</h2>
-                    <div class="max-w-md mx-auto " >
+                    <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
                         <select wire:model.live="insuranceId" 
                                 class="border rounded px-4 py-2"
                                 x-init="
@@ -205,10 +224,11 @@
                                                 choices.setChoiceByValue(insuranceId);
                                             }
                                         });
-                                    ">
+                                    "
+                                    wire:ignore>
                             <option value="">Bitte auswählen</option>
                             @foreach ($insurances ?? [] as $insurance)
-                                <option value="{{ $insurance->id }}">{{ $insurance->name }}</option>
+                                <option value="{{ $insurance->id }}" :class="{ 'selected': insuranceSubTypeId != null }">{{ Str::limit($insurance->name, 25) }}</option>
                             @endforeach
                         </select>
                         <div id="spacerInsuranceId" class="transform transition-all" ></div>

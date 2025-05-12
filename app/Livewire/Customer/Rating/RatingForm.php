@@ -172,10 +172,16 @@ class RatingForm extends Component
         if (is_array($this->insuranceSubTypeId)) {
             $this->insuranceSubTypeId = $this->insuranceSubTypeId['value'];
         }
-        $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
-        $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
-        $this->insurances = $this->insuranceSubType->insurances()->get();
-        $this->loadQuestions();
+        if ($this->insuranceSubTypeId == null) {
+            $this->insuranceId = null;
+            $this->insurances = [];
+        }else {
+            
+            $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
+            $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
+            $this->insurances = $this->insuranceSubType?->insurances()->get() ?? [];
+            $this->loadQuestions();
+        }
     }
 
     public function updatedInsuranceId()
@@ -225,7 +231,6 @@ class RatingForm extends Component
     }
     public function loadQuestions()
     {
-
         // Variablen Ratingfragen hinzufügen
         $this->variableQuestions = $this->insuranceSubType
             ->ratingQuestions()
