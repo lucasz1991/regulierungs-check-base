@@ -44,7 +44,6 @@ class MetaPageHeader extends Component
             $this->ogImage = $webPage->og_image;
             $this->customCss = $webPage->custom_css ?? '';
             $this->customJs = $webPage->custom_js ?? '';
-            $this->customMeta = $webPage->custom_meta ?? '';
         }
     }
 
