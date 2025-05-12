@@ -32,7 +32,7 @@
                 <div class="swiper" x-ref="topSwiper">
                     <div class="swiper-wrapper">
                         @foreach ($top5 as $insurance)
-                            <div class="swiper-slide bg-gray-100 p-4 rounded shadow h-full">
+                            <div class="swiper-slide bg-white p-4 rounded shadow h-full">
                                 <div class="grid grid-cols-12 gap-4 mb-4">
                                     <div class="col-span-2 pr-4">
                                         <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
@@ -87,7 +87,7 @@
                 <div class="swiper" x-ref="flopSwiper">
                     <div class="swiper-wrapper">
                         @foreach ($flop5 as $insurance)
-                            <div class="swiper-slide bg-gray-100 p-4 rounded shadow h-full">
+                            <div class="swiper-slide bg-white p-4 rounded shadow h-full">
                                 <div class="grid grid-cols-12 gap-4 mb-4">
                                     <div class="col-span-2 pr-4">
                                         <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
@@ -115,7 +115,7 @@
             <h2 class="text-2xl font-bold mb-4 text-gray-900">Gesamtranking</h2>
             <div class="flex flex-col">
                 @foreach ($allInsurances as $insurance)
-                    <div class="p-4 border-b flex items-center justify-between">
+                    <div class="p-4  flex items-center justify-between">
                         <div>
                                 <div class="grid grid-cols-12 gap-4 mb-4">
                                     <div class="col-span-2 pr-4">
