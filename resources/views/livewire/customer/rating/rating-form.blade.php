@@ -124,7 +124,7 @@
             </div>
             {{-- Step 1: Versicherungs SubType --}}
             <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
-                <div x-data="{ insuranceSubTypeId: @entangle('insuranceSubTypeId') }" wire:ignore>
+                <div x-data="{ insuranceSubTypeId: @entangle('insuranceSubTypeId') }" >
                     <h2 class="text-lg mb-12">Versicherungsart auswählen</h2>
                     <div class="max-w-md mx-auto">
                         <select wire:model="insuranceSubTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 
@@ -147,6 +147,7 @@
                                         }
                                     });
                                 "
+                                
                             >
                             <option value="">Bitte auswählen</option>
                             @foreach ($insuranceSubTypes as $insuranceSubType)
@@ -168,7 +169,7 @@
             {{-- Step 2: Konkrete Versicherung auswählen --}}
             <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak  x-collapse.duration.1000ms >
                 <h2 class="text-lg font-bold mb-12">Welche Versicherungsgesellschaft?</h2>
-                <div class="max-w-md mx-auto "  wire:ignore>
+                <div class="max-w-md mx-auto " >
                     <select wire:model="insuranceId" class="border rounded px-4 py-2"
                             x-init="
                                     let choices = new Choices($el, {
@@ -190,6 +191,7 @@
                                         }
                                     });
                                 "
+                                
                             >
                         <option value="">Bitte auswählen</option>
                         @foreach ($insurances ?? [] as $insurance)
