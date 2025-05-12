@@ -12,8 +12,9 @@
                         slidesPerView: 1,
                         spaceBetween: 20,
                         autoplay: {
-                            delay: 3000,
+                            delay: 1300,
                         },
+                        speed: 2500,
                         loop: true,
                         pagination: {
                             el: '.swiper-pagination-top',
@@ -67,8 +68,9 @@
                         slidesPerView: 1,
                         spaceBetween: 20,
                         autoplay: {
-                            delay: 2500,
+                            delay: 1500,
                         },
+                        speed: 2500,
                         loop: true,
                         pagination: {
                             el: '.swiper-pagination-flop',
