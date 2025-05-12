@@ -1,4 +1,4 @@
-<div  class="w-full relative bg-cover bg-center bg-[#f8f2e8f2] py-20"  wire:loading.class="cursor-wait">
+<div  class="w-full relative bg-cover bg-center py-20"  wire:loading.class="cursor-wait">
     @section('title')
         {{ __('Nachrichten') }}
     @endsection

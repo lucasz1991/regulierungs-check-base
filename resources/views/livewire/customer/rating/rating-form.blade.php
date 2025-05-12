@@ -10,12 +10,12 @@
     @endif
     <div>
         <div class="flex space-x-4 items-center justify-center mb-4 w-full">
-            <a href="#" wire:click="$set('showFormModal', true)" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
+            <x-buttons.button-basic wire:click="$set('showFormModal', true)" :mode="'primary'">
                 Jetzt bewerten
-            </a>
-            <a href="/insurances"  class="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition">
-                Vergleichen 
-            </a>
+            </x-buttons.button-basic>
+            <x-buttons.button-basic href="/insurances" :mode="'secondary'">
+                Vergleichen
+            </x-buttons.button-basic>
         </div>
     </div>
     <x-rating-form-modal wire:model.live.debounce.500ms="showFormModal">
@@ -117,7 +117,7 @@
                     @enderror
                     <div x-show="insuranceTypeId != null"  x-cloak  x-collapse.duration.1000ms>
                         <div class="flex justify-center mt-12">
-                            <x-furtherbutton wire:click="nextStep" />
+                            <x-buttons.furtherbutton wire:click="nextStep" />
                         </div>
                     </div>
                 </div>
@@ -159,9 +159,9 @@
                     @enderror
                 </div>
                 <div class="flex justify-center space-x-4 mt-12">
-                    <x-backbutton wire:click="previousStep" />
+                    <x-buttons.backbutton wire:click="previousStep" />
                     @if ($insuranceSubTypeId)
-                        <x-furtherbutton wire:click="nextStep" />
+                        <x-buttons.furtherbutton wire:click="nextStep" />
                     @endif
                 </div>
             </div>
@@ -201,9 +201,9 @@
                     <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                 @enderror
                 <div class="flex justify-center space-x-4 mt-12">
-                    <x-backbutton wire:click="previousStep" />
+                    <x-buttons.backbutton wire:click="previousStep" />
                     @if ($insuranceId)
-                    <x-furtherbutton wire:click="nextStep" />
+                    <x-buttons.furtherbutton wire:click="nextStep" />
 
                     @endif
                 </div>
@@ -272,9 +272,9 @@
                     <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                 @enderror
                 <div class="flex justify-center space-x-4 mt-12">
-                    <x-backbutton wire:click="previousStep" />
+                    <x-buttons.backbutton wire:click="previousStep" />
                     @if (!is_null($regulationType))
-                        <x-furtherbutton wire:click="nextStep" />
+                        <x-buttons.furtherbutton wire:click="nextStep" />
                     @endif
                 </div>
             </div>
@@ -446,9 +446,9 @@
                     <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                 @enderror
                 <div class="flex justify-center space-x-4 mt-12">
-                    <x-backbutton wire:click="previousStep" />
+                    <x-buttons.backbutton wire:click="previousStep" />
                     @if (!is_null($regulationDetail))
-                        <x-furtherbutton wire:click="nextStep" />
+                        <x-buttons.furtherbutton wire:click="nextStep" />
                     @endif
                 </div>
             </div>
@@ -521,9 +521,9 @@
                     @enderror
                 </div>
                 <div class="flex justify-center space-x-4 mt-12">
-                    <x-backbutton wire:click="previousStep" />
+                    <x-buttons.backbutton wire:click="previousStep" />
                     @if ($started_at )
-                        <x-furtherbutton wire:click="nextStep" />
+                        <x-buttons.furtherbutton wire:click="nextStep" />
                     @endif
                 </div>
             </div>
@@ -603,9 +603,9 @@
                         {{-- Navigation --}}
                         <div class="flex justify-center space-x-4 mt-12">
                             @if ($step > 0)
-                            <x-backbutton wire:click="previousStep" />
+                            <x-buttons.backbutton wire:click="previousStep" />
                             @endif
-                                <x-furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
+                                <x-buttons.furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
                         </div>
                     </div>
                 @endforeach

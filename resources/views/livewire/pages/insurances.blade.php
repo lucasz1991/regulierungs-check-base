@@ -57,9 +57,9 @@
             </div>
         @endif
         <div class="mt-6 text-center">
-            <button wire:click="loadMore" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
+            <x-buttons.button-basic wire:click="loadMore" :mode="'primary'" >
                 Mehr laden
-            </button>
+            </x-buttons.button-basic>
         </div>
     </div>
 </div>
