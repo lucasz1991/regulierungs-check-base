@@ -1262,8 +1262,12 @@ svg .zoom-in-out.duration-8{
   margin:0;
   padding-left:0;
   list-style:none;
-  position:relative !important;
   transition: all .2s ease-in-out;
+}
+@media (max-width:640px) {
+  .choices__list {
+    position:relative !important;
+  }
 }
 
 .choices__list--single {
