@@ -9,7 +9,14 @@
       <p class="text-lg md:text-xl text-gray-700 pb-8">
         fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
       </p>
-      <livewire:customer.rating.rating-form />
+      <div>
+        <div class="flex space-x-4 items-center justify-center mb-4 w-full">
+            <livewire:customer.rating.rating-form />
+            <x-buttons.button-basic href="/insurances" :mode="'secondary'">
+                Vergleichen
+            </x-buttons.button-basic>
+        </div>
+    </div>
       <div class="mt-10">
         <p class="text-gray-600 mb-3">Top-Versicherungen im Ranking:</p>
         <div class="flex flex-wrap justify-center gap-4">
