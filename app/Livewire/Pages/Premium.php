@@ -36,7 +36,7 @@ class Premium extends Component
             // Abonnementsdaten speichern
             $userSubscription = UserSubscription::create([
                 'user_id' => $user->id,
-                'subscription_plan_id' => $this->selectedSubscriptionPlan->id,
+                'subscription_plan_id' => $this->selectedSubscriptionPlan['id'],
                 'started_at' => now(),
                 'ends_at' => now()->addMonth(), // Beispiel: 1 Monat gültig
                 'is_active' => true,
@@ -44,6 +44,8 @@ class Premium extends Component
                 'interval' => 'monthly', // Beispiel: Abrechnungsintervall
                 'payment_data' => [], // Beispiel: Zahlungsdaten
             ]);
+            $this->selectedSubscriptionPlan = null;
+            $this->confirmingSubscriptionPlanModal = false;
             session()->flash('success', 'Abonnement erfolgreich abgeschlossen.');
         } else {
             $this->selectedSubscriptionPlan = null;

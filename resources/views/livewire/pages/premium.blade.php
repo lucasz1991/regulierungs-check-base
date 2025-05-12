@@ -6,8 +6,18 @@
     <section class="text-gray-600 body-font overflow-hidden">
         <div class="container px-5 py-24 mx-auto">
             @if (session()->has('success'))
-                <div class="mb-4 text-green-500 text-sm">
-                    {{ session('success') }}
+                <div class="mb-4 text-green-500 text-sm flex items-center justify-center">
+                    <div class="flex items-center p-4 bg-green-50 rounded justify-center space-x-3 w-max">
+                        <div class="mx-auto shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10 mr-4">
+                            <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                        </div>
+                        <div class="text-sm text-green-600 pl-4">
+
+                        {{ session('success') }}
+                        </div>
+                    </div>
                 </div>
             @endif
 
@@ -63,7 +73,7 @@
                     @endforeach
                     <x-confirmation-modal wire:model="selectedSubscriptionPlan">
                         <x-slot name="title">
-                            {{ __('Abonnement-Modell auswählen') }}
+                            {{ __('Abonnement Bestätigen') }}
                         </x-slot>
     
                         <x-slot name="content">
