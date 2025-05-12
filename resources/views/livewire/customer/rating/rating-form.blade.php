@@ -129,11 +129,17 @@
                                             searchEnabled: true,
                                             placeholder: true,
                                             searchChoices: true,
+                                            position: 'bottom',
                                             itemSelectText: '',
                                             searchPlaceholderValue: 'Suchen...',
                                         });
                                         $el.addEventListener('change', (e) => {
                                             insuranceSubTypeId = e.target.value;
+                                        });
+                                        $el.addEventListener('showDropdown', (e) => {
+                                            const dropdownHeight = e.target.nextElementSibling?.offsetHeight || 0;
+                                            console.log(dropdownHeight);
+                                            document.getElementById('spacerInsuranceSubTypeId').style.height = `${dropdownHeight}px`;
                                         });
                                         $nextTick(() => {
                                             if (insuranceSubTypeId > 0) {
@@ -148,6 +154,8 @@
                                     <option value="{{ $insuranceSubType->id }}">{{ $insuranceSubType->name }}</option>
                                 @endforeach
                             </select>
+                            <div id="spacerInsuranceSubTypeId" class="transform transition-all" ></div>
+
                         </div>
                         @error('insuranceSubTypeId')
                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
@@ -175,9 +183,14 @@
                                             position: 'bottom',
                                             itemSelectText: '',
                                             searchPlaceholderValue: 'Suchen...',
+                                            
                                         });
                                         $el.addEventListener('change', (e) => {
                                             insuranceId = e.target.value;
+                                        });
+                                        $el.addEventListener('showDropdown', (e) => {
+                                            const dropdownHeight = e.target.nextElementSibling?.offsetHeight || 0;
+                                            document.getElementById('spacerInsuranceId').style.height = `${dropdownHeight}px`;
                                         });
                                         $nextTick(() => {
                                             if (insuranceId > 0) {
@@ -192,6 +205,7 @@
                                 <option value="{{ $insurance->id }}">{{ $insurance->name }}</option>
                             @endforeach
                         </select>
+                        <div id="spacerInsuranceId" class="transform transition-all" ></div>
                     </div>
                     @error('insuranceId')
                         <p class="text-sm text-red-500 mt-2">{{ $message }}</p>

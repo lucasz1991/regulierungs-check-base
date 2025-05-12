@@ -1261,8 +1261,11 @@ svg .zoom-in-out.duration-8{
 .choices__list {
   margin:0;
   padding-left:0;
-  list-style:none
+  list-style:none;
+  position:relative !important;
+  transition: all .2s ease-in-out;
 }
+
 .choices__list--single {
   display:inline-block;
   width:100%
@@ -1310,7 +1313,6 @@ svg .zoom-in-out.duration-8{
 .choices__list--dropdown {
   visibility:hidden;
   z-index:1;
-  position:absolute;
   width:100%;
   background-color:#fff;
   border:1px solid #ddd;
