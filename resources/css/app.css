@@ -1262,12 +1262,16 @@ svg .zoom-in-out.duration-8{
   margin:0;
   padding-left:0;
   list-style:none;
+}
+.choices__list.choices__list--dropdown{
   transition: all .2s ease-in-out;
   position:absolute;
+  box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)
 }
 @media (max-width:640px) {
-  .choices__list {
-    position:relative !important;
+  .choices__list.choices__list--dropdown {
+    box-shadow: none !important;
+    border: none !important;
   }
 }
 
@@ -1492,8 +1496,8 @@ svg .zoom-in-out.duration-8{
 }
 .is-focused .choices__inner,
 .is-open .choices__inner {
-  box-shadow:0 0 0 2px #17c1e8;
-  border-color:#17c1e8
+  box-shadow:0 0 0 2px var(--secondary-color);
+  border-color:var(--secondary-color);
 }
 .choices-primary {
   background-color:#cb0c9f

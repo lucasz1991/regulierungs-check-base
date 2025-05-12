@@ -137,9 +137,12 @@
                                             insuranceSubTypeId = e.target.value;
                                         });
                                         $el.addEventListener('showDropdown', (e) => {
-                                            const dropdownHeight = e.target.nextElementSibling?.offsetHeight || 0;
+                                            const dropdownHeight = document.querySelector('.choices__list.choices__list--dropdown.is-active')?.offsetHeight || 1;
                                             console.log(dropdownHeight);
                                             document.getElementById('spacerInsuranceSubTypeId').style.height = `${dropdownHeight}px`;
+                                        });
+                                        $el.addEventListener('hideDropdown', (e) => {
+                                            document.getElementById('spacerInsuranceSubTypeId').style.height = '0px';
                                         });
                                         $nextTick(() => {
                                             if (insuranceSubTypeId > 0) {
@@ -172,7 +175,8 @@
                 <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak  x-collapse.duration.1000ms >
                     <h2 class="text-lg font-bold mb-12">Welche Versicherungsgesellschaft?</h2>
                     <div class="max-w-md mx-auto " >
-                        <select wire:model.live="insuranceId" class="border rounded px-4 py-2"
+                        <select wire:model.live="insuranceId" 
+                                class="border rounded px-4 py-2"
                                 x-init="
                                         let choices = new Choices($el, {
                                             removeItemButton: false, // ✅ EINZELAUSWAHL
@@ -189,17 +193,19 @@
                                             insuranceId = e.target.value;
                                         });
                                         $el.addEventListener('showDropdown', (e) => {
-                                            const dropdownHeight = e.target.nextElementSibling?.offsetHeight || 0;
+                                            const dropdownHeight = document.querySelector('.choices__list.choices__list--dropdown.is-active')?.offsetHeight || 1;
+                                            console.log(dropdownHeight);
                                             document.getElementById('spacerInsuranceId').style.height = `${dropdownHeight}px`;
+                                        });
+                                        $el.addEventListener('hideDropdown', (e) => {
+                                            document.getElementById('spacerInsuranceId').style.height = '0px';
                                         });
                                         $nextTick(() => {
                                             if (insuranceId > 0) {
                                                 choices.setChoiceByValue(insuranceId);
                                             }
                                         });
-                                    "
-                                    
-                                >
+                                    ">
                             <option value="">Bitte auswählen</option>
                             @foreach ($insurances ?? [] as $insurance)
                                 <option value="{{ $insurance->id }}">{{ $insurance->name }}</option>
