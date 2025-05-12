@@ -127,7 +127,7 @@
                 <div x-data="{ insuranceSubTypeId: @entangle('insuranceSubTypeId') }" >
                     <h2 class="text-lg mb-12">Versicherungsart auswählen</h2>
                     <div class="max-w-md mx-auto">
-                        <select wire:model="insuranceSubTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 
+                        <select wire:model.live="insuranceSubTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 
                             x-init="
                                     let choices = new Choices($el, {
                                         removeItemButton: false, // ✅ EINZELAUSWAHL
@@ -170,7 +170,7 @@
             <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak  x-collapse.duration.1000ms >
                 <h2 class="text-lg font-bold mb-12">Welche Versicherungsgesellschaft?</h2>
                 <div class="max-w-md mx-auto " >
-                    <select wire:model="insuranceId" class="border rounded px-4 py-2"
+                    <select wire:model.live="insuranceId" class="border rounded px-4 py-2"
                             x-init="
                                     let choices = new Choices($el, {
                                         removeItemButton: false, // ✅ EINZELAUSWAHL
