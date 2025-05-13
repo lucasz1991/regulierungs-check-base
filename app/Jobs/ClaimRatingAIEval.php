@@ -70,23 +70,30 @@ class ClaimRatingAIEval implements ShouldQueue
         }
         $this->claimRating->attachments['eval_details']['days_difference'] = $difference;
        
-        
+
         $questionnaireVersion = $this->claimRating->questionnaireVersion()->first();
         $questionnaireVersionSnapshot = $questionnaireVersion->snapshot;
         $variableQuestionScore = 0;
         $variableQuestionCount = 0;
         foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
-            $score = $this->calculateScore($snapshotQuestion);
-            if($score != -1){
-                $variableQuestionScore += $score * $snapshotQuestion['pivot']['weight'];
+            $calculatedScore = $this->calculateScore($snapshotQuestion);
+            if($calculatedScore != -1){
+                $this->claimRating->attachments['scorings'][$snapshotQuestion['id']] = [
+                    'question_title' => $snapshotQuestion['title'],
+                    'question_weight' => $snapshotQuestion['pivot']['weight'],
+                    'ai_score' => $calculatedScore,
+                ];
+                $variableQuestionScore += $calculatedScore * $snapshotQuestion['pivot']['weight'];
                 $variableQuestionCount++;
             }
         }
         $variableQuestionScore = $variableQuestionScore / $variableQuestionCount;
+
         $this->claimRating->attachments['scorings']['variable_questions'] = $variableQuestionScore;
         $this->claimRating->attachments['scorings']['regulation_speed'] = $variableQuestionScore;
+
         // Kombinieren der Scores mit den entsprechenden Gewichtungen
-        $score = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
+        $calculatedScore = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
 
 
         // Speichern
