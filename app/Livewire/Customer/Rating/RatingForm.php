@@ -125,7 +125,7 @@ class RatingForm extends Component
                 'id' => 5,
                 'title' => 'regulationDetail',
                 'question_text' => 'Bitte geben Sie Details zur Regulierung an.',
-                'type' => 'textarea',
+                'type' => 'radio-textarea',
                 'is_required' => false,
                 'meta' => null,
                 'help_text' => null,
@@ -216,17 +216,13 @@ class RatingForm extends Component
         } else {
             $this->started_at = $this->selectedDates;
         }
-        $this->answers['started_at'] = $this->started_at;
-        $this->answers['ended_at'] = $this->ended_at;
     }
 
 
     public function resetDates()
     {
         $this->started_at = null;
-        $this->answers['started_at'] = null;
         $this->ended_at = null;
-        $this->answers['ended_at'] = null;
         $this->selectedDates = null;
     }
     public function loadQuestions()
@@ -243,7 +239,6 @@ class RatingForm extends Component
 
     public function nextStep()
     {
-        $this->validate($this->rules());
         $this->saveAnswers();
         if(count($this->questions) > 0) {
             if ($this->step < count($this->questions)+1) {
@@ -265,6 +260,10 @@ class RatingForm extends Component
     {
         $this->validate($this->rules());
         foreach ($this->questions as $question) {
+            
+            if (!isset($question->title)) {
+                throw new \Exception("Frage hat keinen Titel: " . json_encode($question));
+            }
             $key = (string) $question->title;
     
             // Sicherstellen, dass jede Frage im Array enthalten ist
@@ -291,6 +290,18 @@ class RatingForm extends Component
                     break;
     
                 case 'date':
+                    if($question->title == 'selectedDates'){
+                        if (!empty($this->started_at)) {
+                            $this->answers['selectedDates'] = [
+                                'started_at' => $this->started_at,
+                                'ended_at' => $this->ended_at ?? null,
+                            ];
+                        } else {
+                            $this->answers['selectedDates'] = null;
+                        }
+                        break;
+    
+                    }
                     // Datum validieren und normalisieren (Y-m-d)
                     try {
                         $parsed = \Carbon\Carbon::parse($value);
@@ -308,7 +319,14 @@ class RatingForm extends Component
                     // Textarea: String oder null
                     $this->answers[$key] = is_string($value) ? trim($value) : null;
                     break;
-                    
+                case 'radio-textarea':
+                    // Textarea: String oder null
+
+                    $this->answers[$key] = [
+                        'selected_value' => isset($this->regulationDetail) ? trim($this->regulationDetail) : null,
+                        'textarea_value' => isset($this->regulationComment) ? trim($this->regulationComment) : null,
+                    ];
+                    break;    
                 case 'text':
                 default:
                     // Standard: String oder null
@@ -322,7 +340,6 @@ class RatingForm extends Component
 
     public function submit()
     {
-        $this->validate($this->rules());
         $this->saveAnswers();
         $ratingquestionnaireversions = RatingQuestionnaireVersion::where('insurance_subtype_id', $this->insuranceSubTypeId)->latest()->first();
     
@@ -334,7 +351,20 @@ class RatingForm extends Component
             'rating_questionnaire_versions_id' => optional($ratingquestionnaireversions)->id,
             'answers' => $this->answers,
             'status' => 'pending',
-            'attachments' => [], // Wenn du hier keine hochgeladenen Dateien hast
+            'attachments' => [
+                'scorings' => [
+                    [
+                        'regulation_speed' => -1,
+                        'customer_service' => -1,
+                        'fairness' => -1,
+                        'transparency' => -1,
+                        'overall_satisfaction' => -1,
+                    ]
+                ],
+                'files' => [
+                     
+                ]
+            ], // Wenn du hier keine hochgeladenen Dateien hast
             'rating_score' => null, // Kannst du später berechnen
             'moderator_comment' => null,
             'is_public' => false,
@@ -362,6 +392,9 @@ class RatingForm extends Component
         }
         if ($this->step >= 4) {
             $rules['regulationDetail'] = 'required';
+            if ($this->regulationDetail == 'Andere Gründe') {
+                $rules['regulationComment'] = 'required';
+            }
         }
     
         if ($this->step >= 5) {
@@ -373,21 +406,20 @@ class RatingForm extends Component
     
         if ($this->step >= 6) {
             foreach ($this->variableQuestions as $q) {
-                if ($q->is_required) {
-                    $rules["answers.{$q->title}"] = 'required';
-                }
+                $rules["answers.{$q->title}"] = '';
+                
                 if ($q->type == 'boolean') {
-                    $rules["answers.{$q->title}"] = 'boolean';
+                    $rules["answers.{$q->title}"] .= 'boolean';
                 } elseif ($q->type == 'number') {
-                    $rules["answers.{$q->title}"] = 'numeric';
+                    $rules["answers.{$q->title}"] .= 'numeric';
                 } elseif ($q->type == 'rating') {
-                    $rules["answers.{$q->title}"] = 'integer';
+                    $rules["answers.{$q->title}"] .= 'integer';
                 } elseif ($q->type == 'date') {
-                    $rules["answers.{$q->title}"] = '';
+                    $rules["answers.{$q->title}"] .= '';
                 } elseif ($q->type == 'select') {
-                    $rules["answers.{$q->title}"] = 'string';
+                    $rules["answers.{$q->title}"] .= 'string';
                 } elseif ($q->type == 'text') {
-                    $rules["answers.{$q->title}"] = 'string|max:255';
+                    $rules["answers.{$q->title}"] .= 'string|max:255';
                 }
                 if ($q->input_constraints) {
                     foreach ($q->input_constraints as $key => $value) {
@@ -398,10 +430,52 @@ class RatingForm extends Component
                         }
                     }
                 }
+                if ($q->is_required) {
+                    $rules["answers.{$q->title}"] .= '|required';
+                }
             }
         }
-        
+
         return $rules;
+    }
+
+    public function messages()
+    {
+        $messages = [
+            'insuranceTypeId.required' => 'Bitte wählen Sie den Versicherungstyp aus.',
+            'insuranceSubTypeId.required' => 'Bitte wählen Sie die Versicherungsart aus.',
+            'insuranceId.required' => 'Bitte wählen Sie die Versicherung aus.',
+            'regulationType.required' => 'Bitte geben Sie an, wie der Schaden reguliert wurde.',
+            'regulationDetail.required' => 'Bitte geben Sie Details zur Regulierung an.',
+            'regulationComment.required' => 'Bitte geben Sie einen Kommentar an, wenn "Andere Gründe" ausgewählt wurde.',
+            'started_at.required' => 'Bitte geben Sie das Startdatum an.',
+            'started_at.date' => 'Das Startdatum muss ein gültiges Datum sein.',
+            'started_at.after_or_equal' => 'Das Startdatum muss nach oder gleich dem verfügbaren Startdatum sein.',
+            'started_at.before_or_equal' => 'Das Startdatum darf nicht in der Zukunft liegen.',
+            'ended_at.required' => 'Bitte geben Sie das Enddatum an.',
+            'ended_at.date' => 'Das Enddatum muss ein gültiges Datum sein.',
+            'ended_at.after_or_equal' => 'Das Enddatum muss nach oder gleich dem Startdatum sein.',
+            'ended_at.before_or_equal' => 'Das Enddatum darf nicht in der Zukunft liegen.',
+        ];
+
+        foreach ($this->variableQuestions as $q) {
+            if ($q->is_required) {
+                $messages["answers.{$q->title}.required"] = "Bitte beantworten Sie die Frage: {$q->question_text}";
+            }
+            if ($q->type == 'boolean') {
+                $messages["answers.{$q->title}.boolean"] = "Die Antwort auf die Frage '{$q->question_text}' muss ein Wahrheitswert sein.";
+            } elseif ($q->type == 'number') {
+                $messages["answers.{$q->title}.numeric"] = "Die Antwort auf die Frage '{$q->question_text}' muss eine Zahl sein.";
+            } elseif ($q->type == 'rating') {
+                $messages["answers.{$q->title}.integer"] = "Das Rating ist bei dieser Frage '{$q->question_text}' Pflicht.";
+                $messages["answers.{$q->title}.required"] = "Das Rating ist bei dieser Frage '{$q->question_text}' Pflicht.";
+            } elseif ($q->type == 'text') {
+                $messages["answers.{$q->title}.string"] = "Die Antwort auf die Frage '{$q->question_text}' muss ein Text sein.";
+                $messages["answers.{$q->title}.max"] = "Die Antwort auf die Frage '{$q->question_text}' darf maximal 255 Zeichen lang sein.";
+            }
+        }
+
+        return $messages;
     }
 
     public function render()
