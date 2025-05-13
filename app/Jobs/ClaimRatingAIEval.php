@@ -81,6 +81,7 @@ class ClaimRatingAIEval implements ShouldQueue
             $calculatedScore = $this->calculateScore($snapshotQuestion);
             if($calculatedScore != -1){
                 $attachments['scorings'][$snapshotQuestion['title']] = [
+                    'question_title' => $snapshotQuestion['title'],
                     'question_text' => $snapshotQuestion['question_text'],
                     'question_weight' => $snapshotQuestion['pivot']['weight'],
                     'ai_score' => $calculatedScore,
