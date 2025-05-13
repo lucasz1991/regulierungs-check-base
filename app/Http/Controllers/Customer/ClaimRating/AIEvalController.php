@@ -68,6 +68,7 @@ class AIEvalController extends Controller
                         ], $query)
                     ]);
                     $botMessage = $response->json()['choices'][0]['message']['content'] ?? '';
+                    Log::info($botMessage);
                     if (!empty($botMessage)) {
                         
                         $this->isLoading = false;
