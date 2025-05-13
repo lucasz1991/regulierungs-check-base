@@ -15,16 +15,7 @@ class AIEvalController extends Controller
 
     public $apiUrl, $apiKey, $aiModel, $modelTitle, $refererUrl, $trainContent;
 
-    public function mount()
-    {
-        $apiUrl = Setting::getValue('ai-scoring-settings', 'api_url');
-        $apiKey = Setting::getValue('ai-scoring-settings', 'api_key');
-        $aiModel = Setting::getValue('ai-scoring-settings', 'ai_model');
-        $modelTitle = Setting::getValue('ai-scoring-settings', 'model_title');
-        $refererUrl = Setting::getValue('ai-scoring-settings', 'referer_url');
-        $trainContent = '';
-        
-    }
+
 
     static function getScoreForTextarea($question, $answer)
     {
@@ -32,6 +23,12 @@ class AIEvalController extends Controller
             "question" => $question,
             "answer" => $answer,
         ]; 
+        $apiUrl = Setting::getValue('ai-scoring-settings', 'api_url');
+        $apiKey = Setting::getValue('ai-scoring-settings', 'api_key');
+        $aiModel = Setting::getValue('ai-scoring-settings', 'ai_model');
+        $modelTitle = Setting::getValue('ai-scoring-settings', 'model_title');
+        $refererUrl = Setting::getValue('ai-scoring-settings', 'referer_url');
+
         $trainContent = 'Du bist ein Assistent, der die Antwort eines Versicherungskunden analysiert. 
             Deine Aufgabe ist es, diese Antwort auf einer Skala von 0.01 (sehr negativ) bis 0.99 (sehr positiv) zu bewerten. 
             Beziehe dich dabei ausschließlich auf den Inhalt der Antwort, nicht auf andere Fragen.
