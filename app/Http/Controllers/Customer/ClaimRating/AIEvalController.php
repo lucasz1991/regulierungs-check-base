@@ -36,7 +36,7 @@ class AIEvalController extends Controller
             - Stimmung der Antwort (positiv, neutral, negativ)
             - Hinweise auf Probleme, Zufriedenheit oder Frust
             - Sprachliche Ausdrücke (z. B. Lob, Kritik, Frust, Dankbarkeit)
-            Gib ausschließlich folgende Struktur zurück, ohne zusätzliche Erklärungen:
+            Gib ausschließlich folgende Struktur zurück, ohne zusätzliche Erklärungen ( einfach eine Float Variable mehr nicht ):
             "0.01"';
 
         $isLoading = true;
