@@ -47,7 +47,7 @@ class ClaimRatingAIEval implements ShouldQueue
         // Versicherungstyp abrufen
         $subtype = $this->claimRating->insuranceSubtype;
         $insuranceSubtype_average_rating_speed = $subtype->average_rating_speed ?? 30;
-        $attachments = $this->claimRating->attachments;
+        $attachments = $this->claimRating->attachments ?? [];
         $attachments['eval_details']['insuranceSubtype_average_rating_speed'] = $insuranceSubtype_average_rating_speed;
         // Regulierungstage aus den Antworten extrahieren
         $answers = $this->claimRating->answers;
