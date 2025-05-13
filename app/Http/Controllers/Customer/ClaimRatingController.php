@@ -25,10 +25,10 @@ class ClaimRatingController extends Controller
     
         // Regulierungstage aus den Antworten extrahieren
         $answers = $claimRating->answers;
-        if (isset($answers['ended_at'])) {
-            $actualDays = (new \DateTime($answers['started_at']))->diff(new \DateTime($answers['ended_at']))->days;
+        if (isset($answers['selectedDates']['ended_at'])) {
+            $actualDays = (new \DateTime($answers['selectedDates']['started_at']))->diff(new \DateTime($answers['selectedDates']['ended_at']))->days;
         } else {
-            $actualDays = (new \DateTime($answers['started_at']))->diff(new \DateTime())->days;
+            $actualDays = (new \DateTime($answers['selectedDates']['started_at']))->diff(new \DateTime())->days;
         }
         // Überprüfen, ob $actualDays größer ist als $insuranceSubtype_average_rating_speed
         // Wenn ja, dann berechnen Sie den Unterschied
