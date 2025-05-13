@@ -12,7 +12,7 @@ use App\Models\ClaimRating;
 
 class ClaimRatingController extends Controller
 {
-    static function evaluateScore(ClaimRating $claimRating)
+    static function evaluateScore($claimRating)
     {
         ClaimRatingAIEval::dispatch($claimRating);
         return response()->json([
