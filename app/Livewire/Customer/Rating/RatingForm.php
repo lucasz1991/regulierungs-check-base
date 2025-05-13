@@ -353,20 +353,19 @@ class RatingForm extends Component
             'status' => 'pending',
             'attachments' => [
                 'scorings' => [
-                    [
-                        'regulation_speed' => null,
-                        'customer_service' => null,
-                        'fairness' => null,
-                        'transparency' => null,
-                        'overall_satisfaction' => null,
+                    'regulation_speed' => null,
+                    'customer_service' => null,
+                    'fairness' => null,
+                    'transparency' => null,
+                    'overall_satisfaction' => null,
+                    'questions' => [
+
                     ]
                 ],
                 'eval_details' => [
-                    [
-                        'insuranceSubtype_average_rating_speed' => null,
-                        'insuranceSubtype_insurance_average_rating_speed' => null,
-                    ]
-                ]
+                    'insuranceSubtype_average_rating_speed' => null,
+                    'insuranceSubtype_insurance_average_rating_speed' => null,
+                ],
             ], 
             'rating_score' => null, 
             'moderator_comment' => null,
