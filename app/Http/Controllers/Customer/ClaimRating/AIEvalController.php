@@ -43,9 +43,7 @@ class AIEvalController extends Controller
             {
             "question": "Service-Kommentar",
             "score": 0.63
-            }
-            Antwort:
-            "Die Bearbeitung hat über einen Monat gedauert. Ich musste mehrfach nachfragen und fühlte mich nicht ernst genommen."';
+            }';
 
         $isLoading = true;
         $maxRetries = 5;
@@ -74,12 +72,7 @@ class AIEvalController extends Controller
                     }
                 } catch (\Exception $e) {
                 }
-        }           
-        Log::info('Evaluating score for textarea', [
-            'question' => $question,
-            'answer' => $answer,
-            'ai_score' => $botMessage,
-        ]);
+        }
         return -1;
     }
 
