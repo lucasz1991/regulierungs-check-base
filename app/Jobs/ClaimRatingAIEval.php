@@ -80,10 +80,11 @@ class ClaimRatingAIEval implements ShouldQueue
         foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
             $calculatedScore = $this->calculateScore($snapshotQuestion);
             if($calculatedScore != -1){
-                $attachments['scorings'][$snapshotQuestion['title']] = [
+                $attachments['scorings']['questions'][$snapshotQuestion['title']] = [
                     'question_title' => $snapshotQuestion['title'],
                     'question_text' => $snapshotQuestion['question_text'],
                     'question_weight' => $snapshotQuestion['pivot']['weight'],
+                    'answer' => $this->claimRating->answers[$snapshotQuestion['title']],
                     'ai_score' => $calculatedScore,
                 ];
                 $variableQuestionScore += $calculatedScore * $snapshotQuestion['pivot']['weight'];
