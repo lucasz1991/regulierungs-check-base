@@ -17,12 +17,12 @@ class AIEvalController extends Controller
 
     public function mount()
     {
-        $this->apiUrl = Setting::getValue('ai-scoring-settings', 'api_url');
-        $this->apiKey = Setting::getValue('ai-scoring-settings', 'api_key');
-        $this->aiModel = Setting::getValue('ai-scoring-settings', 'ai_model');
-        $this->modelTitle = Setting::getValue('ai-scoring-settings', 'model_title');
-        $this->refererUrl = Setting::getValue('ai-scoring-settings', 'referer_url');
-        $this->trainContent = '';
+        $apiUrl = Setting::getValue('ai-scoring-settings', 'api_url');
+        $apiKey = Setting::getValue('ai-scoring-settings', 'api_key');
+        $aiModel = Setting::getValue('ai-scoring-settings', 'ai_model');
+        $modelTitle = Setting::getValue('ai-scoring-settings', 'model_title');
+        $refererUrl = Setting::getValue('ai-scoring-settings', 'referer_url');
+        $trainContent = '';
         
     }
 
@@ -32,11 +32,7 @@ class AIEvalController extends Controller
             "question" => $question,
             "answer" => $answer,
         ]; 
-        //[
-        //    "question" => "Service-Kommentar",
-        //    "score" => 0.63,
-        //]
-        $this->trainContent = 'Du bist ein Assistent, der die Antwort eines Versicherungskunden analysiert. 
+        $trainContent = 'Du bist ein Assistent, der die Antwort eines Versicherungskunden analysiert. 
             Deine Aufgabe ist es, diese Antwort auf einer Skala von 0.01 (sehr negativ) bis 0.99 (sehr positiv) zu bewerten. 
             Beziehe dich dabei ausschließlich auf den Inhalt der Antwort, nicht auf andere Fragen.
             Berücksichtige:
@@ -50,22 +46,22 @@ class AIEvalController extends Controller
             }
             Antwort:
             "Die Bearbeitung hat über einen Monat gedauert. Ich musste mehrfach nachfragen und fühlte mich nicht ernst genommen."';
-            $isLoading = true;
-            // API-Call vorbereiten
-            $maxRetries = 5;
-            for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
+
+        $isLoading = true;
+        $maxRetries = 5;
+        for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
                 try {
                     $response = Http::withHeaders([
-                        'Authorization' => 'Bearer '.$this->apiKey, 
-                        'HTTP-Referer' => $this->refererUrl, 
-                        'X-Title' => $this->modelTitle, 
+                        'Authorization' => 'Bearer '.$apiKey, 
+                        'HTTP-Referer' => $refererUrl, 
+                        'X-Title' => $modelTitle, 
                         'Content-Type'  => 'application/json',
-                    ])->post($this->apiUrl, [
-                        'model'    => $this->aiModel,
+                    ])->post($apiUrl, [
+                        'model'    => $aiModel,
                         'messages' => array_merge([
                             [
                                 'role'    => 'system',
-                                'content' => trim(preg_replace('/\s+/', ' ', $this->trainContent))
+                                'content' => trim(preg_replace('/\s+/', ' ', $trainContent))
                             ]
                         ], $query)
                     ]);
@@ -78,7 +74,7 @@ class AIEvalController extends Controller
                     }
                 } catch (\Exception $e) {
                 }
-            }           
+        }           
         Log::info('Evaluating score for textarea', [
             'question' => $question,
             'answer' => $answer,
