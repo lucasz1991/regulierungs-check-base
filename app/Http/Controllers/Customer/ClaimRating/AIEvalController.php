@@ -22,6 +22,8 @@ class AIEvalController extends Controller
         $this->aiModel = Setting::getValue('ai-scoring-settings', 'ai_model');
         $this->modelTitle = Setting::getValue('ai-scoring-settings', 'model_title');
         $this->refererUrl = Setting::getValue('ai-scoring-settings', 'referer_url');
+        $this->trainContent = '';
+        
     }
 
     static function getScoreForTextarea($question, $answer)
@@ -48,7 +50,7 @@ class AIEvalController extends Controller
             }
             Antwort:
             "Die Bearbeitung hat über einen Monat gedauert. Ich musste mehrfach nachfragen und fühlte mich nicht ernst genommen."';
-            $this->isLoading = true;
+            $isLoading = true;
             // API-Call vorbereiten
             $maxRetries = 5;
             for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
@@ -71,14 +73,10 @@ class AIEvalController extends Controller
                     Log::info($botMessage);
                     if (!empty($botMessage)) {
                         
-                        $this->isLoading = false;
+                        $isLoading = false;
                         return $botMessage;
                     }
                 } catch (\Exception $e) {
-                    Log::error('Error while evaluating score for textarea', [
-                        'exception' => $e->getMessage(),
-                    ]);
-                    return -1;
                 }
             }           
         Log::info('Evaluating score for textarea', [
