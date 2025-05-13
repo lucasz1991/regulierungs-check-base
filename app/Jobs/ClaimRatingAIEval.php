@@ -10,6 +10,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 
+use App\Http\Controllers\Customer\ClaimRating\AIEvalController;
+
+
 use App\Models\ClaimRating;
 use App\Models\Insurance;
 use App\Models\InsuranceType;
@@ -18,6 +21,9 @@ use App\Models\RatingQuestionnaireVersion;
 use App\Models\Setting;
 use App\Models\RatingQuestion;
 use App\Models\RatingQuestionnaire; 
+
+
+
 
 class ClaimRatingAIEval implements ShouldQueue
 {
@@ -73,6 +79,7 @@ class ClaimRatingAIEval implements ShouldQueue
 
         // Kombinieren der Scores mit den entsprechenden Gewichtungen
         $score = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
+
 
         // Speichern
         $this->claimRating->rating_score = $score;

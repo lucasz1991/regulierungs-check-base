@@ -15,11 +15,11 @@ class ClaimRatingController extends Controller
     static function evaluateScore(ClaimRating $claimRating)
     {
         ClaimRatingAIEval::dispatch($claimRating);
-
-    
         return response()->json([
             'success' => true,
         ]);
     }
+
+
 
 }
