@@ -80,6 +80,7 @@ class AIEvalController extends Controller
         Log::info('Evaluating score for textarea', [
             'question' => $question,
             'answer' => $answer,
+            'ai_score' => $botMessage,
         ]);
         return -1;
     }
