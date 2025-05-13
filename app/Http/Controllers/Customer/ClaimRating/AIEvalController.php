@@ -74,6 +74,9 @@ class AIEvalController extends Controller
                         return $botMessage;
                     }
                 } catch (\Exception $e) {
+                    Log::error('Error while evaluating score for textarea', [
+                        'exception' => $e->getMessage(),
+                    ]);
                     return -1;
                 }
             }           
