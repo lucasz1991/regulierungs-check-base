@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 
 use App\Jobs\ClaimRatingAIEval;
-
+use App\Models\ClaimRating;
 
 
 class ClaimRatingController extends Controller

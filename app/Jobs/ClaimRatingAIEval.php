@@ -96,7 +96,7 @@ class ClaimRatingAIEval implements ShouldQueue
      * @param array $snapshotQuestion
      * @return float
      */
-    public function calculateScore(ClaimRating $claimRating , $snapshotQuestion){
+    public function calculateScore($snapshotQuestion){
         $value = $this->claimRating->answers[$snapshotQuestion['title']] ?? null;
         switch ($snapshotQuestion['type']) {
             case 'rating':
