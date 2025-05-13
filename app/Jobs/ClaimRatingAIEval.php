@@ -47,7 +47,7 @@ class ClaimRatingAIEval implements ShouldQueue
         // Versicherungstyp abrufen
         $subtype = $this->claimRating->insuranceSubtype;
         $insuranceSubtype_average_rating_speed = $subtype->average_rating_speed ?? 30;
-    
+        $this->claimRating->attachments['eval_details']['insuranceSubtype_average_rating_speed'] = $insuranceSubtype_average_rating_speed;
         // Regulierungstage aus den Antworten extrahieren
         $answers = $this->claimRating->answers;
         if (isset($answers['selectedDates']['ended_at'])) {
@@ -55,6 +55,8 @@ class ClaimRatingAIEval implements ShouldQueue
         } else {
             $actualDays = (new \DateTime($answers['selectedDates']['started_at']))->diff(new \DateTime())->days;
         }
+        $this->claimRating->attachments['eval_details']['actualDays'] = $insuranceSubtype_average_rating_speed;
+
         // Überprüfen, ob $actualDays größer ist als $insuranceSubtype_average_rating_speed
         // Wenn ja, dann berechnen Sie den Unterschied
         // Wenn nein, dann setzen Sie den Unterschied auf 0
@@ -66,17 +68,23 @@ class ClaimRatingAIEval implements ShouldQueue
             $difference = 0;
             $rating_speed_score = 1;
         }
-        // Berechnung des Scores für Variable Fragen 
+        $this->claimRating->attachments['eval_details']['days_difference'] = $difference;
+       
         
         $questionnaireVersion = $this->claimRating->questionnaireVersion()->first();
         $questionnaireVersionSnapshot = $questionnaireVersion->snapshot;
         $variableQuestionScore = 0;
+        $variableQuestionCount = 0;
         foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
             $score = $this->calculateScore($snapshotQuestion);
-            $variableQuestionScore += $score * $snapshotQuestion['pivot']['weight'];
+            if($score != -1){
+                $variableQuestionScore += $score * $snapshotQuestion['pivot']['weight'];
+                $variableQuestionCount++;
+            }
         }
-        $variableQuestionScore = $variableQuestionScore / count($questionnaireVersionSnapshot);
-
+        $variableQuestionScore = $variableQuestionScore / $variableQuestionCount;
+        $this->claimRating->attachments['scorings']['variable_questions'] = $variableQuestionScore;
+        $this->claimRating->attachments['scorings']['regulation_speed'] = $variableQuestionScore;
         // Kombinieren der Scores mit den entsprechenden Gewichtungen
         $score = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
 
@@ -105,11 +113,11 @@ class ClaimRatingAIEval implements ShouldQueue
                 if(strlen($value) > 3){
                     return AIEvalController::getScoreForTextarea($snapshotQuestion, $value);
                 }else{
-                    return .5;
+                    return -1;
                 }
                 
             default:
-                return .5;
+                return -1;
         }
     }
 }

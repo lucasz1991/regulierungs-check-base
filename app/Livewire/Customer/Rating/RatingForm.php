@@ -354,18 +354,21 @@ class RatingForm extends Component
             'attachments' => [
                 'scorings' => [
                     [
-                        'regulation_speed' => -1,
-                        'customer_service' => -1,
-                        'fairness' => -1,
-                        'transparency' => -1,
-                        'overall_satisfaction' => -1,
+                        'regulation_speed' => null,
+                        'customer_service' => null,
+                        'fairness' => null,
+                        'transparency' => null,
+                        'overall_satisfaction' => null,
                     ]
                 ],
-                'files' => [
-                     
+                'eval_details' => [
+                    [
+                        'insuranceSubtype_average_rating_speed' => null,
+                        'insuranceSubtype_insurance_average_rating_speed' => null,
+                    ]
                 ]
-            ], // Wenn du hier keine hochgeladenen Dateien hast
-            'rating_score' => null, // Kannst du später berechnen
+            ], 
+            'rating_score' => null, 
             'moderator_comment' => null,
             'is_public' => false,
             'verification_hash' => Str::uuid(),
