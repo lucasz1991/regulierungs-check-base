@@ -47,7 +47,8 @@ class ClaimRatingAIEval implements ShouldQueue
         // Versicherungstyp abrufen
         $subtype = $this->claimRating->insuranceSubtype;
         $insuranceSubtype_average_rating_speed = $subtype->average_rating_speed ?? 30;
-        $this->claimRating->attachments['eval_details']['insuranceSubtype_average_rating_speed'] = $insuranceSubtype_average_rating_speed;
+        $attachments = $this->claimRating->attachments;
+        $attachments['eval_details']['insuranceSubtype_average_rating_speed'] = $insuranceSubtype_average_rating_speed;
         // Regulierungstage aus den Antworten extrahieren
         $answers = $this->claimRating->answers;
         if (isset($answers['selectedDates']['ended_at'])) {
@@ -55,7 +56,8 @@ class ClaimRatingAIEval implements ShouldQueue
         } else {
             $actualDays = (new \DateTime($answers['selectedDates']['started_at']))->diff(new \DateTime())->days;
         }
-        $this->claimRating->attachments['eval_details']['actualDays'] = $insuranceSubtype_average_rating_speed;
+        $attachments['eval_details']['actualDays'] = $actualDays;
+        
 
         // Überprüfen, ob $actualDays größer ist als $insuranceSubtype_average_rating_speed
         // Wenn ja, dann berechnen Sie den Unterschied
@@ -68,7 +70,7 @@ class ClaimRatingAIEval implements ShouldQueue
             $difference = 0;
             $rating_speed_score = 1;
         }
-        $this->claimRating->attachments['eval_details']['days_difference'] = $difference;
+        $attachments['eval_details']['days_difference'] = $difference;
        
 
         $questionnaireVersion = $this->claimRating->questionnaireVersion()->first();
@@ -78,7 +80,7 @@ class ClaimRatingAIEval implements ShouldQueue
         foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
             $calculatedScore = $this->calculateScore($snapshotQuestion);
             if($calculatedScore != -1){
-                $this->claimRating->attachments['scorings'][$snapshotQuestion['id']] = [
+                $attachments['scorings'][$snapshotQuestion['id']] = [
                     'question_title' => $snapshotQuestion['title'],
                     'question_weight' => $snapshotQuestion['pivot']['weight'],
                     'ai_score' => $calculatedScore,
@@ -89,14 +91,15 @@ class ClaimRatingAIEval implements ShouldQueue
         }
         $variableQuestionScore = $variableQuestionScore / $variableQuestionCount;
 
-        $this->claimRating->attachments['scorings']['variable_questions'] = $variableQuestionScore;
-        $this->claimRating->attachments['scorings']['regulation_speed'] = $variableQuestionScore;
+        $attachments['scorings']['variable_questions'] = $variableQuestionScore;
+        $attachments['scorings']['regulation_speed'] = $variableQuestionScore;
 
         // Kombinieren der Scores mit den entsprechenden Gewichtungen
         $calculatedScore = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
 
 
         // Speichern
+        $this->claimRating->attachments = $attachments;
         $this->claimRating->rating_score = $score;
         $this->claimRating->saveQuietly();
     
