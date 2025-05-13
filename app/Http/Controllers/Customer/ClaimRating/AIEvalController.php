@@ -36,11 +36,8 @@ class AIEvalController extends Controller
             - Stimmung der Antwort (positiv, neutral, negativ)
             - Hinweise auf Probleme, Zufriedenheit oder Frust
             - Sprachliche Ausdrücke (z. B. Lob, Kritik, Frust, Dankbarkeit)
-            Gib ausschließlich folgende JSON-Struktur zurück, ohne zusätzliche Erklärungen:
-            {
-            "question": "Service-Kommentar",
-            "score": 0.63
-            }';
+            Gib ausschließlich folgende Struktur zurück, ohne zusätzliche Erklärungen:
+            "0.01"';
 
         $isLoading = true;
         $maxRetries = 5;
