@@ -80,8 +80,8 @@ class ClaimRatingAIEval implements ShouldQueue
         foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
             $calculatedScore = $this->calculateScore($snapshotQuestion);
             if($calculatedScore != -1){
-                $attachments['scorings'][$snapshotQuestion['id']] = [
-                    'question_title' => $snapshotQuestion['title'],
+                $attachments['scorings'][$snapshotQuestion['title']] = [
+                    'question_text' => $snapshotQuestion['question_text'],
                     'question_weight' => $snapshotQuestion['pivot']['weight'],
                     'ai_score' => $calculatedScore,
                 ];
@@ -92,7 +92,7 @@ class ClaimRatingAIEval implements ShouldQueue
         $variableQuestionScore = $variableQuestionScore / $variableQuestionCount;
 
         $attachments['scorings']['variable_questions'] = $variableQuestionScore;
-        $attachments['scorings']['regulation_speed'] = $variableQuestionScore;
+        $attachments['scorings']['regulation_speed'] = $rating_speed_score;
 
         // Kombinieren der Scores mit den entsprechenden Gewichtungen
         $calculatedScore = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
