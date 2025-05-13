@@ -47,7 +47,7 @@ class LogActivityJob implements ShouldQueue
 
         // Beschreibungstext erstellen
         $descriptionText = sprintf(
-            '%s hat die URL %s mit der Methode %s aufgerufen.',
+            '%s - used URL - %s - %s ',
             $description,
             $data['full_url'],
             $data['method']
