@@ -100,7 +100,7 @@ class ClaimRatingAIEval implements ShouldQueue
 
         // Speichern
         $this->claimRating->attachments = $attachments;
-        $this->claimRating->rating_score = $score;
+        $this->claimRating->rating_score = $calculatedScore;
         $this->claimRating->saveQuietly();
     
         Log::info("AI-Evaluation completed for ClaimRating ID ".$this->claimRating->id);
