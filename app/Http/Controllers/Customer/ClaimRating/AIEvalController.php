@@ -19,11 +19,11 @@ class AIEvalController extends Controller
 
     static function getScoreForTextarea($question, $answer)
     {
-        $query = json_encode([
+        $query = [
             "system_question_titel" => $question['title'],
             "system_question_text" => $question['question_text'],
             "customer_answer" => $answer,
-        ]);
+        ];
         $apiUrl = Setting::getValue('ai-scoring-settings', 'api_url');
         $apiKey = Setting::getValue('ai-scoring-settings', 'api_key');
         $aiModel = Setting::getValue('ai-scoring-settings', 'ai_model');
