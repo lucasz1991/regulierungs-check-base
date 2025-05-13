@@ -102,9 +102,14 @@ class ClaimRatingAIEval implements ShouldQueue
             case 'rating':
                 return $value / 5;
             case 'textarea':
-                return strlen($value) > 3 ? 0.5 : 1;
+                if(strlen($value) > 3){
+                    return AIEvalController::getScoreForTextarea($snapshotQuestion, $value);
+                }else{
+                    return .5;
+                }
+                
             default:
-                return 0;
+                return .5;
         }
     }
 }

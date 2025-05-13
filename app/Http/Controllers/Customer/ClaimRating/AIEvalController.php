@@ -12,5 +12,9 @@ use App\Models\Setting;
 
 class AIEvalController extends Controller
 {
-    //
+    static function getScoreForTextarea($qustion, $answer)
+    {
+        
+        return 0.333;
+    }
 }
