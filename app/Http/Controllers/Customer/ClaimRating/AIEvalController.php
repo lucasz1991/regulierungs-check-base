@@ -33,6 +33,14 @@ class AIEvalController extends Controller
         $trainContent = 'Du bist ein Assistent, der die Antwort eines Versicherungskunden analysiert. 
             Deine Aufgabe ist es, diese Antwort auf einer Skala von 0.01 (sehr negativ) bis 0.99 (sehr positiv) zu bewerten. 
             Beziehe dich dabei ausschließlich auf den Inhalt der Antwort, nicht auf andere Fragen.
+
+            Anfrage Struktur:
+            $query = json_encode([
+                "system_question_titel" => $title,
+                "system_question_text" => question_text,
+                "customer_answer" => $answer,
+            ]);
+
             Berücksichtige:
             - Stimmung der Antwort (positiv, neutral, negativ)
             - Hinweise auf Probleme, Zufriedenheit oder Frust
@@ -59,8 +67,8 @@ class AIEvalController extends Controller
                         ], $query)
                     ]);
                     $botMessage = $response->json()['choices'][0]['message']['content'] ?? '';
-                    Log::info($botMessage);
                     if (!empty($botMessage)) {
+                        Log::info($botMessage);
                         
                         $isLoading = false;
                         return $botMessage;
