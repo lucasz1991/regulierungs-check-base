@@ -19,7 +19,4 @@ class ClaimRatingController extends Controller
             'success' => true,
         ]);
     }
-
-
-
 }

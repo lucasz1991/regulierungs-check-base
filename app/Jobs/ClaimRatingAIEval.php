@@ -127,7 +127,6 @@ class ClaimRatingAIEval implements ShouldQueue
                 }else{
                     return -1;
                 }
-                
             default:
                 return -1;
         }
