@@ -14,7 +14,10 @@ class AIEvalController extends Controller
 {
     static function getScoreForTextarea($qustion, $answer)
     {
-        
+        Log::info('Evaluating score for textarea', [
+            'question' => $qustion,
+            'answer' => $answer,
+        ]);
         return 0.333;
     }
 }
