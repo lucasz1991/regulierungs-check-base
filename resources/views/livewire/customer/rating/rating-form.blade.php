@@ -530,7 +530,7 @@
                         >
                             <h2 class="text-lg font-bold mb-12">
                                 @if ($is_closed)
-                                    In welchem Zeitraum wurde der Fall reguliert?
+                                    In welchem Zeitraum wurde der Fall bearbeitet?
                                 @else
                                     Wann hast du den Fall gemeldet?
                                 @endif
@@ -580,78 +580,80 @@
                             $fieldName = "answers." . $q->title;
                         @endphp
                         <div x-show="step === {{ $currentStep }}" x-collapse.duration.1000ms x-cloak >
-                            <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps  }}</h2>
-                            <p class="text-md text-gray-800 mb-12 font-semibold">{{ $q->question_text }}</p>
-                            {{-- Eingabefeld je nach Typ --}}
-                            @switch($q->type)
-                                @case('text')
-                                @case('number')
-                                @case('date')
-                                    <input type="{{ $q->type }}"
-                                        wire:model.defer="{{ $fieldName }}"
-                                        class="mt-2 w-full border px-3 py-2 rounded">
-                                    @break
-                                @case('textarea')
-                                    <div x-data="{ charCount: 0 }">
-                                        <textarea wire:model.defer="{{ $fieldName }}"
-                                                x-ignore
-                                                class="mt-2 w-full text-base mx-auto border px-3 py-2 rounded" rows="4"
-                                                x-on:input="charCount = $event.target.value.length"
-                                                maxlength="255"></textarea>
-                                        <span x-text="`${charCount}/255 Zeichen`" class="text-sm " :class="charCount >= 255 ? 'text-red-600' : 'text-gray-500 '"></span>
-                                    </div>
-                                    @break
-                                @case('boolean')
-                                    <div class="mt-2 space-x-4">
-                                        <label><input type="radio" wire:model="{{ $fieldName }}" value="1"> Ja</label>
-                                        <label><input type="radio" wire:model="{{ $fieldName }}" value="0"> Nein</label>
-                                    </div>
-                                    @break
-                                @case('rating')
-                                    <div class="flex justify-center space-x-1 mt-6 rating-group"     
-                                        x-data="{ hovered: 0 }"
-                                        >
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <label class="cursor-pointer relative" 
-                                                @mouseover="hovered = {{ $i }}"
-                                                @mouseleave="hovered = 0"
-                                                >
-                                                <input 
-                                                    type="radio" 
-                                                    wire:model.live="{{ $fieldName }}" 
-                                                    value="{{ $i }}" 
-                                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                                >
-                                                <span class="text-xl transition-colors duration-150 text-gray-300"
+                            <div>
+                                <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps  }}</h2>
+                                <p class="text-md text-gray-800 mb-12 font-semibold">{{ $q->question_text }}</p>
+                                {{-- Eingabefeld je nach Typ --}}
+                                @switch($q->type)
+                                    @case('text')
+                                    @case('number')
+                                    @case('date')
+                                        <input type="{{ $q->type }}"
+                                            wire:model.defer="{{ $fieldName }}"
+                                            class="mt-2 w-full border px-3 py-2 rounded">
+                                        @break
+                                    @case('textarea')
+                                        <div x-data="{ charCount: 0 }">
+                                            <textarea wire:model.defer="{{ $fieldName }}"
+                                                    x-ignore
+                                                    class="mt-2 w-full text-base mx-auto border px-3 py-2 rounded" rows="4"
+                                                    x-on:input="charCount = $event.target.value.length"
+                                                    maxlength="255"></textarea>
+                                            <span x-text="`${charCount}/255 Zeichen`" class="text-sm " :class="charCount >= 255 ? 'text-red-600' : 'text-gray-500 '"></span>
+                                        </div>
+                                        @break
+                                    @case('boolean')
+                                        <div class="mt-2 space-x-4">
+                                            <label><input type="radio" wire:model="{{ $fieldName }}" value="1"> Ja</label>
+                                            <label><input type="radio" wire:model="{{ $fieldName }}" value="0"> Nein</label>
+                                        </div>
+                                        @break
+                                    @case('rating')
+                                        <div class="flex justify-center space-x-1 mt-6 rating-group"     
+                                            x-data="{ hovered: 0 }"
+                                            >
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <label class="cursor-pointer relative" 
+                                                    @mouseover="hovered = {{ $i }}"
+                                                    @mouseleave="hovered = 0"
                                                     >
-                                                    <svg
-                                                            class="w-12 h-12 transition-colors duration-150 "
-                                                                :class="{
-                                                                    'text-yellow-400': hovered >= {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} >= {{ $i }},
-                                                                    'text-gray-300': hovered < {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} < {{ $i }}
-                                                                }"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 20 20"
+                                                    <input 
+                                                        type="radio" 
+                                                        wire:model.live="{{ $fieldName }}" 
+                                                        value="{{ $i }}" 
+                                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                    >
+                                                    <span class="text-xl transition-colors duration-150 text-gray-300"
                                                         >
-                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.204 3.698a1 1 0 00.95.69h3.894c.969 0 1.371 1.24.588 1.81l-3.15 2.286a1 1 0 00-.364 1.118l1.204 3.698c.3.921-.755 1.688-1.54 1.118l-3.15-2.286a1 1 0 00-1.176 0l-3.15 2.286c-.784.57-1.838-.197-1.539-1.118l1.203-3.698a1 1 0 00-.364-1.118L2.414 9.125c-.783-.57-.38-1.81.588-1.81h3.894a1 1 0 00.951-.69l1.202-3.698z"/>
-                                                        </svg>
-                                                </span>
-                                            </label>
-                                        @endfor
-                                    </div>
-                                    @break
-                                @default
-                                    <p class="text-sm text-red-500">Unbekannter Fragetyp: {{ $q->type }}</p>
-                            @endswitch
-                            @error($fieldName)
-                                <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                            @enderror
-                            {{-- Navigation --}}
-                            <div class="flex justify-center space-x-4 mt-12">
-                                @if ($step > 0)
-                                <x-buttons.backbutton wire:click="previousStep" />
-                                @endif
-                                    <x-buttons.furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
+                                                        <svg
+                                                                class="w-12 h-12 transition-colors duration-150 "
+                                                                    :class="{
+                                                                        'text-yellow-400': hovered >= {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} >= {{ $i }},
+                                                                        'text-gray-300': hovered < {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} < {{ $i }}
+                                                                    }"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 20 20"
+                                                            >
+                                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.204 3.698a1 1 0 00.95.69h3.894c.969 0 1.371 1.24.588 1.81l-3.15 2.286a1 1 0 00-.364 1.118l1.204 3.698c.3.921-.755 1.688-1.54 1.118l-3.15-2.286a1 1 0 00-1.176 0l-3.15 2.286c-.784.57-1.838-.197-1.539-1.118l1.203-3.698a1 1 0 00-.364-1.118L2.414 9.125c-.783-.57-.38-1.81.588-1.81h3.894a1 1 0 00.951-.69l1.202-3.698z"/>
+                                                            </svg>
+                                                    </span>
+                                                </label>
+                                            @endfor
+                                        </div>
+                                        @break
+                                    @default
+                                        <p class="text-sm text-red-500">Unbekannter Fragetyp: {{ $q->type }}</p>
+                                @endswitch
+                                @error($fieldName)
+                                    <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                                {{-- Navigation --}}
+                                <div class="flex justify-center space-x-4 mt-12">
+                                    @if ($step > 0)
+                                    <x-buttons.backbutton wire:click="previousStep" />
+                                    @endif
+                                        <x-buttons.furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
+                                </div>
                             </div>
                         </div>
                     @endforeach
