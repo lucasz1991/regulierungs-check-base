@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Insurance;
 use App\Models\InsuranceType;
-use App\Models\InsuranceSubType;
+use App\Models\InsuranceSubtype;
 
 class Insurances extends Component
 {
@@ -89,7 +89,7 @@ class Insurances extends Component
             ->paginate($this->perPage*$this->pages);
     
             $this->insuranceTypes = InsuranceType::all();
-            $this->insuranceSubTypes = InsuranceSubType::all();
+            $this->insuranceSubTypes = InsuranceSubtype::all();
     
         return view('livewire.pages.insurances', [
             'insurances' => $insurances,
