@@ -20,6 +20,13 @@ class Insurances extends Component
     public $perPage = 9;
     public $pages = 1;
 
+
+    public $sort,
+    $minRatingCount,
+    $minAvgScore,
+    $onlyActive;
+
+
     protected $queryString = [
         'search' => ['except' => ''],
         'type' => ['except' => '']
