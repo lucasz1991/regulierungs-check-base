@@ -54,6 +54,9 @@ export default {
                     800: '#021f18',
                     900: '#011f18',
                 },
+                transparent: {
+                    DEFAULT: '#fff0',
+                },
             },
         },
     },

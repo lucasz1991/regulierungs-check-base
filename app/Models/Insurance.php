@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\InsuranceType;
+use App\Models\InsuranceSubType;
 
 class Insurance extends Model
 {
@@ -26,6 +27,13 @@ class Insurance extends Model
                     ->withPivot('order_column')
                     ->orderBy('insurance_insurance_type.order_column');
     }
+
+    public function insuranceSubTypes()
+    {
+        return $this->belongsToMany(InsuranceSubType::class, 'insurance_insurance_type')
+            ->withPivot('order_column');
+    }
+    
 
     public function claimRatings()
     {
