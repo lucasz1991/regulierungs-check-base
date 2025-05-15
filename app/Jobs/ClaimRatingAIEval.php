@@ -65,9 +65,9 @@ class ClaimRatingAIEval implements ShouldQueue
 
         if ($actualDays > $insuranceSubtype_average_rating_speed) {
             $difference = $actualDays - $insuranceSubtype_average_rating_speed;
-            $rating_speed_score = max(0, 0.99 - ($difference / $insuranceSubtype_average_rating_speed));
+            
         } else {
-            $difference = 0;
+            $difference = null;
             $rating_speed_score = 1;
         }
         $attachments['eval_details']['days_difference'] = $difference;
@@ -79,30 +79,64 @@ class ClaimRatingAIEval implements ShouldQueue
         $variableQuestionCount = 0;
         foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
             $calculatedScore = $this->calculateScore($snapshotQuestion);
-            if($calculatedScore != -1){
-                $attachments['scorings']['questions'][$snapshotQuestion['title']] = [
-                    'question_title' => $snapshotQuestion['title'],
-                    'question_text' => $snapshotQuestion['question_text'],
-                    'question_weight' => $snapshotQuestion['pivot']['weight'],
-                    'answer' => $this->claimRating->answers[$snapshotQuestion['title']],
-                    'ai_score' => $calculatedScore,
-                ];
+            if(is_array($calculatedScore)){
+                $responseData = $calculatedScore;
+                $type = 'ai';
+                $aiResult = $responseData['score'];
+                $aiResultComment = $responseData['comment'];
+                $calculatedScore = $responseData['score'];
+            }else{
+                $type = 'calc';
+            }
+            if($calculatedScore != -1 ){
+                if($type == 'ai'){
+                    $attachments['scorings']['questions'][$snapshotQuestion['title']] = [
+                        'question_title' => $snapshotQuestion['title'],
+                        'question_text' => $snapshotQuestion['question_text'],
+                        'question_weight' => $snapshotQuestion['pivot']['weight'],
+                        'answer' => $this->claimRating->answers[$snapshotQuestion['title']],
+                        'type' => $type,
+                        'ai_score' => $calculatedScore,
+                        'ai_comment' => $aiResultComment,
+                    ];
+                }elseif($type == 'calc'){
+                    $attachments['scorings']['questions'][$snapshotQuestion['title']] = [
+                        'question_title' => $snapshotQuestion['title'],
+                        'question_text' => $snapshotQuestion['question_text'],
+                        'question_weight' => $snapshotQuestion['pivot']['weight'],
+                        'answer' => $this->claimRating->answers[$snapshotQuestion['title']],
+                        'type' => $type,
+                        'score' => $calculatedScore,
+                    ];
+                }
                 $variableQuestionScore += $calculatedScore * $snapshotQuestion['pivot']['weight'];
                 $variableQuestionCount++;
             }
         }
         $variableQuestionScore = $variableQuestionScore / $variableQuestionCount;
 
-        $attachments['scorings']['variable_questions'] = $variableQuestionScore;
-        $attachments['scorings']['regulation_speed'] = $rating_speed_score;
+        $attachments['scorings']['variable_questions'] = round($variableQuestionScore, 2);
 
+        
         // Kombinieren der Scores mit den entsprechenden Gewichtungen
-        $calculatedScore = ($rating_speed_score * 0.7) + ($variableQuestionScore * 0.3);
-
+        $rating_speed_score = max(0, 0.99 - ($difference / $insuranceSubtype_average_rating_speed));
+        $attachments['scorings']['regulation_speed'] = $rating_speed_score;
+        
+        $overAllScore = AIEvalController::getOverAllScore( $this->claimRating->answers, $attachments );
+        Log::info($overAllScore);
+        $allScore = $overAllScore['overall_score'];
+        $attachments['scorings']['regulation_speed'] = $overAllScore['regulation_speed'];
+        $attachments['scorings']['customer_service'] = $overAllScore['customer_service'];
+        $attachments['scorings']['fairness'] = $overAllScore['fairness'];
+        $attachments['scorings']['transparency'] = $overAllScore['transparency'];
+        $attachments['scorings']['ai_overall_comment'] = $overAllScore['aiResultComment'];
+        Log::info($attachments);
 
         // Speichern
         $this->claimRating->attachments = $attachments;
-        $this->claimRating->rating_score = $calculatedScore;
+
+        $this->claimRating->rating_score = round((float) $allScore, 2);
+        $this->claimRating->status = 'rated';
         $this->claimRating->saveQuietly();
     
         Log::info("AI-Evaluation completed for ClaimRating ID ".$this->claimRating->id);
