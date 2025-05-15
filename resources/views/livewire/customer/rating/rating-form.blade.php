@@ -36,10 +36,6 @@
                                 initSwiper() {
                                     this.swiper = new Swiper(this.$refs.swiper, {
                                         effect: 'coverflow',
-                                        freeMode: {
-                                            enabled: true,
-                                            sticky: true,
-                                        },
                                         autoplay: {
                                             delay: 1800,
                                         },
