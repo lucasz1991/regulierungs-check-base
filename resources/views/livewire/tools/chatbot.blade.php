@@ -28,13 +28,13 @@
 
                     <defs>
                         <lineargradient id="linearGradient1" x1="420.705" y1="249.747" x2="423.671" y2="663.385" gradientUnits="userSpaceOnUse" >
-                            <stop stop-color="#00D1FF" />
-                            <stop offset="1" stop-color="#C626FF" stop-opacity="0" />
+                            <stop stop-color="#099772" />
+                            <stop offset="1" stop-color="#0a93b4" stop-opacity="0" />
                         </lineargradient>
 
                         <lineargradient id="linearGradient2" x1="487.879" y1="-248.502" y2="140.966" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#00A3FF" stop-opacity="0.14" />
-                            <stop offset="1" stop-color="#FF00B8" />
+                            <stop stop-color="#05506a" stop-opacity="0.14" />
+                            <stop offset="1" stop-color="#05506a" />
                         </lineargradient>
 
                         <lineargradient id="linearGradient3" x1="161.766" y1="376.102" x2="594.449" y2="567.328" gradientUnits="userSpaceOnUse">
