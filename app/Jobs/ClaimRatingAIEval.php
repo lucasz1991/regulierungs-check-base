@@ -123,7 +123,6 @@ class ClaimRatingAIEval implements ShouldQueue
         $attachments['scorings']['regulation_speed'] = $rating_speed_score;
         
         $overAllScore = AIEvalController::getOverAllScore( $this->claimRating->answers, $attachments );
-        Log::info($overAllScore);
         $allScore = $overAllScore['overall_score'];
         $attachments['scorings']['regulation_speed'] = $overAllScore['regulation_speed'];
         $attachments['scorings']['customer_service'] = $overAllScore['customer_service'];
