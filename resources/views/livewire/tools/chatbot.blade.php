@@ -130,7 +130,7 @@
             
                 <!-- Eingabe & Buttons -->
                 <div class="relative w-full">
-                        <input x-model="messagefront" @keydown.enter="sendMessage()" class="w-full border-outline bg-surface-alt border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 "  placeholder="Frage stellen..." />
+                        <input x-model="messagefront" @keydown.enter="sendMessage()" class="w-full border-outline bg-secondary border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 "  placeholder="Frage stellen..." />
                         <button @click="sendMessage()" class="absolute bg-blue-50 right-3 top-1/2 -translate-y-1/2 bg-primary rounded-radius px-2 py-1 text-xs tracking-wide text-on-primary transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 ">senden</button>
                 </div>
             </div>
