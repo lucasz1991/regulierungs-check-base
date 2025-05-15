@@ -17,7 +17,7 @@
 
                 
                 {{-- Step 0: Versicherungs typ --}}
-                <div x-show="step == 0"  x-cloak x-collapse.duration.1000ms>
+                <div x-show="step == 0"  x-cloak >
                     <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
                     <h2 class="text-lg mb-12">Versicherungskategorie auswählen</h2>
                     <style>
@@ -106,7 +106,7 @@
                         @error('insuranceTypeId')
                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                         @enderror
-                        <div x-show="insuranceTypeId != null"  x-cloak  x-collapse.duration.1000ms>
+                        <div x-show="insuranceTypeId != null"  x-cloak  >
                             <div class="flex justify-center mt-12">
                                 <x-buttons.furtherbutton wire:click="nextStep" />
                             </div>
@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 {{-- Step 1: Versicherungs SubType --}}
-                <div x-show="step == 1"  x-cloak  x-collapse.duration.1000ms>
+                <div x-show="step == 1"  x-cloak  >
                     <style>
                         .choices__list.choices__list--dropdown .choices__list{
                             margin-top:25px;
@@ -188,7 +188,7 @@
                     </div>
                 </div>
                 {{-- Step 2: Konkrete Versicherung auswählen --}}
-                <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak  x-collapse.duration.1000ms >
+                <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak   >
                     <h2 class="text-lg font-bold mb-12">Welche Versicherungsgesellschaft?</h2>
                     <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
                         <select wire:model.live="insuranceId" 
@@ -242,7 +242,7 @@
                     </div>
                 </div>
                 {{-- Step 3: Fallstatus --}}
-                <div x-show="step == 3"  x-cloak  x-collapse.duration.1000ms>
+                <div x-show="step == 3"  x-cloak  >
                     <h2 class="text-lg font-bold mb-12">Wie wurde der Schaden reguliert?</h2>
                     <div class="flex justify-center items-center">
                         <div x-data="{ regulationType: @entangle('regulationType') }" class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-4 w-max justify-center">
@@ -312,7 +312,7 @@
                     </div>
                 </div>
                 {{-- Step 4: Fallstatus Details --}}
-                <div x-show="step == 4"  x-cloak  x-collapse.duration.1000ms>
+                <div x-show="step == 4"  x-cloak  >
                     <h2 class="text-lg font-bold mb-12">
                         @switch($regulationType)
                             @case('vollzahlung')
@@ -492,7 +492,7 @@
                     </div>
                 </div>
                 {{-- Step 5: Zeitraum --}}
-                <div x-show="step == 5"  x-cloak  x-collapse.duration.1000ms>
+                <div x-show="step == 5"  x-cloak  >
                     <div>
                                 
                         <div x-data="{
@@ -576,7 +576,7 @@
                             $currentStep = $standardSteps + $index;
                             $fieldName = "answers." . $q->title;
                         @endphp
-                        <div x-show="step === {{ $currentStep }}" x-collapse.duration.1000ms x-cloak >
+                        <div x-show="step === {{ $currentStep }}"  x-cloak >
                             <div>
                                 <h2 class="text-lg font-bold mb-2">Frage {{ $currentStep + 1 }} von {{ $totalSteps  }}</h2>
                                 <p class="text-md text-gray-800 mb-12 font-semibold">{{ $q->question_text }}</p>
