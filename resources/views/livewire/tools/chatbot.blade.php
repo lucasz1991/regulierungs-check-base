@@ -55,8 +55,8 @@
                         </radialgradient>
 
                         <radialgradient id="radialGradient3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(419 409) rotate(90) scale(534 546.857)">
-                            <stop stop-color="#545454" stop-opacity="0" />
-                            <stop offset="1" stop-color="#5D64FF" stop-opacity="0.35" />
+                            <stop stop-color="#fff" stop-opacity="0" />
+                            <stop offset="1" stop-color="#fff" stop-opacity="0.35" />
                         </radialgradient>
                     </defs>
                 </svg>
