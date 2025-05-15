@@ -52,6 +52,18 @@ class Insurances extends Component
         $this->pages++;
     }
 
+    public function resetFilters()
+    {
+        $this->reset([
+            'insuranceType',
+            'insuranceSubType',
+            'search',
+            'minRatingCount',
+            'minAvgScore',
+            'onlyActive',
+        ]);
+    }
+
     public function render()
     {
         $insurances = Insurance::query()
