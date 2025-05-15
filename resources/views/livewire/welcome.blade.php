@@ -12,20 +12,11 @@
       <div>
         <div class="flex space-x-4 items-center justify-center mb-4 w-full">
             <livewire:customer.rating.rating-form />
-            <x-buttons.button-basic href="/insurances" :mode="'secondary'">
+            <x-buttons.button-basic href="/insurances" :mode="'success'">
                 Vergleichen
             </x-buttons.button-basic>
-        </div>
-    </div>
-      <div class="mt-10">
-        <p class="text-gray-600 mb-3">Top-Versicherungen im Ranking:</p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">HanseMerkur</span>
-          <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">Allianz</span>
-          <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium">HUK24</span>
         </div>
       </div>
     </div>
   </section>
-  
 </div>
