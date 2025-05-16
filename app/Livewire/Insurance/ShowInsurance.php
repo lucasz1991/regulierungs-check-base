@@ -16,7 +16,7 @@ class ShowInsurance extends Component
         $this->insurance = $insurance;
         $this->claimRatings = $insurance->claimRatings()
         ->latest()         // sortiert nach created_at DESC
-        ->take(3)          // nur 3 Bewertungen
+        ->take(2)          // nur 3 Bewertungen
         ->get();
     }
 
