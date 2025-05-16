@@ -29,7 +29,8 @@ class Insurances extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'type' => ['except' => '']
+        'insuranceType' => ['except' => ''],
+        'insuranceSubType' => ['except' => '']
     ];
 
     public function updatingSearch()
@@ -37,12 +38,12 @@ class Insurances extends Component
         $this->resetPage();
     }
 
-    public function updatingType()
+    public function updatingInsuranceType()
     {
         $this->resetPage();
     }
 
-    public function updatingSubType()
+    public function updatingInsuranceSubType()
     {
         $this->resetPage();
     }
