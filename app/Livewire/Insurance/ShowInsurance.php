@@ -4,14 +4,20 @@ namespace App\Livewire\Insurance;
 
 use Livewire\Component;
 use App\Models\Insurance;
+use App\Models\ClaimRating;
 
 class ShowInsurance extends Component
 {
     public Insurance $insurance;
+    public $claimRatings;
 
     public function mount(Insurance $insurance)
     {
         $this->insurance = $insurance;
+        $this->claimRatings = $insurance->claimRatings()
+        ->latest()         // sortiert nach created_at DESC
+        ->take(10)          // nur 3 Bewertungen
+        ->get();
     }
 
     public function render()

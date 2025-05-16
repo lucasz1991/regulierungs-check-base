@@ -26,7 +26,7 @@
                         speed: 2500,
                         loop: true,
                         centeredSlides: true,
-                        slidesPerView: '2',
+                        slidesPerView: '1',
                         disableOnMobile: true,
                         breakpoints: {
                             640: {
