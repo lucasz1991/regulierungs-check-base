@@ -33,23 +33,8 @@
                 <div class="swiper" x-ref="topSwiper">
                     <div class="swiper-wrapper">
                         @foreach ($top5 as $insurance)
-                            <div class="swiper-slide bg-white p-4 rounded shadow h-full">
-                                <div class="grid grid-cols-12 gap-4 mb-4">
-                                    <div class="col-span-2 pr-4">
-                                        <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
-                                            {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
-                                        </div>
-                                    </div>
-                                    <div class="col-span-10">
-                                        <h2 class="text-xl break-words font-semibold mb-2">
-                                        {{ Str::limit($insurance->name, 30)}}
-                                        </h2>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <div class=""><x-insurance.insurance-rating-stars :score="$insurance->claim_ratings_avg_rating_score" /></div>
-                                </div>
-                                <p class="text-sm text-gray-600">{{ $insurance->description }}</p>
+                            <div class="swiper-slide">
+                                <x-insurance.insurance-card :insurance="$insurance" />
                             </div>
                         @endforeach
                     </div>
@@ -89,23 +74,8 @@
                 <div class="swiper" x-ref="flopSwiper">
                     <div class="swiper-wrapper">
                         @foreach ($flop5 as $insurance)
-                            <div class="swiper-slide bg-white p-4 rounded shadow h-full">
-                                <div class="grid grid-cols-12 gap-4 mb-4">
-                                    <div class="col-span-2 pr-4">
-                                        <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
-                                            {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
-                                        </div>
-                                    </div>
-                                    <div class="col-span-10">
-                                        <h2 class="text-xl break-words font-semibold mb-2">
-                                        {{ Str::limit($insurance->name, 30)}}
-                                        </h2>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <div class=""><x-insurance.insurance-rating-stars :score="$insurance->claim_ratings_avg_rating_score" /></div>
-                                </div>
-                                <p class="text-sm text-gray-600">{{ $insurance->description }}</p>
+                            <div class="swiper-slide">
+                                <x-insurance.insurance-card :insurance="$insurance" />
                             </div>
                         @endforeach
                     </div>
@@ -117,27 +87,7 @@
             <h2 class="text-2xl font-bold mb-4 text-gray-900">Gesamtranking</h2>
             <div class="flex flex-col">
                 @foreach ($allInsurances as $insurance)
-                    <div class="p-4  flex items-center justify-between">
-                        <div>
-                                <div class="grid grid-cols-12 gap-4 mb-4">
-                                    <div class="col-span-2 pr-4">
-                                        <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
-                                            {{ strtoupper(substr( $insurance->initials, 0 ,4)) }}
-                                        </div>
-                                    </div>
-                                    <div class="col-span-10">
-                                        <h2 class="text-xl break-words font-semibold mb-2">
-                                        {{ Str::limit($insurance->name, 30)}}
-                                        </h2>
-                                    </div>
-                                </div>
-                            <p class="text-gray-600 text-sm">{{ $insurance->description }}</p>
-                        </div>
-                        <div class="text-yellow-500 font-bold text-xl">
-                        <div class=""><x-insurance.insurance-rating-stars :score="$insurance->claim_ratings_avg_rating_score" /></div>
-
-                        </div>
-                    </div>
+                    <x-insurance.insurance-card :insurance="$insurance" />
                 @endforeach
             </div>
         </div>

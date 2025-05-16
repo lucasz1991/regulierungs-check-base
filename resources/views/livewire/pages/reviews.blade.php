@@ -64,18 +64,7 @@
                 <div class="swiper-wrapper pointer-events-none">
                     @foreach ($ratings as $rating)
                         <div class="bg-white p-4 rounded shadow swiper-slide h-full"  wire:key="rating-{{ $rating->id }}">
-                            <div class="grid grid-cols-12 gap-4 mb-4">
-                                <div class="col-span-2 pr-4">
-                                    <div class="aspect-square w-12 rounded-full flex items-center justify-center text-white text-base font-bold" style="background-color: {{ $rating->insurance->color ?? '#ccc' }};">
-                                        {{ strtoupper(substr( $rating->insurance->initials, 0 ,4)) }}
-                                    </div>
-                                </div>
-                                <div class="col-span-10">
-                                    <h2 class="text-xl break-words font-semibold mb-2">
-                                        {{ $rating->insurance->name }}
-                                    </h2>
-                                </div>
-                            </div>
+                            
                             <div class="flex justify-between items-center">
                                 <x-insurance.insurance-rating-stars :score="$rating->insurance->claim_ratings_avg_rating_score" />
 
