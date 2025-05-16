@@ -31,12 +31,8 @@
                         slidesPerView: '1',
                         disableOnMobile: true,
                         breakpoints: {
-                            640: {
-                                slidesPerView: 2,
-                                spaceBetween: 20,
-                            },
                             768: {
-                                slidesPerView: 3,
+                                slidesPerView: 2,
                                 spaceBetween: 40,
                             },
                         },
