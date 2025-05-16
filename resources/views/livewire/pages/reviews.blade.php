@@ -63,18 +63,8 @@
             <div class="swiper w-full" x-ref="swiper" >
                 <div class="swiper-wrapper pointer-events-none">
                     @foreach ($ratings as $rating)
-                        <div class="bg-white p-4 rounded shadow swiper-slide h-full"  wire:key="rating-{{ $rating->id }}">
-                            
-                            <div class="flex justify-between items-center">
-                                <x-insurance.insurance-rating-stars :score="$rating->insurance->claim_ratings_avg_rating_score" />
-
-                                <div class="text-sm text-gray-500">
-                                     {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
-                                </div>
-                            </div>
-                            <div class="mt-2 text-gray-800">
-                                {{ $rating->comment }}
-                            </div>
+                        <div class="swiper-slide h-full"  wire:key="rating-{{ $rating->id }}">
+                            <x-claim-rating.claim-rating-card :rating="$rating" />
                         </div>
                     @endforeach
                 </div>

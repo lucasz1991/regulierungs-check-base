@@ -10,7 +10,7 @@
                 </div>
                 <div x-data="{ open: false }">
                     <h4 class="text-gray-400 font-semibold text-lg relative max-sm:cursor-pointer" @click="open = !open">
-                            Leistungen 
+                            Funktionen 
                         <svg
                         xmlns="http://www.w3.org/2000/svg" width="16px" height="16px":class="open ? 'transform rotate-180' : ''"
                         class="sm:hidden  transition-all ease-in duration-200 absolute right-0 top-1 fill-[#d6d6d6]" viewBox="0 0 24 24">
@@ -23,8 +23,15 @@
                         <ul class="mt-6 space-y-5">
                             
                             <li>
-                                <a  href="/prices" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Preise</a>
+                                <a  href="/insurances" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Versicherungen</a>
                             </li>
+                            <li>
+                                <a  href="/reviews" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Bewertungen</a>
+                            </li>
+                            <li>
+                                <a  href="/ranking" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Ranking</a>
+                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -61,6 +68,9 @@
                     </h4>
                     <div x-show="open || screenWidth >= 768" x-collapse.duration.1000ms @click.away="open = false"  >
                         <ul class="space-y-5 mt-6 ">
+                            <li>
+                                <a  href="/premium" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Premium</a>
+                            </li>
                             <li>
                             <a href='/faqs' wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>FAQ</a>
                             </li>

@@ -24,14 +24,7 @@
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach($insurance->claimRatings as $claim_rating)
-                        <div class="bg-white rounded-lg border border-gray-200 shadow p-4">
-                            <div class=" flex items-center content-center justify-between">
-                                <x-insurance.insurance-rating-stars :score="$claim_rating->rating_score" />
-                                <p class="text-gray-600 ">
-                                    {{ $claim_rating->created_at ? $claim_rating->created_at->diffForHumans() : 'Datum nicht verfügbar' }}
-                                </p>
-                            </div>
-                        </div>
+                        <x-claim-rating.claim-rating-card :rating="$claim_rating" />
                     @endforeach
                 </div>
             @endif

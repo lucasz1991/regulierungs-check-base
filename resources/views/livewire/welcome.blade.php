@@ -19,4 +19,7 @@
       </div>
     </div>
   </section>
+  <section>
+    <livewire:customer.rating.rating-form />
+  </section>
 </div>

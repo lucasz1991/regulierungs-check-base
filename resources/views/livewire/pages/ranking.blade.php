@@ -85,7 +85,7 @@
         {{-- Gesamtranking --}}
         <div class="mt-12">
             <h2 class="text-2xl font-bold mb-4 text-gray-900">Gesamtranking</h2>
-            <div class="flex flex-col">
+            <div class="flex flex-col space-y-4">
                 @foreach ($allInsurances as $insurance)
                     <x-insurance.insurance-card :insurance="$insurance" />
                 @endforeach

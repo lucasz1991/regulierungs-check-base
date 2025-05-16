@@ -37,7 +37,7 @@
   </section>
     <section x-data="{ showFilters: false }" class="bg-gray-100">
         <div class="container mx-auto p-4 pt-10 pb-8">
-            <div class="mb-4 max-lg:flex max-lg:justify-end">
+            <div class="mb-4 max-xl:flex max-xl:justify-end">
                 <button @click="showFilters = !showFilters" class="text-sm text-blue-600 hover:underline p-2 rounded-full bg-gray-200 mr-3 flex items-center justify-center">
                     <svg :class="{ 'rotate-180': showFilters }"
                         xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 transform transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,8 +46,8 @@
                     <span>Filter</span>                            
                 </button>
             </div>
-            <div class="lg:grid lg:grid-cols-12 lg:gap-6">
-                <div x-show="showFilters" x-transition x-cloak class="filter-sidebar lg:col-span-2 max-lg:absolute max-lg:right-4">
+            <div class="xl:grid xl:grid-cols-12 xl:gap-6">
+                <div x-show="showFilters" x-transition x-cloak class="filter-sidebar xl:col-span-2 max-xl:absolute max-xl:right-4">
                     <div class="relative flex  w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border border border-gray-300 p-2 text-gray-700 shadow-xl shadow-gray-900/5  z-30">
                         <div class="p-2">
                             <div class="relative h-10 w-full min-w-[150px]">
@@ -101,9 +101,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="filter-sidebar" :class="showFilters ? 'lg:col-span-10' : 'lg:col-span-12'" x-transition>
+                <div class="filter-sidebar" :class="showFilters ? 'xl:col-span-10' : 'xl:col-span-12'" x-transition>
                     @if($insurances->count())
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                             @foreach($insurances as $insurance)
                                 <div>
                                     <x-insurance.insurance-card :insurance="$insurance" />
