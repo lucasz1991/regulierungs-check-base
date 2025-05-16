@@ -1,6 +1,5 @@
-<div class="bg-white p-4 rounded shadow  h-full" >
+<div class="bg-blue-50 p-4 rounded shadow  h-full" >
     <div>
-
     </div>
     <div class="flex justify-between items-center">
         <x-insurance.insurance-rating-stars :score="$rating->rating_score" />
@@ -12,6 +11,8 @@
         {{ substr( $rating->attachments['scorings']['ai_overall_comment'], 0 ,90) }} ...
     </div>
     <div class="mt-3">
-        <a href="" class="text-blue-600">mehr lesen ...</a>
+        <a href="" class="text-blue-600">
+            mehr lesen ...
+        </a>
     </div>
 </div>
