@@ -15,7 +15,7 @@ class Reviews extends Component
     public function mount()
     {
         $this->ratings = ClaimRating::with('insurance')->latest()->take(10)->get();
-        $this->average = round(ClaimRating::avg('rating_score'), 1);
+        $this->average = round(ClaimRating::avg('rating_score'), 2);
         $this->totalCount = ClaimRating::count();
     }
 
