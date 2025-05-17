@@ -342,7 +342,6 @@ class RatingForm extends Component
     {
         $this->saveAnswers();
         $ratingquestionnaireversions = RatingQuestionnaireVersion::where('insurance_subtype_id', $this->insuranceSubTypeId)->latest()->first();
-    
         $claimRating = ClaimRating::create([
             'user_id' => Auth::check() ? Auth::id() : null,
             'insurance_type_id' => $this->insuranceTypeId,

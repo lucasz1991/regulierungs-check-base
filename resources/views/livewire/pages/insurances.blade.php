@@ -35,95 +35,83 @@
       </div>
     </div>
   </section>
-    <section x-data="{ showFilters: false }" class="bg-gray-100">
-        <div class="container mx-auto p-4 pt-10 pb-8">
-            <div class="mb-4 max-xl:flex max-xl:justify-end">
-                <button @click="showFilters = !showFilters" class="text-sm text-blue-600 hover:underline p-2 rounded-full bg-gray-200 mr-3 flex items-center justify-center">
-                    <svg :class="{ 'rotate-180': showFilters }"
-                        xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 transform transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    <span>Filter</span>                            
-                </button>
-            </div>
-            <div class="xl:grid xl:grid-cols-12 xl:gap-6">
-                <div x-show="showFilters" x-transition x-cloak class="filter-sidebar xl:col-span-2 max-xl:absolute max-xl:right-4">
-                    <div class="relative flex  w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border border border-gray-300 p-2 text-gray-700 shadow-xl shadow-gray-900/5  z-30">
-                        <div class="p-2">
-                            <div class="relative h-10 w-full min-w-[150px]">
-                                <div class="absolute grid w-5 h-5 top-2/4 right-3 -translate-y-2/4 place-items-center text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
-                                    </svg>
-                                </div>
-                                <input wire:model.live="search"
-                                    class="peer h-full w-full rounded-[7px] border border-blue-200 border-t-transparent bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-200 placeholder-shown:border-t-blue-200 focus:border-2 focus:border-gray-400 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-gray-50"
-                                    placeholder="" />
-                                <label
-                                    class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-400 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-400 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
-                                    Suchen
-                                </label>
-                            </div>
+    <section  class="bg-gray-100">
+        <x-filter-container>
+            <x-slot name="filters">
+                <div class="p-2">
+                    <div class="relative h-10 w-full min-w-[150px]">
+                        <div class="absolute grid w-5 h-5 top-2/4 right-3 -translate-y-2/4 place-items-center text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+                            </svg>
                         </div>
-                        <div class="p-2">
-                            <label class="block text-sm text-gray-600 mb-1">Mind. Bewertungen</label>
-                            <input type="number" wire:model.debounce.500ms="minRatingCount"
-                                min="0"
-                                class="w-full px-3 py-2 border rounded-md text-sm border-blue-200" />
-                        </div>
-                        <div class="p-2">
-                            <label class="block text-sm text-gray-600 mb-1">Mind. Ø Score</label>
-                            <select wire:model="minAvgScore"
-                                    class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
-                                <option value="">Keine Auswahl</option>
-                                @foreach([0.5, 1, 2, 3, 4, 4.5] as $val)
-                                    <option value="{{ $val }}">{{ $val }}+</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="p-2">
-                            <label class="block text-sm text-gray-600 mb-1">Sortierung</label>
-                            <select wire:model="sort"
-                                    class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
-                                <option value="">Keine Auswahl</option>
-                                <option value="name_asc">Name A–Z</option>
-                                <option value="name_desc">Name Z–A</option>
-                                <option value="score_desc">Ø Bewertung absteigend</option>
-                                <option value="score_asc">Ø Bewertung aufsteigend</option>
-                                <option value="ratings_desc">Anzahl Bewertungen absteigend</option>
-                                <option value="ratings_asc">Anzahl Bewertungen aufsteigend</option>
-                            </select>
-                        </div>
-                        <div class="p-2">
-                            <x-buttons.button-basic wire:click="resetFilters" class="mt-4 text-sm text-blue-600 w-full">
-                                Filter zurücksetzen
-                            </x-buttons.button-basic>
-                        </div>
+                        <input wire:model.live="search"
+                            class="peer h-full w-full rounded-[7px] border border-blue-200 border-t-transparent bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-200 placeholder-shown:border-t-blue-200 focus:border-2 focus:border-gray-400 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-gray-50"
+                            placeholder="" />
+                        <label
+                            class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-400 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-400 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
+                            Suchen
+                        </label>
                     </div>
                 </div>
-                <div class="filter-sidebar" :class="showFilters ? 'xl:col-span-10' : 'xl:col-span-12'" x-transition>
-                    @if($insurances->count())
-                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                            @foreach($insurances as $insurance)
-                                <div>
-                                    <x-insurance.insurance-card :insurance="$insurance" />
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="text-center py-10 text-gray-500">
-                            Keine Versicherungen gefunden.
-                        </div>
-                    @endif
-                    @if($insurances->count() >= $perPage * $pages)
-                        <div class="mt-6 text-center">
-                            <x-buttons.button-basic wire:click="loadMore">
-                                Mehr laden
-                            </x-buttons.button-basic>
-                        </div>
-                    @endif
+                <div class="p-2">
+                    <label class="block text-sm text-gray-600 mb-1">Mind. Bewertungen</label>
+                    <input type="number" wire:model.debounce.500ms="minRatingCount"
+                        min="0"
+                        class="w-full px-3 py-2 border rounded-md text-sm border-blue-200" />
                 </div>
-            </div>
-        </div>
+                <div class="p-2">
+                    <label class="block text-sm text-gray-600 mb-1">Mind. Ø Score</label>
+                    <select wire:model="minAvgScore"
+                            class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
+                        <option value="">Keine Auswahl</option>
+                        @foreach([0.5, 1, 2, 3, 4, 4.5] as $val)
+                            <option value="{{ $val }}">{{ $val }}+</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="p-2">
+                    <label class="block text-sm text-gray-600 mb-1">Sortierung</label>
+                    <select wire:model="sort"
+                            class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
+                        <option value="">Keine Auswahl</option>
+                        <option value="name_asc">Name A–Z</option>
+                        <option value="name_desc">Name Z–A</option>
+                        <option value="score_desc">Ø Bewertung absteigend</option>
+                        <option value="score_asc">Ø Bewertung aufsteigend</option>
+                        <option value="ratings_desc">Anzahl Bewertungen absteigend</option>
+                        <option value="ratings_asc">Anzahl Bewertungen aufsteigend</option>
+                    </select>
+                </div>
+                <div class="p-2">
+                    <x-buttons.button-basic wire:click="resetFilters" class="mt-4 text-sm text-blue-600 w-full">
+                        Filter zurücksetzen
+                    </x-buttons.button-basic>
+                </div>
+            </x-slot>
+            <x-slot name="listContent">
+                    @if($insurances->count())
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        @foreach($insurances as $insurance)
+                            <div>
+                                <x-insurance.insurance-card :insurance="$insurance" />
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-10 text-gray-500">
+                        Keine Versicherungen gefunden.
+                    </div>
+                @endif
+                @if($insurances->count() >= $perPage * $pages)
+                    <div class="mt-6 text-center">
+                        <x-buttons.button-basic wire:click="loadMore">
+                            Mehr laden
+                        </x-buttons.button-basic>
+                    </div>
+                @endif
+            </x-slot>
+        </x-filter-container>
+    
     </section>
 </div>

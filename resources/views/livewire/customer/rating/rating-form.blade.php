@@ -13,9 +13,6 @@
         <!-- Modal Dialog -->
         <div x-show="modalIsOpen" x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative text-center mx-auto rounded-lg my-12 shadow-xl transform transition-all container max-w-4xl border border-outline bg-gray-50  w-full  px-6 py-4" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <div class=" ">
-
-
-                
                 {{-- Step 0: Versicherungs typ --}}
                 <div x-show="step == 0"  x-cloak >
                     <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
@@ -655,12 +652,7 @@
                         </div>
                     @endforeach
             </div>
-        
-
-
         </div>
     </div>
     </template>
-    
-
 </div>
