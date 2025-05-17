@@ -1,4 +1,4 @@
-<div class="bg-blue-50 p-4 rounded shadow  h-full" >
+<div class="bg-white p-4 rounded shadow  h-full" >
     @if(!str_contains(request()->path(), 'insurance'))
         <div>
             <div class="flex gap-4">
@@ -9,7 +9,7 @@
                 </div>
                 <div class="grow">
                     <h2 class="text-base break-words ">
-                        {{ substr( $rating->insurance->name, 0 ,25) }}
+                        {{ substr( $rating->insurance->name, 0 ,20) }}
                     </h2>
                 </div>
             </div>

@@ -1,13 +1,13 @@
-<div class="relative bg-gray-50 overflow-hidden pt-6">
+<div class="relative bg-gray-50 overflow-hidden pt-12">
     <div x-data="{
             swiper: null,
             initSwiper() {
                 this.swiper = new Swiper(this.$refs.swiper, {
                     autoplay: {
-                        delay: 1500,
+                        delay: 0,
                     },
                     disableOnInteraction: true,
-                    speed: 2200,
+                    speed: 5000,
                     loop: true,
                     centeredSlides: true,
                     slidesPerView: '1',
