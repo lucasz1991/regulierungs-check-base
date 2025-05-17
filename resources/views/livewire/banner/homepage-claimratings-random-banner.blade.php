@@ -28,10 +28,10 @@
                 });
                 this.swiperclaimRatings.slideNext();
             },
-            stopSwiper() {
+            stopSwiperswiperclaimRatings() {
                 this.swiperclaimRatings.autoplay.stop();
             },
-            startSwiper() {
+            startSwiperswiperclaimRatings() {
                 this.swiperclaimRatings?.autoplay?.start();
             }
         }"
