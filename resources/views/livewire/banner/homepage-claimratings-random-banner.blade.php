@@ -1,7 +1,7 @@
 <div class="relative bg-[#cee5ef] overflow-hidden py-4">
     <div x-data="{
             swiperclaimRatings: null,
-            initSwiper() {
+            initSwiperswiperclaimRatings() {
                 this.swiperclaimRatings = new Swiper(this.$refs.swiperclaimRatings, {
                     autoplay: {
                         delay: 0,
