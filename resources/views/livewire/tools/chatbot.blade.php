@@ -94,7 +94,7 @@
                     x-transition >
                     <template x-for="(message, index) in chatHistory" :key="index">
                         <div class="p-2 rounded-md text-gray-600 md:w-max max-w-xs mt-2 " x-transition
-                        :style="'background-color: ' + (message.role === 'user' ? '#f2f2f2' : '#d69bff2e')">
+                        :style="'background-color: ' + (message.role === 'user' ? '#f2f2f2' : '#0c968fa8')">
                         <strong x-text="message.role === 'user' ? 'Du' : 'Assistent'"></strong>:<br> 
                         <span x-text="message.content"></span>
                         </div>
