@@ -33,10 +33,14 @@
             },
             stopSwiper() {
                 this.swiper.autoplay.stop();
+            },
+            startSwiper() {
+                this.swiper?.autoplay?.start();
             }
         }"
         x-init="initSwiper() "
-        x-on:click="stopSwiper()"
+        x-on:click="stopSwiper(); setTimeout(() => startSwiper(), 5000)"
+
         class=" relative w-full"
         wire:ignore
     >

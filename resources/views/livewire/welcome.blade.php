@@ -1,8 +1,9 @@
 <div  wire:loading.class="cursor-wait">
-  <section class="relative" style="background-image: url('/site-images/background.jpg'); background-size: cover; background-position: 50% 80%;">
-    <div class="absolute inset-0 bg-blue-50 opacity-80">
+  <section class="relative min-h-[70vh] grid content-center kenburns" >
+    <img src="/site-images/background.jpg" alt="">
+    <div class="absolute inset-0 bg-blue-100 opacity-50">
     </div>
-    <div class="max-w-4xl mx-auto text-center  py-16 px-6 md:px-12 relative z-10">
+    <div class="max-w-4xl mx-auto text-center space-y-4 py-16 px-6 md:px-12 relative h-max z-10">
       <h2 class="text-3xl md:text-4xl  text-gray-800 mb-4 mt-5">
         Bewerte deine Versicherung
       </h2>
