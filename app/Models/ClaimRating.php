@@ -48,6 +48,11 @@ class ClaimRating extends Model
         });
     }
 
+    public function comment()
+    {
+        return $this->attachments['scorings']['ai_overall_comment'] ?? '';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

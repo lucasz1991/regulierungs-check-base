@@ -22,8 +22,8 @@
              {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
         </div>
     </div>
-    <div class="mt-2 text-gray-800">
-        {{ substr( $rating->attachments['scorings']['ai_overall_comment'], 0 ,90) }} ...
+    <div class="mt-2 text-gray-800 min-h-16">
+        {{ substr( $rating->attachments['scorings']['ai_overall_comment'], 0 ,70) }} ...
     </div>
     <div class="mt-3">
         <a href="" class="text-blue-600">

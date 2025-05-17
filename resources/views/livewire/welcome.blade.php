@@ -20,6 +20,6 @@
     </div>
   </section>
   <section>
-    <livewire:customer.rating.rating-form />
+    <livewire:banner.homepage-claimratings-random-banner />
   </section>
 </div>
