@@ -24,11 +24,20 @@
                         {{ $insurance->ratings_count() }}
                     </span>
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @foreach($claimRatings as $claim_rating)
-                        <x-claim-rating.claim-rating-card :rating="$claim_rating" />
-                    @endforeach
-                </div>
+                <x-filter.filter-container>
+                    <x-slot name="filters">
+                        <div class="p-2">
+                            <x-filter.filter-search-field wire:model.live="search" />
+                        </div>
+                    </x-slot>
+                    <x-slot name="listContent">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach($claimRatings as $claim_rating)
+                                <x-claim-rating.claim-rating-card :rating="$claim_rating" />
+                            @endforeach
+                        </div>
+                    </x-slot>
+                </x-filter.filter-container>
             @endif
         </div>
     </div>

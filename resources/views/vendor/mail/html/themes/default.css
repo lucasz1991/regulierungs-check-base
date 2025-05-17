@@ -1,5 +1,10 @@
 /* Base */
-
+:root {
+    /* Eigene Farben */
+    --primary-color: #084058; 
+    --secondary-color: #0c968e; 
+    --primary-font-color: #414141;
+  }
 body,
 body *:not(html):not(style):not(br):not(tr):not(code) {
     box-sizing: border-box;
@@ -9,8 +14,8 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 
 body {
     -webkit-text-size-adjust: none;
-    background-color: #f3eadd;  /* Hellgrauer Hintergrund */
-    color: #65765f;  /* Dunkelgrauer Text */
+    background-color: #cffffd;  /* Hellgrauer Hintergrund */
+    color: var(--primary-font-color);  /* Dunkelgrauer Text */
     height: 100%;
     line-height: 1.4;
     margin: 0;
@@ -37,8 +42,7 @@ a img {
 
 /* Typography */
 
-h1 {
-    color: #65765f;  /* Primärfarbe */
+h1 {  /* Primärfarbe */
     font-size: 24px;
     font-weight: bold;
     margin-top: 0;
@@ -138,7 +142,7 @@ img {
 
 .button {
     border-radius: 8px;
-    background-color: #65765f;  /* Primärfarbe */
+    background-color: var(--secondary-color);  /* Primärfarbe */
     margin-bottom: 50px;
     margin-top: 30px;
     color: #ffffff;
@@ -159,7 +163,7 @@ img {
 /* Panels */
 
 .panel {
-    border-left: 4px solid #65765f;
+    border-left: 4px solid  var(--primary-color);
     background-color: #f8f8f8;
     margin: 20px 0;
     padding: 15px;

@@ -39,7 +39,7 @@ class Insurances extends Component
         $this->insuranceSubTypes = InsuranceSubtype::all();
         $this->search = '';
         $this->pages = 1;
-        $this->sort = 'ratings_desc';
+        $this->sort = 'score_desc';
         $this->minRatingCount = 1;
     }
 
@@ -98,6 +98,12 @@ class Insurances extends Component
                     $subQuery->where('insurance_subtypes.id', (int) $this->insuranceSubType);
                 });
             })
+            ->when($this->sort === 'score_desc', fn ($q) => $q->orderByDesc('claim_ratings_avg_rating_score'))
+            ->when($this->sort === 'score_asc', fn ($q) => $q->orderBy('claim_ratings_avg_rating_score'))
+            ->when($this->sort === 'count_desc', fn ($q) => $q->orderByDesc('claim_ratings_count'))
+            ->when($this->sort === 'count_asc', fn ($q) => $q->orderBy('claim_ratings_count'))
+            ->when($this->minRatingCount, fn ($q) => $q->having('claim_ratings_count', '>=', $this->minRatingCount))
+            ->when($this->minAvgScore, fn ($q) => $q->having('claim_ratings_avg_rating_score', '>=', $this->minAvgScore))
             ->paginate($this->perPage*$this->pages);
     
 

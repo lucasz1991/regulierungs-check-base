@@ -35,7 +35,7 @@
       </div>
     </div>
   </section>
-    <section  class="bg-gray-100">
+    <section  class="bg-gray-100 pt-8">
         <x-filter.filter-container>
             <x-slot name="filters">
                 <div class="p-2">
@@ -59,12 +59,15 @@
                             Mind. Ø Sterne
                         </span>
                     </label>
-                    <select wire:model="minAvgScore"
+                    <select wire:model.live="minAvgScore"
                             class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
                         <option value="">Keine Auswahl</option>
-                        @foreach([0.5, 1, 2, 3, 4, 4.5] as $val)
-                            <option value="{{ $val }}">{{ $val }}+</option>
-                        @endforeach
+                        <option value=".1">0,5+</option>
+                        <option value=".2">1+</option>
+                        <option value=".4">2+</option>
+                        <option value=".6">3+</option>
+                        <option value=".8">4+</option>
+                        <option value=".9">4,5+</option>
                     </select>
                 </div>
                 <div class="p-2">
@@ -72,7 +75,7 @@
                         <svg class="w-4 h-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.2299 34.1955"><polygon  points="8.046 6.034 8.046 34.195 4.023 34.195 4.023 6.034 0 6.034 6.034 0 12.069 6.034 8.046 6.034"/><path  d="M14.0804,4.023V0H40.2299V4.023Zm0,10.0575v-4.023h20.115v4.023Zm0,20.115v-4.023h8.046v4.023Zm0-10.0575V20.115H28.1609v4.023Z"/></svg>
                         <span>Sortierung</span>
                     </label>
-                    <select wire:model="sort"
+                    <select wire:model.live="sort"
                             class="w-full px-3 py-2 pr-8 border rounded-md text-sm border-blue-200">
                         <option value="name_asc">Name A–Z</option>
                         <option value="name_desc">Name Z–A</option>
