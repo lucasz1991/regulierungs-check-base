@@ -47,7 +47,7 @@
         {{-- Navigation links/rechts außerhalb --}}
         
         <div class="swiper w-full" x-ref="swiper" >
-            <div class="swiper-wrapper pointer-events-none !ease-linear">
+            <div class="swiper-wrapper  !ease-linear">
                 @foreach ($claimRatings as $claimRating)
                     <div class="swiper-slide h-full px-4">
                         <x-claim-rating.claim-rating-card :rating="$claimRating" />
