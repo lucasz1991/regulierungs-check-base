@@ -1,5 +1,5 @@
 <div  wire:loading.class="cursor-wait">
-  <section class="relative min-h-[70vh] grid content-center kenburns" >
+  <section class="relative min-h-[60vh] grid content-center kenburns" >
     <img  class="!object-center !object-cover" src="/site-images/background.jpg" alt="">
     <div class="absolute inset-0 bg-blue-100 opacity-50">
     </div>
