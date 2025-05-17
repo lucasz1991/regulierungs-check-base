@@ -2,7 +2,7 @@
     <div x-data="{
             swiper: null,
             initSwiper() {
-                this.swiper = new Swiper(this.$refs.swiper, {
+                this.swiperclaimRatings = new Swiper(this.$refs.swiperclaimRatings, {
                     autoplay: {
                         delay: 0,
                     },
@@ -26,24 +26,24 @@
                     },
                     
                 });
-                this.swiper.slideNext();
+                this.swiperclaimRatings.slideNext();
             },
             stopSwiper() {
-                this.swiper.autoplay.stop();
+                this.swiperclaimRatings.autoplay.stop();
             },
             startSwiper() {
-                this.swiper?.autoplay?.start();
+                this.swiperclaimRatings?.autoplay?.start();
             }
         }"
-        x-init="initSwiper() "
-        x-on:click="stopSwiper(); setTimeout(() => startSwiper(), 5000)"
+        x-init="initSwiperswiperclaimRatings() "
+        x-on:click="stopSwiperswiperclaimRatings(); setTimeout(() => startSwiperswiperclaimRatings(), 5000)"
 
         class=" relative w-full"
         wire:ignore
     >
         {{-- Navigation links/rechts außerhalb --}}
         
-        <div class="swiper w-full" x-ref="swiper" >
+        <div class="swiper w-full" x-ref="swiperclaimRatings" >
             <div class="swiper-wrapper  !ease-linear">
                 @foreach ($claimRatings as $claimRating)
                     <div class="swiper-slide h-full px-4">
