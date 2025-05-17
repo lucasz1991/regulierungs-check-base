@@ -1,4 +1,4 @@
-<div class="relative bg-gray-50 overflow-hidden pt-12">
+<div class="relative bg-[#cee5ef] overflow-hidden py-4">
     <div x-data="{
             swiper: null,
             initSwiper() {
@@ -24,10 +24,7 @@
                             slidesPerView: 5,
                         },
                     },
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
+                    
                 });
                 this.swiper.slideNext();
             },
@@ -54,8 +51,6 @@
                     </div>
                 @endforeach
             </div>
-            <!-- If we need pagination -->
-            <div class="swiper-pagination"></div>
         </div>
     </div>
 </div>

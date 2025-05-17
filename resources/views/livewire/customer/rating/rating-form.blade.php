@@ -25,13 +25,13 @@
         <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false" class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <!-- Modal Dialog -->
             <div x-show="modalIsOpen"  x-ref="scrollTarget"  x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative text-center mx-auto rounded-lg  shadow-xl transform transition-all container max-w-4xl border border-outline bg-gray-50  w-full  px-6 py-4" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
-                <div class=" " >
+                <div class="ratingform " >
                     {{-- Step 0: Versicherungs typ --}}
                     <div x-show="step == 0"  x-cloak >
                         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
                         <h2 class="text-lg mb-12">Versicherungskategorie auswählen</h2>
                         <style>
-                            .swiper {
+                            .ratingform .swiper {
                                 padding: 0px 0px 60px 0px;
                             }
                             .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets {

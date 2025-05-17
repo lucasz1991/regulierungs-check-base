@@ -15,7 +15,7 @@ class HomepageClaimratingsRandomBanner extends Component
         $this->claimRatings = ClaimRating::with('insurance')
             ->where('status', 'rated')
             ->inRandomOrder()
-            ->take(10)
+            ->take(15)
             ->get();
     }
 
