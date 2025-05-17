@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 pt-12 py-6">
         <div class="">
             <div class="flex items-center mb-4">
-                <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold" style="background-color: {{ $insurance->color ?? '#ccc' }};">
+                <div class="h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold px-3" style="background-color: {{ $insurance->color ?? '#ccc' }};">
                     {{ strtoupper(substr($insurance->initials, 0, 4)) }}
                 </div>
                 <h1 class="text-2xl font-bold ml-4">{{ $insurance->name }}</h1>
@@ -13,6 +13,15 @@
             @else
                 <span class="text-gray-500">Keine Bewertungen</span>
             @endif
+            <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg flex items-start gap-3">
+                <svg class="w-6 h-6 mt-1 flex-none text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                </svg>
+                <div>
+                    <h3 class="font-semibold text-base mb-1">Noch keine detaillierte Auswertung</h3>
+                    <p class="text-sm">Für diese Versicherung liegen aktuell noch keine ausreichend bewerteten Fälle vor. Sobald erste Bewertungen eingegangen sind, wird hier eine Auswertung angezeigt.</p>
+                </div>
+            </div>
         </div>
     </div>
     <div class="mt-12 bg-gray-50">
