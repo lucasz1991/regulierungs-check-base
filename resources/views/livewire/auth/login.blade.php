@@ -105,16 +105,16 @@
                 Hast du dein Passwort vergessen?
             </a>
         @endif
-        <div class="max-md:space-y-3 max-sm:text-right ml-3">
-            <x-button href="{{ route('register') }}" wire:navigate>
-                Registrieren
-            </x-button>
-            <x-button class="ms-4">
-                Einloggen
-            </x-button>
+        <div class="flex flex-wrap justify-end gap-3 ml-3 max-md:flex-col max-md:items-end flex-row-reverse">
+          <x-button>
+              Einloggen
+          </x-button>
+          <x-button class="ms-0 md:ms-4" href="{{ route('register') }}" wire:navigate>
+              Registrieren
+          </x-button>
         </div>
-    </div>
-</form>
+      </div>
+    </form>
 
             </div>
 

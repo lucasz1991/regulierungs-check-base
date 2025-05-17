@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="pt-3 md:pt-12 bg-[#f8f2e8f2] antialiased">
+    <div class="pt-3 md:pt-12  antialiased">
         <div class="max-w-3xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-6 rounded-md shadow">
                 <h2 class="text-2xl font-semibold mb-2">Deine Sitzung ist abgelaufen!</h2>

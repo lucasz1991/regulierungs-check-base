@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="pt-3 md:pt-12 bg-[#f8f2e8f2] antialiased">
+    <div class="pt-3 md:pt-12  antialiased">
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-6xl font-bold text-red-500">404</h1>
