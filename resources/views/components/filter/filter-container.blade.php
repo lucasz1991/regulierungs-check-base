@@ -21,7 +21,7 @@
                     xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 transform transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
-                <svg class="h-6 w-6 text-gray-600" xmlns="http://www.w3.org/2000/svg"  fill="currentColor" viewBox="0 0 40.2299 36.2069"><path  d="M0,6.0345V2.0115H7.8921v4.023Zm12.0742,0V2.0115H40.2299v4.023ZM0,20.115V16.092H27.88961v4.023Zm32.6158,0V16.092h7.6141v4.023ZM0,34.1955v-4.023H18.02461v4.023Zm22.39561,0v-4.023H40.2299v4.023Z"/><circle  cx="10.0575" cy="4.023" r="4.023"/><circle  cx="30.1724" cy="18.1035" r="4.023"/><path  d="M20.115,28.161a4.023,4.023,0,1,1-4.023,4.023A4.0229,4.0229,0,0,1,20.115,28.161Z"/></svg>                           
+                <svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg"  fill="currentColor" viewBox="0 0 40.2299 36.2069"><path  d="M0,6.0345V2.0115H7.8921v4.023Zm12.0742,0V2.0115H40.2299v4.023ZM0,20.115V16.092H27.88961v4.023Zm32.6158,0V16.092h7.6141v4.023ZM0,34.1955v-4.023H18.02461v4.023Zm22.39561,0v-4.023H40.2299v4.023Z"/><circle  cx="10.0575" cy="4.023" r="4.023"/><circle  cx="30.1724" cy="18.1035" r="4.023"/><path  d="M20.115,28.161a4.023,4.023,0,1,1-4.023,4.023A4.0229,4.0229,0,0,1,20.115,28.161Z"/></svg>                           
             </button>
         </div>
         <div class="xl:grid xl:grid-cols-12 xl:gap-6">
