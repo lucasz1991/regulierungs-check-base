@@ -12,7 +12,7 @@ class Insurances extends Component
 {
     use WithPagination;
 
-    public $search = '';
+    public $search;
     public $insuranceTypes = [];
     public $insuranceType = null;
     public $insuranceSubTypes = [];
@@ -21,10 +21,10 @@ class Insurances extends Component
     public $pages = 1;
 
 
-    public $sort,
-    $minRatingCount,
-    $minAvgScore,
-    $onlyActive;
+    public $sort;
+    public $minRatingCount;
+    public $minAvgScore;
+    public $onlyActive;
 
 
     protected $queryString = [
@@ -32,6 +32,17 @@ class Insurances extends Component
         'insuranceType' => ['except' => ''],
         'insuranceSubType' => ['except' => '']
     ];
+
+    public function mount()
+    {
+        $this->insuranceTypes = InsuranceType::all();
+        $this->insuranceSubTypes = InsuranceSubtype::all();
+        $this->search = '';
+        $this->pages = 1;
+        $this->sort = 'ratings_desc';
+        $this->minRatingCount = 1;
+    }
+
 
     public function updatingSearch()
     {
@@ -89,8 +100,7 @@ class Insurances extends Component
             })
             ->paginate($this->perPage*$this->pages);
     
-            $this->insuranceTypes = InsuranceType::all();
-            $this->insuranceSubTypes = InsuranceSubtype::all();
+
     
         return view('livewire.pages.insurances', [
             'insurances' => $insurances,
