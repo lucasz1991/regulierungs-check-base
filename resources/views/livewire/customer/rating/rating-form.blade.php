@@ -4,19 +4,18 @@
      showFormModal: @entangle('showFormModal'),
      modalIsOpen: false,
     }"
-x-init="() => {
-    $watch('step', () => { 
-        $nextTick(() => {
-            const el = $refs.scrollTarget;
-            const container = $refs.scrollcontainer;
-            if (el) {
-                const top = el.getBoundingClientRect().top + window.scrollY - 100; // 100px Offset
-                container.scrollTo({ top, behavior: 'smooth' });
-            }
+    x-init="() => {
+        $watch('step', () => { 
+            $nextTick(() => {
+                const el = $refs.scrollTarget;
+                const container = $refs.scrollcontainer;
+                if (el) {
+                    const top = el.getBoundingClientRect().top + window.scrollY - 100; // 100px Offset
+                    container.scrollTo({ top, behavior: 'smooth' });
+                }
+            });
         });
-    });
-}"
-
+    }"
 >
     <x-buttons.button-basic  x-on:click="modalIsOpen = true" :mode="'primary'">
         Jetzt bewerten
