@@ -346,7 +346,7 @@
                                 {{-- Karte: Vollzahlung --}}
                                 
                                 <div class="mb-4">
-                                    <div class="mt-4 text-left bg-secondary-50 text-white rounded-lg shadow-md p-4">
+                                    <div class="mt-4 text-left bg-secondary text-white rounded-lg shadow-md p-4">
                                         <h3 class="text-lg font-semibold mb-2">Bitte wähle eine Option:</h3>
                                         {{-- Eingabefeld je nach Typ --}}
                                         @switch($regulationType)

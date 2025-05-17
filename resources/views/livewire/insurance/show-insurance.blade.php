@@ -14,7 +14,9 @@
                 <span class="text-gray-500">Keine Bewertungen</span>
             @endif
         </div>
-        <div class="mt-12">
+    </div>
+    <div class="mt-12 bg-gray-50">
+        <div class="container mx-auto px-4 pt-12 py-6 ">
             @if($insurance->ratings_count() > 0)
                 <h2 class="flex items-center justify-center text-lg px-2 py-1 w-max mb-5">
                     <span class="w-max">Bewertungen</span>

@@ -41,18 +41,14 @@
                 <p class="lg:w-2/3 mx-auto leading-relaxed text-base text-gray-500">
                     Wähle das passende Modell für deine Bedürfnisse – von grundlegenden Funktionen bis hin zu exklusiven Vorteilen.
                 </p>
-                <div class="flex mx-auto border-2 border-indigo-500 rounded overflow-hidden mt-6">
-                    <button class="py-1 px-4 bg-indigo-500 text-white focus:outline-none">Monatlich</button>
-                    <button class="py-1 px-4 focus:outline-none">Jährlich</button>
-                </div>
             </div>
 
             <div class="flex flex-wrap justify-evenly -m-4">
                 @foreach($subscriptionPlans as $index => $subscriptionPlan)
                     <div class="p-4 xl:w-1/4 md:w-1/2 w-full">
-                        <div class="h-full p-6 rounded-lg border-2 {{ $index === 1 ? 'border-indigo-500' : 'border-gray-300' }} flex flex-col relative overflow-hidden">
+                        <div class="h-full p-6 rounded-lg border-2 {{ $index === 1 ? 'border-secondary-800' : 'border-gray-300' }} flex flex-col relative overflow-hidden">
                             @if($index === 1)
-                                <span class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">BELIEBT</span>
+                                <span class="bg-secondary-800 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">BELIEBT</span>
                             @endif
                             <h2 class="text-sm tracking-widest title-font mb-1 font-medium">{{ strtoupper($subscriptionPlan->name) }}</h2>
                             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">{{ $subscriptionPlan->price_monthly }}/Monat</h1>
@@ -64,7 +60,7 @@
                                     {{ $permission }}
                                 </p>
                             @endforeach
-                            <button wire:click="$set('selectedSubscriptionPlan',{{ $subscriptionPlan }})"  wire:loading.attr="disabled" class="flex items-center mt-auto text-white {{ $index === 1 ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-gray-400 hover:bg-gray-500' }} border-0 py-2 px-4 w-full focus:outline-none rounded">
+                            <button wire:click="$set('selectedSubscriptionPlan',{{ $subscriptionPlan }})"  wire:loading.attr="disabled" class="flex items-center mt-auto text-white {{ $index === 1 ? 'bg-secondary-800 hover:bg-secondary-900' : 'bg-gray-400 hover:bg-gray-500' }} border-0 py-2 px-4 w-full focus:outline-none rounded">
                                 Modell anzeigen
                             </button>
                             <p class="text-xs text-gray-500 mt-3">Modell „{{ $subscriptionPlan->name }}“ basiert auf echten Nutzererfahrungen.</p>
