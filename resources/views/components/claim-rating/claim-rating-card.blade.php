@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="mt-2 text-gray-800 max-h-16 truncate text-ellipsis">
-    {{ Str::limit($rating->attachments['scorings']['ai_overall_comment'] ?? '', 85) }}
+    {{ $rating->attachments['scorings']['ai_overall_comment'] ?? '' }}
     </div>
     <div class="mt-3">
         <a href="{{ route('review.show', $rating->id) }}" class="text-blue-600 hover:underline">
