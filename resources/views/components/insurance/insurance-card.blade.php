@@ -21,7 +21,7 @@
                 @endif
             </div>
             <div>
-                    <span class="font-sm text-gray-700 p-1 px-2 bg-slate-100 rounded-lg">Ø Regulierungszeitraum {{ $insurance->avgRatingDuration() ?? 29 }}</span>
+                    <span class="font-sm text-gray-700 p-1 px-2 bg-slate-100 rounded-lg">Ø Dauer: {{ $insurance->avgRatingDuration() ?? 29 }} Tage</span>
             </div>
         </div>
     </div>
