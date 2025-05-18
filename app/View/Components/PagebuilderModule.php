@@ -17,7 +17,16 @@ class PagebuilderModule extends Component
     public function __construct($page = null, $position = 'page')    
     {
         if(!$page){
-            $page = trim(Request::path(), '/') ?: 'start';
+            $segments = explode('/', Request::path());
+                $page = end($segments);
+                if ($page === '') {
+                    $page = 'start';
+                } else {
+                    $lastSegment = end($segments);
+                    if (is_numeric($lastSegment) || strlen($lastSegment) > 25) {
+                        $page = $segments[count($segments) - 2];
+                    }
+                }
         }
         $this->page = $page;
 
