@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\InsuranceType;
+use Illuminate\Support\Str;
 
 
 class InsuranceTypeSeeder extends Seeder

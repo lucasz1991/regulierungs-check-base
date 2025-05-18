@@ -18,7 +18,7 @@ class InsuranceInsuranceTypeSeeder extends Seeder
             if ($insurance) {
                 $syncData = [];
                 foreach ($typeIds as $index => $typeId) {
-                    $syncData[$typeId] = ['order_id' => $index + 1];
+                    $syncData[$typeId] = ['order_column' => $index + 1];
                 }
                 $insurance->insuranceTypes()->syncWithoutDetaching($syncData);
             }
