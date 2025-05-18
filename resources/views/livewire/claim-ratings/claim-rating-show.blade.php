@@ -24,44 +24,79 @@
             <div><span class="mr-4">Detail-Kommentar:</span>{{ $claimRating->answers['regulationDetail']['textarea_value'] ?? '–' }}</div>
         </div>
         <div class="bg-gray-200 rounded shadow p-6">
-                <h2 class="text-xl md:text-xl  text-gray-800 mb-4 mt-5">
+                <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
                 Ki Analyse:
             </h2>
-                    @forelse($claimRating->attachments['scorings']['questions'] as $question)
-                        <div class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4">
-                            <p class="text-sm text-gray-600"><strong>Frage:</strong> {{ $question['question_title'] }}</p>
-                            <p class="text-sm text-gray-600"><strong>Beschreibung:</strong> {{ $question['question_text'] }}</p>
-                            <p class="text-sm text-gray-700 mt-1"><strong>Antwort:</strong> {{ $question['answer'] }}</p>
-                            @if($question['type'] == 'calc')
-                                <p class="text-sm text-gray-700 mt-1"><x-insurance.insurance-rating-stars :score="$question['score']" /></p>
-                            @endif
-                            @if($question['type'] == 'ai')
-                                <p class="text-sm text-gray-700 mt-1"><x-insurance.insurance-rating-stars :score="$question['ai_score']" /></p>
-                                <p class="text-sm text-gray-700 mt-1"><strong>Kommentar:</strong> {{ $question['ai_comment'] }}</p>
-                            @endif
-                        </div>
-                    @empty
-                        <div class="text-sm text-gray-500">Keine variablen Fragen gefunden.</div>
-                    @endforelse
-                    <div class=" mt-1 py-4">
-                        <p class="text-sm text-gray-700">
-                            <strong>Scoring variable Fragen:</strong> 
-                            @if($claimRating->attachments['scorings']['variable_questions'] != null) 
-                                <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['variable_questions']" /> 
-                            @endif 
-                        </p>
-                    </div>
-                    <hr class="my-4">
-                <div class="text-sm text-gray-600 mb-4">
-                    <strong class="my-4">Gesammt Scoring:</strong> 
-                    <x-insurance.insurance-rating-stars :score="$claimRating->score()" />
+            <div class="bg-white border border-gray-200 rounded-md p-4 mb-4">
 
+                @forelse($claimRating->attachments['scorings']['questions'] as $question)
+                    <div class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4">
+                        <p class="text-sm text-gray-600"><strong>Frage:</strong> {{ $question['question_title'] }}</p>
+                        <p class="text-sm text-gray-600"><strong>Beschreibung:</strong> {{ $question['question_text'] }}</p>
+                        <p class="text-sm text-gray-700 mt-1"><strong>Antwort:</strong> {{ $question['answer'] }}</p>
+                        @if($question['type'] == 'calc')
+                            <p class="text-sm text-gray-700 mt-1"><x-insurance.insurance-rating-stars :score="$question['score']" /></p>
+                        @endif
+                        @if($question['type'] == 'ai')
+                            <p class="text-sm text-gray-700 mt-1"><x-insurance.insurance-rating-stars :score="$question['ai_score']" /></p>
+                            <p class="text-sm text-gray-700 mt-1"><strong>Kommentar:</strong> {{ $question['ai_comment'] }}</p>
+                        @endif
+                    </div>
+                @empty
+                    <div class="text-sm text-gray-500">Keine variablen Fragen gefunden.</div>
+                @endforelse
+                <div class=" mt-1 py-4">
+                    <p class="text-sm text-gray-700">
+                        <strong>Scoring variable Fragen:</strong> 
+                        @if($claimRating->attachments['scorings']['variable_questions'] != null) 
+                            <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['variable_questions']" /> 
+                        @endif 
+                    </p>
                 </div>
-        
-                <div class="prose max-w-full">
-                    <h2 class="text-lg font-semibold mb-2">Kommentar</h2>
-                    <p>{{ $claimRating->comment() ?: 'Kein Kommentar vorhanden.' }}</p>
-                </div>
+            </div>
+                    <hr class="my-4">
+                    <div class="flex gap-4">
+                        <div class="bg-primary-50 p-4 rounded w-2/3">
+                            <div class="text-sm text-gray-600 mb-4">
+                                <strong class="my-4">Gesammt Scoring:</strong> 
+                                <x-insurance.insurance-rating-stars :score="$claimRating->score()" />
+            
+                            </div>
+                    
+                            <div class="prose max-w-full">
+                                <h2 class="text-lg font-semibold mb-2">Kommentar</h2>
+                                <p>{{ $claimRating->comment() ?: 'Kein Kommentar vorhanden.' }}</p>
+                            </div>
+
+                        </div>    
+                        <div class="bg-white p-4 rounded w-1/3  items-center">
+                            <strong class="mb-4">Scorings:</strong> 
+                            <div label="Regulations Dauer">
+                                <div class="flex items-center justify-between space-x-2">
+                                    <span class="mr-4">Regulations Dauer:</span>
+                                    <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['regulation_speed']" />
+                                </div>
+                            </div>
+                            <div label="Kundenservice">
+                                <div class="flex items-center justify-between space-x-2">
+                                <span class="mr-4">Kundenservice:</span>
+                                    <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['customer_service']" />
+                                </div>
+                            </div>
+                            <div label="Fairness">
+                                <div class="flex items-center justify-between space-x-2">
+                                <span class="mr-4">Fairness:</span>
+                                    <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['fairness']" />
+                                </div>
+                            </div>
+                            <div label="Transparency">
+                                <div class="flex items-center justify-between space-x-2">
+                                <span class="mr-4">Transparency:</span>
+                                    <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['transparency']" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
