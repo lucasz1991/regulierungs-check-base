@@ -45,7 +45,7 @@ use App\Livewire\ClaimRatings\ClaimRatingShow;
     Route::get('/privacypolicy', PrivacyPolicy::class)->name('privacypolicy');
     Route::get('/contact', Contact::class)->name('contact');
     Route::get('/sitemap', Sitemap::class)->name('sitemap');
-    Route::get('/claim-rating/success/{hash}', ClaimRatingSuccess::class)->name('claim-rating.success');
+    Route::get('/claim-rating/claim-rating-success/{hash}', ClaimRatingSuccess::class)->name('claim-rating.success');
     Route::get('/insurances', Insurances::class)->name('insurances');
     Route::get('/reviews', Reviews::class)->name('reviews');
     Route::get('/ranking', Ranking::class)->name('ranking');
