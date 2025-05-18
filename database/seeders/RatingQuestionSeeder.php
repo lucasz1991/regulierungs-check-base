@@ -42,6 +42,23 @@ class RatingQuestionSeeder extends Seeder
                 'read_only' => false,
                 'tags' => ['service', 'kommentar'],
             ],
+            [
+                'title' => 'Weiterempfehlung',
+                'question_text' => 'Würden Sie diese Versicherung basierend auf Ihrer Erfahrung weiterempfehlen?',
+                'type' => 'rating',
+                'is_required' => true,
+                'meta' => ['scale' => 5],
+                'help_text' => '1 = auf keinen Fall, 5 = auf jeden Fall',
+                'default_value' => 3,
+                'is_active' => true,
+                'frontend_title' => 'Weiterempfehlung',
+                'frontend_description' => 'Wie wahrscheinlich ist es, dass Sie diese Versicherung weiterempfehlen?',
+                'weight' => 7,
+                'input_constraints' => ['min' => 1, 'max' => 5],
+                'read_only' => false,
+                'tags' => ['weiterempfehlung', 'zufriedenheit'],
+            ],
+            
         ];
         foreach ($questions as $question) {
             RatingQuestion::create($question);
