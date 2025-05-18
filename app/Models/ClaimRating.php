@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Controllers\Customer\ClaimRatingController;
+use Carbon\Carbon;
 
 class ClaimRating extends Model
 {
@@ -56,6 +57,23 @@ class ClaimRating extends Model
     public function score()
     {
         return $this->rating_score ?? '';
+    }
+
+    public function ratingDuration()
+    {
+        $start = isset($this->answers['selectedDates']['started_at'])
+            ? Carbon::parse($this->answers['selectedDates']['started_at'])
+            : null;
+    
+        if (!$start) {
+            return null; // oder 0 oder "unbekannt", je nach Bedarf
+        }
+    
+        $end = isset($this->answers['is_closed']) && $this->answers['is_closed']
+            ? Carbon::parse($this->answers['selectedDates']['ended_at'] ?? now())
+            : now();
+    
+        return $start->diffInDays($end);
     }
 
     public function user()
