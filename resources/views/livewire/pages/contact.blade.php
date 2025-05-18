@@ -2,7 +2,7 @@
     <section class=" h-[400px] z-10 relative">
         <div id="map" class="relative h-[400px] overflow-hidden bg-cover bg-[50%] bg-no-repeat">
                 <!-- Das Overlay -->
-                <div style="
+            <div style="
                 position: absolute;
                 top: 0;
                 left: 0;
