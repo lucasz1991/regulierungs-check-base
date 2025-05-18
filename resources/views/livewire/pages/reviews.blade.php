@@ -11,7 +11,7 @@
                 <p class="text-gray-600">{{ $totalCount }} Bewertungen insgesamt</p>
             </div>
         </div>
-        <div class="container mx-auto py-8">
+        <div class="container mx-auto ">
             {{-- Einzelbewertungen --}}
                 <x-filter.filter-container>
                     <x-slot name="filters">

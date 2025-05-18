@@ -1,5 +1,5 @@
-<div class="p-6 container mx-auto space-y-6">
-    <div class="p-4 bg-gray-100 border rounded space-y-6">
+<div class="p-6 container mx-auto">
+    <div class="space-y-6">
         <h2 class="text-2xl font-semibold">KI-Test: Testen Sie gerne die Analyse einer einzelnen Antwort </h2>
 
         <h4 for="question" class="block text-sm font-medium text-gray-700">{{ $questionTitle }}</h4>
