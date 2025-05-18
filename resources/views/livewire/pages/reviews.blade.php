@@ -10,7 +10,8 @@
                     <x-insurance.insurance-rating-stars :score="$average" />
                 <p class="text-gray-600">{{ $totalCount }} Bewertungen insgesamt</p>
             </div>
-        
+        </div>
+        <div class="container mx-auto py-8">
             {{-- Einzelbewertungen --}}
                 <x-filter.filter-container>
                     <x-slot name="filters">
