@@ -90,7 +90,7 @@
                             </div>
                             <div label="Transparency">
                                 <div class="flex items-center justify-between space-x-2">
-                                <span class="mr-4">Transparency:</span>
+                                <span class="mr-4">Transparenz:</span>
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['transparency']" />
                                 </div>
                             </div>
