@@ -28,9 +28,7 @@ class PageHeader extends Component
                 $this->page = 'start';
             } else {
                 $lastSegment = end($segments);
-                if (is_numeric($lastSegment)) {
                     $this->page = $segments[count($segments) - 2];
-                }
             }
         $webPage = WebPage::where('slug', $this->page)->first();
         $this->isWebPage = $webPage !== null;
