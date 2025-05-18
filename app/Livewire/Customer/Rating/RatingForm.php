@@ -189,8 +189,8 @@ class RatingForm extends Component
         if (is_array($this->insuranceId)) {
             $this->insuranceId = $this->insuranceId['value'];
         }
-        $this->answers['insuranceId'] = $this->insuranceId;
         $this->insurance = Insurance::find($this->insuranceId);
+        $this->answers['insuranceId'] = $this->insurance->id;
     }
 
     public function updatedRegulationType()
@@ -346,7 +346,7 @@ class RatingForm extends Component
             'user_id' => Auth::check() ? Auth::id() : null,
             'insurance_type_id' => $this->insuranceTypeId,
             'insurance_subtype_id' => $this->insuranceSubTypeId,
-            'insurance_id' => $this->insuranceType->id,
+            'insurance_id' => $this->insurance->id,
             'rating_questionnaire_versions_id' => optional($ratingquestionnaireversions)->id,
             'answers' => $this->answers,
             'status' => 'pending',

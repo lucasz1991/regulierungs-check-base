@@ -36,7 +36,7 @@
             }
         }"
         x-init="initSwiperswiperclaimRatings() "
-        x-on:click="stopSwiperswiperclaimRatings(); setTimeout(() => startSwiperswiperclaimRatings(), 5000)"
+        x-on:click="this.swiperclaimRatings.stopSwiperswiperclaimRatings(); setTimeout(() => this.swiperclaimRatings.startSwiperswiperclaimRatings(), 5000)"
 
         class=" relative w-full"
         wire:ignore
