@@ -1,5 +1,5 @@
 <div>
-    <section class=" h-[400px] z-30 relative">
+    <section class=" h-[400px] z-10 relative">
         <div id="map" class="relative h-[400px] overflow-hidden bg-cover bg-[50%] bg-no-repeat">
                 <!-- Das Overlay -->
                 <div style="
