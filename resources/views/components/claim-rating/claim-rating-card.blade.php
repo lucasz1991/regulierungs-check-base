@@ -1,7 +1,7 @@
 <div class="bg-white p-4 rounded shadow-xl  border  border-gray-200 h-full" >
     @if(!str_contains(request()->path(), 'insurance'))
         <div>
-            <div class="flex gap-4">
+            <div class="flex gap-4 overflow-hidden">
                 <div class="w-14 flex-none ">
                     <div class=" w-min rounded-xl flex items-center justify-center text-white text-base  px-2 " style="background-color: {{ $rating->insurance->color ?? '#ccc' }};">
                         {{ strtoupper(substr( $rating->insurance->initials, 0 ,4)) }}
