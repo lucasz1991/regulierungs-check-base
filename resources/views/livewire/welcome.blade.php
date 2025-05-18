@@ -14,7 +14,7 @@
         <div class="flex space-x-4 items-center justify-center mb-4 w-full">
             <livewire:customer.rating.rating-form />
             <x-buttons.button-basic href="/insurances" :mode="'success'">
-                Vergleichen
+                Erfahren
             </x-buttons.button-basic>
         </div>
       </div>

@@ -26,7 +26,7 @@
         </div>
         <div class="xl:grid xl:grid-cols-12 xl:gap-6">
             
-            <div x-show="showFilters"  x-cloak class="filter-sidebar xl:col-span-2 max-xl:absolute max-xl:right-4 z-40">
+            <div x-show="showFilters"  x-cloak class="filter-sidebar xl:col-span-2 max-xl:absolute max-xl:right-4 z-30">
                 <div x-show="showFilters" x-transition class="max-xl:fixed xl:hidden inset-0 transform transition-all" x-on:click="showFilters = false">
                     <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                 </div>
