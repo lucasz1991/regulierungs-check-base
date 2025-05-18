@@ -53,6 +53,11 @@ class ClaimRating extends Model
         return $this->attachments['scorings']['ai_overall_comment'] ?? '';
     }
 
+    public function score()
+    {
+        return $this->rating_score ?? '';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -45,8 +45,8 @@
                             </label>
                             <select wire:model.live="sort"
                                     class="w-full px-3 py-2 pr-8 border rounded-md text-sm border-blue-200">
-                                <option value="name_asc">Name A–Z</option>
-                                <option value="name_desc">Name Z–A</option>
+                                    <option value="created_at_desc">Datum ↓</option>
+                                    <option value="created_at_asc">Datum ↑</option>
                                 <option value="score_desc">Ø Sterne ↓</option>
                                 <option value="score_asc">
                                     Ø Sterne ↑

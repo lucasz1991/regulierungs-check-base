@@ -28,7 +28,7 @@ export default {
                     DEFAULT: '#084058',
                     light: '#0b5879',
                     dark: '#084058',
-                    50: '#bbebff',
+                    50: '#eefaff',
                     100: '#94defd',
                     200: '#75cdf3',
                     300: '#46b6e6',

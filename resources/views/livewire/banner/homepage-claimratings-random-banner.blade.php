@@ -1,4 +1,4 @@
-<div class="relative bg-[#fafeff] overflow-hidden py-4">
+<div class="relative bg-primary-50 overflow-hidden py-4">
     <div x-data="{
             swiperclaimRatings: null,
             initSwiperswiperclaimRatings() {
