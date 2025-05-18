@@ -1,5 +1,5 @@
 <div  wire:loading.class="cursor-wait">
-  <section class="relative min-h-[40vh] xs:min-h-[50vh] grid content-center overflow-hidden" >
+  <section class="relative min-h-[40vh] xs:min-h-[60vh] grid content-center overflow-hidden" >
     <img  class="h-full w-full !object-center !object-cover absolute" src="/site-images/background.jpg" alt="">
     <div class="absolute inset-0 bg-blue-100 opacity-50">
     </div>
