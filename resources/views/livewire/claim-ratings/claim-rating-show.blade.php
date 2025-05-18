@@ -55,7 +55,7 @@
                 </div>
             </div>
                     <hr class="my-4">
-                    <div class="flex gap-4">
+                    <div class="lg:flex gap-4">
                         <div class="bg-primary-50 p-4 rounded w-full lg:w-2/3">
                             <div class="text-sm text-gray-600 mb-4">
                                 <strong class="my-4">Gesammt Scoring:</strong> 
