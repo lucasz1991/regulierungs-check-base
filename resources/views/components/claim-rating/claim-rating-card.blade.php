@@ -1,4 +1,4 @@
-<div class="bg-white p-4 rounded shadow  h-full" >
+<div class="bg-white p-4 rounded shadow-xl  h-full" >
     @if(!str_contains(request()->path(), 'insurance'))
         <div>
             <div class="flex gap-4">
