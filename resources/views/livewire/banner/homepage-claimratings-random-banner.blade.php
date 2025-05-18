@@ -1,4 +1,4 @@
-<div style="background-image:url({{ asset('/site-images/bg_footer.jpg') }});" class="bg-cover bg-center" >
+<div style="background-image:url({{ asset('/site-images/bg-cover2.jpg') }});" class="bg-cover bg-center" >
 
     <div class="relative bg-primary-50/10 overflow-hidden py-4">
         <div x-data="{
