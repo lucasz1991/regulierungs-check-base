@@ -56,7 +56,7 @@
             </div>
                     <hr class="my-4">
                     <div class="flex gap-4">
-                        <div class="bg-primary-50 p-4 rounded w-2/3">
+                        <div class="bg-primary-50 p-4 rounded w-full lg:w-2/3">
                             <div class="text-sm text-gray-600 mb-4">
                                 <strong class="my-4">Gesammt Scoring:</strong> 
                                 <x-insurance.insurance-rating-stars :score="$claimRating->score()" />
@@ -69,7 +69,7 @@
                             </div>
 
                         </div>    
-                        <div class="bg-white p-4 rounded w-1/3  items-center">
+                        <div class="bg-white p-4 rounded w-full lg:w-1/3  items-center">
                             <strong class="mb-4">Scorings:</strong> 
                             <div label="Regulations Dauer">
                                 <div class="flex items-center justify-between space-x-2">
