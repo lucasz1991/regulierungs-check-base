@@ -33,7 +33,10 @@ class Insurance extends Model
         return $this->belongsToMany(InsuranceSubType::class, 'insurance_insurance_type')
             ->withPivot('order_column');
     }
-    
+    public function avgRatingDuration()
+    {
+        return 30;
+    }
 
     public function claimRatings()
     {

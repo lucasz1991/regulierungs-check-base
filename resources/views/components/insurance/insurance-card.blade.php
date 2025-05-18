@@ -23,7 +23,7 @@
             <div>
                     <span class="font-medium">Ø Regulierungs Dauer:</span>
                     <span class="text-gray-700">
-                        {{ $insurance->avg-rating-duration ?? 30 }}
+                        {{ $insurance->avgRatingDuration ?? 30 }}
                     </span> 
             </div>
         </div>
