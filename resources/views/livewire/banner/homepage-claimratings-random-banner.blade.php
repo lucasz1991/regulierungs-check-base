@@ -1,6 +1,6 @@
 <div style="background-image:url({{ asset('/site-images/bg-cover2.jpg') }});" class="bg-cover bg-center" >
 
-    <div class="relative bg-primary-50/10 overflow-hidden py-4">
+    <div class="relative bg-white/50 overflow-hidden py-4">
         <div x-data="{
                 swiperclaimRatings: null,
                 initSwiperswiperclaimRatings() {
