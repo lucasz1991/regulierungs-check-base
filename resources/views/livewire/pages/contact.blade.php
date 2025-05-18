@@ -9,10 +9,14 @@
                 width: 100%;
                 height: 100%;
                 pointer-events: none; 
-                background: ;
+                background: var(--secondary-color); opacity:0.2;
             ">
             </div>
-            <img src="/site-images/background.jpg" alt="">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d75830.19174830109!2d9.9176227!3d53.5632388!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sde!2sde!4v1747545555115!5m2!1sde!2sde" 
+                data-cookieconsent="marketing"
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
         </div>
         <div class=" max-w-7xl px-6 md:px-12 mx-auto h-0">
             <div
