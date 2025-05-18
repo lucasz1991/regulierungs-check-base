@@ -21,11 +21,10 @@
             @endif
             <hr class="my-4">
             <div><span class="mr-4">Details:</span>{{ $claimRating->answers['regulationDetail']['selected_value'] ?? '–' }}</div>
-            <div><span class="mr-4">Detail-Kommentar:</span>{{ $claimRating->answers['regulationDetail']['textarea_value'] ?? '–' }}</div>
         </div>
         <div class="bg-gray-200 rounded shadow p-6">
                 <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
-                Ki Analyse:
+                Auswertung:
             </h2>
             <div class="bg-white border border-gray-200 rounded-md p-4 mb-4">
 
@@ -73,7 +72,7 @@
                             <strong class="mb-4">Scorings:</strong> 
                             <div label="Regulations Dauer">
                                 <div class="flex items-center justify-between space-x-2">
-                                    <span class="mr-4">Regulations Dauer:</span>
+                                    <span class="mr-4">Dauer:</span>
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['regulation_speed']" />
                                 </div>
                             </div>
