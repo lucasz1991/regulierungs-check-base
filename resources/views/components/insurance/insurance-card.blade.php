@@ -21,12 +21,10 @@
                 @endif
             </div>
             <div>
-                @if($insurance->claim_ratings_count > 0)
-                    <span class="font-medium">Bewertungen:</span>
+                    <span class="font-medium">Ø Regulierungs Dauer:</span>
                     <span class="text-gray-700">
-                        {{ $insurance->claim_ratings_count ?? 0 }}
+                        {{ $insurance->avg-rating-duration ?? 30 }}
                     </span> 
-                @endif
             </div>
         </div>
     </div>
