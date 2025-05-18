@@ -2,6 +2,7 @@
     x-data="{ 
      step: @entangle('step'),
      showFormModal: @entangle('showFormModal'),
+     insuranceSubTypeId: @entangle('insuranceSubTypeId'),
      modalIsOpen: false,
     }"
     x-init="() => {
@@ -144,7 +145,7 @@
 
                             }
                         </style>
-                        <div x-data="{ insuranceSubTypeId: @entangle('insuranceSubTypeId') }" >
+                        <div >
                             <h2 class="text-lg mb-12">Versicherungsart auswählen</h2>
                             <div class="max-w-md mx-auto" :class="{ 'selected': insuranceSubTypeId != null }">
                                 <select wire:model.live="insuranceSubTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 

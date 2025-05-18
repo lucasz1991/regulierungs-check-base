@@ -86,14 +86,14 @@ class AIEvalController extends Controller
             - Die Kundenantworten sind direkt enthalten und liefern dir die Einschätzung des Kunden in eigenen Worten.
 
             Antwortformat:
-            ```json
+            
             {
             "overall_score": 0.75,
             "regulation_speed": 0.9,
             "customer_service": 0.6,
             "fairness": 0.5,
             "transparency": 0.7,
-            "comment": "4-5 zeileiger Kommentar auf Deutsch" // Ein 4-5 zeileiger Kommentar, der die Bewertung der Antwort zusammenfasst. Dieser Kommentar sollte prägnant und verständlich sein, um die Bewertung zu erklären.
+            "comment": "4-5 zeileiger Kommentar auf Deutsch"
             }
             ';
         $requestData = [

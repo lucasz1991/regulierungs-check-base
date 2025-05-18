@@ -24,6 +24,7 @@ class RatingForm extends Component
     public $insuranceSubTypes = [];
     public $insurances = [];
     public $insuranceId = null;
+    public $insurance;
 
     public $is_closed = null;               // falls der fall noch nicht abgeschlossen ist
     public $regulationType = null;         // z. B. 'voll', 'teil', 'abgelehnt'
