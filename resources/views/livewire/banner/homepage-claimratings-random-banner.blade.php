@@ -43,7 +43,7 @@
     >
         {{-- Navigation links/rechts außerhalb --}}
         
-        <div class="swiper w-full" x-ref="swiperclaimRatings" >
+        <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
             <div class="swiper-wrapper  !ease-linear">
                 @foreach ($claimRatings as $claimRating)
                     <div class="swiper-slide h-full px-4">

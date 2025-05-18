@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="mt-2 text-gray-800">
-        {{ substr( $rating->attachments['scorings']['ai_overall_comment'], 0 ,60) }} ...
+        {{ substr( $rating->attachments['scorings']['ai_overall_comment'], 0 ,35) }} ...
     </div>
     <div class="mt-3">
         <a href="{{ route('review.show', $rating->id) }}" class="text-blue-600 hover:underline">
