@@ -28,7 +28,7 @@ class PageHeader extends Component
                 $this->page = 'start';
             } else {
                 $lastSegment = end($segments);
-                if (is_numeric($lastSegment)) {
+                if (is_numeric($lastSegment) || strlen($lastSegment) > 25) {
                     $this->page = $segments[count($segments) - 2];
                 }
             }
