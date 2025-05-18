@@ -36,7 +36,12 @@ class Insurance extends Model
 
     public function avgRatingDuration()
     {
-        return $this->claimRatings()->avg('ratingDuration');
+        return round(
+            $this->claimRatings->map(function ($rating) {
+                return $rating->ratingDuration();
+            })->filter()->avg(),
+            1
+        );
     }
 
     public function claimRatings()

@@ -23,7 +23,7 @@
             <div>
                     <span class="font-medium">Ø Dauer:</span>
                     <span class="text-gray-700">
-                        {{ $insurance->avgRatingDuration() ?? 30 }}
+                        {{ $insurance->avgRatingDuration() ?? 29 }}
                     </span> 
             </div>
         </div>
