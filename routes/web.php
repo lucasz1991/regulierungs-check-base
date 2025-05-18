@@ -31,6 +31,7 @@ use App\Livewire\Pages\Ranking;
 use App\Livewire\Pages\Premium;
 
 use App\Livewire\Insurance\ShowInsurance;  
+use App\Livewire\ClaimRatings\ClaimRatingShow;
 
 
 
@@ -49,7 +50,9 @@ use App\Livewire\Insurance\ShowInsurance;
     Route::get('/reviews', Reviews::class)->name('reviews');
     Route::get('/ranking', Ranking::class)->name('ranking');
     Route::get('/premium', Premium::class)->name('premium');
-    Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');;
+    Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');
+    Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
+
 
 
 

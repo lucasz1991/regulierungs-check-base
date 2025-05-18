@@ -47,7 +47,7 @@ class AIEvalController extends Controller
 
             "{
                 "score": "0.01", // für das schlechteste und "0.99" für das beste
-                "comment": "Kurze Begründung auf Deutsch" // Ein kurzer Kommentar, der die Bewertung der Antwort zusammenfasst. Dieser Kommentar sollte prägnant und verständlich sein, um die Bewertung zu erklären.
+                "comment": "Ein 4-5 zeileige Begründung auf Deutsch" // Ein 4-5 zeileiger Kommentar, der die Bewertung der Antwort zusammenfasst. Dieser Kommentar sollte prägnant und verständlich sein, um die Bewertung zu erklären.
             }"';
 
         $requestData = [
@@ -93,7 +93,7 @@ class AIEvalController extends Controller
             "customer_service": 0.6,
             "fairness": 0.5,
             "transparency": 0.7,
-            "comment": "Insgesamt positive Bewertung trotz Kritik an der Bearbeitungsdauer."
+            "comment": "4-5 zeileiger Kommentar auf Deutsch" // Ein 4-5 zeileiger Kommentar, der die Bewertung der Antwort zusammenfasst. Dieser Kommentar sollte prägnant und verständlich sein, um die Bewertung zu erklären.
             }
             ';
         $requestData = [

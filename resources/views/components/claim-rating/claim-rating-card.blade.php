@@ -26,8 +26,9 @@
         {{ substr( $rating->attachments['scorings']['ai_overall_comment'], 0 ,60) }} ...
     </div>
     <div class="mt-3">
-        <a href="" class="text-blue-600">
-            mehr lesen ...
+        <a href="{{ route('review.show', $rating->id) }}" class="text-blue-600 hover:underline">
+            mehr lesen …
         </a>
+
     </div>
 </div>

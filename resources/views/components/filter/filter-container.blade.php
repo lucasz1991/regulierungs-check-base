@@ -14,7 +14,7 @@
     x-init="init()"
     {{ $attributes->merge(['class' => '']) }}
 >
-    <div class="container mx-auto  pb-8">
+    <div class="container mx-auto p-4 pb-8">
         <div class="mb-4 max-xl:flex max-xl:justify-end">
             <button @click="showFilters = !showFilters" class="text-sm text-blue-600 hover:underline p-2 rounded-full bg-gray-200 mr-3 flex items-center justify-center shadow-xl shadow-gray-900/5 border border-gray-300">
                 <svg :class="{ 'xl:rotate-180 max-xl:rotate-0': !showFilters, 'max-xl:rotate-180 xl:rotate-0': showFilters }"

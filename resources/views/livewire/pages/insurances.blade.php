@@ -7,8 +7,9 @@
         Vergleiche Versicherungen 
       </h2>
       <p class="text-lg md:text-xl text-gray-700 pb-8">
-        fair, anonym und öffentlich. Erfahre, wie schnell und gerecht andere Kunden entschädigt wurden. Gemeinsam schaffen wir Transparenz im Versicherungsdschungel.
-      </p>
+        Finde heraus, welche Versicherer wirklich überzeugen.<br>
+        Unsere Auswertungen basieren auf echten Erfahrungen – anonym, unabhängig und verständlich aufbereitet.      
+        </p>
       <div>
         <div class=" mb-4 w-full">
             <div class="grid grid-cols-12 ">
