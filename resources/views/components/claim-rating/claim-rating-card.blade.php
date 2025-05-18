@@ -9,7 +9,7 @@
                 </div>
                 <div class="grow">
                     <h2 class="text-base break-words  truncate text-ellipsis">
-                        {{ $rating->insurance->name }}
+                        {{ substr( $rating->insurance->name, 0 ,40) }}
                     </h2>
                 </div>
             </div>
