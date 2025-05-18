@@ -15,13 +15,13 @@
                     disableOnMobile: true,
                     breakpoints: {
                         1000: {
-                            slidesPerView: 3,
+                            slidesPerView: 2,
                         },
                         1200: {
-                            slidesPerView: 4,
+                            slidesPerView: 3,
                         },
                         1400: {
-                            slidesPerView: 5,
+                            slidesPerView: 4,
                         },
                     },
                     

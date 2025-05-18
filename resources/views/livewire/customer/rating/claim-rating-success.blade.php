@@ -14,8 +14,8 @@
 
             <br><br>
             <span class="block text-sm text-red-700 font-semibold">
-                Um deine Bewertung zu verifizieren und anonymisiert öffentlich sichtbar zu machen, 
-                musst du dich registrieren oder einloggen.
+                Damit deine Bewertung verifiziert und anonymisiert veröffentlicht sowie in die Auswertung einbezogen werden kann, musst du dich registrieren oder einloggen.
+                Ohne eine Registrierung kann deine Bewertung leider nicht berücksichtigt werden.
             </span>
 
             <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
@@ -28,7 +28,7 @@
             </div>
 
             <p class="text-sm text-gray-500 mt-4">
-                Wenn du keine Verifizierung durchführst, bleibt deine Bewertung anonym und wird ggf. nicht veröffentlicht.
+                Wenn du keine Verifizierung durchführst, bleibt deine Bewertung anonym und wird nicht in die Analyse aufgenommen.
             </p>
         @endif
     </p>
