@@ -1,6 +1,6 @@
 <div  wire:loading.class="cursor-wait">
-  <section class="relative min-h-[60vh] grid content-center kenburns" >
-    <img  class="!object-center !object-cover" src="/site-images/background.jpg" alt="">
+  <section class="relative min-h-[60vh] grid content-center overflow-hidden" >
+    <img  class="!object-center !object-cover absolute" src="/site-images/background.jpg" alt="">
     <div class="absolute inset-0 bg-blue-100 opacity-50">
     </div>
     <div class="max-w-4xl mx-auto text-center space-y-4 py-16 px-6 md:px-12 relative h-max z-10">
