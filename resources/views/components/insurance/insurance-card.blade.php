@@ -21,10 +21,7 @@
                 @endif
             </div>
             <div>
-                    <span class="font-medium">Ø Dauer:</span>
-                    <span class="text-gray-700">
-                        {{ $insurance->avgRatingDuration() ?? 29 }}
-                    </span> 
+                    <span class="font-medium text-gray-700 p-2 bg-slate-300 rounded">{{ $insurance->avgRatingDuration() ?? 29 }} Tage Ø Dauer</span>
             </div>
         </div>
     </div>
