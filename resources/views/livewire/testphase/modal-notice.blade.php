@@ -26,7 +26,7 @@
 
         <a href="{{ route('contact') }}">
             <x-button class="ml-3">
-                Feedback geben
+                Feedback
             </x-button>
         </a>
     </div>
