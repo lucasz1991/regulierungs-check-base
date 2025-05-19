@@ -10,14 +10,17 @@
         <div 
              class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 m-4">
              <div name="title" class="border-b mb-4">
-                Willkommen zur Testphase
+                <h3 class="font-bold ">Willkommen zu RegulierungsCheck</div>
             </div>
 
-    <div name="content">
-        <p class="text-gray-600 leading-relaxed">
-            Diese Plattform befindet sich aktuell in der <strong>Testphase</strong>. Bitte nutze möglichst <strong>Testdaten</strong> und hilf uns mit deinem Feedback.
-        </p>
-    </div>
+            <div name="content">
+    <p class="text-gray-600 leading-relaxed">
+        RegulierungsCheck ist eine Plattform zur Bewertung und Analyse von Schadenregulierungen durch Versicherungen. Sie befindet sich derzeit in einer <strong>Testphase</strong>, in der alle Funktionen ausprobiert und erste Rückmeldungen gesammelt werden sollen.<br><br>
+        Bitte verwenden Sie möglichst <strong>Testdaten / keine echten Fälle</strong>, da noch nicht alle Prozesse final sind. Ihr Feedback ist sehr wertvoll und hilft dabei, die Plattform weiter zu verbessern.<br><br>
+        Nach dem Test können Sie uns Ihre Eindrücke gerne über die <a href="{{ route('contact') }}" class="text-blue-600 hover:underline">Kontaktseite</a> mitteilen.
+    </p>
+</div>
+
 
     <div name="footer" class="flex  justify-between content-center mt-4">
         <x-button wire:click="hide">
