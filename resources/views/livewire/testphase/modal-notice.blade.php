@@ -24,12 +24,12 @@
      
      
                  <div name="footer" class="flex  justify-between content-center mt-4">
-                     <x-button wire:click="hide">
+                     <x-buttons.button-basic wire:click="hide">
                          Verstanden
-                     </x-button>
-                         <x-button  href="/contact" class="ml-3">
+                     </x-buttons.button-basic>
+                         <x-buttons.button-basic  href="/contact" class="ml-3">
                              Feedback
-                         </x-button>
+                         </x-buttons.button-basic>
                  </div>
              </div>
          </div>
