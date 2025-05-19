@@ -40,7 +40,7 @@ class Contact extends Component
             'message.string' => 'Die Nachricht muss aus Zeichen bestehen.',
         ]);
         try {
-            $adminEmail = 'kontakt@regulierungs-check.de';
+            $adminEmail = 'info@regulierungs-check.de';
 
             // Benachrichtigung an den Administrator senden
             Notification::route('mail', $adminEmail)
