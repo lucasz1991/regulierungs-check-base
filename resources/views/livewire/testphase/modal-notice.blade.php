@@ -7,7 +7,7 @@
          x-transition.opacity
          x-cloak
          class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div @click.outside="open = false"
+        <div 
              class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 m-4">
              <div name="title" class="border-b mb-4">
                 Willkommen zur Testphase
