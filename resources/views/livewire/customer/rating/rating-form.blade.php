@@ -181,7 +181,7 @@
                                     >
                                     <option value="">Bitte auswählen</option>
                                     @foreach ($insuranceSubTypes as $insuranceSubType)
-                                        <option value="{{ $insuranceSubType->id }}" :class="{ 'selected': insuranceSubTypeId != null }">{{ $insuranceSubType->name }}</option>
+                                        <option value="{{ $insuranceSubType->id }}" :class="{ 'selected': insuranceSubTypeId != null }" class="truncate text-ellipsis">{{ $insuranceSubType->name }}</option>
                                     @endforeach
                                 </select>
                                 <div id="spacerInsuranceSubTypeId" class="transform transition-all" ></div>
@@ -236,7 +236,7 @@
                                         wire:ignore>
                                 <option value="">Bitte auswählen</option>
                                 @foreach ($insurances ?? [] as $insurance)
-                                    <option value="{{ $insurance->id }}" :class="{ 'selected': insuranceSubTypeId != null }">{{ Str::limit($insurance->name, 25) }}</option>
+                                    <option value="{{ $insurance->id }}" :class="{ 'selected': insuranceSubTypeId != null }" class="truncate text-ellipsis">{{ Str::limit($insurance->name, 25) }}</option>
                                 @endforeach
                             </select>
                             <div id="spacerInsuranceId" class="transform transition-all" ></div>
