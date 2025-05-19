@@ -23,4 +23,6 @@
   <section>
     <livewire:banner.homepage-claimratings-random-banner />
   </section>
+  <livewire:testphase.modal-notice lazy />
+
 </div>
