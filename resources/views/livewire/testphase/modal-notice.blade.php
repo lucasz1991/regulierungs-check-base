@@ -16,7 +16,7 @@
                 <p class="text-gray-600 leading-relaxed">
                     RegulierungsCheck ist eine Plattform zur Bewertung und Analyse von Schadenregulierungen durch Versicherungen. Sie befindet sich derzeit in einer <strong>Testphase</strong>, in der alle Funktionen ausprobiert und erste Rückmeldungen gesammelt werden sollen.<br><br>
                     Bitte verwenden Sie möglichst <strong>Testdaten / keine echten Fälle</strong>, da noch nicht alle Prozesse final sind. Ihr Feedback ist sehr wertvoll und hilft dabei, die Plattform weiter zu verbessern.<br><br>
-                    Nach dem Test können Sie uns Ihre Eindrücke gerne über die <a href="{{ route('contact') }}" class="text-blue-600 hover:underline">Kontaktseite</a> mitteilen.
+                    Nach dem Test können Sie uns Ihre Eindrücke gerne über die <a href="/contact" class="text-blue-600 hover:underline">Kontaktseite</a> mitteilen.
                 </p>
             </div>
 
@@ -25,7 +25,7 @@
                 <x-button wire:click="hide">
                     Verstanden
                 </x-button>
-                    <x-button  href="{{ route('contact') }}" class="ml-3">
+                    <x-button  href="/contact" class="ml-3">
                         Feedback
                     </x-button>
             </div>
