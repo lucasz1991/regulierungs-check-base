@@ -1,5 +1,5 @@
 <div class="antialiased" wire:loading.class="cursor-wait">
-    <div class="container mx-auto px-5 pb-12">
+    <div class="container mx-auto px-5 py-12">
         <div class="">
             <div class="faq-container ">
                 <div class="mb-6">
