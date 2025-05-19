@@ -24,7 +24,7 @@ class PagebuilderModule extends Component
                 } else {
                     $lastSegment = end($segments);
                     if (is_numeric($lastSegment) || strlen($lastSegment) > 25) {
-                        $page = $segments[count($segments) - 2];
+                        $page = $segments[count($segments) - 2] ?? 'start';
                     }
                 }
         }

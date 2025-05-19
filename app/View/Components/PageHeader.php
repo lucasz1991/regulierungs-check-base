@@ -29,7 +29,7 @@ class PageHeader extends Component
             } else {
                 $lastSegment = end($segments);
                 if (is_numeric($lastSegment) || strlen($lastSegment) > 25) {
-                    $this->page = $segments[count($segments) - 2];
+                    $this->page = $segments[count($segments) - 2] ?? 'start';
                 }
             }
         $webPage = WebPage::where('slug', $this->page)->first();

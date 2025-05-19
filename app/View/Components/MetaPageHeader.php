@@ -27,7 +27,7 @@ class MetaPageHeader extends Component
         $currentSlug = trim(Request::path(), '/') ?: 'start';
         if (strlen($currentSlug) > 25 || is_numeric($currentSlug)) {
             $segments = explode('/', Request::path());
-            $currentSlug = $segments[count($segments) - 2];
+            $currentSlug = $segments[count($segments) - 2] ?? 'start';
         }
         // Versuchen, eine passende WebPage aus der Datenbank zu laden
         $webPage = WebPage::where('slug', $currentSlug)->first();
