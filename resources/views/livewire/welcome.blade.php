@@ -12,7 +12,7 @@
       </p>
       <div>
         <div class="flex space-x-4 items-center justify-center mb-4 w-full">
-            <livewire:customer.rating.rating-form />
+            <livewire:customer.rating.rating-form lazy />
             <x-buttons.button-basic href="/insurances" :mode="'success'">
                 Erfahren
             </x-buttons.button-basic>
