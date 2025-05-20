@@ -1559,3 +1559,12 @@ svg .zoom-in-out.duration-8{
   background-color:#fff
 }
 
+
+section.home-banner{
+  min-height: 40vh;
+}
+@media (max-width: 500px) {
+  section.home-banner{
+    min-height: 60vh;
+  }
+}
