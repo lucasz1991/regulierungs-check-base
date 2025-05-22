@@ -9,19 +9,33 @@ class SearchModal extends Component
 {
     public $show = false;
     public $query = '';
+    public $searchType = 'insurance';
+
     public $resultsInsurances = [];
+
 
     public function updatedQuery()
     {
         if (strlen($this->query) < 2) {
-            $this->results = [];
+            $this->resultsInsurances = [];
             return;
         }
 
-        $this->resultsInsurances = Insurance::where('name', 'like', '%' . $this->query . '%')
-        ->limit(10)
-        ->get();
-    
+        switch ($this->searchType) {
+            case 'insurance_type':
+                $this->resultsInsurances = InsuranceType::where('name', 'like', '%' . $this->query . '%')
+                    ->get()->toArray();
+                break;
+            case 'content':
+                $this->resultsInsurances = Insurance::where('description', 'like', '%' . $this->query . '%')
+                    ->get()->toArray();
+                break;
+            default:
+                $this->resultsInsurances = Insurance::where('name', 'like', '%' . $this->query . '%')
+                    ->limit(10)
+                    ->get();
+                break;
+        }
     }
 
     public function selectResult($id)

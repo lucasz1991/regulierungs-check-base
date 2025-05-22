@@ -30,7 +30,7 @@
     <body class=" antialiased ">
         <div id="main" class="snap-y">
             @livewire('user-alert')
-            <header class="snap-start pt-14">
+            <header class="snap-start">
                 @livewire('user-navigation-menu')
             </header>
             <!-- Page Heading -->

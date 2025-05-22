@@ -20,10 +20,5 @@
             </svg>
         </div>
     @endfor
-    <span class="ml-2 text-sm text-gray-700">
-        {{ number_format($scoreZeroToFive, 1) }}
-        @if($score > 0)
-            <span class="text-gray-500">/ 5</span>
-        @endif
-    </span>
+    
 </div>
