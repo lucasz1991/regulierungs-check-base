@@ -374,7 +374,7 @@
                                              </x-nav-link>
                                          @endif  
                                          <div class="md:hidden block mt-6">
-                                             <div class="border-t border-gray-200"></div>
+                                             <div class="border-t border-gray-200 mb-6"></div>
                                              @auth
                                              <div class="block px-4 py-2 text-xs text-gray-400">
                                                  {{ __('Konto verwalten') }}
@@ -398,14 +398,14 @@
                                                  </x-nav-link>
                                              </form>
                                              @else
-                                                 <x-nav-link href="/login">
+                                                 <x-nav-link href="/login" wire:navigate >
                                                      <svg class="w-5 h-5  mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 14v3m4-6V7a3 3 0 1 1 6 0v4M5 11h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"/>
                                                      </svg>
              
                                                      {{ __('Anmelden') }}
                                                  </x-nav-link>
-                                                 <x-nav-link href="/register">
+                                                 <x-nav-link href="/register" wire:navigate >
                                                      <svg class="w-5 h-5  mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                          <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="1.5" d="M7 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h1m4-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm7.441 1.559a1.907 1.907 0 0 1 0 2.698l-6.069 6.069L10 19l.674-3.372 6.07-6.07a1.907 1.907 0 0 1 2.697 0Z"/>
                                                      </svg>
@@ -415,8 +415,8 @@
              
                                          </div>
                                      </div>
-                                     <div class="md:hidden max-md:flex self-end  bottom-0 left-0 justify-center p-4 space-x-4 w-full bg-white  z-20 border-t border-gray-200">
-                                         <ul class="mt-10 flex space-x-5">
+                                     <div class="md:hidden max-md:flex self-end  bottom-0 left-0 justify-center p-4 pb-0 space-x-4 w-full bg-white  z-20 border-t border-gray-200">
+                                         <ul class=" flex space-x-5">
                                              <li>
                                              <a href='' target="_blank">
                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="fill-gray-300 hover:fill-gray-500 w-10 h-10"
