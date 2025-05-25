@@ -1,7 +1,7 @@
 <div x-data="{ openSearchMenu: @entangle('openSearchMenu') }" @keydown.window.escape="openSearchMenu = false"  class="h-full">
     <!-- Such-Icon -->
-    <div @click="() => { openSearchMenu = !openSearchMenu; }"  class="flex h-full  mr-8  transition-all duration-300 ease-in-out" >
-        <div class="flex  pb-2 pt-3 px-3 mr-8 rounded-t-full transition-all duration-300 absolute h-min bottom-[20%]"  :class="openSearchMenu ? 'text-secondary bg-gray-200 border-t border-x  border-gray-300 translate-y-[1px] rounded-b-0 !bottom-0' : 'text-gray-500 translate-y-0 rounded-b-full'">
+    <div @click.prevent="() => { openSearchMenu = !openSearchMenu; }"  class="flex h-full w-16 transition-all duration-300 ease-in-out" >
+        <div x-cloak class="flex  pt-3 px-3 mr-8 rounded-t-full transition-all duration-300 absolute h-min bottom-[15%] xs:bottom-[20%] bg-gray-100 pb-2"  :class="openSearchMenu ? 'text-secondary bg-gray-200 border-t border-x  border-gray-300 translate-y-[1px] rounded-b-0 !bottom-0 !pb-0' : 'text-gray-500 translate-y-0 rounded-b-full'">
             <svg 
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6  hover:text-gray-700 cursor-pointer transition-all duration-300 " 
@@ -17,14 +17,14 @@
         <div id="Search-menü" class="relative z-40">
             <div 
                 x-show="openSearchMenu"
-                @click="() => { openSearchMenu = false; }"
+                @click="() => { openSearchMenu = !openSearchMenu; }"
                 x-transition.opacity
                 class="fixed inset-0 bg-black bg-opacity-40"
                 x-cloak
             ></div>
-            <div     x-trap.inert.noscroll="openSearchMenu"
-                    :class="openSearchMenu ? 'translate-y-0' : 'translate-y-[-200%]'"
-                    class="fixed  bg-gray-200 w-full p-6 border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
+            <div x-trap.inert.noscroll="openSearchMenu"
+                :class="openSearchMenu ? 'translate-y-0' : 'translate-y-[-200%]'"
+                class="fixed  bg-gray-200 w-full p-6 border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
                     <!-- Overlay -->
 
 
@@ -38,13 +38,13 @@
                                 class="shrink-0 z-20 inline-flex items-center py-2.5 px-4 text-sm font-medium text-white bg-primary-800 border border-primary-700 rounded-s-lg hover:bg-primary-700 focus:outline-none"
                             >
                                 @if($searchType == 'insurances')
-                                    Versicherungen
+                                    Versicher.
                                 @elseif($searchType == 'types')
                                     Branchen
                                 @elseif($searchType == 'infos')
-                                    Informationen
+                                    Info's
                                 @else
-                                    Alle Kategorien
+                                    Alles
                                 @endif
                                 <svg class="w-2.5 h-2.5 ms-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
@@ -88,8 +88,8 @@
                                     type="search" 
                                     id="search-dropdown" 
                                     wire:model.live="query" 
-                                    class="block p-2.5 w-full text-base  text-gray-900 bg-gray-50 rounded-e-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500" 
-                                    placeholder="Suche Informationen oder Versicherungen..." 
+                                    class="block p-2.5 w-full text-base  bg-white text-gray-900 bg-gray-50 rounded-e-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+                                    placeholder="Suchen..." 
                                     required 
                                 />
                             </div>

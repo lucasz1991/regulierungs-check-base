@@ -2,7 +2,7 @@
 <div>
 
     <!-- Such-Modal -->
-    <div x-data="{ open: @entangle('show') }"
+    <div x-data="{ open: @entangle('showPreflightModal') }"
          x-show="open"
          x-transition.opacity
           x-trap.inert.noscroll="open"

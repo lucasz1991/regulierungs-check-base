@@ -14,7 +14,7 @@
         isMobile = window.innerWidth <= 768;
     })"
 
-    x-on:scroll.window.debounce.50ms="
+    x-on:scroll.window="
         scrollTop = window.scrollY;
         isScrolled = scrollTop > 0;
 
@@ -49,10 +49,10 @@
         <nav x-ref="nav"  :style="(!showNav && !isMobileMenuOpen ) ? 'margin-top: -'+navHeight+'px': 'margin-top:0px;' " class="fixed  w-screen bg-white   z-50 transition-all duration-300 ease-in-out"  
                 wire:loading.class="cursor-wait"
             >
-             <div class="w-full border-b border-gray-300 px-8">
+             <div class="w-full border-b border-gray-300 px-3 md:px-8">
 
                  <!-- Primary Navigation Menu -->
-                 <div class="container mx-auto flex flex-wrap justify-between items-center">
+                 <div class="container mx-auto flex flex-wrap justify-between items-center  ">
                          <div class="max-md:order-1  md:order-2 self-stretch" @click="isMobileMenuOpen = false">
                              <livewire:tools.search-modal />
                          </div>
@@ -253,7 +253,7 @@
                                  @endauth
                              </div>
                              
-                            <a class="inline-flex items-center p-2 ml-1  md:hidden focus:outline-none"
+                            <a class="inline-flex items-center p-2  md:hidden focus:outline-none"
                                 @click="isMobileMenuOpen = !isMobileMenuOpen; $dispatch('navhide')">
                                  <div class=" z-50  text-sm text-gray-500 rounded-lg hover:bg-gray-100  burger-container "
                                         :class="isMobileMenuOpen ? 'is-open' : ''" >
@@ -274,12 +274,13 @@
                                  x-transition:leave-end="opacity-0"
                                  :style="isMobile ? 'top: ' + navHeight + 'px; height: calc(100vh - ' + navHeight + 'px);' : ''"
                                  :class="isMobileMenuOpen ? 'max-md:inset-0  max-md:bg-black max-md:bg-opacity-50 max-md:z-30' : ''"   
-                                 @click="isMobileMenuOpen = false" 
+                                 
                                  x-cloak   class="max-md:order-3 md:order-1 max-md:fixed  " >
                                  
                                  <div @click.prevent="isMobileMenuOpen = true" 
-                                         :class="isMobileMenuOpen ? 'max-md:translate-x-0' : 'max-md:translate-x-full'"       
-                                         x-cloak  class="grid  content-between transition-transform  ease-out duration-400  max-md:bg-white max-md:min-w-80 max-md:right-0 max-md:h-full max-md:fixed max-md:overflow-y-auto max-md:py-5 max-md:px-3  max-md:border-r max-md:border-gray-200">
+                                         :class="isMobileMenuOpen ? 'max-md:translate-x-0' : 'max-md:translate-x-full'"    
+                                         :style="isMobile ? 'height: calc(100vh - ' + navHeight + 'px);' : ''"   
+                                         x-cloak  class="grid  content-between transition-transform  ease-out duration-400  max-md:bg-white  max-md:right-0 max-md:h-full max-md:fixed max-md:overflow-y-auto max-md:py-5 max-md:px-3  max-md:border-r max-md:border-gray-200">
                                      <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex  w-full  " >
                                          <!-- Gäste-Spezifische Navigation -->
                                          <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
@@ -304,8 +305,10 @@
                                              {{ __('Ranking ') }}
                                          </x-nav-link> -->
                                          
-             
-                                             <div x-data="{ openaboutus: false }" @click.away="openaboutus = false"  class="relative md:px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 md:hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" >
+                                         @php
+                                            $isActive = request()->is('aboutus', 'faqs', 'howto', 'contact');
+                                        @endphp
+                                             <div x-data="{ openaboutus: false }" @click.away="openaboutus = false"   class="relative md:px-1 pt-1 border-b  text-sm font-medium leading-5  focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out {{ $isActive ? 'md:border-primary-500 text-gray-900' : 'text-gray-500 hover:text-gray-700 border-transparent' }}" >
                                                      <div class="flex items-center cursor-pointer max-md:text-lg max-md:px-3" @click="openaboutus = !openaboutus">
                                                          <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                              <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
@@ -316,8 +319,8 @@
                                                          </svg>
              
                                                      </div>
-                                                     <div x-show="openaboutus" x-transition x-cloak class="md:bg-white md:right-0 mt-3  z-30" :class="screenWidth <= 768 ? 'relative' : 'absolute rounded-lg shadow w-44 z-40 overflow-hidden'">
-                                                         <ul class=" max-md:space-y-4 max-md:pt-4 text-sm text-gray-500 hover:text-gray-700" :class="screenWidth <= 768 ? '' : 'divide-y divide-gray-100'">
+                                                     <div x-show="openaboutus" x-transition x-cloak class="md:bg-white md:right-0 md:mt-6 mt-3  z-30" :class="isMobile ? 'relative' : 'absolute rounded-lg shadow w-44 z-40 overflow-hidden'">
+                                                         <ul class=" max-md:space-y-4 max-md:pt-4 text-sm text-gray-500 hover:text-gray-700" :class="isMobile ? '' : 'divide-y divide-gray-100'">
                                                              <li>
                                                                  <a href="/aboutus" wire:navigate class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
                                                                      <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
