@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class RatingForm extends Component
 {
-
+ 
     public $insuranceTypeId = null;
     public $insuranceType;
     public $insuranceSubTypeId = null;
@@ -28,8 +28,15 @@ class RatingForm extends Component
 
     public $is_closed = null;               // falls der fall noch nicht abgeschlossen ist
     public $regulationType = null;         // z. B. 'voll', 'teil', 'abgelehnt'
-    public $regulationDetail = null;     // z. B. 'innerhalb von 1 Woche', 'nur teilweise anerkannt'
+    public $regulationDetails = [];     // z. B. 'innerhalb von 1 Woche', 'nur teilweise anerkannt'
     public $regulationComment = null;    // Freitext dazu
+    public $contractDetails = [
+        'contract_coverage_amount' => null, 
+        'contract_deductible_amount' => null, 
+        'claim_amount' => null, 
+        'claim_settlement_amount' => null, 
+        'textarea_value' => null
+    ];
 
     public $selectedDates = null;
     public $started_at = null;
@@ -39,7 +46,7 @@ class RatingForm extends Component
 
     public $showFormModal = false;
     public $step = 0;
-    public $standardSteps = 6;
+    public $standardSteps = 7;
     public $totalSteps = 0;
     
     public $questions = [];
@@ -112,7 +119,7 @@ class RatingForm extends Component
                 'type' => 'select',
                 'is_required' => true,
                 'meta' => null,
-                'help_text' => null,
+                'help_text' => 'Bitte wählen Sie eine Option aus. Falls der Fall noch nicht abgeschlossen ist, wählen Sie "Austehend".',
                 'default_value' => null,
                 'is_active' => true,
                 'frontend_title' => '',
@@ -129,7 +136,7 @@ class RatingForm extends Component
                 'type' => 'radio-textarea',
                 'is_required' => false,
                 'meta' => null,
-                'help_text' => null,
+                'help_text' => 'Wenn Sie "Andere Gründe" auswählen, geben Sie bitte Details im Textfeld an.  ',
                 'default_value' => null,
                 'is_active' => true,
                 'frontend_title' => '',
@@ -141,6 +148,23 @@ class RatingForm extends Component
             ],
             (object)[
                 'id' => 6,
+                'title' => 'contractDetails',
+                'question_text' => 'Bitte geben Sie Details zum Versicherungs Vertrag an. ',
+                'type' => 'radio-textarea',
+                'is_required' => false,
+                'meta' => null,
+                'help_text' => 'Hier wird der Vertrag der Versicherung abgefragt, Deckungssumme, Selbstbeteiligung, Schadenshöhe, Regulierungshöhe und für Zusätzliche Leistungen und Extras gibt es ein Textfeld.',
+                'default_value' => null,
+                'is_active' => true,
+                'frontend_title' => '',
+                'frontend_description' => '',
+                'weight' => 4,
+                'input_constraints' => [],
+                'read_only' => false,
+                'tags' => [],
+            ],
+            (object)[
+                'id' => 7,
                 'title' => 'selectedDates',
                 'question_text' => 'In welchem Zeitraum wurde der Fall reguliert?',
                 'type' => 'date',
@@ -322,11 +346,20 @@ class RatingForm extends Component
                     break;
                 case 'radio-textarea':
                     // Textarea: String oder null
-
-                    $this->answers[$key] = [
-                        'selected_value' => isset($this->regulationDetail) ? trim($this->regulationDetail) : null,
-                        'textarea_value' => isset($this->regulationComment) ? trim($this->regulationComment) : null,
-                    ];
+                    if ($key == 'regulationDetail') {
+                        $this->answers[$key] = [
+                            'selected_values' => isset($this->regulationDetail) ? $this->regulationDetail : null,
+                            'textarea_value' => isset($this->regulationComment) ? trim($this->regulationComment) : null,
+                        ];
+                    }elseif ($key == 'contractDetails') {
+                        $this->answers[$key] = [
+                            'contract_coverage_amount' => isset($this->contractDetails['contract_coverage_amount']) ? $this->contractDetails['contract_coverage_amount'] : null,
+                            'contract_deductible_amount' => isset($this->contractDetails['contract_deductible_amount']) ? $this->contractDetails['contract_deductible_amount'] : null,
+                            'claim_amount' => isset($this->contractDetails['claim_amount']) ? $this->contractDetails['claim_amount'] : null,
+                            'claim_settlement_amount' => isset($this->contractDetails['claim_settlement_amount']) ? $this->contractDetails['claim_settlement_amount'] : null,
+                            'textarea_value' => isset($this->contractDetails['textarea_value']) ? trim($this->contractDetails['textarea_value']) : null,
+                        ];
+                    }
                     break;    
                 case 'text':
                 default:
@@ -393,20 +426,31 @@ class RatingForm extends Component
             $rules['regulationType'] = 'required';
         }
         if ($this->step >= 4) {
-            $rules['regulationDetail'] = 'required';
-            if ($this->regulationDetail == 'Andere Gründe') {
+            $rules['regulationDetails'] = 'required';
+            if ($this->regulationDetails == 'Andere Gründe') {
                 $rules['regulationComment'] = 'required';
             }
         }
-    
         if ($this->step >= 5) {
+            $rules['contractDetails.contract_coverage_amount'] = 'required';
+            $rules['contractDetails.contract_deductible_amount'] = 'required';
+            $rules['contractDetails.claim_amount'] = 'required';
+            // Nur wenn der Fall abgeschlossen ist, muss die Regulierungshöhe angegeben werden
+            if ($this->is_closed) {
+                $rules['contractDetails.claim_settlement_amount'] = 'required';
+            }
+            // Wenn der Fall noch nicht abgeschlossen ist, ist die Regulierungshöhe optional
+            // $rules['contractDetails.claim_settlement_amount'] = 'nullable';
+
+        }
+        if ($this->step >= 6) {
             $rules['started_at'] = 'required|date|after_or_equal:setting_available_started_at|before_or_equal:today';
             if ($this->is_closed) {
                 $rules['ended_at'] = 'required|date|after_or_equal:started_at|before_or_equal:today';
             }
         }
     
-        if ($this->step >= 6) {
+        if ($this->step >= 7) {
             foreach ($this->variableQuestions as $q) {
                 $rules["answers.{$q->title}"] = '';
                 

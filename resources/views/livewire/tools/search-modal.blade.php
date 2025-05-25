@@ -14,12 +14,12 @@
     </div>
     <template x-teleport="#megamenu">
         <!-- Such-Modal -->
-        <div id="Search-menü" class="relative z-40">
+        <div id="Search-menü" class="relative z-20">
             <div 
                 x-show="openSearchMenu"
                 @click="() => { openSearchMenu = !openSearchMenu; }"
                 x-transition.opacity
-                class="fixed inset-0 bg-black bg-opacity-40"
+                class="fixed h-full w-full bg-black bg-opacity-40"
                 x-cloak
             ></div>
             <div x-trap.inert.noscroll="openSearchMenu"

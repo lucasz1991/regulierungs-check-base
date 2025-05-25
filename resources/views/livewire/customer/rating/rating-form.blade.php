@@ -21,7 +21,7 @@
     <x-buttons.button-basic  x-on:click="modalIsOpen = true" :mode="'primary'">
         Jetzt bewerten
     </x-buttons.button-basic>
-
+ 
     <template x-teleport="body">
         <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false" class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <!-- Modal Dialog -->
@@ -30,6 +30,9 @@
                     {{-- Step 0: Versicherungs typ --}}
                     <div x-show="step == 0"  x-cloak >
                         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
+                        <x-alert class="w-max mx-auto" role="alert">
+                                <span> Bitte wähle die passende Versicherungskategorie aus, um mit der Fallmeldung zu starten.<br>Beispiel: Die Krankenversicherung findest du unter "Personenversicherungen".</span>
+                        </x-alert>
                         <h2 class="text-lg mb-12">Versicherungskategorie auswählen</h2>
                         <style>
                             .ratingform .swiper {
@@ -146,7 +149,12 @@
                             }
                         </style>
                         <div >
-                            <h2 class="text-lg mb-12">Versicherungsart auswählen</h2>
+                            <h2 class="text-lg mb-6">Versicherungsart auswählen</h2>
+                            <x-alert class="w-max mx-auto mb-6" role="alert">
+                                <span>
+                                    Bitte wähle die konkrete Versicherungsart aus, die zu deinem Fall passt. Die Auswahl hilft uns, die nachfolgenden Fragen optimal auf deinen Fall abzustimmen.
+                                </span>
+                            </x-alert>
                             <div class="max-w-md mx-auto" :class="{ 'selected': insuranceSubTypeId != null }">
                                 <select wire:model.live="insuranceSubTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 
                                     x-init="
@@ -200,7 +208,12 @@
                     </div>
                     {{-- Step 2: Konkrete Versicherung auswählen --}}
                     <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak   >
-                        <h2 class="text-lg font-bold mb-12">Welche Versicherungsgesellschaft?</h2>
+                        <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
+                        <x-alert class="w-max mx-auto mb-6" role="alert">
+                                <span>
+                                    Bitte wähle die konkrete Versicherungsgesellschaft aus, bei der du deinen Fall melden möchtest. Diese Information ist wichtig, um den Fall korrekt zuzuordnen und die richtigen Ansprechpartner zu finden.
+                                </span>
+                            </x-alert>
                         <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
                             <select wire:model.live="insuranceId" 
                                     class="border rounded px-4 py-2"
@@ -254,7 +267,12 @@
                     </div>
                     {{-- Step 3: Fallstatus --}}
                     <div x-show="step == 3"  x-cloak  >
-                        <h2 class="text-lg font-bold mb-12">Wie wurde der Schaden reguliert?</h2>
+                        <h2 class="text-lg font-bold mb-6">Wie wurde der Schaden reguliert?</h2>
+                        <x-alert class="w-max mx-auto mb-6" role="alert">
+                                <span>
+                                    Bitte wähle den aktuellen Status der Schadensregulierung aus. Diese Information hilft uns, den Fall besser zu verstehen und die nächsten Schritte zu planen.
+                                </span>
+                            </x-alert>
                         <div class="flex justify-center items-center">
                             <div x-data="{ regulationType: @entangle('regulationType') }" class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-4 w-max justify-center">
                                 <style>
@@ -324,7 +342,7 @@
                     </div>
                     {{-- Step 4: Fallstatus Details --}}
                     <div x-show="step == 4"  x-cloak  >
-                        <h2 class="text-lg font-bold mb-12">
+                        <h2 class="text-lg font-bold mb-6">
                             @switch($regulationType)
                                 @case('vollzahlung')
                                     Grund für Bewertung des Falls
@@ -342,6 +360,11 @@
                                     Keine gültige Auswahl getroffen.
                             @endswitch
                         </h2>
+                        <x-alert class="w-max mx-auto mb-6" role="alert">
+                                <span>
+                                    Bitte beschreibe den Grund für deine Bewertung des Falls. Deine Angaben helfen anderen Nutzern, die Qualität der Versicherung besser einzuschätzen und ihre Entscheidungen zu treffen.
+                            </span>
+                        </x-alert>
                         <div class="flex justify-center items-center">
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">
                                 {{-- Karte: Vollzahlung --}}
@@ -353,118 +376,118 @@
                                         @switch($regulationType)
                                             @case('vollzahlung')
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Schnelle und unkomplizierte Abwicklung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Schnelle und unkomplizierte Abwicklung" value="Schnelle und unkomplizierte Abwicklung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 " aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto"> Schnelle und unkomplizierte Abwicklung </span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Gute Kommunikation und Transparenz" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Gute Kommunikation und Transparenz" value="Gute Kommunikation und Transparenz" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 " aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto"> Gute Kommunikation und Transparenz</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Faire und angemessene Regulierung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Faire und angemessene Regulierung" value="Faire und angemessene Regulierung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 " aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto"> Faire und angemessene Regulierung</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Hervorragender Kundenservice" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Hervorragender Kundenservice" value="Hervorragender Kundenservice" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 " aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto"> Hervorragender Kundenservice</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Erwartungen vollständig erfüllt" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Erwartungen vollständig erfüllt" value="Erwartungen vollständig erfüllt" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 " aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto"> Erwartungen vollständig erfüllt</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3   text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Andere Gründe" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Andere Gründe" value="Andere Gründe" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 " aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto"> Andere Gründe</span>
                                                 </label>
                                                 @break
                                             @case('teilzahlung')
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Nur ein Teil des Schadens wurde anerkannt" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Nur ein Teil des Schadens wurde anerkannt" value="Nur ein Teil des Schadens wurde anerkannt" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Nur ein Teil des Schadens wurde anerkannt</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Es gab eine Selbstbeteiligung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Es gab eine Selbstbeteiligung" value="Es gab eine Selbstbeteiligung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Es gab eine Selbstbeteiligung</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Die Versicherung hat die Summe nach Gutachten gekürzt" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Die Versicherung hat die Summe nach Gutachten gekürzt" value="Die Versicherung hat die Summe nach Gutachten gekürzt" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Die Versicherung hat die Summe nach Gutachten gekürzt</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Kulanzzahlung statt voller Erstattung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Kulanzzahlung statt voller Erstattung" value="Kulanzzahlung statt voller Erstattung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Kulanzzahlung statt voller Erstattung</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Unklare Kommunikation / keine nachvollziehbare Begründung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Unklare Kommunikation / keine nachvollziehbare Begründung" value="Unklare Kommunikation / keine nachvollziehbare Begründung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Unklare Kommunikation / keine nachvollziehbare Begründung</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3   text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Andere Gründe" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Andere Gründe" value="Andere Gründe" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Andere Gründe</span>
                                                 </label>
                                                 @break
                                             @case('ablehnung')
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Der Schaden sei nicht versichert" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Der Schaden sei nicht versichert" value="Der Schaden sei nicht versichert" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Der Schaden sei nicht versichert</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Formfehler oder Fristversäumnis" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Formfehler oder Fristversäumnis" value="Formfehler oder Fristversäumnis" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Formfehler oder Fristversäumnis</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Verdacht auf Eigenverschulden" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Verdacht auf Eigenverschulden" value="Verdacht auf Eigenverschulden" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Verdacht auf Eigenverschulden</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Kein nachvollziehbarer Grund genannt" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Kein nachvollziehbarer Grund genannt" value="Kein nachvollziehbarer Grund genannt" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Kein nachvollziehbarer Grund genannt</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3   text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Andere Gründe" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Andere Gründe" value="Andere Gründe" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Andere Gründe</span>
                                                 </label>
                                                 @break
                                             @case('austehend')
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Warte auf Rückmeldung der Versicherung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Warte auf Rückmeldung der Versicherung" value="Warte auf Rückmeldung der Versicherung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Warte auf Rückmeldung der Versicherung</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Benötigte Unterlagen wurden noch nicht eingereicht" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Benötigte Unterlagen wurden noch nicht eingereicht" value="Benötigte Unterlagen wurden noch nicht eingereicht" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Benötigte Unterlagen wurden noch nicht eingereicht</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Versicherung benötigt mehr Zeit zur Bearbeitung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Versicherung benötigt mehr Zeit zur Bearbeitung" value="Versicherung benötigt mehr Zeit zur Bearbeitung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Versicherung benötigt mehr Zeit zur Bearbeitung</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3 border-b border-white  text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Unklare Kommunikation seitens der Versicherung" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Unklare Kommunikation seitens der Versicherung" value="Unklare Kommunikation seitens der Versicherung" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Unklare Kommunikation seitens der Versicherung</span>
                                                 </label>
                                                 <label class="flex my-3 pb-3   text-base items-center  content-center">
-                                                    <input type="radio" wire:model.live.debounce.250ms="regulationDetail" name="regulationDetail" value="Andere Gründe" role="switch" class="peer sr-only">
+                                                    <input type="checkbox" wire:model.live.debounce.250ms="regulationDetails" name="Andere Gründe" value="Andere Gründe" role="switch" class="peer sr-only">
                                                     <div class="size-14 flex-none mr-3 relative h-6 !w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-gray-300 after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-200 peer-checked:after:bg-blue-500 peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-blue-500 peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70" aria-hidden="true"></div>
                                                     <span class="size-14 grow flex text-lg items-center content-center h-auto">Andere Gründe</span>
                                                 </label>
@@ -473,15 +496,13 @@
                                                 Keine gültige Auswahl getroffen.
                                         @endswitch
                                     </div>
-                                    @error('regulationDetail')
+                                    @error('regulationDetails')
                                         <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div x-data="{ charCount: 0 }" >
                                     <h3 class="text-lg text-left font-semibold mb-2">Zusätzliche Informationen</h3>
                                     <textarea wire:model.live.debounce.500ms="regulationComment"
-                                            x-ignore
-                                            wire:ignore
                                             class="focus:shadow-blue-300 min-h-unset  text-base leading-5.6 ease-soft block h-auto w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-300 focus:outline-none" rows="6"
                                             x-on:input="charCount = $event.target.value.length"
                                             maxlength="255" ></textarea>
@@ -497,13 +518,84 @@
                         @enderror
                         <div class="flex justify-center space-x-4 mt-12">
                             <x-buttons.backbutton wire:click="previousStep" />
-                            @if (!is_null($regulationDetail))
+                            @if (!is_null($regulationDetails))
                                 <x-buttons.furtherbutton wire:click="nextStep" />
                             @endif
                         </div>
+
                     </div>
-                    {{-- Step 5: Zeitraum --}}
+                    {{-- Step 5: Versicherungs Vertragsdaten --}}
                     <div x-show="step == 5"  x-cloak  >
+                        <div>
+                            <h2 class="text-lg font-bold mb-6">Versicherungs Vertragsdaten</h2>
+                            <x-alert class="w-max mx-auto mb-6" role="alert">
+                                    <span>
+                                        Bitte geben Sie die Vertragsdaten der Versicherung an, bei der Sie den Schaden gemeldet haben. Diese Informationen sind wichtig, um den Schadenfall korrekt zuzuordnen und zu bearbeiten.
+                                </span>
+                            </x-alert>
+                            <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">
+                                <div class="mt-4 text-left bg-secondary  rounded-lg shadow-md p-4">
+
+                                    <div class="">
+                                        <label class="block text-sm font-medium text-white mb-2"> Deckungssumme </label>
+                                        <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.contract_coverage_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                        @error('contractDetails.contract_coverage_amount')
+                                            <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-white mb-2"> Selbstbeteiligung </label>
+                                        <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                        @error('contractDetails.contract_deductible_amount')
+                                            <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+    
+                                    <div class="mt-4 ">
+                                        <label class="block text-sm font-medium text-white mb-2"> Schadenshöhe </label>
+                                        <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.claim_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                        @error('contractDetails.claim_amount')
+                                            <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    @if ($is_closed)
+                                       
+                                    <div class="my-4 ">
+                                        <label class="block text-sm font-medium text-white mb-2"> Regulierungshöhe </label>
+                                        <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                        @error('contractDetails.claim_settlement_amount')
+                                            <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    @endif
+                                </div>
+                                <div x-data="{ charCount: 0 }" >
+                                    <h3 class="text-lg text-left font-semibold mb-2">Weitere Angaben zum Vertrag </h3>
+                                    <textarea wire:model.live.debounce.500ms="contractDetails.textarea_value"
+                                            class="focus:shadow-blue-300 min-h-unset  text-base leading-5.6 ease-soft block h-auto w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-300 focus:outline-none" rows="6"
+                                            x-on:input="charCount = $event.target.value.length"
+                                            maxlength="255" ></textarea>
+                                    <span x-text="`${charCount}/255 Zeichen`" class="text-sm " :class="charCount >= 255 ? 'text-red-600' : 'text-gray-500 '"></span>
+                                    @error('contractDetails.textarea_value')
+                                        <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="flex justify-center space-x-4 mt-12">
+                            <x-buttons.backbutton wire:click="previousStep" />
+
+                            @if (!is_null($contractDetails['contract_coverage_amount']) &&
+                                !is_null($contractDetails['contract_deductible_amount']) &&
+                                !is_null($contractDetails['claim_amount']) &&
+                                (!$is_closed || !is_null($contractDetails['claim_settlement_amount'])))
+                                <x-buttons.furtherbutton wire:click="nextStep" />
+                            @endif
+                        </div>
+                    </div>    
+                    {{-- Step 6: Zeitraum --}}
+                    <div x-show="step == 6"  x-cloak  >
                         <div>
                                     
                             <div x-data="{
@@ -612,8 +704,19 @@
                                             @break
                                         @case('boolean')
                                             <div class="mt-2 space-x-4">
-                                                <label><input type="radio" wire:model="{{ $fieldName }}" value="1"> Ja</label>
-                                                <label><input type="radio" wire:model="{{ $fieldName }}" value="0"> Nein</label>
+                                                <div
+                                                    class="w-max mx-auto rounded-full overflow-hidden flex bg-gray-50 border border-gray-300  group-checked:border-gray-500">
+                                                    <div>
+                                                        <input type="radio" wire:model.live="{{ $fieldName }}" id="yes" value="true" class="peer hidden">
+                                                        <label for="yes"
+                                                            class="py-2 px-6 cursor-pointer peer-checked:text-blue-700 peer-checked:cursor-default peer-checked:bg-gray-200 text-gray-400">Ja</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" wire:model.live="{{ $fieldName }}" id="no" value="false" class="peer hidden">
+                                                        <label for="no"
+                                                            class="py-2 px-4 cursor-pointer peer-checked:text-blue-700 peer-checked:cursor-default peer-checked:bg-gray-200 text-gray-400"">Nein</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             @break
                                         @case('rating')

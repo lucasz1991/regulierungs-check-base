@@ -38,7 +38,7 @@
             <x-pagebuilder-module :position="'banner'"/>
             <x-pagebuilder-module :position="'bottom_banner'"/>
             <!-- Page Content -->
-            <main  class="snap-start">
+            <main  class="snap-start z-0">
                 <x-pagebuilder-module/>
                 <x-pagebuilder-module :position="'above_content'"/>
                 {{ $slot }}
