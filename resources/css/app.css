@@ -1561,10 +1561,10 @@ svg .zoom-in-out.duration-8{
 
 
 section.home-banner{
-  min-height: 40vh;
+  min-height: 60vh;
 }
 @media (max-width: 500px) {
   section.home-banner{
-    min-height: 60vh;
+    min-height: 70vh;
   }
 }

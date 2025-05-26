@@ -534,7 +534,7 @@
                                 </span>
                             </x-alert>
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">
-                                <div class="mt-4 text-left bg-secondary  rounded-lg shadow-md p-4">
+                                <div  class="mb-4 mt-4 text-left bg-secondary  rounded-lg shadow-md p-4">
 
                                     <div class="">
                                         <label class="block text-sm font-medium text-white mb-2"> Deckungssumme </label>
@@ -558,15 +558,14 @@
                                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                    @if ($is_closed)
-                                       
-                                    <div class="my-4 ">
-                                        <label class="block text-sm font-medium text-white mb-2"> Regulierungshöhe </label>
-                                        <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
-                                        @error('contractDetails.claim_settlement_amount')
-                                            <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    @if ($regulationType == 'austehend' || $regulationType == 'abgelehnt')
+                                        <div class="my-4 ">
+                                            <label class="block text-sm font-medium text-white mb-2"> Regulierungshöhe </label>
+                                            <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                            @error('contractDetails.claim_settlement_amount')
+                                                <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                     @endif
                                 </div>
                                 <div x-data="{ charCount: 0 }" >
@@ -589,7 +588,7 @@
                             @if (!is_null($contractDetails['contract_coverage_amount']) &&
                                 !is_null($contractDetails['contract_deductible_amount']) &&
                                 !is_null($contractDetails['claim_amount']) &&
-                                (!$is_closed || !is_null($contractDetails['claim_settlement_amount'])))
+                                (!($regulationType == 'austehend' || $regulationType == 'abgelehnt') || !is_null($contractDetails['claim_settlement_amount'])))
                                 <x-buttons.furtherbutton wire:click="nextStep" />
                             @endif
                         </div>
@@ -707,12 +706,12 @@
                                                 <div
                                                     class="w-max mx-auto rounded-full overflow-hidden flex bg-gray-50 border border-gray-300  group-checked:border-gray-500">
                                                     <div>
-                                                        <input type="radio" wire:model.live="{{ $fieldName }}" id="yes" value="true" class="peer hidden">
+                                                        <input type="radio" wire:model.live="{{ $fieldName }}" id="yes" value="1" class="peer hidden">
                                                         <label for="yes"
                                                             class="py-2 px-6 cursor-pointer peer-checked:text-blue-700 peer-checked:cursor-default peer-checked:bg-gray-200 text-gray-400">Ja</label>
                                                     </div>
                                                     <div>
-                                                        <input type="radio" wire:model.live="{{ $fieldName }}" id="no" value="false" class="peer hidden">
+                                                        <input type="radio" wire:model.live="{{ $fieldName }}" id="no" value="0" class="peer hidden">
                                                         <label for="no"
                                                             class="py-2 px-4 cursor-pointer peer-checked:text-blue-700 peer-checked:cursor-default peer-checked:bg-gray-200 text-gray-400"">Nein</label>
                                                     </div>

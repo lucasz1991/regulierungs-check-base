@@ -436,7 +436,7 @@ class RatingForm extends Component
             $rules['contractDetails.contract_deductible_amount'] = 'required';
             $rules['contractDetails.claim_amount'] = 'required';
             // Nur wenn der Fall abgeschlossen ist, muss die Regulierungshöhe angegeben werden
-            if ($this->is_closed) {
+            if ($this->regulationType == 'austehend' || $this->regulationType == 'abgelehnt') {
                 $rules['contractDetails.claim_settlement_amount'] = 'required';
             }
             // Wenn der Fall noch nicht abgeschlossen ist, ist die Regulierungshöhe optional
