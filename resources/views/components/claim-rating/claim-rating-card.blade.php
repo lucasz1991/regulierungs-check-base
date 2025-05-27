@@ -3,8 +3,8 @@
         <div>
             <div class="flex gap-4 overflow-hidden">
                 <div class="w-14 flex-none ">
-                    <div class=" w-min rounded-xl flex items-center justify-center text-white text-base  px-2 " style="background-color: {{ $rating->insurance->color ?? '#ccc' }};">
-                        {{ strtoupper(substr( $rating->insurance->initials, 0 ,4)) }}
+                    <div class=" w-min rounded flex items-center justify-center text-white text-base  px-2 " style="background-color: {{ $insurance->style['bg-color'] ?? '#eee' }}; color: {{ $insurance->style['text-color'] ?? '#333' }}; border-color: {{ $insurance->style['border-color'] ?? '#ccc' }};">
+                        {{ strtoupper(substr( $rating->insurance->initials, 0 ,8)) }}
                     </div>
                 </div>
                 <div class="grow">
