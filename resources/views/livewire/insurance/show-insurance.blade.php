@@ -2,8 +2,8 @@
     <div class="container mx-auto px-4 pt-12 py-6">
         <div class="">
             <div class="flex items-center mb-4">
-                <div class="h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold px-3" style="background-color: {{ $insurance->color ?? '#ccc' }};">
-                    {{ strtoupper(substr($insurance->initials, 0, 4)) }}
+                <div class=" rounded flex items-center justify-center text-white text-2xl font-bold px-3 py-2" style="background-color: {{ $insurance->style['bg_color'] ?? '#ccc' }}; color: {{ $insurance->style['font_color'] ?? '#000' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
+                    {{ strtoupper(substr($insurance->initials, 0, 8)) }}
                 </div>
                 <h1 class="text-2xl font-bold ml-4">{{ $insurance->name }}</h1>
             </div>
