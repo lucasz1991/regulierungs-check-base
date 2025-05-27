@@ -57,7 +57,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
           "logo_bg_color": "#000000",
           "logo_font_color": "#FFFFFF",
           "logo_border_color": "#FFFFFF",
-          "abbreviation": "XYZfds" // Maximal 8 Zeichen , z.B. "VersA", "Allianz", "HUK24"
+          "abbreviation": "XYZfds" // Maximal 8 Zeichen , z.B. "VersA", "Allianz", "HUK24", "AXA", "Signal", "R+V", "DEVK", "Gothaer", "ERGO", "LVM", "Barmenia", "Hannoversche", "Württembergische", "Generali", "HDI", "Talanx", "Signal Iduna", "Adac", "Continentale", "Lloyd", "Helvetia", "VHV", "Baloise", "R+V24", "Württembergische Versicherung", "HUK Coburg", "Allianz Direct", "CosmosDirekt", "Deutsche Familienversicherung"
         }
         EOT;
         $attachments = $this->insurance->name;
