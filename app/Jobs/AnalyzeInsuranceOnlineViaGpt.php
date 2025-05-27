@@ -60,7 +60,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
           "abbreviation": "XYZfds" // Maximal 8 Zeichen , z.B. "VersA", "Allianz", "HUK24"
         }
         EOT;
-        $attachments = $this->insurance->toArray();
+        $attachments = $this->insurance->name;
         $isLoading = true;
         $maxRetries = 3;
         
