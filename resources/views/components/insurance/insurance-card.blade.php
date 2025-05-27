@@ -1,14 +1,14 @@
 <a href="/insurance/{{ $insurance->slug }}" wire:navigate class="block">
     <div class="bg-white rounded border border-gray-200 shadow  transition-shadow duration-300 p-4 flex flex-col justify-between h-full  hover:shadow-lg ">
         <div class="flex gap-4 mb-4">
-            <div class="size-14 flex-none ">
-                <div class=" w-min rounded flex items-center justify-center border text-base font-bold px-2" style="background-color: {{ $insurance->style['bg-color'] ?? '#ccc' }}; color: {{ $insurance->style['text-color'] ?? '#000' }}; border-color: {{ $insurance->style['border-color'] ?? '#ccc' }};">
+            <div class="shrink-0 flex-none ">
+                <div class=" w-min rounded flex items-center justify-center border text-base  px-2" style="background-color: {{ $insurance->style['bg_color'] ?? '#ccc' }}; color: {{ $insurance->style['font_color'] ?? '#000' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
                     {{ strtoupper(substr( $insurance->initials, 0 ,8)) }}
                 </div>
             </div>
-            <div class="grow">
-                <h2 class="text-xl break-words font-semibold mb-2 w-full truncate ">
-                    {{ substr( $insurance->name, 0 ,45) }}
+            <div class="grow max-w-full">
+                <h2 class="text-xl break-words  mb-2 w-full truncate ">
+                    {{ strlen($insurance->name) > 25 ? substr($insurance->name, 0, 25) . '...' : $insurance->name }}
                 </h2>
             </div>
         </div>
