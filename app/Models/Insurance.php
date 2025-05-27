@@ -15,12 +15,20 @@ class Insurance extends Model
         'name',
         'slug',
         'description',
+        'style',
         'initials',
         'color',
         'is_active',
         'order_id',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+        'style' => 'array',
+        'order_id' => 'integer',
+    ];
+
+    
     public function insuranceTypes()
     {
         return $this->belongsToMany(InsuranceType::class, 'insurance_insurance_type')
