@@ -58,7 +58,8 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
         }
         EOT;
         $attachments = $this->insurance->toArray();
-
+        $isLoading = true;
+        $maxRetries = 3;
         
         for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
             
