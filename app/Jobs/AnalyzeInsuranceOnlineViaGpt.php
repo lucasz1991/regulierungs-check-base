@@ -43,7 +43,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
         - Eine kurze, neutrale Beschreibung der Versicherung.
         - Eine passende Hintergrundfarbe für das Logo (als HEX-Farbcode), die zur visuellen Identität der Marke passt.
         - Eine passende Schriftfarbe für das Logo (ebenfalls HEX).
-        - Eine kurze Abkürzung (max. 8 Zeichen), die sich gut für interne Systemdarstellungen eignet.
+        - Eine kurze Abkürzung , Maximal 8 Zeichen, allgemeiner Name der Firma in Umgangssprache wie z.B. "VersA", "Allianz", "HUK24", "AXA", "Signal", "R+V", "DEVK", "Gothaer", "ERGO", "LVM", "Barmenia", "Hannoversche", "Württembergische", "Generali", "HDI", "Talanx", "Signal Iduna", "Adac", "Continentale", "Lloyd", "Helvetia", "VHV", "Baloise", "R+V24", "Württembergische Versicherung", "HUK Coburg", "Allianz Direct", "CosmosDirekt", "Deutsche Familienversicherung"
         
         Wichtige Hinweise:
         - Verwende öffentlich verfügbare Informationen.
@@ -57,7 +57,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
           "logo_bg_color": "#000000",
           "logo_font_color": "#FFFFFF",
           "logo_border_color": "#FFFFFF",
-          "abbreviation": "XYZfds" // Maximal 8 Zeichen , z.B. "VersA", "Allianz", "HUK24", "AXA", "Signal", "R+V", "DEVK", "Gothaer", "ERGO", "LVM", "Barmenia", "Hannoversche", "Württembergische", "Generali", "HDI", "Talanx", "Signal Iduna", "Adac", "Continentale", "Lloyd", "Helvetia", "VHV", "Baloise", "R+V24", "Württembergische Versicherung", "HUK Coburg", "Allianz Direct", "CosmosDirekt", "Deutsche Familienversicherung"
+          "abbreviation": "XYZfds" // Maximal 8 Zeichen, allgemeiner Name der Firma in Umgangssprache , z.B. "VersA", "Allianz", "HUK24", "AXA", "Signal", "R+V", "DEVK", "Gothaer", "ERGO", "LVM", "Barmenia", "Hannoversche", "Württembergische", "Generali", "HDI", "Talanx", "Signal Iduna", "Adac", "Continentale", "Lloyd", "Helvetia", "VHV", "Baloise", "R+V24", "Württembergische Versicherung", "HUK Coburg", "Allianz Direct", "CosmosDirekt", "Deutsche Familienversicherung"
         }
         EOT;
         $attachments = $this->insurance->name;
