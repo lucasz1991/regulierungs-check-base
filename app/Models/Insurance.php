@@ -56,4 +56,10 @@ class Insurance extends Model
     {
         return $this->hasMany(ClaimRating::class)->count();
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
 }

@@ -1,17 +1,13 @@
 <div
     x-data="{ 
-        isMobileMenuOpen: false, 
-        screenWidth: window.innerWidth, 
-        navHeight: 0,
-        isMobile: false,
+        screenWidth: window.innerWidth,
         isScrolled: false,
         scrollTop: 0,
-        lastScrollTop: 0,
-        showNav: true 
+        lastScrollTop: 0
     }"
     x-init="$nextTick(() => {
-        navHeight = $refs.nav.offsetHeight;
-        isMobile = window.innerWidth <= 768;
+        $store.nav.height = $refs.nav.offsetHeight;
+        $store.nav.isMobile = window.innerWidth <= 768;
     })"
 
     x-on:scroll.window="
@@ -23,9 +19,9 @@
 
         if (scrollingDown && scrollTop > 120) {
             $dispatch('navhide');
-            showNav = false;
+            $store.nav.showNav = false;
         } else if (scrollingUp && (lastScrollTop - scrollTop) >= 30 || scrollTop < 120) {
-            showNav = true;
+            $store.nav.showNav = true;
         }
 
         lastScrollTop = scrollTop;
@@ -35,33 +31,33 @@
         $nextTick(() => {
             screenWidth = window.innerWidth;
             if (screenWidth <= 768) {
-                isMobile = true;
-                isMobileMenuOpen = false;
+                $store.nav.isMobile = true;
+                $store.nav.isMobileMenuOpen = false;
             } else {
-                isMobile = false;
-                isMobileMenuOpen = false;
+                $store.nav.isMobile = false;
+                $store.nav.isMobileMenuOpen = false;
             }
-            navHeight = $refs.nav.offsetHeight; 
+            $store.nav.height = $refs.nav.offsetHeight; 
         })"
-    @click.away="isMobileMenuOpen = false"
+    @click.away="$store.nav.isMobileMenuOpen = false"
     >
     <div>
-        <nav x-ref="nav"  :style="(!showNav && !isMobileMenuOpen ) ? 'margin-top: -'+navHeight+'px': 'margin-top:0px;' " class="fixed  w-screen bg-white   z-30 transition-all duration-300 ease-in-out"  
+        <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed  w-screen bg-white   z-30 transition-all duration-300 ease-in-out"  
                 wire:loading.class="cursor-wait"
             >
              <div class="w-full border-b border-gray-300 px-3 md:px-8">
 
                  <!-- Primary Navigation Menu -->
                  <div class="container mx-auto flex flex-wrap justify-between items-center  ">
-                         <div class="max-md:order-1  md:order-2 self-stretch" @click="isMobileMenuOpen = false">
+                         <div class="max-md:order-1  md:order-2  flex-none self-stretch" @click="$store.nav.isMobileMenuOpen = false">
                              <livewire:tools.search-modal />
                          </div>
-                         <div class="shrink-0 flex items-center h-full py-2 max-md:order-1" >
+                         <div class=" flex items-center h-full py-2 max-md:order-1  flex-none" >
                              <a href="/" wire:navigate   class="h-full flex items-center max-sm:max-w-[120px]">
                                  <x-application-mark />
                              </a>
                          </div>
-                         <div class="flex items-center space-x-4 max-md:order-3 md:order-2" >
+                         <div class="flex items-center space-x-4 max-md:order-3 md:order-2 flex-none" >
                              <!-- Likes and Inbox Buttons -->
                              <div class="flex items-center space-x-6 mr-2">
                                  @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/messages'))
@@ -254,9 +250,9 @@
                              </div>
                              
                             <a class="inline-flex items-center p-2  md:hidden focus:outline-none"
-                                @click="isMobileMenuOpen = !isMobileMenuOpen; $dispatch('navhide')">
+                                @click="$store.nav.isMobileMenuOpen = !$store.nav.isMobileMenuOpen; $dispatch('navhide')">
                                  <div class=" z-50  text-sm text-gray-500 rounded-lg hover:bg-gray-100  burger-container "
-                                        :class="isMobileMenuOpen ? 'is-open' : ''" >
+                                        :class="$store.nav.isMobileMenuOpen ? 'is-open' : ''" >
                                       <div class="burger-bar bar1"></div>
                                       <div class="burger-bar bar2"></div>
                                       <div class="burger-bar bar3"></div>
@@ -265,23 +261,23 @@
                             </a>
                          </div>
                          <!-- Navigation Links -->
-                         <div x-show="isMobileMenuOpen || !isMobile" 
+                         <div x-show="$store.nav.isMobileMenuOpen || !$store.nav.isMobile" 
                                  x-transition:enter="transition ease-out duration-200"
                                  x-transition:enter-start="opacity-0"
                                  x-transition:enter-end="opacity-100"
                                  x-transition:leave="transition ease-in duration-200"
                                  x-transition:leave-start="opacity-100 "
                                  x-transition:leave-end="opacity-0"
-                                 :style="isMobile ? 'top: ' + navHeight + 'px; height: calc(100vh - ' + navHeight + 'px);' : ''"
-                                 :class="isMobileMenuOpen ? 'max-md:inset-0  max-md:bg-black max-md:bg-opacity-50 max-md:z-30' : ''"   
+                                 :style="$store.nav.isMobile ? 'top: ' + $store.nav.height + 'px; height: calc(100dvh - ' + $store.nav.height + 'px);' : ''"
+                                 :class="$store.nav.isMobileMenuOpen ? 'max-md:inset-0  max-md:bg-black max-md:bg-opacity-50 max-md:z-30' : ''"   
                                  
-                                 x-cloak   class="max-md:order-3 md:order-1 max-md:fixed  " >
+                                 x-cloak   class="max-md:order-3 md:order-1 max-md:fixed   md:grow" >
                                  
-                                 <div @click.prevent="isMobileMenuOpen = true" 
-                                         :class="isMobileMenuOpen ? 'max-md:translate-x-0' : 'max-md:translate-x-full'"    
-                                         :style="isMobile ? 'height: calc(100vh - ' + navHeight + 'px);' : ''"   
-                                         x-cloak  class="grid  content-between transition-transform  ease-out duration-400  max-md:bg-white  max-md:right-0 max-md:h-full max-md:fixed max-md:overflow-y-auto max-md:py-5 max-md:px-3  max-md:border-r max-md:border-gray-200">
-                                     <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex  w-full  " >
+                                 <div @click.prevent="$store.nav.isMobileMenuOpen = true" 
+                                         :class="$store.nav.isMobileMenuOpen ? 'max-md:translate-x-0' : 'max-md:translate-x-full'"    
+                                         :style="$store.nav.isMobile ? 'height: calc(100dvh - ' + $store.nav.height + 'px);' : ''"   
+                                         x-cloak  class="grid  justify-center content-between transition-transform  ease-out duration-400  max-md:bg-white  max-md:right-0 max-md:h-full max-md:fixed max-md:overflow-y-auto max-md:py-5 max-md:px-3  max-md:border-r max-md:border-gray-200">
+                                     <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex   w-max  mx-auto  " >
                                          <!-- Gäste-Spezifische Navigation -->
                                          <x-nav-link href="/" wire:navigate  :active="request()->is('/')">
                                                  <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"  stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -319,8 +315,8 @@
                                                          </svg>
              
                                                      </div>
-                                                     <div x-show="openaboutus" x-transition x-cloak class="md:bg-white md:right-0 md:mt-6 mt-3  z-30" :class="isMobile ? 'relative' : 'absolute rounded-lg shadow w-44 z-40 overflow-hidden'">
-                                                         <ul class=" max-md:space-y-4 max-md:pt-4 text-sm text-gray-500 hover:text-gray-700" :class="isMobile ? '' : 'divide-y divide-gray-100'">
+                                                     <div x-show="openaboutus" x-transition x-cloak class="md:bg-white md:right-0 md:mt-6 mt-3  z-30" :class="$store.nav.isMobile ? 'relative' : 'absolute rounded-lg shadow w-44 z-40 overflow-hidden'">
+                                                         <ul class=" max-md:space-y-4 max-md:pt-4 text-sm text-gray-500 hover:text-gray-700" :class="$store.nav.isMobile ? '' : 'divide-y divide-gray-100'">
                                                              <li>
                                                                  <a href="/aboutus" wire:navigate class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
                                                                      <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -446,7 +442,7 @@
              </div>
             </nav>
     </div>
-    <div :style="'height: ' + navHeight + 'px'" class="min-h-12 md:min-h-[4rem] duration-300 ease-in-out transition-all" > </div>
+    <div :style="'height: ' + $store.nav.height + 'px'" class="min-h-12 md:min-h-[4rem] duration-300 ease-in-out transition-all" > </div>
     <div id="megamenu"   class="transition-all duration-200 ease-in-out "></div>
 </div>
  

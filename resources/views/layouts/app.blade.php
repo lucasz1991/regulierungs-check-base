@@ -55,6 +55,16 @@
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
         @livewireScripts
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('nav', {
+                    height: 0,
+                    isMobile: false,
+                    isMobileMenuOpen: false,
+                    showNav: true,
+                });
+            });
+        </script>
         <!-- <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="90a1af19-c1d7-46b9-9855-b9b076ac7501" data-blockingmode="auto" type="text/javascript"></script> -->
         <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16808641054"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16808641054'); </script>-->
        <!-- <script data-cookieconsent="ignore">    window.dataLayer = window.dataLayer || [];    function gtag() {        dataLayer.push(arguments);    }    gtag("consent", "default", {        ad_personalization: "denied",        ad_storage: "denied",        ad_user_data: "denied",        analytics_storage: "denied",        functionality_storage: "denied",        personalization_storage: "denied",        security_storage: "granted",        wait_for_update: 500,    });    gtag("set", "ads_data_redaction", true);    gtag("set", "url_passthrough", false);</script>

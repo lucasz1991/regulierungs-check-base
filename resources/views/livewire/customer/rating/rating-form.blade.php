@@ -207,7 +207,7 @@
                         </div>
                     </div>
                     {{-- Step 2: Konkrete Versicherung auswählen --}}
-                    <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak   >
+                    <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak>
                         <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
                         <x-alert class="w-max mx-auto mb-6" role="alert">
                                 <span>
@@ -558,7 +558,7 @@
                                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                    @if ($regulationType == 'austehend' || $regulationType == 'abgelehnt')
+                                    @if ($regulationType == 'teilzahlung')
                                         <div class="my-4 ">
                                             <label class="block text-sm font-medium text-white mb-2"> Regulierungshöhe </label>
                                             <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
@@ -585,10 +585,7 @@
                         <div class="flex justify-center space-x-4 mt-12">
                             <x-buttons.backbutton wire:click="previousStep" />
 
-                            @if (!is_null($contractDetails['contract_coverage_amount']) &&
-                                !is_null($contractDetails['contract_deductible_amount']) &&
-                                !is_null($contractDetails['claim_amount']) &&
-                                (!($regulationType == 'austehend' || $regulationType == 'abgelehnt') || !is_null($contractDetails['claim_settlement_amount'])))
+                            @if (true)
                                 <x-buttons.furtherbutton wire:click="nextStep" />
                             @endif
                         </div>

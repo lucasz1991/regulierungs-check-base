@@ -7,7 +7,7 @@
                         delay: 0,
                     },
                     disableOnInteraction: true,
-                    speed: 5000,
+                    speed: 12000,
                     loop: true,
                     centeredSlides: true,
                     slidesPerView: '1',

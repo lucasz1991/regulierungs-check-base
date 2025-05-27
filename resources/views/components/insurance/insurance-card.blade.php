@@ -1,4 +1,4 @@
-<a href="/insurance/{{ $insurance->id }}" wire:navigate class="block">
+<a href="/insurance/{{ $insurance->slug }}" wire:navigate class="block">
     <div class="bg-white rounded-lg border border-gray-200 shadow  transition-shadow duration-300 p-4 flex flex-col justify-between h-full  hover:shadow-lg ">
         <div class="flex gap-4 mb-4">
             <div class="size-14 flex-none ">
