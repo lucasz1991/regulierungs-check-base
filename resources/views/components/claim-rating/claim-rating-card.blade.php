@@ -3,7 +3,7 @@
         <div class="opacity-70 hover:opacity-100 transition-opacity duration-200 cursor-pointer">
             <div class="flex gap-4 overflow-hidden">
                 <div class="flex-none shrink-0">
-                    <div class=" w-min rounded flex items-center justify-center text-white text-base  px-2 " style="background-color: {{ $insurance->style['bg-color'] ?? '#eee' }}; color: {{ $insurance->style['text-color'] ?? '#333' }}; border-color: {{ $insurance->style['border-color'] ?? '#ccc' }};">
+                    <div class=" w-min rounded flex items-center justify-center text-white text-base  px-2 " style="background-color: {{ $insurance->style['bg_color'] ?? '#eee' }}; color: {{ $insurance->style['text_color'] ?? '#333' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
                         {{ strtoupper(substr( $rating->insurance->initials, 0 ,8)) }}
                     </div>
                 </div>
