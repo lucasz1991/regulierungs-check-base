@@ -1,6 +1,6 @@
 <div>
 
-    <div class=" bg-gray-50">
+    <div class=" bg-gray-100">
         <div class="container mx-auto px-4 py-8">
             {{-- Zusammenfassung --}}
             <div class="bg-white shadow rounded-lg p-6 mb-8">
