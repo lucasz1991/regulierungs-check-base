@@ -235,7 +235,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
         },
         {
             "name": "Allianz Direct",
-            "abbreviation": "AllDirekt",
+            "abbreviation": "Allianz",
             "logo_bg_color": "#00529B",
             "logo_font_color": "#FFFFFF",
             "logo_border_color": "#00529B",

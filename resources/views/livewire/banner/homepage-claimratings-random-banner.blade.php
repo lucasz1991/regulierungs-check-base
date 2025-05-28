@@ -42,7 +42,7 @@
         wire:ignore
     >
         {{-- Navigation links/rechts außerhalb --}}
-        
+        <h4>Aktuelle Bewertungen</h4>
         <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
             <div class="swiper-wrapper  !ease-linear">
                 @foreach ($claimRatings as $claimRating)
