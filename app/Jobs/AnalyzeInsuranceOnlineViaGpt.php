@@ -43,7 +43,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
         - Eine kurze, neutrale Beschreibung der Versicherung.
         - Eine passende Hintergrundfarbe für das Logo (als HEX-Farbcode), die zur visuellen Identität der Marke passt.
         - Eine passende Schriftfarbe für das Logo (ebenfalls HEX).
-        - Eine kurze Abkürzung , Maximal 8 Zeichen, allgemeiner Name der Firma in Umgangssprache 
+        - Eine kurze Abkürzung , Maximal 9 Zeichen, allgemeiner Name der Firma in Umgangssprache 
         
             Nutze nach Möglichkeit die folgende Liste mit vordefinierten Informationen als Referenzbasis. Wenn der Versicherungsname in der Liste enthalten ist, verwende diese Werte. Wenn nicht, gib dein bestes Wissen und deine Einschätzung ab – basierend auf allgemein zugänglichem Wissen und typischen Markenauftritten.
 
@@ -271,7 +271,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
           "logo_bg_color": "#000000",
           "logo_font_color": "#FFFFFF",
           "logo_border_color": "#FFFFFF",
-          "abbreviation": "XYZfds" 
+          "abbreviation": "XYZfdsss" 
         }
         EOT;
         $attachments = $this->insurance->name;
