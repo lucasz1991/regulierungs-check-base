@@ -1,4 +1,8 @@
-<div class="relative bg-primary-50 overflow-hidden py-4">
+<div class="relative bg-primary-50 overflow-hidden py-8">
+    <div class="text-center mb-6">
+            <h4 class="font-semibold text-lg text-gray-600">Aktuelle Bewertungen</h4>
+            <p class="text-sm text-gray-600">Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.</p>
+    </div>
     <div x-data="{
             swiperclaimRatings: null,
             initSwiperswiperclaimRatings() {
@@ -41,8 +45,6 @@
         class=" relative w-full"
         wire:ignore
     >
-        {{-- Navigation links/rechts außerhalb --}}
-        <h4>Aktuelle Bewertungen</h4>
         <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
             <div class="swiper-wrapper  !ease-linear">
                 @foreach ($claimRatings as $claimRating)
