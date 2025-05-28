@@ -1,7 +1,7 @@
 <div class="bg-blue-50 py-16 text-center">
     <div class="container mx-auto">
 
-        <div class="flex justify-between gap-12 items-center text-center  text-gray-800 p-8 rounded-lg shadow-inner">
+        <div class="flex justify-between gap-12 items-center text-center  text-gray-800 p-8 ">
             <div class="w-48" x-data="counterAnimation(1200)">
                 <span class="text-4xl font-bold text-blue-900" x-text="counter">0</span>
                 <p>Benutzer</p>
