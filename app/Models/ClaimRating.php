@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Controllers\Customer\ClaimRatingController;
 use Carbon\Carbon;
+use App\Models\RatingTag;
+
 
 class ClaimRating extends Model
 {
@@ -26,6 +28,7 @@ class ClaimRating extends Model
         'status',
         'attachments',
         'rating_score',
+        'tag_ids',
         'moderator_comment',
         'is_public',
         'verification_hash',
@@ -35,6 +38,7 @@ class ClaimRating extends Model
         'answers' => 'array',
         'attachments' => 'array',
         'is_public' => 'boolean',
+        'tag_ids' => 'array',
     ];
 
     protected static function boot()
@@ -99,5 +103,19 @@ class ClaimRating extends Model
     public function questionnaireVersion()
     {
         return $this->belongsTo(RatingQuestionnaireVersion::class, 'rating_questionnaire_versions_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'verification_hash';
+    }
+
+    public function tags()
+    {
+        if (!$this->tag_ids || !is_array($this->tag_ids)) {
+            return collect();
+        }
+    
+        return RatingTag::whereIn('id', $this->tag_ids)->get();
     }
 }
