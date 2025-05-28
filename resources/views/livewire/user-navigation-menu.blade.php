@@ -346,20 +346,21 @@
                                                                  </a>
                                                              </li>
                                                              <li >
-                                                                 <a  href="/contact" wire:navigate  class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
-                                                                     <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
-                                                                     </svg>
-                                                                 Kontakt
+                                                                 <a  href="/premium" wire:navigate  class='max-md:text-lg max-md:px-3 max-md:rounded-lg flex items-center md:px-4 py-2 hover:bg-gray-100'>
+                                                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 "  viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+
+                                                                     {{ __('Premium ') }}
                                                                  </a>
                                                              </li>
                                                          </ul>
                                                      </div>
                                              </div>
-                                             <x-nav-link href="/premium" wire:navigate  :active="request()->is('premium')">
-                                                 <svg class="w-4 max-md:w-6 aspect-square mr-1 max-md:mr-2 "  viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                             {{ __('Premium ') }}
-                                         </x-nav-link>
+                                             <x-nav-link href="/contact" wire:navigate  :active="request()->is('contact')">
+                                                <svg class="w-4 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
+                                                </svg>                                                
+                                                Kontakt
+                                            </x-nav-link>
                                          <!-- Kunden-Spezifische Navigation -->
                                          @if (optional(Auth::user())->role === 'guest' || optional(Auth::user())->role === 'admin')
                                              <x-nav-link href="/dashboard" wire:navigate  :active="request()->is('dashboard')">
