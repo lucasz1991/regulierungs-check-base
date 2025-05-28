@@ -2,7 +2,7 @@
     <div class="bg-white rounded border border-gray-200 shadow  transition-shadow duration-300 p-4 flex flex-col justify-between h-full  hover:shadow-lg ">
         <div class="flex gap-4 mb-4">
             <div class="shrink-0 flex-none ">
-                <div class=" w-min rounded flex items-center justify-center border text-base  px-2" style="background-color: {{ $insurance->style['bg_color'] ?? '#ccc' }}; color: {{ $insurance->style['font_color'] ?? '#000' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
+                <div class="font-semibold w-min rounded flex items-center justify-center border text-base  px-2" style="background-color: {{ $insurance->style['bg_color'] ?? '#ccc' }}; color: {{ $insurance->style['font_color'] ?? '#000' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
                     {{ strtoupper(substr( $insurance->initials, 0 ,8)) }}
                 </div>
             </div>
