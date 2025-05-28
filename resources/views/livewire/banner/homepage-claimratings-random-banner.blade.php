@@ -1,7 +1,7 @@
-<div class="relative bg-primary-50 overflow-hidden py-8">
-    <div class="text-center mb-6">
-            <h4 class="font-semibold text-lg text-gray-600">Aktuelle Bewertungen</h4>
-            <p class="text-sm text-gray-600">Hier finden Sie eine zufällige Auswahl an aktuellen Bewertungen.</p>
+<div class="relative  overflow-hidden py-8">
+    <div class="text-center mb-8">
+            <h4 class="font-semibold text-xl text-gray-600">Aktuelle Bewertungen</h4>
+            <p class="text-lg text-gray-600">Hier finden Sie eine zufällige Auswahl an aktuellen Bewertungen.</p>
     </div>
     <div x-data="{
             swiperclaimRatings: null,

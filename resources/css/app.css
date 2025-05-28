@@ -886,7 +886,7 @@ nav[aria-label="Pagination Navigation"] span.relative.inline-flex.items-center.p
   width: 100%;
   height: 100%;
   position: absolute;
-  animation: zoomInOut 20s ease-in-out infinite;
+  animation: zoomInOut 50s ease-in-out infinite;
 }
 
 /* Animation default: Langsames Hineinzoomen und Herauszoomen */

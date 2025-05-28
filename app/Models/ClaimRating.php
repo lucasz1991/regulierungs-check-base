@@ -105,10 +105,7 @@ class ClaimRating extends Model
         return $this->belongsTo(RatingQuestionnaireVersion::class, 'rating_questionnaire_versions_id');
     }
 
-    public function getRouteKeyName()
-    {
-        return 'verification_hash';
-    }
+
 
     public function tags()
     {
