@@ -47,7 +47,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
         
         Wichtige Hinweise:
         - Verwende öffentlich verfügbare Informationen.
-        - Wenn du die Farben nicht genau kennst, schätze sie basierend auf dem typischen Markenauftritt.
+        - Wenn du die Farben nicht genau kennst, schätze sie basierend auf dem typischen Markenauftritt. Und wenn die Hintergrundfarbe weiss ist soll der Rand in der Font_Color sein. Und wenn eine Versicherung auf Ihrer Webseite keine Farben angibt, verwende die Farben der Webseite.
         - Verwende keine zusätzlichen Kommentare, Erklärungen oder Anmerkungen.
         - Gib ausschließlich ein JSON-Objekt zurück.
         
@@ -57,7 +57,7 @@ class AnalyzeInsuranceOnlineViaGpt implements ShouldQueue
           "logo_bg_color": "#000000",
           "logo_font_color": "#FFFFFF",
           "logo_border_color": "#FFFFFF",
-          "abbreviation": "XYZfds" // Maximal 8 Zeichen, allgemeiner Name der Firma in Umgangssprache , z.B. "VersA", "Allianz", "HUK24", "AXA", "Signal", "R+V", "DEVK", "Gothaer", "ERGO", "LVM", "Barmenia", "Hannoversche", "Württembergische", "Generali", "HDI", "Talanx", "Signal Iduna", "Adac", "Continentale", "Lloyd", "Helvetia", "VHV", "Baloise", "R+V24", "Württembergische Versicherung", "HUK Coburg", "Allianz Direct", "CosmosDirekt", "Deutsche Familienversicherung"
+          "abbreviation": "XYZfds" 
         }
         EOT;
         $attachments = $this->insurance->name;
