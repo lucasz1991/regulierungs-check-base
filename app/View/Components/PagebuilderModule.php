@@ -40,18 +40,41 @@ class PagebuilderModule extends Component
         // Cache-Schlüssel generieren
         $cacheKey = "pagebuilder_modules_{$page}_{$position}_" . app()->getLocale();
 
+        // Überprüfen, ob die Module bereits im Cache sind
+        if (Cache::has($cacheKey) && Cache::get($cacheKey) !== null && $isAdmin) {
+            Cache::forget($cacheKey);
+        }
+        
+    if ($isAdmin) {
+        // Admin: immer frische Daten laden, nicht cachen
+        $this->modules = PagebuilderProject::where(function ($query) use ($page) {
+                $query->whereJsonContains('page', $page)
+                      ->orWhereJsonContains('page', 'all');
+            })
+            ->whereJsonContains('position', $position)
+            ->whereIn('status', [0, 1, 3])
+            ->where(function ($query) use ($now) {
+                $query->whereNull('published_from')->orWhere('published_from', '<=', $now);
+            })
+            ->where(function ($query) use ($now) {
+                $query->whereNull('published_until')->orWhere('published_until', '>=', $now);
+            })
+            ->where(function ($query) {
+                $query->where('lang', app()->getLocale())
+                    ->orWhereNull('lang')
+                    ->orWhere('lang', '');
+            })
+            ->orderBy('order_id', 'asc')
+            ->get();
+    } else {
+        // Nicht-Admin: Cache verwenden
         $this->modules = Cache::remember($cacheKey, 60, function () use ($page, $position, $now, $isAdmin) {
             return PagebuilderProject::where(function ($query) use ($page) {
-                        $query->whereJsonContains('page', $page) 
-                              ->orWhereJsonContains('page', 'all'); // Sucht nach "all" innerhalb des JSON-Arrays
+                        $query->whereJsonContains('page', $page)
+                              ->orWhereJsonContains('page', 'all');
                     })
                     ->whereJsonContains('position', $position)
-
-                    ->when(!$isAdmin, function ($query) {
-                        $query->whereIn('status', [1, 3]);
-                    }, function ($query) {
-                        $query->whereIn('status', [0, 1, 3]);
-                    })
+                    ->whereIn('status', [1, 3])
                     ->where(function ($query) use ($now) {
                         $query->whereNull('published_from')->orWhere('published_from', '<=', $now);
                     })
@@ -59,13 +82,14 @@ class PagebuilderModule extends Component
                         $query->whereNull('published_until')->orWhere('published_until', '>=', $now);
                     })
                     ->where(function ($query) {
-                        $query->where('lang', app()->getLocale()) // Prüft auf die aktuelle Sprache
-                            ->orWhereNull('lang') // Optional: Erlaubt Module ohne Sprache
+                        $query->where('lang', app()->getLocale())
+                            ->orWhereNull('lang')
                             ->orWhere('lang', '');
                     })
-                    ->orderBy('order_id', 'asc') // Falls du eine Reihenfolge hast
+                    ->orderBy('order_id', 'asc')
                     ->get();
         });
+    }
     }
 
     /**
