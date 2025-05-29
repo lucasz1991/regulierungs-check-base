@@ -53,6 +53,15 @@ class RatingForm extends Component
     public $variableQuestions = [];
     public $answers = [];
 
+    protected $listeners = [
+        'showFormModal' => 'showFormModal',
+    ];
+
+    public function showFormModal()
+    {
+        $this->showFormModal = true;
+    }
+
     public function mount()
     {
         $this->setting_available_started_at = Setting::getValue('rating_form', 'available_started_at') ?? null;

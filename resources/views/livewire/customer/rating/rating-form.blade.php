@@ -1,9 +1,8 @@
 <div class=""
     x-data="{ 
      step: @entangle('step'),
-     showFormModal: @entangle('showFormModal'),
+     modalIsOpen: @entangle('showFormModal'),
      insuranceSubTypeId: @entangle('insuranceSubTypeId'),
-     modalIsOpen: false,
     }"
     x-init="() => {
         $watch('step', () => { 
@@ -18,9 +17,7 @@
         });
     }"
 >
-    <x-buttons.button-basic  x-on:click="modalIsOpen = true" :mode="'primary'">
-        Jetzt bewerten
-    </x-buttons.button-basic>
+
  
     <template x-teleport="body">
         <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false" class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
