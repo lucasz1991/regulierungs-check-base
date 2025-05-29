@@ -18,6 +18,8 @@
         <script src="{{ URL::asset('adminresources/choices.js/public/assets/scripts/choices.min.js') }}"></script>
         <script src="{{ URL::asset('adminresources/flatpickr/flatpickr.min.js') }}"></script>
         <script src="{{ URL::asset('adminresources/flatpickr/l10n/de.js') }}"></script>
+        <link href="{{ URL::asset('adminresources/aos/aos.css') }}" rel="stylesheet">
+        <script src="{{ URL::asset('adminresources/aos/aos.js') }}"></script>
 
         
         <!-- Styles -->
@@ -64,6 +66,9 @@
                     showNav: true,
                 });
             });
+        </script>
+        <script>
+            AOS.init();
         </script>
         <!-- <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="90a1af19-c1d7-46b9-9855-b9b076ac7501" data-blockingmode="auto" type="text/javascript"></script> -->
         <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16808641054"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16808641054'); </script>-->

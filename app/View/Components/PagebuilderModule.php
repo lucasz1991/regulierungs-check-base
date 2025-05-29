@@ -34,17 +34,24 @@ class PagebuilderModule extends Component
 
         // Aktuelles Datum/Zeit für die Prüfung
         $now = Carbon::now();
-
+        // Überprüfen, ob der user ein admin ist
+        $isAdmin = auth()->check() && auth()->user()->isAdmin();
+    
         // Cache-Schlüssel generieren
         $cacheKey = "pagebuilder_modules_{$page}_{$position}_" . app()->getLocale();
 
-        $this->modules = Cache::remember($cacheKey, 60, function () use ($page, $position, $now) {
+        $this->modules = Cache::remember($cacheKey, 60, function () use ($page, $position, $now, $isAdmin) {
             return PagebuilderProject::where(function ($query) use ($page) {
                         $query->whereJsonContains('page', $page) 
                               ->orWhereJsonContains('page', 'all'); // Sucht nach "all" innerhalb des JSON-Arrays
                     })
                     ->whereJsonContains('position', $position)
-                    ->whereIn('status', [1, 3])
+
+                    ->when(!$isAdmin, function ($query) {
+                        $query->whereIn('status', [1, 3]);
+                    }, function ($query) {
+                        $query->whereIn('status', [0, 1, 3]);
+                    })
                     ->where(function ($query) use ($now) {
                         $query->whereNull('published_from')->orWhere('published_from', '<=', $now);
                     })
