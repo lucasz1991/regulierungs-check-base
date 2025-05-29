@@ -1,5 +1,4 @@
 <div  wire:loading.class="cursor-wait">
-
       <x-pagebuilder-module :position="'content_between_1'"/>
       <section>
         <livewire:banner.homepage-counter-banner  />
@@ -8,6 +7,6 @@
       <section>
         <livewire:banner.homepage-claimratings-random-banner  />
       </section>
-      <livewire:customer.rating.rating-form  />
+      <livewire:customer.rating.rating-form  lazy  />
       <livewire:testphase.modal-notice lazy />
 </div>
