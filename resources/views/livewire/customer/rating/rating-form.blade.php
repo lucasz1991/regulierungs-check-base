@@ -498,9 +498,7 @@
                                 </div>
                             </div>
                         </div>
-                        @error('regulationDetail')
-                            <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
-                        @enderror
+                        <x-input-error :for="'regulatonDetaili'" />
                         <div class="flex justify-center space-x-4 mt-12">
                             <x-buttons.backbutton wire:click="previousStep" />
                             @if (!is_null($regulationDetails))
@@ -554,9 +552,7 @@
                                             x-on:input="charCount = $event.target.value.length"
                                             maxlength="255" ></textarea>
                                     <span x-text="`${charCount}/255 Zeichen`" class="text-sm " :class="charCount >= 255 ? 'text-red-600' : 'text-gray-500 '"></span>
-                                    @error('contractDetails.textarea_value')
-                                        <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
-                                    @enderror
+                                    <x-input-error :for="'contractDetails.textarea_value'" />
                                 </div>
 
                             </div>

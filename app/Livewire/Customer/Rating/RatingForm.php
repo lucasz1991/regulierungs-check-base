@@ -528,7 +528,7 @@ class RatingForm extends Component
             'contractDetails.contract_deductible_amount.required' => 'Bitte geben Sie die Selbstbeteiligung an.',
             'contractDetails.claim_amount.required' => 'Bitte geben Sie die Schadenshöhe an.',
             'contractDetails.claim_settlement_amount.required' => 'Bitte geben Sie die Regulierungshöhe an, wenn der Fall abgeschlossen ist.',
-            'contractDetails.textarea_value.required' => 'Bitte geben Sie eine Erklärung an, wenn die Regulierungshöhe und Selbstbeteiligung zusammen weniger ist als die Schadenshöhe.',
+            'contractDetails.textarea_value.required' => 'Bitte erklären Sie, warum nicht die volle Schadenshöhe abgedeckt wurde.',
             'started_at.required' => 'Bitte geben Sie das Startdatum an.',
             'started_at.date' => 'Das Startdatum muss ein gültiges Datum sein.',
             'started_at.after_or_equal' => 'Das Startdatum muss nach oder gleich dem verfügbaren Startdatum sein.',
