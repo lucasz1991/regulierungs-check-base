@@ -2,7 +2,6 @@
     x-data="{ 
      step: @entangle('step'),
      modalIsOpen: @entangle('showFormModal'),
-     insuranceTypeId: @entangle('insuranceTypeId'),
      insuranceSubTypeId: @entangle('insuranceSubTypeId'),
     }"
     x-init="() => {
@@ -21,20 +20,9 @@
 
  
     <template x-teleport="body">
-        <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"  class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+        <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false" class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <!-- Modal Dialog -->
-            <div x-show="modalIsOpen"  x-ref="scrollTarget"   x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative text-center mx-auto rounded-lg  shadow-xl transform transition-all container max-w-4xl border border-outline bg-gray-50  w-full  px-6 py-4" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
-                <!-- Close (Abbrechen) Button oben rechts -->
-                <button 
-                    type="button"
-                    @click="modalIsOpen = false"
-                    class="absolute top-3 right-3 z-50 p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    aria-label="Abbrechen"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+            <div x-show="modalIsOpen"  x-ref="scrollTarget"  x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative text-center mx-auto rounded-lg  shadow-xl transform transition-all container max-w-4xl border border-outline bg-gray-50  w-full  px-6 py-4" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
                 <div class="ratingform " >
                     {{-- Step 0: Versicherungs typ --}}
                     <div x-show="step == 0"  x-cloak >
@@ -44,65 +32,94 @@
                                 <span> Bitte wähle die passende Versicherungskategorie aus, um mit der Fallmeldung zu starten.<br>Beispiel: Die Krankenversicherung findest du unter "Personenversicherungen".</span>
                         </x-alert>
                         <h2 class="text-lg mb-12">Versicherungskategorie auswählen</h2>
-                        <div class="max-w-md mx-auto"  :class="{ 'selected': insuranceTypeId != null }">
+                        <style>
+                            .ratingform .swiper {
+                                padding: 0px 0px 60px 0px;
+                            }
+                            .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets {
+                                
+                            }
+                        </style>
+                        <div x-data="{
+                                    insuranceTypeId: null
+                                }">
                             
-                                <select wire:model.live="insuranceTypeId" class="w-full border rounded px-4 py-2" id="positionSelect" 
-                                    x-init="
-                                            let choices = new Choices($el, {
-                                                removeItemButton: false, // ✅ EINZELAUSWAHL
-                                                shouldSort: false,
-                                                searchEnabled: true,
-                                                placeholder: true,
-                                                searchChoices: true,
-                                                searchResultLimit: 100,
-                                                fuseOptions: {
-                                                    includeScore: true,
-                                                    threshold: 0.8
+                            <div x-data="{
+                                    swiper: null,
+                                    initSwiper() {
+                                        this.swiper = new Swiper(this.$refs.swiper, {
+                                            effect: 'coverflow',
+                                            autoplay: {
+                                                delay: 1800,
+                                            },
+                                            disableOnInteraction: true,
+                                            speed: 1000,
+                                            loop: true,
+                                            centeredSlides: true,
+                                            slidesPerView: '2',
+                                            disableOnMobile: true,
+                                            breakpoints: {
+                                                640: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 20,
                                                 },
-                                                position: 'bottom',
-                                                itemSelectText: '',
-                                                searchPlaceholderValue: '🔎 Suchen...',
-                                            });
-                                            $el.addEventListener('change', (e) => {
-                                                insuranceTypeId = e.target.value;
-                                            });
-                                            $el.addEventListener('showDropdown', (e) => {
-                                                const dropdownHeight = document.querySelector('.choices__list.choices__list--dropdown.is-active')?.offsetHeight || 1;
-                                                console.log(dropdownHeight);
-                                                document.getElementById('spacerInsuranceTypeId').style.height = `${dropdownHeight}px`;
-                                                Array.from(document.getElementsByClassName('control-buttons')).forEach((el) => {
-                                                    el.classList.add('disabled');
-                                                });
-                                            });
-                                            $el.addEventListener('hideDropdown', (e) => {
-                                                document.getElementById('spacerInsuranceTypeId').style.height = '0px';
-                                                Array.from(document.getElementsByClassName('control-buttons')).forEach((el) => {
-                                                    el.classList.remove('disabled');
-                                                });
-                                            });
-                                            $nextTick(() => {
-                                                if (insuranceTypeId > 0) {
-                                                    choices.setChoiceByValue(insuranceTypeId);
-                                                }
-                                            });
-                                        "
-                                        wire:ignore
-                                    >
-                                    <option value="">Bitte auswählen</option>
-                                    @foreach ($types as $type)
-                                        <option value="{{ $type->id }}" :class="{ 'selected': insuranceTypeId != null }" class="truncate text-ellipsis relative">
-                                            <span>{{ $type->name }}</span>
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div id="spacerInsuranceTypeId" class="" ></div>
-
-
+                                                768: {
+                                                    slidesPerView: 3,
+                                                    spaceBetween: 40,
+                                                },
+                                            },
+                                            coverflowEffect: {
+                                                rotate: 50,
+                                                stretch: 0,
+                                                depth: 100,
+                                                modifier: 1,
+                                                slideShadows: false,
+                                            },
+                                            pagination: {
+                                                el: '.swiper-pagination',
+                                                clickable: true,
+                                            },
+                                        });
+                                        this.swiper.slideNext();
+                                    },
+                                    stopSwiper() {
+                                        this.swiper.autoplay.stop();
+                                    }
+                                }"
+                                x-init="initSwiper() "
+                                x-on:click="stopSwiper()"
+                                class=" relative w-full"
+                                wire:ignore
+                            >
+                                {{-- Navigation links/rechts außerhalb --}}
+                                
+                                <div class="swiper w-full" x-ref="swiper" >
+                                    <div class="swiper-wrapper pointer-events-none">
+                                        @foreach ($types as $type)
+                                            <div class="swiper-slide h-full " wire:key="type-{{ $type->id }}"
+                                                    wire:click="$set('insuranceTypeId', {{ $type->id }})"
+                                                    @click="insuranceTypeId = {{ $type->id }}">
+                                                <div 
+                                                    :class="insuranceTypeId == {{ $type->id }} 
+                                                        ? 'bg-blue-100 border-blue-500' 
+                                                        : 'hover:bg-gray-100 bg-slate-100'"
+                                                    class="border rounded p-2 text-center cursor-pointer w-[95%] h-24 flex justify-center items-center shadow-md transition duration-300 ease-in-out pointer-events-auto">
+                                                    <h3 class="font-semibold max-w-full overflow-hidden text-xs md:text-base h-auto truncate text-ellipsis">{{ $type->name }}</h3>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- If we need pagination -->
+                                    <div class="swiper-pagination"></div>
+                
+                
+                                </div>
+                            </div>
                             @error('insuranceTypeId')
                                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                             @enderror
                             <div x-show="insuranceTypeId != null"  x-cloak  >
-                                <div class="flex justify-center mt-12  control-buttons">
+                                <div class="flex justify-center mt-12">
                                     <x-buttons.furtherbutton wire:click="nextStep" />
                                 </div>
                             </div>
@@ -127,14 +144,9 @@
                                                 searchEnabled: true,
                                                 placeholder: true,
                                                 searchChoices: true,
-                                                searchResultLimit: 100,
-                                                fuseOptions: {
-                                                    includeScore: true,
-                                                    threshold: 0.8
-                                                },
                                                 position: 'bottom',
                                                 itemSelectText: '',
-                                                searchPlaceholderValue: '🔎 Suchen...',
+                                                searchPlaceholderValue: 'Suchen...',
                                             });
                                             $el.addEventListener('change', (e) => {
                                                 insuranceSubTypeId = e.target.value;
@@ -143,15 +155,9 @@
                                                 const dropdownHeight = document.querySelector('.choices__list.choices__list--dropdown.is-active')?.offsetHeight || 1;
                                                 console.log(dropdownHeight);
                                                 document.getElementById('spacerInsuranceSubTypeId').style.height = `${dropdownHeight}px`;
-                                                Array.from(document.getElementsByClassName('control-buttons')).forEach((el) => {
-                                                    el.classList.add('disabled');
-                                                });
                                             });
                                             $el.addEventListener('hideDropdown', (e) => {
                                                 document.getElementById('spacerInsuranceSubTypeId').style.height = '0px';
-                                                Array.from(document.getElementsByClassName('control-buttons')).forEach((el) => {
-                                                    el.classList.remove('disabled');
-                                                });
                                             });
                                             $nextTick(() => {
                                                 if (insuranceSubTypeId > 0) {
@@ -173,10 +179,10 @@
                                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="flex justify-center space-x-4 mt-12 control-buttons">
-                            <x-buttons.backbutton wire:click.prevent="previousStep" />
+                        <div class="flex justify-center space-x-4 mt-12">
+                            <x-buttons.backbutton wire:click="previousStep" />
                             @if ($insuranceSubTypeId)
-                                <x-buttons.furtherbutton wire:click.prevent="nextStep" />
+                                <x-buttons.furtherbutton wire:click="nextStep" />
                             @endif
                         </div>
                     </div>
@@ -198,14 +204,9 @@
                                                 searchEnabled: true,
                                                 placeholder: true,
                                                 searchChoices: true,
-                                                searchResultLimit: 100,
-                                                fuseOptions: {
-                                                    includeScore: true,
-                                                    threshold: 0.8
-                                                },
                                                 position: 'bottom',
                                                 itemSelectText: '',
-                                                searchPlaceholderValue: '🔎 Suchen...',
+                                                searchPlaceholderValue: 'Suchen...',
                                                 
                                             });
                                             $el.addEventListener('change', (e) => {
@@ -215,15 +216,9 @@
                                                 const dropdownHeight = document.querySelector('.choices__list.choices__list--dropdown.is-active')?.offsetHeight || 1;
                                                 console.log(dropdownHeight);
                                                 document.getElementById('spacerInsuranceId').style.height = `${dropdownHeight}px`;
-                                                Array.from(document.getElementsByClassName('control-buttons')).forEach((el) => {
-                                                    el.classList.add('disabled');
-                                                });
                                             });
                                             $el.addEventListener('hideDropdown', (e) => {
                                                 document.getElementById('spacerInsuranceId').style.height = '0px';
-                                                Array.from(document.getElementsByClassName('control-buttons')).forEach((el) => {
-                                                    el.classList.remove('disabled');
-                                                });
                                             });
                                             $nextTick(() => {
                                                 if (insuranceId > 0) {
@@ -242,7 +237,7 @@
                         @error('insuranceId')
                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                         @enderror
-                        <div class="flex justify-center space-x-4 mt-12  control-buttons">
+                        <div class="flex justify-center space-x-4 mt-12">
                             <x-buttons.backbutton wire:click="previousStep" />
                             @if ($insuranceId)
                             <x-buttons.furtherbutton wire:click="nextStep" />

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class RatingForm extends Component
 {
- 
+    public $types = [];
     public $insuranceTypeId = null;
     public $insuranceType;
     public $insuranceSubTypeId = null;
@@ -57,13 +57,14 @@ class RatingForm extends Component
         'showFormModal' => 'showFormModal',
     ];
 
-    public function showFormModal()
-    {
-        $this->showFormModal = true;
-    }
 
     public function mount()
     {
+        $this->types = InsuranceType::whereHas('subtypes', function ($query) {
+            $query->whereHas('latestVersion', function ($q) {
+                $q->where('is_active', true);
+            });
+        })->get();
         $this->setting_available_started_at = Setting::getValue('rating_form', 'available_started_at') ?? null;
         $this->setting_available_ended_at = Setting::getValue('rating_form', 'available_ended_at') ?? null;
         $this->questions = collect();
@@ -194,11 +195,29 @@ class RatingForm extends Component
         $this->answers = array_fill_keys($this->questions->pluck('title')->toArray(), null);
     }
 
-    public function updatedInsuranceTypeId()
+    public function showFormModal()
     {
+        $this->showFormModal = true;
+    }
+
+    public function updatedInsuranceTypeId()
+    {   
+        if (is_array($this->insuranceTypeId)) {
+            $this->insuranceTypeId = $this->insuranceTypeId['value'];
+        }
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
-        $this->insuranceSubTypes = $this->insuranceType->subtypes()->get();
-        $this->answers['insuranceTypeId'] = $this->insuranceTypeId;
+        if ($this->insuranceType == null) {
+            $this->insuranceSubTypeId = null;
+            $this->insuranceSubTypes = [];
+            $this->insurances = [];
+            $this->insuranceId = null;
+            $this->insurance = null;
+            $this->resetDates();
+            return;
+        }else {
+            $this->insuranceSubTypes = $this->insuranceType->subtypes()->get();
+            $this->answers['insuranceTypeId'] = $this->insuranceTypeId;
+        }
     }
 
     public function updatedInsuranceSubTypeId()
@@ -259,6 +278,7 @@ class RatingForm extends Component
         $this->ended_at = null;
         $this->selectedDates = null;
     }
+
     public function loadQuestions()
     {
         // Variablen Ratingfragen hinzufügen
@@ -266,7 +286,8 @@ class RatingForm extends Component
             ->ratingQuestions()
             ->orderBy('insurance_subtype_rating_question.order_column')
             ->get();
-        $this->questions = $this->questions->merge($this->variableQuestions);
+        $this->questions = collect($this->questions)->merge($this->variableQuestions);
+
         
         $this->totalSteps = $this->questions->count(); 
     }
@@ -441,15 +462,16 @@ class RatingForm extends Component
             }
         }
         if ($this->step >= 5) {
-            $rules['contractDetails.contract_coverage_amount'] = 'required';
             $rules['contractDetails.contract_deductible_amount'] = 'required';
             $rules['contractDetails.claim_amount'] = 'required';
             // Nur wenn der Fall abgeschlossen ist, muss die Regulierungshöhe angegeben werden
-            if ($this->regulationType == 'austehend' || $this->regulationType == 'abgelehnt') {
+            if ($this->regulationType == 'teilzahlung') {
                 $rules['contractDetails.claim_settlement_amount'] = 'required';
             }
-            // Wenn der Fall noch nicht abgeschlossen ist, ist die Regulierungshöhe optional
-            // $rules['contractDetails.claim_settlement_amount'] = 'nullable';
+            // wenn contractDetails.claim_settlement_amount und contractDetails.contract_deductible_amount zusammen weniger ist als contractDetails.claim_amount, dann muss eine Erklärung im Textfeld gegeben werden
+            if ($this->contractDetails['claim_settlement_amount'] < $this->contractDetails['claim_amount'] && $this->regulationType != 'abgelehnt') {
+                $rules['contractDetails.textarea_value'] = 'required';
+            }
 
         }
         if ($this->step >= 6) {
@@ -503,6 +525,10 @@ class RatingForm extends Component
             'regulationType.required' => 'Bitte geben Sie an, wie der Schaden reguliert wurde.',
             'regulationDetail.required' => 'Bitte geben Sie Details zur Regulierung an.',
             'regulationComment.required' => 'Bitte geben Sie einen Kommentar an, wenn "Andere Gründe" ausgewählt wurde.',
+            'contractDetails.contract_deductible_amount.required' => 'Bitte geben Sie die Selbstbeteiligung an.',
+            'contractDetails.claim_amount.required' => 'Bitte geben Sie die Schadenshöhe an.',
+            'contractDetails.claim_settlement_amount.required' => 'Bitte geben Sie die Regulierungshöhe an, wenn der Fall abgeschlossen ist.',
+            'contractDetails.textarea_value.required' => 'Bitte geben Sie eine Erklärung an, wenn die Regulierungshöhe und Selbstbeteiligung zusammen weniger ist als die Schadenshöhe.',
             'started_at.required' => 'Bitte geben Sie das Startdatum an.',
             'started_at.date' => 'Das Startdatum muss ein gültiges Datum sein.',
             'started_at.after_or_equal' => 'Das Startdatum muss nach oder gleich dem verfügbaren Startdatum sein.',
@@ -535,15 +561,6 @@ class RatingForm extends Component
 
     public function render()
     {
-        $types = InsuranceType::whereHas('subtypes', function ($query) {
-            $query->whereHas('latestVersion', function ($q) {
-                $q->where('is_active', true);
-            });
-        })->get();
-    
-        return view('livewire.customer.rating.rating-form', [
-            'types' => $types,
-        ]);
+        return view('livewire.customer.rating.rating-form');
     }
-    
 }

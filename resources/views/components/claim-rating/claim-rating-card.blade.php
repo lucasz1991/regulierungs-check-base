@@ -2,24 +2,26 @@
     <div class=" p-4 border-b border-gray-300 grayscale-75 hover:grayscale-0 transition-all duration-200">
         @if(!str_contains(request()->path(), 'insurance'))
             <div class="opacity-70 hover:opacity-100  transition-all duration-200 cursor-pointer">
-                <div class="flex gap-2 overflow-hidden">
+                <div wire:navigate class="flex gap-2 overflow-hidden">
                     <div class="flex-none shrink-0">
-                        <div class=" w-min rounded flex items-center justify-center text-base border px-2 font-medium" style="background-color: {{ $rating->insurance->style['bg_color'] ?? '#eee' }}; color: {{ $rating->insurance->style['font_color'] ?? '#333' }}; border-color: {{ $rating->insurance->style['border_color'] ?? '#ccc' }};">
+                        <a href="/insurance/{{ $rating->insurance->slug }}" wire:navigate class=" w-min rounded flex items-center justify-center text-base border px-2 font-medium" style="background-color: {{ $rating->insurance->style['bg_color'] ?? '#eee' }}; color: {{ $rating->insurance->style['font_color'] ?? '#333' }}; border-color: {{ $rating->insurance->style['border_color'] ?? '#ccc' }};">
                             {{ strtoupper(substr( $rating->insurance->initials, 0 ,8)) }}
-                        </div>
+                        </a>
                     </div>
                     <div class="grow">
+                        <a href="/insurance/{{ $rating->insurance->slug }}" wire:navigate>
                         <h2 class="text-base break-words  truncate text-ellipsis">
                             {{ strlen($rating->insurance->name) > 20 ? substr($rating->insurance->name, 0, 20) . '...' : $rating->insurance->name }}
                         </h2>
+                        </a>
                     </div>
                 </div>
             </div>
         @endif
         <div class="mt-3">
-            <div class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 hover:opacity-100 transition-opacity duration-200 cursor-pointer">
+            <a href="/insurancetype/{{ $rating->insuranceSubType->slug }}"  class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 hover:opacity-100 transition-opacity duration-200 cursor-pointer">
                 {{ strlen($rating->insuranceSubType->name) > 25 ? substr($rating->insuranceSubType->name, 0, 25) . '...' : $rating->insuranceSubType->name }}
-            </div>
+            </a>
         </div>
     </div>
     <div class="p-4">

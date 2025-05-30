@@ -8,6 +8,7 @@ use App\Models\RatingQuestion;
 use App\Models\RatingQuestionnaireVersion;
 use App\Models\InsuranceType;
 use App\Models\Insurance;
+use App\Models\ClaimRating;
 
 class InsuranceSubtype extends Model
 {
@@ -46,6 +47,20 @@ class InsuranceSubtype extends Model
         return $this->belongsToMany(RatingQuestion::class)
                     ->withPivot('order_column', 'notes', 'visibility_conditions')
                     ->orderBy('insurance_subtype_rating_question.order_column');
+    }
+    public function claimRatings()
+    {
+        return $this->hasMany(ClaimRating::class);
+    }
+
+    public function ratings_count()
+    {
+        return $this->hasMany(ClaimRating::class)->count();
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     public function latestVersion()

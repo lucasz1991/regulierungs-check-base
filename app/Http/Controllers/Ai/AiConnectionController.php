@@ -115,6 +115,7 @@ class AiConnectionController extends Controller
         $answers = json_encode($RequestData['answers']);
         $attachments = json_encode($RequestData['attachments']);
         $trainContent = $RequestData['trainContent'];
+        $possibleTags = $RequestData['possibleTags'];
         $isLoading = true;
         $maxRetries = 3;
         $botMessage = '';
@@ -143,6 +144,7 @@ class AiConnectionController extends Controller
                             [
                                 'role' => 'user',
                                 'content' => <<<TEXT
+                                    possibleTags: {$possibleTags}
                                     attachments: {$attachments}
                                     answers: {$answers}
                                     TEXT
@@ -183,7 +185,7 @@ class AiConnectionController extends Controller
                         }else{
                             $data = $decodedMessage;
                         }
-                        if (!isset($data['overall_score']) || !isset($data['comment']) || !isset($data['regulation_speed']) || !isset($data['customer_service']) || !isset($data['fairness']) || !isset($data['transparency'])) {
+                        if (!isset($data['overall_score']) || !isset($data['comment']) || !isset($data['regulation_speed']) || !isset($data['customer_service']) || !isset($data['fairness']) || !isset($data['transparency']) || !isset($data['tags'])) {
                             throw new \Exception("Response JSON does not contain required keys: $cleanedbotMessage");
                         }
                         $aiOverAllScore = floatval($data['overall_score']);
@@ -191,7 +193,9 @@ class AiConnectionController extends Controller
                         $ai_customer_service_Score = floatval($data['customer_service']);
                         $ai_fairness_Score = floatval($data['fairness']);
                         $ai_transparency_Score = floatval($data['transparency']);
+                        $aiResultTags = $data['tags'];
                         $aiResultComment = preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '',$data['comment']);
+
                         $isLoading = false;
                         break;
                     }
@@ -202,7 +206,7 @@ class AiConnectionController extends Controller
                     ]);
                 }
         }
-        return ['overall_score' => $aiOverAllScore,'regulation_speed' => $ai_regulation_speed_Score,'customer_service' => $ai_customer_service_Score,'fairness' => $ai_fairness_Score, 'transparency' => $ai_transparency_Score, 'aiResultComment' => $aiResultComment];
+        return ['overall_score' => $aiOverAllScore,'regulation_speed' => $ai_regulation_speed_Score,'customer_service' => $ai_customer_service_Score,'fairness' => $ai_fairness_Score, 'transparency' => $ai_transparency_Score, 'tags' => $aiResultTags, 'aiResultComment' => $aiResultComment];
     }
 
     public static function parsePossiblyEscapedJson(string $raw)

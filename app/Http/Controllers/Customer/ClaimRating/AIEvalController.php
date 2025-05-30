@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use App\Models\RatingTag;
 
 use App\Http\Controllers\Ai\AiConnectionController;
 
@@ -64,41 +65,52 @@ class AIEvalController extends Controller
 
     static function getOverAllScore( $answers , $attachments )
     {
-        $trainContent = 'Du bist ein Assistent, der eine vollständige Kundenbewertung zur Schadenregulierung analysiert. 
-            Ziel ist es, auf Basis der bereitgestellten Antworten und vorliegenden KI-Vorbewertungen einen Gesamt-Score zwischen 0.01 (sehr negativ) und 0.99 (sehr positiv) zu vergeben.
+        $possibleTags = RatingTag::get()->toArray();
+        $possibleTags = json_encode($possibleTags);
+        $trainContent = <<<EOT
+        Du bist ein KI-Assistent, der vollständige Kundenbewertungen zur Schadenregulierung analysiert und ein objektives Gesamturteil erstellt.
 
-            Strukturierte Eingangsdaten:
-            - Die Kundendaten enthalten Informationen über die Regulierung (z. B. Typ, Dauer, Entscheidung).
-            - Zusätzlich sind vorab berechnete Scores für einzelne Bewertungsbereiche vorhanden.
-            - Deine Aufgabe ist es, diese Informationen zu kombinieren und objektiv zu bewerten.
+        Ziel:
+        - Bestimme auf Basis der Antworten und KI-Vorbewertungen einen Gesamt-Score (0.01 = sehr negativ, 0.99 = sehr positiv).
+        - Weise **maximal 3 passende Tags** zu, die den Kern der Bewertung am besten widerspiegeln. Nutze nur die in `possibleTags` definierten.
+        - Verfasse einen kurzen, neutralen Kommentar (4–5 Zeilen) zur Zusammenfassung der Bewertung auf Deutsch.
 
-            Bewerte dabei folgende Kategorien:
-            - `regulation_speed`: Wie schnell verlief die Regulierung im Vergleich zum Durchschnitt?
-            - `customer_service`: Wie hilfreich und freundlich wirkte der Service aus Sicht des Kunden?
-            - `fairness`: War die Entscheidung nachvollziehbar und gerecht?
-            - `transparency`: Wurde offen kommuniziert? Gab es Rückfragen oder Unklarheiten?
-            - `overall_score`: Wie fällt der Gesamteindruck aus?
+        Eingabedaten:
+        - `answers`: Antworten des Kunden (z. B. Einschätzung der Dauer, Entscheidung, Kommunikation).
+        - `attachments`: Vorab berechnete Scores wie z. B. Fairness (0.2), Kundenservice (0.4) etc.
+        - `possibleTags`: Vollständige Liste möglicher Tags mit `id`, `name` und `description`.
+        - `insuranceSubtype_average_rating_speed`: Durchschnittliche Bearbeitungsdauer für die Versicherungsart (z. B. 30 Tage).
+        - `actualDays`: Tatsächliche Bearbeitungsdauer im Fall.
 
-            Berücksichtige:
-            - Die durchschnittliche Dauer für diese Versicherungsart (`insuranceSubtype_average_rating_speed`) liegt z. B. bei 30 Tagen.
-            - Die tatsächliche Dauer war: `actualDays`
-            - AI-Scorings der Antworten (z. B. Fairness: 0.2, Service-Kommentar: 0.4) sind enthalten und helfen dir zur Einschätzung.
-            - Die Kundenantworten sind direkt enthalten und liefern dir die Einschätzung des Kunden in eigenen Worten.
+        Bewertungsbereiche:
+        1. **regulation_speed**: Wie schnell war der Ablauf im Vergleich zum Durchschnitt?
+        2. **customer_service**: Wie hilfreich und freundlich war der Kundenservice?
+        3. **fairness**: War die Entscheidung nachvollziehbar und angemessen?
+        4. **transparency**: Wurde offen und verständlich kommuniziert?
+        5. **overall_score**: Wie fällt der Gesamteindruck des Falls aus?
 
-            Antwortformat:
-            
-            {
-            "overall_score": 0.75,
-            "regulation_speed": 0.9,
-            "customer_service": 0.6,
-            "fairness": 0.5,
-            "transparency": 0.7,
-            "comment": "4-5 zeileiger Kommentar auf Deutsch"
-            }
-            ';
+        Hinweise:
+        - Wähle die **3 wichtigsten Tags** aus `possibleTags`, die die Situation prägnant beschreiben.
+        - Tags sollen den Fokus der Kritik oder des Lobes widerspiegeln (nicht auf alles eingehen).
+        - Wähle keine Tags aus, die nicht direkt erkennbar sind oder nur allgemein wirken .
+        - Vermeide doppelte oder semantisch überlappende Tags.
+
+        Antwortformat (JSON):
+        {
+        "overall_score": 0.75,
+        "regulation_speed": 0.9,
+        "customer_service": 0.6,
+        "fairness": 0.5,
+        "transparency": 0.7,
+        "tags": "4,13", // Mindestens 1 und Maximal 3 Tag-IDs, kommasepariert, aus possibleTags
+        "comment": "Kurze Zusammenfassung in 4-5 Zeilen. Neutral, sachlich, kein Lob oder Kritik überbetonen."
+        }
+        EOT;
+
         $requestData = [
             'answers' => $answers,
             'attachments' => $attachments,
+            'possibleTags' => $possibleTags,
             'trainContent' => $trainContent,
         ];
         $responseData = AiConnectionController::getOverAllScore($requestData);

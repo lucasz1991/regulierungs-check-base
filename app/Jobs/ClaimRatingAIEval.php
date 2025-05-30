@@ -130,9 +130,25 @@ class ClaimRatingAIEval implements ShouldQueue
         $attachments['scorings']['transparency'] = $overAllScore['transparency'];
         $attachments['scorings']['ai_overall_comment'] = $overAllScore['aiResultComment'];
         Log::info($attachments);
-
+        
         // Speichern
         $this->claimRating->attachments = $attachments;
+
+
+        $tags = $overAllScore['tags'];
+
+        if (is_string($tags)) {
+            $tagsArray = array_filter(array_map('trim', explode(',', $tags)));
+        } elseif (is_array($tags)) {
+            $tagsArray = $tags;
+        } else {
+            $tagsArray = [];
+        }
+
+        // Maximal 3 Tags, cast-konform speichern (kein json_encode!)
+        $this->claimRating->tag_ids = array_slice($tagsArray, 0, 3);
+
+        Log::info($tagsArray);
 
         $this->claimRating->rating_score = round((float) $allScore, 2);
         $this->claimRating->status = 'rated';

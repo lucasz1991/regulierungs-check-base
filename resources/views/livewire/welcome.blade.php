@@ -7,6 +7,6 @@
       <section>
         <livewire:banner.homepage-claimratings-random-banner  />
       </section>
-      <livewire:customer.rating.rating-form  lazy  />
+      <livewire:customer.rating.rating-form   />
       <livewire:testphase.modal-notice lazy />
 </div>

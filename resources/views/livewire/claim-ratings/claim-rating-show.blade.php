@@ -1,6 +1,5 @@
 <div class="bg-gray-50">
-    <div class="container mx-auto px-4 py-6 space-y-4">
-    
+    <div class="container mx-auto px-4 py-6 space-y-4">    
         <div class="bg-white rounded shadow p-6">
             <p class="text-sm text-gray-600 mb-1">
                 Versicherung: <strong>{{ $claimRating->insurance->name ?? 'Keine Angabe' }}</strong>
@@ -59,14 +58,11 @@
                             <div class="text-sm text-gray-600 mb-4">
                                 <strong class="my-4">Gesammt Scoring:</strong> 
                                 <x-insurance.insurance-rating-stars :score="$claimRating->score()" />
-            
                             </div>
-                    
                             <div class="prose max-w-full">
                                 <h2 class="text-lg font-semibold mb-2">Kommentar</h2>
                                 <p>{{ $claimRating->comment() ?: 'Kein Kommentar vorhanden.' }}</p>
                             </div>
-
                         </div>    
                         <div class="bg-white p-4 rounded w-full lg:w-1/3  items-center">
                             <strong class="mb-4">Scorings:</strong> 
@@ -92,6 +88,27 @@
                                 <div class="flex items-center justify-between space-x-2">
                                 <span class="mr-4">Transparenz:</span>
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['transparency']" />
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                @php
+                                    function badgeColor($id) {
+                                        $colors = [
+                                            'bg-red-100 text-red-800',
+                                            'bg-green-100 text-green-800',
+                                            'bg-yellow-100 text-yellow-800',
+                                            'bg-purple-100 text-purple-800',
+                                            'bg-blue-100 text-blue-800',
+                                        ];
+                                        return $colors[$id % count($colors)];
+                                    }
+                                @endphp
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    @foreach ($claimRating->tags() as $tag)
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ badgeColor($tag->id) }}">
+                                            {{ $tag->name }}
+                                        </span>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>

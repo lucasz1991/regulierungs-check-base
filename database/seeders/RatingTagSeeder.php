@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\RatingTag;
+use Illuminate\Support\Str;
 
 class RatingTagSeeder extends Seeder
 {
@@ -120,11 +121,6 @@ class RatingTagSeeder extends Seeder
                 'description' => 'Änderungen werden nicht klar kommuniziert.',
             ],
             [
-                'tag' => 'Ausland schwierig',
-                'name' => 'Schadensregulierung im Ausland',
-                'description' => 'Schwierigkeiten bei der Regulierung von Schäden, die im Ausland entstanden sind.',
-            ],
-            [
                 'tag' => 'keine Hilfe',
                 'name' => 'Unzureichende Unterstützung bei Schadensmeldung',
                 'description' => 'Fehlende Hilfe bei der korrekten Meldung eines Schadens.',
@@ -185,11 +181,6 @@ class RatingTagSeeder extends Seeder
                 'description' => 'Mangelnde Kommunikation über den Stand der Schadensbearbeitung.',
             ],
             [
-                'tag' => 'Auslandsleistung unklar',
-                'name' => 'Leistung im Ausland unklar',
-                'description' => 'Unklarheiten über die Abdeckung von Leistungen im Ausland.',
-            ],
-            [
                 'tag' => 'Vandalismusproblem',
                 'name' => 'Vandalismusschaden nicht gut reguliert',
                 'description' => 'Schwierigkeiten bei der Regulierung von Vandalismusschäden.',
@@ -218,211 +209,6 @@ class RatingTagSeeder extends Seeder
                 'tag' => 'Unfallleistung unklar',
                 'name' => 'Unfallleistungen unklar',
                 'description' => 'Schwierigkeiten beim Verständnis der Leistungen bei Unfällen.',
-            ],
-            [
-                'tag' => 'zu langsam_var',
-                'name' => 'Lange Bearbeitungszeiten (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Lange Bearbeitungszeiten', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'schlechter Kontakt_var',
-                'name' => 'Unzureichende Kommunikation (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unzureichende Kommunikation', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'unklar_var',
-                'name' => 'Unklare Versicherungsbedingungen (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unklare Versicherungsbedingungen', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Gutachterproblem_var',
-                'name' => 'Probleme mit Gutachtern (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Probleme mit Gutachtern', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'zu wenig Leistung_var',
-                'name' => 'Unzureichende Entschädigung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unzureichende Entschädigung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Nachweise schwierig_var',
-                'name' => 'Schwierigkeiten bei der Beweisführung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Schwierigkeiten bei der Beweisführung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'unfreundlich_var',
-                'name' => 'Unfreundlicher Kundenservice (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unfreundlicher Kundenservice', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'keine Antwort_var',
-                'name' => 'Keine Rückmeldung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Keine Rückmeldung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Zuständigkeit unklar_var',
-                'name' => 'Unklare Zuständigkeiten (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unklare Zuständigkeiten', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Papierkrieg_var',
-                'name' => 'Forderung unnötiger Dokumente (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Forderung unnötiger Dokumente', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Technikfehler_var',
-                'name' => 'Technische Probleme (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Technische Probleme', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'widersprüchlich_var',
-                'name' => 'Widersprüchliche Aussagen (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Widersprüchliche Aussagen', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Dokumente verloren_var',
-                'name' => 'Verlust von Unterlagen (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Verlust von Unterlagen', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Lücke im Schutz_var',
-                'name' => 'Lückenhafter Versicherungsschutz (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Lückenhafter Versicherungsschutz', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'automatisch abgelehnt_var',
-                'name' => 'Automatisierte Ablehnungen (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Automatisierte Ablehnungen', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Zeitdruck_var',
-                'name' => 'Zeitdruck durch Versicherung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Zeitdruck durch Versicherung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'emotional belastend_var',
-                'name' => 'Emotionale Belastung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Emotionale Belastung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Informationsmangel_var',
-                'name' => 'Unzureichende Information (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unzureichende Information', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Ablehnung unklar_var',
-                'name' => 'Unverständliche Ablehnungsgründe (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unverständliche Ablehnungsgründe', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Streit um Schadenshöhe_var',
-                'name' => 'Probleme mit Schadenshöhe (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Probleme mit Schadenshöhe', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Änderung intransparent_var',
-                'name' => 'Fehlende Transparenz bei Vertragsänderungen (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Fehlende Transparenz bei Vertragsänderungen', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Ausland schwierig_var',
-                'name' => 'Schadensregulierung im Ausland (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Schadensregulierung im Ausland', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'keine Hilfe_var',
-                'name' => 'Unzureichende Unterstützung bei Schadensmeldung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unzureichende Unterstützung bei Schadensmeldung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Zusatzleistung verzögert_var',
-                'name' => 'Verzögerte Bearbeitung bei Zusatzleistungen (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Verzögerte Bearbeitung bei Zusatzleistungen', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Unfallproblem_var',
-                'name' => 'Unfallregulierung problematisch (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unfallregulierung problematisch', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Fristen unklar_var',
-                'name' => 'Unklare Fristen (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unklare Fristen', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Totalschaden unterbewertet_var',
-                'name' => 'Totalschaden unzureichend entschädigt (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Totalschaden unzureichend entschädigt', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Teilkasko problematisch_var',
-                'name' => 'Probleme bei Teilkasko-Schäden (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Probleme bei Teilkasko-Schäden', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Mietwagen unklar_var',
-                'name' => 'Mietwagenkosten unklar geregelt (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Mietwagenkosten unklar geregelt', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Naturereignis problematisch_var',
-                'name' => 'Naturkatastrophen nicht gut reguliert (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Naturkatastrophen nicht gut reguliert', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Regulierungshilfe fehlt_var',
-                'name' => 'Fehlende Unterstützung bei Regulierung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Fehlende Unterstützung bei Regulierung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Selbstbeteiligung unklar_var',
-                'name' => 'Selbstbeteiligung unklar (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Selbstbeteiligung unklar', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Diebstahlproblem_var',
-                'name' => 'Diebstahlschaden nicht korrekt reguliert (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Diebstahlschaden nicht korrekt reguliert', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Kommunikation schlecht_var',
-                'name' => 'Schlechte Kommunikation bei Regulierung (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Schlechte Kommunikation bei Regulierung', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Auslandsleistung unklar_var',
-                'name' => 'Leistung im Ausland unklar (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Leistung im Ausland unklar', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Vandalismusproblem_var',
-                'name' => 'Vandalismusschaden nicht gut reguliert (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Vandalismusschaden nicht gut reguliert', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Feuerproblem_var',
-                'name' => 'Feuerschaden nicht gut reguliert (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Feuerschaden nicht gut reguliert', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Krankheit unklar_var',
-                'name' => 'Krankheitsleistungen unklar (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Krankheitsleistungen unklar', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Wasserschadenproblem_var',
-                'name' => 'Wasserschaden nicht gut reguliert (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Wasserschaden nicht gut reguliert', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Vertragsänderung unklar_var',
-                'name' => 'Vertragsänderung schlecht kommuniziert (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Vertragsänderung schlecht kommuniziert', aber in anderem Kontext aufgetreten.",
-            ],
-            [
-                'tag' => 'Unfallleistung unklar_var',
-                'name' => 'Unfallleistungen unklar (ähnlicher Fall)',
-                'description' => "Ein vergleichbares Problem wie 'Unfallleistungen unklar', aber in anderem Kontext aufgetreten.",
             ],
             [
                 'tag' => 'schnell bearbeitet',
@@ -476,12 +262,13 @@ class RatingTagSeeder extends Seeder
             ],
         ];
         foreach ($tags as $tagData) {
+            $slug = Str::slug($tagData['tag']);
             RatingTag::updateOrCreate(
-                ['tag' => $tagData['tag']],
-                [
-                    'name' => $tagData['name'],
-                    'description' => $tagData['description'] ?? null,
-                ]
+            ['tag' => $slug],
+            [
+                'name' => $tagData['name'],
+                'description' => $tagData['description'] ?? null,
+            ]
             );
         }
     }
