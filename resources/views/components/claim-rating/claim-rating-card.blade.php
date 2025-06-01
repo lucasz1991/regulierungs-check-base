@@ -2,14 +2,14 @@
     <div class=" p-4 border-b border-gray-300 grayscale-75 hover:grayscale-0 transition-all duration-200">
         @if(!str_contains(request()->path(), 'insurance'))
             <div class="opacity-70 hover:opacity-100  transition-all duration-200 cursor-pointer">
-                <div wire:navigate class="flex gap-2 overflow-hidden">
+                <div  class="flex gap-2 overflow-hidden">
                     <div class="flex-none shrink-0">
-                        <a href="/insurance/{{ $rating->insurance->slug }}" wire:navigate class=" w-min rounded flex items-center justify-center text-base border px-2 font-medium" style="background-color: {{ $rating->insurance->style['bg_color'] ?? '#eee' }}; color: {{ $rating->insurance->style['font_color'] ?? '#333' }}; border-color: {{ $rating->insurance->style['border_color'] ?? '#ccc' }};">
+                        <a href="{{ route('insurance.show-insurance', $rating->insurance->slug) }}"  class=" w-min rounded flex items-center justify-center text-base border px-2 font-medium" style="background-color: {{ $rating->insurance->style['bg_color'] ?? '#eee' }}; color: {{ $rating->insurance->style['font_color'] ?? '#333' }}; border-color: {{ $rating->insurance->style['border_color'] ?? '#ccc' }};">
                             {{ strtoupper(substr( $rating->insurance->initials, 0 ,8)) }}
                         </a>
                     </div>
                     <div class="grow">
-                        <a href="/insurance/{{ $rating->insurance->slug }}" wire:navigate>
+                        <a href="{{ route('insurance.show-insurance', $rating->insurance->slug) }}" >
                         <h2 class="text-base break-words  truncate text-ellipsis">
                             {{ strlen($rating->insurance->name) > 20 ? substr($rating->insurance->name, 0, 20) . '...' : $rating->insurance->name }}
                         </h2>

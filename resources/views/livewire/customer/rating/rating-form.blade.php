@@ -61,7 +61,7 @@
                                                 },
                                                 position: 'bottom',
                                                 itemSelectText: '',
-                                                searchPlaceholderValue: '🔎 Suchen...',
+                                                searchPlaceholderValue: 'Suchen...',
                                             });
                                             $el.addEventListener('change', (e) => {
                                                 insuranceTypeId = e.target.value;
@@ -134,7 +134,7 @@
                                                 },
                                                 position: 'bottom',
                                                 itemSelectText: '',
-                                                searchPlaceholderValue: '🔎 Suchen...',
+                                                searchPlaceholderValue: 'Suchen...',
                                             });
                                             $el.addEventListener('change', (e) => {
                                                 insuranceSubTypeId = e.target.value;
@@ -166,7 +166,7 @@
                                         <option value="{{ $insuranceSubType->id }}" :class="{ 'selected': insuranceSubTypeId != null }" class="truncate text-ellipsis">{{ $insuranceSubType->name }}</option>
                                     @endforeach
                                 </select>
-                                <div id="spacerInsuranceSubTypeId" class="transform transition-all" ></div>
+                                <div id="spacerInsuranceSubTypeId" class="" ></div>
 
                             </div>
                             @error('insuranceSubTypeId')
@@ -205,7 +205,7 @@
                                                 },
                                                 position: 'bottom',
                                                 itemSelectText: '',
-                                                searchPlaceholderValue: '🔎 Suchen...',
+                                                searchPlaceholderValue: 'Suchen...',
                                                 
                                             });
                                             $el.addEventListener('change', (e) => {
@@ -237,7 +237,7 @@
                                     <option value="{{ $insurance->id }}" :class="{ 'selected': insuranceSubTypeId != null }" class="truncate text-ellipsis">{{ Str::limit($insurance->name, 25) }}</option>
                                 @endforeach
                             </select>
-                            <div id="spacerInsuranceId" class="transform transition-all" ></div>
+                            <div id="spacerInsuranceId" class="" ></div>
                         </div>
                         @error('insuranceId')
                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
@@ -560,7 +560,7 @@
                         <div class="flex justify-center space-x-4 mt-12">
                             <x-buttons.backbutton wire:click="previousStep" />
 
-                            @if ($contractDetails['contract_deductible_amount'] && $contractDetails['claim_amount'] && ($regulationType == 'teilzahlung' || $regulationType == 'vollzahlung' ? $contractDetails['claim_settlement_amount'] : true))
+                            @if ( $contractDetails['claim_amount'] && ($regulationType == 'teilzahlung' || $regulationType == 'vollzahlung' ? $contractDetails['claim_settlement_amount'] : true))
                                 <x-buttons.furtherbutton wire:click="nextStep" />
                             @endif
                         </div>

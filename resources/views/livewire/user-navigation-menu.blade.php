@@ -280,7 +280,7 @@
                                      <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex   w-max  mx-auto  " >
                                          <!-- Gäste-Spezifische Navigation -->
                                          <x-nav.nav-link href="/" wire:navigate  :active="request()->is('/')">
-                                                 <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"  stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                                 <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
                                                  </svg>
              
@@ -291,11 +291,11 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " fill="currentColor" viewBox="0 0 24 24">
                                                  <path d="M7 10H3v10h4V10zm7-6h-4v16h4V4zm7 10h-4v6h4v-6z"/>
                                                 </svg>
-                                                Ergebnisse
+                                                {{ __('Ergebnisse') }}
                                             </x-slot>
                                             <x-slot name="content">
                                                 <x-nav.nav-link-submenu-link href="/insurances" wire:navigate  :active="request()->is('insurances')">
-                                                    <svg class="w-4 max-md:w-6 aspect-square mr-1 max-md:mr-2 " viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                                    <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                                                     {{ __('Versicherungen') }}
                                                 </x-nav.nav-link-submenu-link>
                                                 <x-nav.nav-link-submenu-link href="/reviews" wire:navigate :active="request()->is('reviews')">
@@ -310,7 +310,7 @@
                                          </x-nav.nav-link-submenu>
                                          <x-nav.nav-link-submenu  :active="request()->is('aboutus', 'faqs', 'howto', 'premium')">
                                             <x-slot name="title">
-                                            <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                                     </svg>
                                                 {{ __('Über uns') }}

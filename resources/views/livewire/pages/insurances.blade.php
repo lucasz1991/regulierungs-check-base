@@ -1,46 +1,47 @@
 <div  wire:loading.class="cursor-wait">
-  <section class="relative" style="background-image: url('/site-images/background.jpg'); background-size: cover; background-position: 50% 80%;">
+  <section class="relative bg-gray-200" >
     <div class="absolute inset-0 bg-blue-50 opacity-80">
     </div>
     <div class="max-w-4xl mx-auto text-center  py-16 px-6 md:px-12 relative z-10">
       <h2 class="text-3xl md:text-4xl  text-gray-800 mb-4 mt-5">
-        Vergleiche Versicherungen 
+        Durchsuche Versicherungen 
       </h2>
       <p class="text-lg md:text-xl text-gray-700 pb-8">
-        Finde heraus, welche Versicherer wirklich überzeugen.<br>
-        Unsere Auswertungen basieren auf echten Erfahrungen – anonym, unabhängig und verständlich aufbereitet.      
+        Hier kannst du alle Versicherungen durchsuchen, die bereits von Nutzer:innen bei uns bewertet wurden.<br>
+        Unsere Auswertungen basieren auf echten Erfahrungen – anonym, unabhängig und verständlich aufbereitet.
         </p>
       <div>
-        <div class=" mb-4 w-full">
-            <div class="grid grid-cols-12 ">
-                <div class="col-span-6  rounded-md rounded-r-none bg-white  border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-200 focus:shadow-none active:bg-blue-200 hover:bg-blue-300 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                    <select wire:model.live="insuranceType" placeholder="Typ auswählen"
-                            class="appearance-none border-0 text-gray-600 w-full py-2 px-4 pr-8 bg-[#fff0] max-w-md">
-                        <option value="">Alle Typen</option>
-                        @foreach($insuranceTypes as $type)
-                            <option class="max-w-md" value="{{ $type->id }}">{{ $type->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-span-6 rounded-md rounded-l-none bg-white  border-l border-r  text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-200 focus:shadow-none active:bg-blue-200 hover:bg-blue-300  active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                    <select wire:model.live="insuranceSubType" placeholder="Art auswählen"
-                            class="appearance-none border-0 text-gray-600 w-full py-2 px-4 pr-8 bg-[#fff0] max-w-md">
-                        <option value="">Alle Arten</option>
-                        @foreach($insuranceSubTypes as $SubType)
-                            <option class="max-w-md" value="{{ $SubType->id }}">{{ $SubType->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
     <section  class="bg-gray-100 pt-8">
+
         <x-filter.filter-container>
             <x-slot name="filters">
                 <div class="p-2">
                     <x-filter.filter-search-field wire:model.live="search" />
+                </div>
+                <div class="p-2">
+                    <div class="rounded-md rounded-r-none bg-white  border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-200 focus:shadow-none active:bg-blue-200 hover:bg-blue-300 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                        <select wire:model.live="insuranceType" placeholder="Typ auswählen"
+                                class="appearance-none border-0 text-gray-600 w-full py-2 px-4 pr-8 bg-[#fff0] max-w-md">
+                            <option value="">Alle Typen</option>
+                            @foreach($insuranceTypes as $type)
+                                <option class="max-w-md" value="{{ $type->id }}">{{ $type->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div class="rounded-md rounded-l-none bg-white  border border-blue-200  text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-200 focus:shadow-none active:bg-blue-200 hover:bg-blue-300  active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                        <select wire:model.live="insuranceSubType" placeholder="Art auswählen"
+                                class="appearance-none border-0 text-gray-600 w-full py-2 px-4 pr-8 bg-[#fff0] max-w-md">
+                            <option value="">Alle Arten</option>
+                            @foreach($insuranceSubTypes as $SubType)
+                                <option class="max-w-md" value="{{ $SubType->id }}">{{ $SubType->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="p-2">
                     <label class="text-sm text-gray-600 mb-1 flex justify-left space-x-2 align-middle content-center">
@@ -117,6 +118,5 @@
                 @endif
             </x-slot>
         </x-filter.filter-container>
-    
     </section>
 </div>

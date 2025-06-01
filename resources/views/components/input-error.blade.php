@@ -1,5 +1,5 @@
 @props(['for'])
-<div>
+<div >
     <span x-data="{hasError: '{{$errors->get($for)[0] ?? ''}}' }"
          x-init="()=> { $watch('hasError', (value)=> {
                 let errorDiv = document.getElementsByClassName('invalid-feedback')[0];

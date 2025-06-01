@@ -462,14 +462,14 @@ class RatingForm extends Component
             }
         }
         if ($this->step >= 5) {
-            $rules['contractDetails.contract_deductible_amount'] = 'required';
+            $rules['contractDetails.contract_deductible_amount'] = '';
             $rules['contractDetails.claim_amount'] = 'required';
             // Nur wenn der Fall abgeschlossen ist, muss die Regulierungshöhe angegeben werden
             if ($this->regulationType == 'teilzahlung') {
                 $rules['contractDetails.claim_settlement_amount'] = 'required';
             }
             // wenn contractDetails.claim_settlement_amount und contractDetails.contract_deductible_amount zusammen weniger ist als contractDetails.claim_amount, dann muss eine Erklärung im Textfeld gegeben werden
-            if ($this->contractDetails['claim_settlement_amount'] < $this->contractDetails['claim_amount'] && $this->regulationType != 'abgelehnt') {
+            if ($this->contractDetails['claim_settlement_amount'] < $this->contractDetails['claim_amount'] && $this->regulationType != 'ablehnung' && $this->regulationType != 'austehend') {
                 $rules['contractDetails.textarea_value'] = 'required';
             }
 
