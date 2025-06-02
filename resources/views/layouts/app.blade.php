@@ -62,6 +62,7 @@
                 Alpine.store('nav', {
                     height: 0,
                     isMobile: false,
+                    isScreenXl: false,
                     isMobileMenuOpen: false,
                     showNav: true,
                 });

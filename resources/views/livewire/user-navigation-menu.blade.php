@@ -7,6 +7,7 @@
     }"
     x-init="$nextTick(() => {
         $store.nav.height = $refs.nav.offsetHeight;
+        $store.nav.isScreenXl = window.innerWidth >= 1280;
         $store.nav.isMobile = window.innerWidth <= 768;
     })"
 
@@ -30,11 +31,15 @@
     x-resize="
         $nextTick(() => {
             screenWidth = window.innerWidth;
-            if (screenWidth <= 768) {
+            if (screenWidth >= 1280) {
+                $store.nav.isScreenXl = true;
+                $store.nav.isMobileMenuOpen = false;
+            } else if (screenWidth <= 768) {
                 $store.nav.isMobile = true;
                 $store.nav.isMobileMenuOpen = false;
             } else {
                 $store.nav.isMobile = false;
+                $store.nav.isScreenXl = false;
                 $store.nav.isMobileMenuOpen = false;
             }
             $store.nav.height = $refs.nav.offsetHeight; 

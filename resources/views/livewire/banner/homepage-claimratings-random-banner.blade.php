@@ -44,9 +44,9 @@
         wire:ignore
     >
         <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
-            <div class="swiper-wrapper  !ease-linear">
+            <div class="swiper-wrapper  !ease-linear  transform-gpu">
                 @foreach ($claimRatings as $claimRating)
-                    <div class="swiper-slide h-full px-4">
+                    <div class="swiper-slide h-full px-4  transform-gpu">
                         <x-claim-rating.claim-rating-card :rating="$claimRating" />
                     </div>
                 @endforeach

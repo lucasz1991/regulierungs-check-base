@@ -14,9 +14,11 @@ class Insurances extends Component
 
     public $search;
     public $insuranceTypes = [];
-    public $insuranceType = null;
+    public $selectedInsuranceTypesfilter = [];
     public $insuranceSubTypes = [];
     public $insuranceSubType = null;
+    public $insuranceType = null;
+    public $selectedInsuranceSubTypefilter = [];
     public $perPage = 9;
     public $pages = 1;
 
@@ -27,11 +29,7 @@ class Insurances extends Component
     public $onlyActive;
 
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'insuranceType' => ['except' => ''],
-        'insuranceSubType' => ['except' => '']
-    ];
+
 
     public function mount()
     {
