@@ -58,9 +58,9 @@
             </template>
     
             <!-- Optionen -->
-            <div class="px-4 py-2 bg-primary-50 space-y-1 divide-y divide-gray-200 max-h-[40dvh] overflow-y-auto scroll-container scroll-smooth" >
+            <div class="px-4 py-2 bg-primary-50/50  divide-y divide-gray-200 max-h-[40dvh] overflow-y-auto scroll-container scroll-smooth" >
                 @foreach($options as $option)
-                    <label class="flex items-start space-x-2 py-1" x-show="!search || '{{ strtolower($option->name) }}'.includes(search.toLowerCase())">
+                    <label class="flex items-start space-x-2 py-2" x-show="!search || '{{ strtolower($option->name) }}'.includes(search.toLowerCase())">
                         <input type="checkbox" :value="{{ $option->id }}" x-model="selected" class="form-checkbox text-secondary rounded-full mt-1">
                         <span>{{ $option->name }}</span>
                     </label>
