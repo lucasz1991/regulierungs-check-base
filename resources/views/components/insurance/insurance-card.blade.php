@@ -21,7 +21,7 @@
     </div>
     <div class="relative">
         <div x-show="showInfos" x-collapse.duration.300ms
-            class="absolute right-0 -top-1 w-full bg-primary-50 border-b-2 border-l-2 border-t border-r-2  border-blue-200 rounded shadow-lg z-10"
+            class="relative -top-1 w-full bg-primary-50 border-b-2 border-l-2 border-t border-r-2  border-blue-200 rounded shadow-lg z-10"
             @click.away="showInfos = false">
             <x-insurance.insurance-card-dropdown-infos :insurance="$insurance" lazy />
         </div>

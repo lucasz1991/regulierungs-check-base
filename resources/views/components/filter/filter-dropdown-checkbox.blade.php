@@ -25,8 +25,8 @@
        {!! $attributes->merge(['class' => '']) !!}>
 
     <!-- Dropdown -->
-    <div x-show="open" @click.outside="close" x-transition
-         class="absolute z-10 mt-2 max-xl:right-0 xl:left-0 w-max max-w-md bg-white border border-gray-300 rounded-xl shadow-xl overflow-hidden">
+    <div x-show="open" @click.outside="close" x-transition x-cloak
+         class="absolute z-10 mt-2 max-xl:right-0 xl:left-0 w-max max-w-md bg-white border border-gray-300 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-in-out">
         <div class="">
             <!-- Toggle-All-Bereich -->
             <div class="px-4 py-2 border-b bg-gray-200">
@@ -42,7 +42,7 @@
 
                 <template x-if="!isAllSelected()">
                     <label class="flex items-center space-x-2">
-                        <input type="checkbox" @change="toggleAll" :checked="false" class="form-checkbox text-secondary rounded-full">
+                        <input type="checkbox" @change="toggleAll" :checked="false" class="text-base form-checkbox text-secondary rounded-full">
                         <span>Alle auswählen</span>
                     </label>
                 </template>
@@ -58,7 +58,7 @@
             </template>
     
             <!-- Optionen -->
-            <div class="px-4 py-2 bg-primary-50/50  divide-y divide-gray-200 max-h-[40dvh] overflow-y-auto scroll-container scroll-smooth" >
+            <div class="px-4 py-2 bg-primary-100/50  divide-y divide-gray-200 max-h-[40dvh] overflow-y-auto scroll-container scroll-smooth" >
                 @foreach($options as $option)
                     <label class="flex items-start space-x-2 py-2" x-show="!search || '{{ strtolower($option->name) }}'.includes(search.toLowerCase())">
                         <input type="checkbox" :value="{{ $option->id }}" x-model="selected" class="form-checkbox text-secondary rounded-full mt-1">
