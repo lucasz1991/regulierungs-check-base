@@ -16,10 +16,8 @@ class Insurances extends Component
     public $insuranceTypes = [];
     public $selectedInsuranceTypesfilter = [];
     public $insuranceSubTypes = [];
-    public $insuranceSubType = null;
-    public $insuranceType = null;
     public $selectedInsuranceSubTypefilter = [];
-    public $perPage = 9;
+    public $perPage = 20;
     public $pages = 1;
 
 
@@ -33,7 +31,6 @@ class Insurances extends Component
 
     public function mount()
     {
-        $this->insuranceTypes = InsuranceType::all();
         $this->insuranceSubTypes = InsuranceSubtype::all();
         $this->search = '';
         $this->pages = 1;
@@ -43,6 +40,26 @@ class Insurances extends Component
 
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    public function updatingSort()
+    {
+        $this->resetPage();
+    }
+    public function updatingMinRatingCount()
+    {
+        $this->resetPage();
+    }
+    public function updatingMinAvgScore()
+    {
+        $this->resetPage();
+    }
+    public function updatingOnlyActive()
+    {
+        $this->resetPage();
+    }
+    public function updatingSelectedInsuranceSubTypefilter()
     {
         $this->resetPage();
     }
@@ -62,17 +79,17 @@ class Insurances extends Component
         $this->pages++;
     }
 
-    public function resetFilters()
-    {
-        $this->reset([
-            'insuranceType',
-            'insuranceSubType',
-            'search',
-            'minRatingCount',
-            'minAvgScore',
-            'onlyActive',
-        ]);
-    }
+public function resetFilters()
+{
+    $this->reset([
+        'selectedInsuranceSubTypefilter',
+        'search',
+        'minRatingCount',
+        'minAvgScore',
+        'onlyActive',
+    ]);
+}
+
 
     public function render()
     {
@@ -85,17 +102,13 @@ class Insurances extends Component
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
-            ->when($this->insuranceType, function ($query) {
-                $query->whereHas('insuranceTypes', function ($query) {
-                    // Klarer Verweis auf die Tabelle insurance_types
-                    $query->where('insurance_types.id', (int) $this->insuranceType);
-                });
-            })
-            ->when($this->insuranceSubType, function ($query) {
-                $query->whereHas('insuranceTypes.insuranceSubTypes', function ($subQuery) {
-                    $subQuery->where('insurance_subtypes.id', (int) $this->insuranceSubType);
-                });
-            })
+            ->when(!empty($this->selectedInsuranceSubTypefilter), function ($query) {
+    $query->whereHas('claimRatings', function ($subQuery) {
+        $subQuery->where('status', 'rated')
+                 ->whereIn('insurance_subtype_id', $this->selectedInsuranceSubTypefilter);
+    });
+})
+
             ->when($this->sort === 'score_desc', fn ($q) => $q->orderByDesc('claim_ratings_avg_rating_score'))
             ->when($this->sort === 'score_asc', fn ($q) => $q->orderBy('claim_ratings_avg_rating_score'))
             ->when($this->sort === 'count_desc', fn ($q) => $q->orderByDesc('claim_ratings_count'))

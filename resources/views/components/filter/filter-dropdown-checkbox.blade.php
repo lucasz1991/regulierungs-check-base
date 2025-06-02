@@ -1,15 +1,21 @@
-<div x-data="dropdownFilter(@json($options->pluck('id')))" class="relative inline-block w-full max-w-md text-left">
+@props(['options'])
+
+@php
+    $model = $attributes->wire('model')->value();
+@endphp
+
+<div x-data="dropdownFilter(@json($options->pluck('id')), @entangle($model).live)" class="relative inline-block w-full max-w-md text-left">
 <!-- Trigger -->
     <div @click="toggle" class="cursor-pointer rounded-md bg-white border border-blue-200 px-4 py-2.5 text-sm text-gray-700 flex items-center justify-between">
         <div class="flex items-center gap-2">
-    <template x-if="selected.length && selected.length < all.length">
-        <span class="inline-flex items-center gap-2">
-            <span class="inline-flex items-center justify-center text-xs font-semibold bg-secondary/80  text-white rounded-full min-w-6 h-6 px-1">
-                <span x-text="selected.length"></span>
-            </span>
-            <span>ausgewählt</span>
-        </span>
-    </template>
+            <template x-if="selected.length && selected.length < all.length">
+                <span class="inline-flex items-center gap-2">
+                    <span class="inline-flex items-center justify-center text-xs font-semibold bg-secondary/80  text-white rounded-full min-w-6 h-6 px-1">
+                        <span x-text="selected.length"></span>
+                    </span>
+                    <span>ausgewählt</span>
+                </span>
+            </template>
             <template x-if="!selected.length || isAllSelected()">
                 <span>Alle ausgewählt</span>
             </template>
@@ -71,25 +77,26 @@
 
     <!-- Alpine.js Logic -->
     <script>
-        function dropdownFilter(optionIds) {
-            return {
-                open: false,
-                selected: [],
-                all: optionIds,
-                search: '',
-                toggle() {
-                    this.open = !this.open;
-                },
-                close() {
-                    this.open = false;
-                },
-                isAllSelected() {
-                    return this.selected.length === this.all.length;
-                },
-                toggleAll() {
-                    this.selected = this.isAllSelected() ? [] : [...this.all];
-                }
-            }
+function dropdownFilter(optionIds, modelBinding) {
+    return {
+        open: false,
+        selected: modelBinding,
+        all: optionIds,
+        search: '',
+        toggle() {
+            this.open = !this.open;
+        },
+        close() {
+            this.open = false;
+        },
+        isAllSelected() {
+            return this.selected.length === this.all.length;
+        },
+        toggleAll() {
+            this.selected = this.isAllSelected() ? [] : [...this.all];
         }
+    }
+}
+
     </script>
 </div>
