@@ -1,6 +1,7 @@
 <div class="block" x-data="{ showInfos: false }" @click.away="showInfos = false" >
-    <div class="bg-white rounded transition-shadow duration-300 p-4 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer"
-        :class="showInfos ? 'border-blue-200 border-2 shadow-lg' : 'border-gray-200 border-2  shadow '"
+
+    <div class="bg-white relative rounded transition-shadow duration-300 p-4 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer"
+        :class="showInfos ? 'border-blue-200 border shadow-lg' : 'border-gray-200 border  shadow '"
          @click="showInfos = !showInfos">
         <div class="opacity-70 hover:opacity-100  transition-all duration-200">
             <div  class="flex gap-2 overflow-hidden">
@@ -21,7 +22,7 @@
     </div>
     <div class="relative">
         <div x-show="showInfos" x-collapse.duration.300ms
-            class="relative -top-1 w-full bg-primary-50 border-b-2 border-l-2 border-t border-r-2  border-blue-200 rounded shadow-lg z-10"
+            class="relative -top-1 w-full bg-primary-50 border  border-blue-200 rounded shadow-lg  z-10"
             @click.away="showInfos = false">
             <x-insurance.insurance-card-dropdown-infos :insurance="$insurance" lazy />
         </div>
