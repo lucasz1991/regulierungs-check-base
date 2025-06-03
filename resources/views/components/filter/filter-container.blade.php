@@ -27,7 +27,7 @@
         </div>
         <div class="xl:grid xl:grid-cols-12 xl:gap-6">
             
-            <div x-show="showFilters || $store.nav.isScreenXl"  x-cloak class="filter-sidebar xl:col-span-3 max-xl:absolute max-xl:right-4 z-10">
+            <div x-show="showFilters || $store.nav.isScreenXl"  x-cloak class="filter-sidebar xl:col-span-2 max-xl:absolute max-xl:right-4 z-10">
                 <div x-show="showFilters && !$store.nav.isScreenXl" x-transition class="max-xl:fixed xl:hidden inset-0 transform transition-all" x-on:click="showFilters = false">
                     <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                 </div>
@@ -36,7 +36,7 @@
                     {{ $filters }}
                 </div>
             </div>
-            <div class="filter-sidebar" :class="showFilters  || ! $store.nav.isMobile ? 'xl:col-span-9' : 'xl:col-span-12'"  x-cloak x-transition>
+            <div class="filter-sidebar" :class="showFilters  || ! $store.nav.isMobile ? 'xl:col-span-10' : 'xl:col-span-12'"  x-cloak x-transition>
                 {{ $listContent }}
             </div>
         </div>

@@ -7,20 +7,47 @@ use Livewire\Component;
 
 class Ranking extends Component
 {
-    public function render()
+    public $allInsurances;
+    public $top5;
+    public $flop5;
+    public $perPage = 20;
+    public $pages = 1;
+    public $sort = 'score_desc';
+
+    public $subtypeFilter = [];
+
+    public $aspectFilter;
+
+    protected $listeners = ['refreshRanking' => '$refresh'];
+
+    public function mount()
     {
-        $allInsurances = Insurance::withAvg('claimRatings as avg_score', 'rating_score')
-            ->take(5)
+        $this->top5 = Insurance::withAvg('claimRatings as avg_score', 'rating_score')
+            ->whereHas('claimRatings', function ($query) {
+                $query->whereNotNull('rating_score');
+            })
             ->orderByDesc('avg_score')
+            ->take(5)
             ->get();
 
-        $top5 = $allInsurances->take(5);
-        $flop5 = $allInsurances->sortBy('avg_score')->take(5);
+        $this->flop5 = Insurance::withAvg('claimRatings as avg_score', 'rating_score')
+            ->whereHas('claimRatings', function ($query) {
+                $query->whereNotNull('rating_score');
+            })
+            ->orderBy('avg_score')
+            ->take(5)
+            ->get();
 
-        return view('livewire.pages.ranking', [
-            'top5' => $top5,
-            'flop5' => $flop5,
-            'allInsurances' => $allInsurances,
-        ])->layout('layouts.app');
+        $this->allInsurances = Insurance::withAvg('claimRatings as avg_score', 'rating_score')
+            ->whereHas('claimRatings', function ($query) {
+                $query->whereNotNull('rating_score');
+            })
+            ->orderByDesc('avg_score')
+            ->get();
+    }
+    public function render()
+    {
+
+        return view('livewire.pages.ranking')->layout('layouts.app');
     }
 }

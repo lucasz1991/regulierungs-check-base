@@ -21,9 +21,9 @@
                     x-show="!showInfos" x-collapse.duration.300ms>
                     <div class="h-full bg-secondary border-l border-secondary rounded-e pb-1 pt-3 px-1 flex  items-end relative " >
                         <div class="mt-2">
-                            <x-insurance.insurance-rating-stars :score="$insurance->claim_ratings_avg_rating_score" />
+                            <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" />
                         </div>
-                        <span class="absolute right-0 top-0 text-sm rounded-bl px-2 bg-white/70 ">{{ $insurance->claim_ratings_count }}</span>
+                        <span class="absolute right-0 top-0 text-sm rounded-bl px-2 bg-white/70 ">{{ $insurance->ratings_count() }}</span>
                     </div>
                 </div>
             </div>
