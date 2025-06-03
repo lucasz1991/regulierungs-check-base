@@ -282,7 +282,7 @@
                                          :class="$store.nav.isMobileMenuOpen ? 'max-md:translate-x-0' : 'max-md:translate-x-full'"    
                                          :style="$store.nav.isMobile ? 'height: calc(100dvh - ' + $store.nav.height + 'px);' : ''"   
                                          x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-md:bg-white  max-md:right-0 max-md:h-full max-md:fixed max-md:overflow-y-auto max-md:py-5 max-md:px-3  max-md:border-r max-md:border-gray-200">
-                                     <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex   w-max  mx-auto  " >
+                                     <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex  items-center   w-max  mx-auto  " >
                                          <!-- Gäste-Spezifische Navigation -->
                                          <x-nav.nav-link href="/" wire:navigate  :active="request()->is('/')">
                                                  <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  stroke="currentColor" fill="none" viewBox="0 0 24 24">
