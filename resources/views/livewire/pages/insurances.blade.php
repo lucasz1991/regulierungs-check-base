@@ -1,5 +1,4 @@
 <div  wire:loading.class="cursor-wait">
-
     <section  class="bg-gray-100 pt-8">
         <x-filter.filter-container>
             <x-slot name="filters">
