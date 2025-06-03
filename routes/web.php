@@ -52,7 +52,7 @@ use App\Livewire\ClaimRatings\ClaimRatingShow;
     Route::get('/ranking', Ranking::class)->name('ranking');
     Route::get('/premium', Premium::class)->name('premium');
     Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');
-    Route::get('/insurancetype/{subtype}', ShowSubtype::class)->name('insurance.show-subtype');
+    Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insurance.show-subtype');
     Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
 
 

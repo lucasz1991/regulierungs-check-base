@@ -2,24 +2,16 @@
     <div class="container mx-auto px-4 pt-12 py-6">
         <div class="">
             <div class="flex items-center mb-4">
-                <div class=" rounded flex items-center justify-center text-white text-2xl font-bold px-3 py-2" style="background-color: {{ $insuranceSubtype->style['bg_color'] ?? '#ccc' }}; color: {{ $insuranceSubtype->style['font_color'] ?? '#000' }}; border-color: {{ $insuranceSubtype->style['border_color'] ?? '#ccc' }};">
-                    {{ strtoupper(substr($insuranceSubtype->initials, 0, 8)) }}
-                </div>
                 <h1 class="text-2xl font-bold ml-4">{{ $insuranceSubtype->name }}</h1>
             </div>
             <p class="text-gray-600 mb-4">{{ $insuranceSubtype->description }}</p>
-            @if($insuranceSubtype->ratings_count() > 0)
-             <x-insurance.insurance-rating-stars :score="$insuranceSubtype->ratings_avg_score()" />
-            @else
-                <span class="text-gray-500">Keine Bewertungen</span>
-            @endif
             <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg flex items-start gap-3">
                 <svg class="w-6 h-6 mt-1 flex-none text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
                 </svg>
                 <div>
                     <h3 class="font-semibold text-base mb-1">Noch keine detaillierte Auswertung</h3>
-                    <p class="text-sm">Für diese Versicherung liegen aktuell noch keine ausreichend bewerteten Fälle vor. Sobald erste Bewertungen eingegangen sind, wird hier eine Auswertung angezeigt.</p>
+                    <p class="text-sm">Für diese Versicherungsart liegen aktuell noch keine ausreichend bewerteten Fälle vor. Sobald erste Bewertungen eingegangen sind, wird hier eine Auswertung angezeigt.</p>
                 </div>
             </div>
         </div>
@@ -41,7 +33,7 @@
                     </x-slot>
                     <x-slot name="listContent">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            @foreach($insuranceSubtype->claimRatings() as $claim_rating)
+                            @foreach($claimRatings as $claim_rating)
                                 <x-claim-rating.claim-rating-card :rating="$claim_rating" />
                             @endforeach
                         </div>

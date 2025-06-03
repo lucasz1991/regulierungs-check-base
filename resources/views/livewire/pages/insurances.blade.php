@@ -1,6 +1,6 @@
 <div  wire:loading.class="cursor-wait">
 
-    <section  class="bg-gray-50 pt-8">
+    <section  class="bg-gray-100 pt-8">
         <x-filter.filter-container>
             <x-slot name="filters">
                 <div class="p-2 mb-2">
@@ -70,8 +70,40 @@
             </x-slot>
             <x-slot name="listContent">
 
-                    @if($insurances->count())
-                    <ul class="grid grid-cols-1 lg:grid-cols-2  gap-6"  x-data x-masonry.poll.250>
+                @php
+                    $leftColumn = [];
+                    $rightColumn = [];
+
+                    foreach ($insurances as $index => $insurance) {
+                        if ($index % 2 === 0) {
+                            $leftColumn[] = $insurance;
+                        } else {
+                            $rightColumn[] = $insurance;
+                        }
+                    }
+                @endphp
+
+                @if($insurances->count())
+                    {{-- Desktop-Layout (ab md) --}}
+                    <div x-show="!$store.nav.isMobile" class="hidden md:grid grid-cols-2 gap-6">
+                        <ul class="space-y-6">
+                            @foreach($leftColumn as $insurance)
+                                <li>
+                                    <x-insurance.insurance-card :insurance="$insurance" />
+                                </li>
+                            @endforeach
+                        </ul>
+                        <ul class="space-y-6">
+                            @foreach($rightColumn as $insurance)
+                                <li>
+                                    <x-insurance.insurance-card :insurance="$insurance" />
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    {{-- Mobile-Layout (unter md) --}}
+                    <ul x-show="$store.nav.isMobile" class="md:hidden space-y-6">
                         @foreach($insurances as $insurance)
                             <li>
                                 <x-insurance.insurance-card :insurance="$insurance" />

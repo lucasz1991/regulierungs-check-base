@@ -8,10 +8,15 @@ use App\Models\InsuranceSubtype;
 class ShowSubtype extends Component
 {
     public InsuranceSubtype $insuranceSubtype;
+    public $claimRatings;
 
     public function mount(InsuranceSubtype $insuranceSubtype)
     {
         $this->insuranceSubtype = $insuranceSubtype;
+        $this->claimRatings = $insuranceSubtype->claimRatings()
+        ->latest()         // sortiert nach created_at DESC
+        ->take(10)          // nur 3 Bewertungen
+        ->get();
     } 
 
     public function render()
