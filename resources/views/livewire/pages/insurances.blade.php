@@ -69,14 +69,15 @@
                 </div>
             </x-slot>
             <x-slot name="listContent">
+
                     @if($insurances->count())
-                    <div class="grid grid-cols-1 lg:grid-cols-2  gap-6">
+                    <ul class="grid grid-cols-1 lg:grid-cols-2  gap-6"  x-data x-masonry.poll.250>
                         @foreach($insurances as $insurance)
-                            <div>
+                            <li>
                                 <x-insurance.insurance-card :insurance="$insurance" />
-                            </div>
+                            </li>
                         @endforeach
-                    </div>
+                    </ul>
                 @else
                     <div class="text-center py-10 text-gray-500">
                         Keine Versicherungen gefunden.

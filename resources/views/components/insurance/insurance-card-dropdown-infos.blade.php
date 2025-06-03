@@ -2,14 +2,6 @@
     <div class="px-4 py-1  bg-white border-b border-blue-200 flex items-center justify-between shadow">
         <span class="text-gray-500 text-sm">Bewertungen: {{ $insurance->claim_ratings_count }}</span>
 <div class="flex items-center gap-1">
-    <!-- Auswählen -->
-    <button class="p-1 rounded-lg hover:bg-gray-100 text-blue-600 hover:text-blue-800"
-            @click="$dispatch('toggle-select', { id: {{ $insurance->id }} })"
-            title="Auswählen">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-    </button>
 
     <!-- Merkliste -->
     <button class="p-1 rounded-lg hover:bg-gray-100 text-pink-500 hover:text-pink-700"
@@ -29,14 +21,6 @@
         </svg>
     </button>
 
-    <!-- Vorhandener Info-Toggle -->
-    <button class="text-blue-600 hover:text-blue-800 focus:outline-none rounded-lg p-1"
-            @click="$dispatch('toggle-insurance-info', { slug: '{{ $insurance->slug }}' })"
-            title="Details anzeigen/verstecken">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-        </svg>
-    </button>
 </div>
 
     </div>
@@ -61,7 +45,7 @@
             </div>
         </div>
         <div class="flex items-center justify-end gap-2 mt-4">
-            <a  href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="text-blue-800 bg-gray-100 border border-gray-300 hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center">
+            <a  href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="text-blue-800 bg-gray-100 border border-gray-300 hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-2 py-1 text-center inline-flex items-center">
                 Mehr erfahren
                 <svg class="rtl:rotate-180 w-2.5 h-2.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
