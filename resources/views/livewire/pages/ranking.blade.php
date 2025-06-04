@@ -25,9 +25,21 @@
                             1024: { slidesPerView: 3 },
                         }
                     });
+                },
+                stopSwiper() {
+                    this.swiper.autoplay.stop();
+                },
+                playSwiper() {
+                    this.swiper.autoplay.start();
                 }
             }"
             x-init="initSwiper()"
+
+            x-on:click="stopSwiper()"
+            x-on:click.away="playSwiper()"
+            x-on:touchstart="stopSwiper()"
+            x-on:touchend="playSwiper()"
+            x-on:mouseenter="stopSwiper()"
             class="relative"
             wire:ignore>
                 <div class="swiper" x-ref="topSwiper">
@@ -66,9 +78,21 @@
                             1024: { slidesPerView: 3 },
                         }
                     });
+                },
+                stopSwiper() {
+                    this.swiper.autoplay.stop();
+                },
+                playSwiper() {
+                    this.swiper.autoplay.start();
                 }
             }"
             x-init="initSwiper()"
+
+            x-on:click="stopSwiper()"
+            x-on:click.away="playSwiper()"
+            x-on:touchstart="stopSwiper()"
+            x-on:touchend="playSwiper()"
+            x-on:mouseenter="stopSwiper()"
             class="relative"
             wire:ignore>
                 <div class="swiper" x-ref="flopSwiper">

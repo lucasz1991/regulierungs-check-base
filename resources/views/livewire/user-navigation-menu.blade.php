@@ -334,6 +334,7 @@
                                         <x-nav.nav-link-submenu  :active="request()->is('news', 'blog'  )">
                                             <x-slot name="title">
                                                 <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                
                                                 {{ __('Aktuelles') }}
                                             </x-slot>
                                             <x-slot name="content">

@@ -103,12 +103,11 @@ public function resetFilters()
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->when(!empty($this->selectedInsuranceSubTypefilter), function ($query) {
-    $query->whereHas('claimRatings', function ($subQuery) {
-        $subQuery->where('status', 'rated')
-                 ->whereIn('insurance_subtype_id', $this->selectedInsuranceSubTypefilter);
-    });
-})
-
+                $query->whereHas('claimRatings', function ($subQuery) {
+                    $subQuery->where('status', 'rated')
+                            ->whereIn('insurance_subtype_id', $this->selectedInsuranceSubTypefilter);
+                });
+            })
             ->when($this->sort === 'score_desc', fn ($q) => $q->orderByDesc('claim_ratings_avg_rating_score'))
             ->when($this->sort === 'score_asc', fn ($q) => $q->orderBy('claim_ratings_avg_rating_score'))
             ->when($this->sort === 'count_desc', fn ($q) => $q->orderByDesc('claim_ratings_count'))
@@ -116,8 +115,6 @@ public function resetFilters()
             ->when($this->minRatingCount, fn ($q) => $q->having('claim_ratings_count', '>=', $this->minRatingCount))
             ->when($this->minAvgScore, fn ($q) => $q->having('claim_ratings_avg_rating_score', '>=', $this->minAvgScore))
             ->paginate($this->perPage*$this->pages);
-    
-
     
         return view('livewire.pages.insurances', [
             'insurances' => $insurances,
