@@ -34,6 +34,9 @@ use App\Livewire\Insurance\ShowInsurance;
 use App\Livewire\Insurance\ShowSubtype;  
 use App\Livewire\ClaimRatings\ClaimRatingShow;
 
+use App\Livewire\Articles\Blog\BlogList;
+
+
 
 
     // Routen für alle
@@ -54,6 +57,7 @@ use App\Livewire\ClaimRatings\ClaimRatingShow;
     Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');
     Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insurance.show-subtype');
     Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
+    Route::get('/blog', BlogList::class)->name('blog.index');
 
 
 

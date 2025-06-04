@@ -338,11 +338,11 @@
                                                 {{ __('Aktuelles') }}
                                             </x-slot>
                                             <x-slot name="content">
-                                                <x-nav.nav-link-submenu-link href="/" wire:navigate  :active="request()->is('news')">
+                                                <x-nav.nav-link-submenu-link href="/news" wire:navigate  :active="request()->is('news')">
                                                     <svg viewBox="0 0 24 24"  class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
                                                     {{ __('News') }}
                                                 </x-nav.nav-link-submenu-link>
-                                                <x-nav.nav-link-submenu-link href="/" wire:navigate :active="request()->is('blog')">
+                                                <x-nav.nav-link-submenu-link href="/blog" wire:navigate :active="request()->is('blog')">
                                                     <svg viewBox="0 0 24 24" class="w-5 max-md:w-6  mr-1 max-md:mr-2 " stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                                                     {{ __('Blog') }}
                                                 </x-nav.nav-link-submenu-link>

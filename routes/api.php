@@ -2,23 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CashRegisterController;
 use App\Http\Controllers\Api\PagebuilderProjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Artisan;
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\Api\AdminStorageController;
 
 
-Route::post('/cash-register/sale', [CashRegisterController::class, 'registerSale']);
+
+
+Route::post('/admin/upload', [AdminStorageController::class, 'store']);
+Route::delete('/admin/delete', [AdminStorageController::class, 'destroy']);
 
 
 Route::post('/pagebuilder/upload', [PagebuilderProjectController::class, 'uploadImage']);

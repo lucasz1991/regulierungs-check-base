@@ -4,9 +4,16 @@ namespace App\Livewire\Pages;
 
 use App\Models\Insurance;
 use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\InsuranceSubtype; // Uncomment if you need to use InsuranceSubtype
 
 class Ranking extends Component
 {
+    use WithPagination;
+
+    public $insuranceSubTypes = [];
+    public $selectedInsuranceSubTypefilter = [];
+
     public $allInsurances;
     public $top5;
     public $flop5;
@@ -22,6 +29,8 @@ class Ranking extends Component
 
     public function mount()
     {
+        $this->insuranceSubTypes = InsuranceSubtype::has('claimRatings')->get();
+        $this->selectedInsuranceSubTypefilter = [];
         $this->top5 = Insurance::withAvg('claimRatings as avg_score', 'rating_score')
             ->whereHas('claimRatings', function ($query) {
                 $query->whereNotNull('rating_score');
@@ -45,6 +54,15 @@ class Ranking extends Component
             ->orderByDesc('avg_score')
             ->get();
     }
+    public function loadMore()
+    {
+        $this->pages++;
+    }
+    public function updatingSelectedInsuranceSubTypefilter()
+    {
+        $this->resetPage();
+    }
+    
     public function render()
     {
 
