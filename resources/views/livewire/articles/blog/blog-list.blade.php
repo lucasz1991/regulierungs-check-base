@@ -1,40 +1,90 @@
-<div class="max-w-5xl mx-auto px-4 space-y-8">
-    <h1 class="text-3xl font-bold mb-6">Aktuelle Blogartikel</h1>
-
-    {{-- Kategorie-Filter --}}
-    <div class="flex gap-2 flex-wrap mb-4">
-        <button wire:click="$set('selectedCategory', null)"
-                class="px-3 py-1 border rounded {{ $selectedCategory === null ? 'bg-blue-600 text-white' : 'bg-white text-gray-700' }}">
-            Alle Kategorien
-        </button>
-        @foreach ($categories as $category)
-            <button wire:click="$set('selectedCategory', {{ $category->id }})"
-                    class="px-3 py-1 border rounded {{ $selectedCategory === $category->id ? 'bg-blue-600 text-white' : 'bg-white text-gray-700' }}">
-                {{ $category->name }}
+<div class="bg-gray-100">
+    <div class="container mx-auto px-4 py-12 space-y-8">
+    
+        {{-- Kategorie-Filter --}}
+        <div class="flex gap-2 flex-wrap mb-4">
+            <button wire:click="$set('selectedCategory', null)"
+                    class="px-3 py-1 border rounded {{ $selectedCategory === null ? 'bg-blue-600 text-white' : 'bg-white text-gray-700' }}">
+                Alle Kategorien
             </button>
-        @endforeach
-    </div>
-
-    {{-- Beitragliste --}}
-    @forelse ($posts as $post)
-        <a href="" class="block border-b pb-6 hover:bg-gray-50 rounded">
-            @if($post->cover_image)
-                <img src="{{ $post->cover_image_url }}" alt="{{ $post->title }}" class="w-full h-52 object-cover rounded mb-3">
-            @endif
-            <h2 class="text-xl font-semibold">{{ $post->title }}</h2>
-            <p class="text-sm text-gray-500">{{ $post->published_at->format('d.m.Y') }}</p>
-            <p class="mt-2 text-gray-700">{{ $post->excerpt_preview }}</p>
-        </a>
-    @empty
-        <p class="text-gray-500">Derzeit sind keine Beiträge verfügbar.</p>
-    @endforelse
-
-    {{-- Lazy-Loading Button --}}
-    @if($posts->hasMorePages())
-        <div class="text-center mt-8">
-            <button wire:click="loadMore" class="px-6 py-2 bg-blue-600 text-white rounded">
-                Weitere laden
-            </button>
+            @foreach ($categories as $category)
+                <button wire:click="$set('selectedCategory', {{ $category->id }})"
+                        class="px-3 py-1 border rounded {{ $selectedCategory === $category->id ? 'bg-blue-600 text-white' : 'bg-white text-gray-700' }}">
+                    {{ $category->name }}
+                </button>
+            @endforeach
         </div>
-    @endif
+            @php
+                // Für 2-Spalten-Layout
+                $column1von2 = [];
+                $column2von2 = [];
+
+                // Für 3-Spalten-Layout
+                $column1von3 = [];
+                $column2von3 = [];
+                $column3von3 = [];
+
+                foreach ($posts as $index => $post) {
+                    // 2-Spalten-Aufteilung
+                    if ($index % 2 === 0) {
+                        $column1von2[] = $post;
+                    } else {
+                        $column2von2[] = $post;
+                    }
+
+                    // 3-Spalten-Aufteilung
+                    $columnIndex = $index % 3;
+                    if ($columnIndex === 0) {
+                        $column1von3[] = $post;
+                    } elseif ($columnIndex === 1) {
+                        $column2von3[] = $post;
+                    } else {
+                        $column3von3[] = $post;
+                    }
+                }
+            @endphp
+
+            @if($posts->count())
+                {{-- 3 Spalten auf XL --}}
+                <div class="hidden xl:grid grid-cols-3 gap-6">
+                    @foreach([ $column1von3, $column2von3, $column3von3 ] as $column)
+                        <div class="space-y-6">
+                            @foreach($column as $post)
+                                <x-blog.blog-card :post="$post" />
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- 2 Spalten auf MD bis XL --}}
+                <div class="hidden md:grid xl:hidden grid-cols-2 gap-6">
+                    @foreach([ $column1von2, $column2von2 ] as $column)
+                        <div class="space-y-6">
+                            @foreach($column as $post)
+                                <x-blog.blog-card :post="$post" />
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- 1 Spalte auf Mobil --}}
+                <div class="md:hidden space-y-6">
+                    @foreach($posts as $post)
+                        <x-blog.blog-card :post="$post" />
+                    @endforeach
+                </div>
+            @else
+                <p class="text-gray-500">Derzeit sind keine Beiträge verfügbar.</p>
+            @endif
+
+    
+        {{-- Lazy-Loading Button --}}
+        @if($posts->hasMorePages())
+            <div class="text-center mt-8">
+                <button wire:click="loadMore" class="px-6 py-2 bg-blue-600 text-white rounded">
+                    Weitere laden
+                </button>
+            </div>
+        @endif
+    </div>
 </div>

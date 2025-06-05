@@ -5,6 +5,8 @@ namespace App\Livewire\Articles\Blog;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Post;
+use App\Models\BlogCategory;
+
 
 class BlogList extends Component
 {
@@ -18,7 +20,7 @@ class BlogList extends Component
 
     public function mount()
     {
-        
+        $this->categories = BlogCategory::all();
     }
 
     public function updatedSelectedCategory()
