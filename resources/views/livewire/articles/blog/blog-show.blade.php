@@ -1,5 +1,5 @@
 <div class="">
-    <div class="container mx-auto px-4 py-8 space-y-4">
+    <div class="container mx-auto px-4 py-12 space-y-4">
         <h1 class="text-3xl font-bold">{{ $post->title }}</h1>
         <p class="text-gray-500 text-sm">{{ $post->published_at->format('d.m.Y') }}</p>
         <livewire:likes.like-button

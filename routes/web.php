@@ -37,6 +37,7 @@ use App\Livewire\ClaimRatings\ClaimRatingShow;
 use App\Livewire\Articles\Blog\BlogList;
 use App\Livewire\Articles\Blog\BlogShow;
 use App\Livewire\Pages\Guidance;
+use App\Http\Controllers\PublicFormController;
 
 
 
@@ -64,6 +65,7 @@ Route::get('/guidance', Guidance::class)->name('guidance');
 Route::get('/blog', BlogList::class)->name('blog.index');
 Route::get('/posts/{post}', BlogShow::class)->name('post.show');
 
+Route::post('/form-submit', [PublicFormController::class, 'handle'])->name('form.submit');
 
 
 
