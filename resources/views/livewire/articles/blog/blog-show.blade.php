@@ -1,22 +1,19 @@
 <div class="">
     <div class="container mx-auto px-4 py-8 space-y-4">
-        <a href="{{ route('blog.index') }}" class="text-blue-600 hover:underline text-sm">&larr; zurück zum Blog</a>
         <h1 class="text-3xl font-bold">{{ $post->title }}</h1>
         <p class="text-gray-500 text-sm">{{ $post->published_at->format('d.m.Y') }}</p>
         <livewire:likes.like-button
             :likeable-type="\App\Models\Post::class"
             :likeable-id="$post->id"
             size="lg"
-            :wire:key="'like-post-'.$post->id"
-        />
+            :wire:key="'like-post-'.$post->id"/>
         <div class="">
-                <div class="prose max-w-none mt-6 md:mt-0 md:pr-4 md:py-2">
+            <div class="prose max-w-none mt-6 md:mt-0 md:pr-4 md:py-2">
                 @if($post->cover_image)
                     <img 
                         src="{{ $post->cover_image_url }}" 
                         alt="{{ $post->title }}" 
-                        class="w-full md:w-1/2 lg:w-1/3  md:float-right md:ml-8 md:mb-4 mb-6 h-auto max-h-full object-cover rounded"
-                    >
+                        class="w-full md:w-1/2 lg:w-1/3  md:float-right md:ml-8 md:mb-4 mb-6 h-auto max-h-full object-cover rounded">
                 @endif
                 {!! $post->body !!}
             </div>

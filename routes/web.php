@@ -36,7 +36,7 @@ use App\Livewire\ClaimRatings\ClaimRatingShow;
 
 use App\Livewire\Articles\Blog\BlogList;
 use App\Livewire\Articles\Blog\BlogShow;
-
+use App\Livewire\Pages\Guidance;
 
 
 
@@ -59,6 +59,8 @@ Route::get('/premium', Premium::class)->name('premium');
 Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');
 Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insurance.show-subtype');
 Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
+Route::get('/guidance', Guidance::class)->name('guidance');
+
 Route::get('/blog', BlogList::class)->name('blog.index');
 Route::get('/posts/{post}', BlogShow::class)->name('post.show');
 
