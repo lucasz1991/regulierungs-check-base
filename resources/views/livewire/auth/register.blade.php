@@ -21,7 +21,7 @@
                            name="email" 
                            wire:model="email"
                            value="{{ old('email') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="E-Mail-Adresse" 
                         
                        />
@@ -38,7 +38,7 @@
                            name="username" 
                            wire:model="username"
                            value="{{ old('username') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Benutzername" 
                         
                        />
@@ -56,7 +56,7 @@
                            id="password" 
                            name="password" 
                            wire:model="password"
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Passwort" 
                          
                        />
@@ -72,7 +72,7 @@
                            id="password_confirmation" 
                            name="password_confirmation" 
                            wire:model="password_confirmation"
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Passwort bestätigen" 
                           
                        />
@@ -92,7 +92,7 @@
                            name="first_name" 
                            wire:model="first_name"
                            value="{{ old('first_name') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Vorname" 
                          
                        />
@@ -109,7 +109,7 @@
                            name="last_name" 
                            wire:model="last_name"
                            value="{{ old('last_name') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Nachname" 
                           
                        />
@@ -129,7 +129,7 @@
                            name="phone_number"
                            wire:model="phone_number" 
                            value="{{ old('phone_number') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Telefonnummer" 
                           
                        />
@@ -146,7 +146,7 @@
                            name="street" 
                            wire:model="street"
                            value="{{ old('street') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Straße" 
                          
                        />
@@ -166,7 +166,7 @@
                            name="city" 
                            wire:model="city"
                            value="{{ old('city') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Stadt" 
                          
                        />
@@ -183,7 +183,7 @@
                            name="postal_code" 
                            wire:model="postal_code"
                            value="{{ old('postal_code') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Postleitzahl" 
                          
                        />
@@ -198,7 +198,7 @@
                            name="country" 
                            wire:model="country"
                            value="{{ old('country') }}" 
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-sm"
+                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
                            placeholder="Land" 
                          
                        />
