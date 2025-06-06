@@ -119,8 +119,8 @@
                                 </button>
                             </li>
                             <li>
-                                <button @click="messagefront='Welchen nutzen haben die Benutzer von Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                    Welchen nutzen haben die Benutzer von Regulierungs-Check?
+                                <button @click="messagefront='Welchen nutzen hat Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
+                                    Welchen nutzen hat Regulierungs-Check?
                                 </button>
                             </li>
                         </ul>
