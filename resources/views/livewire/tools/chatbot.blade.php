@@ -99,7 +99,6 @@
                         <span x-text="message.content"></span>
                         </div>
                     </template>
-
                 </div>
                     <!-- Ladeanimation -->
                     <div x-show="isLoading" x-collapse  class=" flex gap-2 items-center text-gray-600 text-sm">
@@ -110,7 +109,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Fragenvorschläge anzeigen, wenn Chat leer ist -->
                     <div x-show="chatHistory.length === 0" class="text-sm text-gray-600 mb-5">
                         <p class="mb-2 font-semibold">Fragen, die du stellen kannst:</p>
@@ -121,13 +119,12 @@
                                 </button>
                             </li>
                             <li>
-                                <button @click="messagefront='Was kostet Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                    Was kostet Regulierungs-Check?
+                                <button @click="messagefront='Welchen nutzen haben die Benutzer von Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
+                                    Welchen nutzen haben die Benutzer von Regulierungs-Check?
                                 </button>
                             </li>
                         </ul>
                     </div>
-            
                 <!-- Eingabe & Buttons -->
                 <div class="relative w-full">
                         <input x-model="messagefront" @keydown.enter="sendMessage()" class="w-full border-outline bg-white border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 "  placeholder="Frage stellen..." />
