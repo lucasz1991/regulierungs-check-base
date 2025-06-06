@@ -17,9 +17,11 @@
     class="inline-flex items-center {{ $sizeClasses }}"
 >
     <button
-        wire:click="toggle"
-        @click="liked = !liked; liked ? count++ : count--"
-        :class="liked ? 'text-red-500' : 'text-gray-600 hover:text-red-500'"
+        @auth
+            wire:click="toggle"
+            @click="liked = !liked; liked ? count++ : count--"
+        @endauth
+        :class="liked ? 'text-red-500' : 'text-gray-600 '"
         class="transition  flex content-center justify-between space-x-1 {{ $buttonPadding }}"
         title="Gefällt dir"
         wire:loading.attr="disabled"
@@ -30,8 +32,10 @@
         {{-- Herz-Icon --}}
         <svg xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 24 24"
-             class="w-5 h-5 transition  fill-none"
-             :class="liked ? 'fill-red-500 stroke-red-500' : 'stroke-gray-600 hover:stroke-red-500 fill-none stroke-[1.5]'"
+             class="w-5 h-5 transition  fill-none stroke-gray-600"
+             @auth
+                :class="liked ? 'fill-red-500 stroke-red-500' : 'stroke-gray-600 hover:stroke-red-500 fill-none stroke-[1.5]'"
+             @endauth
              >
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
                      2 6.01 4.01 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h.74
