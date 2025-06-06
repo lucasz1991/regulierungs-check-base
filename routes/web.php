@@ -35,29 +35,32 @@ use App\Livewire\Insurance\ShowSubtype;
 use App\Livewire\ClaimRatings\ClaimRatingShow;
 
 use App\Livewire\Articles\Blog\BlogList;
+use App\Livewire\Articles\Blog\BlogShow;
 
 
 
 
-    // Routen für alle
-    Route::get('/', Welcome::class)->name('home');
-    Route::get('/howto', HowTo::class)->name('howto');
-    Route::get('/aboutus', AboutUs::class)->name('aboutus');
-    Route::get('/faqs', Faqs::class)->name('faqs');
-    Route::get('/termsandconditions', TermsAndConditions::class)->name('terms');
-    Route::get('/imprint', Imprint::class)->name('imprint');
-    Route::get('/privacypolicy', PrivacyPolicy::class)->name('privacypolicy');
-    Route::get('/contact', Contact::class)->name('contact');
-    Route::get('/sitemap', Sitemap::class)->name('sitemap');
-    Route::get('/claim-rating/claim-rating-success/{hash}', ClaimRatingSuccess::class)->name('claim-rating.success');
-    Route::get('/insurances', Insurances::class)->name('insurances');
-    Route::get('/reviews', Reviews::class)->name('reviews');
-    Route::get('/ranking', Ranking::class)->name('ranking');
-    Route::get('/premium', Premium::class)->name('premium');
-    Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');
-    Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insurance.show-subtype');
-    Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
-    Route::get('/blog', BlogList::class)->name('blog.index');
+
+// Routen für alle
+Route::get('/', Welcome::class)->name('home');
+Route::get('/howto', HowTo::class)->name('howto');
+Route::get('/aboutus', AboutUs::class)->name('aboutus');
+Route::get('/faqs', Faqs::class)->name('faqs');
+Route::get('/termsandconditions', TermsAndConditions::class)->name('terms');
+Route::get('/imprint', Imprint::class)->name('imprint');
+Route::get('/privacypolicy', PrivacyPolicy::class)->name('privacypolicy');
+Route::get('/contact', Contact::class)->name('contact');
+Route::get('/sitemap', Sitemap::class)->name('sitemap');
+Route::get('/claim-rating/claim-rating-success/{hash}', ClaimRatingSuccess::class)->name('claim-rating.success');
+Route::get('/insurances', Insurances::class)->name('insurances');
+Route::get('/reviews', Reviews::class)->name('reviews');
+Route::get('/ranking', Ranking::class)->name('ranking');
+Route::get('/premium', Premium::class)->name('premium');
+Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');
+Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insurance.show-subtype');
+Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
+Route::get('/blog', BlogList::class)->name('blog.index');
+Route::get('/posts/{post}', BlogShow::class)->name('post.show');
 
 
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\Like;
 
 class Post extends Model
 {
@@ -52,10 +53,36 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function comments_count()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->count();
+    }
+
+    public function likes_count()
+    {
+        return $this->morphMany(Like::class, 'likeable')->count();
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function isLikedBy($user): bool
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+
     // 🔍 Nur veröffentlichte Beiträge
     public function scopePublished($query)
     {
         return $query->where('published', true)->whereNotNull('published_at');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     // 📸 URL zum Bild (oder Fallback)

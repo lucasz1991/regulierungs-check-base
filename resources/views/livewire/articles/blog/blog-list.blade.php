@@ -1,5 +1,5 @@
 <div class="bg-gray-100">
-    <div class="container mx-auto px-4 py-12 space-y-8">
+    <div class="container mx-auto px-6 md:px-12  py-12 space-y-8">
     
         {{-- Kategorie-Filter --}}
         <div class="flex gap-2 flex-wrap mb-4">

@@ -34,7 +34,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password','role', 'status',
+        'name', 'email', 'password','role', 'status', 'privacy_settings',
     ];
 
     /**
@@ -179,6 +179,47 @@ class User extends Authenticatable
             session()->flash('error', 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
         }
     }
+
+    public function getPrivacySettingsAttribute($value)
+    {
+        return $value
+            ? json_decode($value, true)
+            : [
+                'comments' => [
+                    'name_visibility' => 'users',
+                    'avatar_visibility' => 'users',
+                ],
+                'ratings' => [
+                    'name_visibility' => 'users',
+                    'avatar_visibility' => 'users',
+                ],
+            ];
+    }
+
+    public function getPrivacySetting(string $section, string $key, string $viewerRole): bool
+    {
+        $settings = $this->privacy_settings[$section][$key] ?? 'none';
+
+        return match ($settings) {
+            'all' => true,
+            'users' => $viewerRole === 'user',
+            'none' => false,
+            default => false,
+        };
+    }
+
+    public function isNameVisibleIn(string $section, $viewer): bool
+    {
+        $role = $viewer ? 'user' : 'guest';
+        return $this->getPrivacySetting($section, 'name_visibility', $role);
+    }
+
+    public function isAvatarVisibleIn(string $section, $viewer): bool
+    {
+        $role = $viewer ? 'user' : 'guest';
+        return $this->getPrivacySetting($section, 'avatar_visibility', $role);
+    }
+
 
     
     public function hasAccessToInvoice($filename)
