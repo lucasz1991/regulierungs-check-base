@@ -130,19 +130,27 @@
             </div>
             {{-- Gesamtranking --}}
             <div class="mt-12">
-                <h2 class="text-2xl font-bold mb-4 text-gray-900">Gesamtranking</h2>
+                <h2 class="text-2xl font-bold mb-4 text-gray-600">Gesamtranking</h2>
                 <div class="flex flex-col space-y-4">
                     @foreach ($allInsurances as $insurance)
                     <div class="flex items-center justify-between mb-2">
                             <div class="w-16 shrink-0 mr-6 flex items-center justify-center" >
                                 <span class="inline-flex items-center justify-center rounded-full text-lg font-semibold
-                                    @if($loop->iteration == 1) bg-yellow-400 text-yellow-700  w-14 h-14
-                                    @elseif($loop->iteration == 2) bg-gray-300 text-gray-600  w-12 h-12
-                                    @elseif($loop->iteration == 3) bg-amber-600 text-amber-400  w-10 h-10
+                                    @if($loop->iteration == 1) bg-yellow-400 text-yellow-700  w-18 h-18
+                                    @elseif($loop->iteration == 2) bg-gray-300 text-gray-600  w-16 h-16
+                                    @elseif($loop->iteration == 3) bg-amber-600 text-amber-400  w-14 h-14
                                     @else bg-gray-100 text-gray-400  w-8 h-8
                                     @endif
                                 ">
-                                    {{ $loop->iteration }}
+                                    @if($loop->iteration == 1) 
+                                        <img src="{{ asset('/site-images/meddal1.png') }}" alt="">                                    
+                                    @elseif($loop->iteration == 2) 
+                                        <img src="{{ asset('/site-images/meddal2.png') }}" alt="">                                    
+                                    @elseif($loop->iteration == 3) 
+                                        <img src="{{ asset('/site-images/meddal3.png') }}" alt="">                                    
+                                    @else
+                                        {{ $loop->iteration }}
+                                    @endif
                                 </span>
                             </div>
                             <div class="grow">
