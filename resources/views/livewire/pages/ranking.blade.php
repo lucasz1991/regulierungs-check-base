@@ -25,22 +25,29 @@
     </div>
     <div class="bg-gray-50">
         <div class="container mx-auto px-4 md:px-12 py-8">
-            
-
-
-            {{-- Gesamtranking --}}
-            <div class="mt-12 max-w-2xl">
+           
+            <div class="mt-12 max-w-4xl">
                 <div class="flex flex-col space-y-4">
                     @foreach ($allInsurances as $insurance)
-                    <div class="flex items-center justify-between mb-2 max-w-full">
-                            <div class="w-16 shrink-0 pr-6 flex items-center justify-center" >
-                                <span class="inline-flex items-center justify-center rounded-full text-lg font-semibold
-                                    @if($loop->iteration == 1)   w-18 h-18
-                                    @elseif($loop->iteration == 2)   w-16 h-16
-                                    @elseif($loop->iteration == 3)   w-14 h-14
-                                    @else bg-gray-100 text-gray-400  w-8 h-8
-                                    @endif
-                                ">
+                    <div class="flex items-center justify-between mb-2">
+                            <div class="w-16 shrink-0 mr-6 flex items-center justify-center" >
+                                @php
+                                    switch ($loop->iteration) {
+                                        case 1:
+                                            $classes = 'w-18 h-18';
+                                            break;
+                                        case 2:
+                                            $classes = 'w-16 h-16';
+                                            break;
+                                        case 3:
+                                            $classes = 'w-14 h-14';
+                                            break;
+                                        default:
+                                            $classes = 'bg-gray-100 text-gray-400 w-8 h-8';
+                                            break;
+                                    }
+                                @endphp
+                                <span class="inline-flex items-center justify-center rounded-full text-lg font-semibold {{ $classes }}">
                                     @if($loop->iteration == 1) 
                                         <img src="{{ asset('/site-images/place1.png') }}" alt="">                                    
                                     @elseif($loop->iteration == 2) 
@@ -52,7 +59,7 @@
                                     @endif
                                 </span>
                             </div>
-                            <div class="flex-grow " style="max-width:calc(100% - 5.5rem);">
+                            <div class="grow"  style="max-width:calc(100% - 5.5rem);">
                                 <x-insurance.insurance-card :insurance="$insurance" />
                             </div>
                         </div>
