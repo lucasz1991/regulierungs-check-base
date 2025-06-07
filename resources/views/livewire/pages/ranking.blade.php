@@ -25,66 +25,15 @@
     </div>
     <div class="bg-gray-50">
         <div class="container mx-auto px-4 md:px-12 py-8">
-            {{-- TOP 5 SWIPER --}}
-            <div class="my-12">
-                <h2 class="text-xl font-bold mb-4 text-green-900">5 Versicherungen mit den besten Bewertungen</h2>
-
-                <div x-data="{
-                    swiper: null,
-                    initSwiper() {
-                        this.swiper = new Swiper(this.$refs.topSwiper, {
-                            slidesPerView: 1,
-                            spaceBetween: 20,
-                            autoplay: {
-                                delay: 1300,
-                            },
-                            speed: 2500,
-                            loop: true,
-                            pagination: {
-                                el: '.swiper-pagination-top',
-                                clickable: true,
-                            },
-                            breakpoints: {
-                                640: { slidesPerView: 2 },
-                                1024: { slidesPerView: 3 },
-                            }
-                        });
-                    },
-                    stopSwiper() {
-                        this.swiper.autoplay.stop();
-                    },
-                    playSwiper() {
-                        this.swiper.autoplay.start();
-                    }
-                }"
-                x-init="initSwiper()"
-
-                x-on:click="stopSwiper()"
-                x-on:click.away="playSwiper()"
-                x-on:touchstart="stopSwiper()"
-                x-on:touchend="playSwiper()"
-                class="relative"
-                wire:ignore>
-                    <div class="swiper" x-ref="topSwiper">
-                        <div class="swiper-wrapper">
-                            @foreach ($top5 as $insurance)
-                                <div class="swiper-slide">
-                                    <x-insurance.insurance-card :insurance="$insurance" />
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
 
             {{-- Gesamtranking --}}
-            <div class="mt-12">
-                <h2 class="text-2xl font-bold mb-4 text-gray-600">Gesamtranking</h2>
+            <div class="mt-12 max-w-2xl">
                 <div class="flex flex-col space-y-4">
                     @foreach ($allInsurances as $insurance)
-                    <div class="flex items-center justify-between mb-2">
-                            <div class="w-16 shrink-0 mr-6 flex items-center justify-center" >
+                    <div class="flex items-center justify-between mb-2 max-w-full">
+                            <div class="w-16 shrink-0 pr-6 flex items-center justify-center" >
                                 <span class="inline-flex items-center justify-center rounded-full text-lg font-semibold
                                     @if($loop->iteration == 1)   w-18 h-18
                                     @elseif($loop->iteration == 2)   w-16 h-16
@@ -103,7 +52,7 @@
                                     @endif
                                 </span>
                             </div>
-                            <div class="grow">
+                            <div class="flex-grow " style="max-width:calc(100% - 5.5rem);">
                                 <x-insurance.insurance-card :insurance="$insurance" />
                             </div>
                         </div>
