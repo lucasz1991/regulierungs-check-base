@@ -15,9 +15,7 @@ class AdminStorageController extends Controller
     protected function validateApiKey(Request $request): bool
     {
         $incomingKey = $request->header('X-API-KEY');
-
         $storedKey = Setting::where('key', 'base_api_key')->value('value');
-
         return $incomingKey === $storedKey;
     }
 
@@ -26,22 +24,17 @@ class AdminStorageController extends Controller
         if (!$this->validateApiKey($request)) {
             return response()->json(['error' => 'Ungültiger API-Key.'], 403);
         }
-
         $request->validate([
             'file' => 'required|file|max:8192',
         ]);
-
         $extension = strtolower($request->file('file')->getClientOriginalExtension());
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'svg', 'webp', 'pdf', 'docx', 'xlsx', 'mp4'];
-
         if (!in_array($extension, $allowedExtensions)) {
             return response()->json(['error' => 'Dateityp nicht erlaubt.'], 422);
         }
-
         $folder = $request->input('folder', 'uploads/files');
         $path = $request->file('file')->store($folder, 'public');
             Log::info('Media gespeichert', ['path' => $path]);
-
         return response()->json([
             'url' => Storage::url($path),
             'path' => $path,
@@ -55,16 +48,13 @@ class AdminStorageController extends Controller
         if (!$this->validateApiKey($request)) {
             return response()->json(['error' => 'Ungültiger API-Key.'], 403);
         }
-
         $request->validate([
             'path' => 'required|string',
         ]);
-
         if (Storage::disk('public')->exists($request->path)) {
             Storage::disk('public')->delete($request->path);
             return response()->json(['message' => 'Datei gelöscht.']);
         }
-
         return response()->json(['error' => 'Datei nicht gefunden.'], 404);
     }
 }

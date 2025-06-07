@@ -8,7 +8,7 @@
                     final: 1200,
                     start() {
                         this.counter = 0;
-                        const duration = 4500;
+                        const duration = 2500;
                         const interval = 10;
                         const step = Math.ceil(this.final * interval / duration);
 
@@ -37,7 +37,7 @@
                     final: 530,
                     start() {
                         this.counter = 0;
-                        const duration = 4500;
+                        const duration = 2500;
                         const interval = 10;
                         const step = Math.ceil(this.final * interval / duration);
 
@@ -64,7 +64,7 @@
                     final: 1102,
                     start() {
                         this.counter = 0;
-                        const duration = 4500;
+                        const duration = 2500;
                         const interval = 10;
                         const step = Math.ceil(this.final * interval / duration);
 
@@ -72,7 +72,7 @@
                             this.counter += step;
                             if (this.counter >= this.final) {
                                 this.counter = this.final;
-                                clearInterval(timer);
+                                clearInterval(timer);00
                             }
                         }, interval);
                     }

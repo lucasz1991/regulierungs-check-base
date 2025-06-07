@@ -39,13 +39,6 @@ class Ranking extends Component
             ->take(5)
             ->get();
 
-        $this->flop5 = Insurance::withAvg('claimRatings as avg_score', 'rating_score')
-            ->whereHas('claimRatings', function ($query) {
-                $query->whereNotNull('rating_score');
-            })
-            ->orderBy('avg_score')
-            ->take(5)
-            ->get();
 
         $this->allInsurances = Insurance::withAvg('claimRatings as avg_score', 'rating_score')
             ->whereHas('claimRatings', function ($query) {

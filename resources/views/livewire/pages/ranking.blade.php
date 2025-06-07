@@ -77,57 +77,7 @@
                 </div>
             </div>
 
-            {{-- FLOP 5 SWIPER --}}
-            <div class="my-12">
-                <h2 class="text-xl font-bold mb-4 text-red-900">5 Versicherungen mit den niedrigsten Bewertungen </h2>
 
-                <div x-data="{
-                    swiper: null,
-                    initSwiper() {
-                        this.swiper = new Swiper(this.$refs.flopSwiper, {
-                            slidesPerView: 1,
-                            spaceBetween: 20,
-                            autoplay: {
-                                delay: 1500,
-                            },
-                            speed: 2500,
-                            loop: true,
-                            pagination: {
-                                el: '.swiper-pagination-flop',
-                                clickable: true,
-                            },
-                            breakpoints: {
-                                640: { slidesPerView: 2 },
-                                1024: { slidesPerView: 3 },
-                            }
-                        });
-                    },
-                    stopSwiper() {
-                        this.swiper.autoplay.stop();
-                    },
-                    playSwiper() {
-                        this.swiper.autoplay.start();
-                    }
-                }"
-                x-init="initSwiper()"
-
-                x-on:click="stopSwiper()"
-                x-on:click.away="playSwiper()"
-                x-on:touchstart="stopSwiper()"
-                x-on:touchend="playSwiper()"
-                class="relative"
-                wire:ignore>
-                    <div class="swiper" x-ref="flopSwiper">
-                        <div class="swiper-wrapper">
-                            @foreach ($flop5 as $insurance)
-                                <div class="swiper-slide">
-                                    <x-insurance.insurance-card :insurance="$insurance" />
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
             {{-- Gesamtranking --}}
             <div class="mt-12">
                 <h2 class="text-2xl font-bold mb-4 text-gray-600">Gesamtranking</h2>
@@ -136,18 +86,18 @@
                     <div class="flex items-center justify-between mb-2">
                             <div class="w-16 shrink-0 mr-6 flex items-center justify-center" >
                                 <span class="inline-flex items-center justify-center rounded-full text-lg font-semibold
-                                    @if($loop->iteration == 1) bg-yellow-400 text-yellow-700  w-18 h-18
-                                    @elseif($loop->iteration == 2) bg-gray-300 text-gray-600  w-16 h-16
-                                    @elseif($loop->iteration == 3) bg-amber-600 text-amber-400  w-14 h-14
+                                    @if($loop->iteration == 1)   w-18 h-18
+                                    @elseif($loop->iteration == 2)   w-16 h-16
+                                    @elseif($loop->iteration == 3)   w-14 h-14
                                     @else bg-gray-100 text-gray-400  w-8 h-8
                                     @endif
                                 ">
                                     @if($loop->iteration == 1) 
-                                        <img src="{{ asset('/site-images/meddal1.png') }}" alt="">                                    
+                                        <img src="{{ asset('/site-images/place1.png') }}" alt="">                                    
                                     @elseif($loop->iteration == 2) 
-                                        <img src="{{ asset('/site-images/meddal2.png') }}" alt="">                                    
+                                        <img src="{{ asset('/site-images/place2.png') }}" alt="">                                    
                                     @elseif($loop->iteration == 3) 
-                                        <img src="{{ asset('/site-images/meddal3.png') }}" alt="">                                    
+                                        <img src="{{ asset('/site-images/place3.png') }}" alt="">                                    
                                     @else
                                         {{ $loop->iteration }}
                                     @endif
