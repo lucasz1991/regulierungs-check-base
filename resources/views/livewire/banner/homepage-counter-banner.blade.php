@@ -72,7 +72,7 @@
                             this.counter += step;
                             if (this.counter >= this.final) {
                                 this.counter = this.final;
-                                clearInterval(timer);00
+                                clearInterval(timer);
                             }
                         }, interval);
                     }
