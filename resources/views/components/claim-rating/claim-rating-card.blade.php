@@ -1,10 +1,21 @@
 <div class="bg-white rounded-lg shadow-xl  border  border-gray-300 h-full overflow-hidden" >
+    <div class=" p-4 pb-0">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <x-user.public-info :user="$rating->user" context="rating" />
+                <div class="text-sm text-gray-500 pl-1">
+                      - {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
+                </div>
+            </div>
+            <x-insurance.insurance-rating-stars :score="$rating->rating_score" />
+        </div>
+    </div>
     <div class=" p-4 border-b border-gray-300 grayscale-75 hover:grayscale-0 transition-all duration-200">
         @if(!str_contains(request()->path(), 'insurance/'))
             <div class="opacity-70 hover:opacity-100  transition-all duration-200 cursor-pointer mb-3">
                 <div  class="flex gap-2 overflow-hidden">
                     <div class="flex-none shrink-0">
-                        <a href="{{ route('insurance.show-insurance', $rating->insurance->slug) }}"  class=" w-min rounded flex items-center justify-center text-base border px-2 font-medium" style="background-color: {{ $rating->insurance->style['bg_color'] ?? '#eee' }}; color: {{ $rating->insurance->style['font_color'] ?? '#333' }}; border-color: {{ $rating->insurance->style['border_color'] ?? '#ccc' }};">
+                        <a href="{{ route('insurance.show-insurance', $rating->insurance->slug) }}"  class=" w-min rounded flex items-center justify-center text-sm border px-1 font-medium" style="background-color: {{ $rating->insurance->style['bg_color'] ?? '#eee' }}; color: {{ $rating->insurance->style['font_color'] ?? '#333' }}; border-color: {{ $rating->insurance->style['border_color'] ?? '#ccc' }};">
                             {{ strtoupper(substr( $rating->insurance->initials, 0 ,8)) }}
                         </a>
                     </div>
@@ -27,12 +38,7 @@
         @endif
     </div>
     <div class="p-4">
-        <div class="flex justify-between items-center">
-            <x-insurance.insurance-rating-stars :score="$rating->rating_score" />
-            <div class="text-sm text-gray-500">
-                 {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
-            </div>
-        </div>
+        
         <div class="mt-2 text-gray-800 max-h-16">
         {{ strlen($rating->attachments['scorings']['ai_overall_comment']) > 100 ? substr($rating->attachments['scorings']['ai_overall_comment'], 0, 100) . '...' : $rating->attachments['scorings']['ai_overall_comment'] }}
         </div>
