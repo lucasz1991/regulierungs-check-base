@@ -32,7 +32,7 @@
 
     <!-- Dropdown -->
     <div x-show="open" @click.outside="close" x-transition x-cloak
-         class="absolute z-10 mt-2 max-xl:right-0 xl:left-0 w-max max-w-md bg-white border border-gray-300 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-in-out">
+         class="absolute z-10 mt-2 max-xl:right-0 xl:left-0 w-max max-w-xs md:max-w-md bg-white border border-gray-300 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-in-out">
         <div class="">
             <!-- Toggle-All-Bereich -->
             <div class="px-4 py-2 border-b bg-gray-200">
@@ -68,7 +68,7 @@
                 @foreach($options as $option)
                     <label class="flex items-start space-x-2 py-2" x-show="!search || '{{ strtolower($option->name) }}'.includes(search.toLowerCase())">
                         <input type="checkbox" :value="{{ $option->id }}" x-model="selected" class="form-checkbox text-secondary rounded-full mt-1">
-                        <span>{{ $option->name }}</span>
+                        <span>{{ strlen($option->name) > 25 ? substr($option->name, 0, 25) . '...' : $option->name }}</span>
                     </label>
                 @endforeach
             </div>
