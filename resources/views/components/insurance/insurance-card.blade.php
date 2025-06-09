@@ -12,7 +12,7 @@
                 @if ($insurance->logo)
                     <img src="{{ asset('storage/' . $insurance->logo) }}"
                         alt=""
-                        class=" h-8 mx-auto object-contain mb-2 rounded">
+                        class=" h-8 mx-auto object-contain rounded">
                 @else
                     <div class=" w-min rounded flex items-center justify-center text-sm border px-1 font-medium shadow-sm" style="background-color: {{ $insurance->style['bg_color'] ?? '#eee' }}; color: {{ $insurance->style['font_color'] ?? '#333' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
                         {{ strtoupper(substr( $insurance->initials, 0 ,8)) }}
