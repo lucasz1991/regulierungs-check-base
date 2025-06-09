@@ -18,6 +18,7 @@ class Insurance extends Model
         'style',
         'initials',
         'color',
+        'logo',
         'is_active',
         'order_id',
     ];

@@ -30,24 +30,24 @@
                 <div class="flex flex-col space-y-4">
                     @foreach ($allInsurances as $insurance)
                     <div class="flex items-center justify-between mb-2">
-                            <div class="w-16 shrink-0 mr-6 flex items-center justify-center" >
+                            <div class="w-16 shrink-0 mr-6 flex items-center justify-center " >
                                 @php
                                     switch ($loop->iteration) {
                                         case 1:
-                                            $classes = 'w-18 h-18';
+                                            $classes = '';
                                             break;
                                         case 2:
-                                            $classes = 'w-16 h-16';
+                                            $classes = '';
                                             break;
                                         case 3:
-                                            $classes = 'w-14 h-14';
+                                            $classes = '';
                                             break;
                                         default:
-                                            $classes = 'bg-gray-100 text-gray-400 w-8 h-8';
+                                            $classes = 'bg-gray-100 text-gray-400';
                                             break;
                                     }
                                 @endphp
-                                <span class="inline-flex items-center justify-center rounded-full text-lg font-semibold {{ $classes }}">
+                                <span class="inline-flex items-center justify-center rounded-full text-lg font-semibold  w-8 h-8 {{ $classes }}">
                                     @if($loop->iteration == 1) 
                                         <img src="{{ asset('/site-images/place1.png') }}" alt="">                                    
                                     @elseif($loop->iteration == 2) 
