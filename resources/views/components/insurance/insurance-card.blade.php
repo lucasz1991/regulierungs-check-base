@@ -7,8 +7,13 @@
          @click="showInfos = !showInfos">
         <div class=" transition-all duration-200">
             <div  class="flex  items-stretch gap-2">
-                <div class="shrink-0 py-2 pl-2 pr-1 transition-all duration-200"
+                <div class="shrink-0 py-2 pl-2 pr-1 transition-all duration-200 flex "
                     :class="hover || showInfos ? 'opacity-100' : 'opacity-60'">
+                    <div class="mr-2">
+                        <svg :class="showInfos ? 'rotate-180 transition-transform duration-300' : 'rotate-0 transition-transform duration-300'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
                 @if ($insurance->logo)
                     <img src="{{ asset('storage/' . $insurance->logo) }}"
                         alt=""

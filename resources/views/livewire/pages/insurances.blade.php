@@ -24,6 +24,24 @@
                         min="1"
                         class="w-full px-3 py-2 border rounded-md text-sm border-blue-200" />
                 </div>
+                <div class="p-2 mb-2" >
+                    <label class=" text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
+                        <svg class="w-4 h-4 stroke-current stroke-2" fill="none" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <polygon points="12,7 15,17 12,15 9,17" fill="currentColor"/>
+                        </svg>
+                        <span>
+                            Aspekt
+                        </span>
+                    </label>
+                    <select wire:model="selectedCategory" class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
+                        <option value="allgemein">Allgemein</option>
+                        <option value="geschwindigkeit">Geschwindigkeit</option>
+                        <option value="kunden_service">Kunden Service</option>
+                        <option value="fairness">Fairness</option>
+                        <option value="transparenz">Transparenz</option>
+                    </select>
+                </div>
                 <div class="p-2 mb-2">
                     <label class=" text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
                         <svg class="w-4 h-4 stroke-current stroke-2" viewBox="0 0 20 20">

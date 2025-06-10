@@ -23,14 +23,15 @@
                 </div>
                 <div class="p-2 mb-2" >
                     <label class=" text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
-                        <svg class="w-4 h-4 stroke-current stroke-2" viewBox="0 0 20 20">
-                            <path class="stroke-current" fill="none" stroke="1" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.176 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.049 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z"/>
+                        <svg class="w-4 h-4 stroke-current stroke-2" fill="none" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         <span>
                             Aspekt
                         </span>
                     </label>
-                    <select wire:model="selectedCategory" class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
+                    <select wire:model="selectedAspect" class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
                         <option value="allgemein">Allgemein</option>
                         <option value="geschwindigkeit">Geschwindigkeit</option>
                         <option value="kunden_service">Kunden Service</option>
