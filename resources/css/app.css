@@ -1592,7 +1592,7 @@ svg .zoom-in-out.duration-8{
 }
 
 div.home-banner{
-  min-height: 60vh;
+  min-height: 50vh;
   background-position: center center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
