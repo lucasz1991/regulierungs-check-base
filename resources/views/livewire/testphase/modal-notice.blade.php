@@ -15,11 +15,12 @@
                  </div>
      
                  <div name="content">
-                     <p class="text-gray-600 leading-relaxed">
-                         RegulierungsCheck ist eine Plattform zur Bewertung und Analyse von Schadenregulierungen durch Versicherungen. Sie befindet sich derzeit in einer <strong>Testphase</strong>, in der alle Funktionen ausprobiert und erste Rückmeldungen gesammelt werden sollen.<br><br>
-                         Bitte verwenden Sie möglichst <strong>Testdaten / keine echten Fälle</strong>, da noch nicht alle Prozesse final sind. Ihr Feedback ist sehr wertvoll und hilft dabei, die Plattform weiter zu verbessern.<br><br>
-                         Nach dem Test können Sie uns Ihre Eindrücke gerne über die <a href="/contact" class="text-blue-600 hover:underline">Kontaktseite</a> mitteilen.
-                     </p>
+                   <p class="text-gray-600 leading-relaxed">
+    RegulierungsCheck ist eine Plattform zur Bewertung und Analyse von Schadenregulierungen durch Versicherungen. Sie befindet sich derzeit in einer <strong>Testphase</strong>, in der du alle Funktionen ausprobieren und erste Eindrücke sammeln kannst.<br><br>
+    Bitte verwende möglichst <strong>Testdaten / keine echten Fälle</strong>, da noch nicht alle Prozesse final sind. Dein Feedback ist sehr wertvoll und hilft dabei, die Plattform weiter zu verbessern.<br><br>
+    Nach dem Test kannst du uns deine Eindrücke gerne über die <a href="/contact" class="text-blue-600 hover:underline">Kontaktseite</a> mitteilen.
+</p>
+
                  </div>
      
      
