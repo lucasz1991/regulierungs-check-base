@@ -38,6 +38,11 @@
                         <option value="transparenz">Transparenz</option>
                     </select>
                 </div>
+                <div class="p-2">
+                    <x-buttons.button-basic wire:click="resetFilters" class="mt-4 text-sm text-blue-600 w-full">
+                        Filter zurücksetzen
+                    </x-buttons.button-basic>
+                </div>
             </x-slot>
             <x-slot name="listContent">
                 <div class="">
