@@ -34,7 +34,7 @@
                             Aspekt
                         </span>
                     </label>
-                    <select wire:model="selectedCategory" class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
+                    <select wire:model="selectedAspect" class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
                         <option value="allgemein">Allgemein</option>
                         <option value="geschwindigkeit">Geschwindigkeit</option>
                         <option value="kunden_service">Kunden Service</option>

@@ -20,7 +20,7 @@ class Insurances extends Component
     public $perPage = 20;
     public $pages = 1;
 
-
+    public $selectedAspect;
     public $sort;
     public $minRatingCount;
     public $minAvgScore;
@@ -36,6 +36,7 @@ class Insurances extends Component
         $this->pages = 1;
         $this->sort = 'score_desc';
         $this->minRatingCount = 1;
+        $this->selectedAspect = 'allgemein';
     }
 
 
@@ -63,7 +64,10 @@ class Insurances extends Component
     {
         $this->resetPage();
     }
-
+    public function updatingSelectedAspect()
+    {
+        $this->resetPage();
+    }
     public function updatingInsuranceType()
     {
         $this->resetPage();
