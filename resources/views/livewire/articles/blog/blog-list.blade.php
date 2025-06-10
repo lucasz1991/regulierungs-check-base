@@ -4,12 +4,12 @@
         {{-- Kategorie-Filter --}}
         <div class="flex gap-2 flex-wrap mb-4">
             <button wire:click="$set('selectedCategory', null)"
-                    class="px-3 py-1 border rounded {{ $selectedCategory === null ? 'bg-blue-600 text-white' : 'bg-white text-gray-700' }}">
+                    class="px-3 py-1 border rounded {{ $selectedCategory === null ? 'bg-primary text-white' : 'bg-white text-gray-700' }}">
                 Alle Kategorien
             </button>
             @foreach ($categories as $category)
                 <button wire:click="$set('selectedCategory', {{ $category->id }})"
-                        class="px-3 py-1 border rounded {{ $selectedCategory === $category->id ? 'bg-blue-600 text-white' : 'bg-white text-gray-700' }}">
+                        class="px-3 py-1 border rounded {{ $selectedCategory === $category->id ? 'bg-primary text-white' : 'bg-white text-gray-700' }}">
                     {{ $category->name }}
                 </button>
             @endforeach

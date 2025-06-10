@@ -115,11 +115,5 @@
                     </div>
             </div>
         </div>
-        <div class="bg-gray-100 mt-12">
-            <div class="container mx-auto px-8 py-8">
-                <h2 class="text-xl font-semibold mb-4 text-gray-500">Kommentare</h2>
-                <livewire:comments.comment-thread :commentable-type="\App\Models\ClaimRating::class" :commentable-id="$claimRating->id" :depth="1" />
-            </div>
-        </div>
     </div>
 </div>

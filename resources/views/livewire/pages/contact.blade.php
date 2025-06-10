@@ -123,7 +123,7 @@
                     class=" absolute inset-0 h-full w-full object-cover opacity-80"
                 />
                 <!-- Overlay -->
-                <div class="absolute inset-0" style="background-color:var(--secondary-color); opacity:0.6;"></div>
+                <div class="absolute inset-0" style="background-color:var(--primary-color); opacity:0.6;"></div>
                 <div class="hidden lg:relative lg:block lg:p-12">
 
                     <h2 class="mt-6 text-2xl font-bold sm:text-3xl md:text-4xl text-white">
@@ -201,7 +201,7 @@
                         <div class="col-span-2 flex items-center justify-end">
                             <button 
                                 wire:click="send"
-                                class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+                                class="inline-block shrink-0 rounded-md border border-primary-600 bg-primary px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-primary-600 focus:outline-none focus:ring active:text-primary-500">
                                 Nachricht senden
                             </button>
                         </div>
