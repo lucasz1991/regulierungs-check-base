@@ -220,6 +220,7 @@
                                
                            </span>
                          </label>
+                         <x-input-error for="terms" class="mt-2" />
                        
                </div>
 
