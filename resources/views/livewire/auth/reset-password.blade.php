@@ -3,7 +3,7 @@
     Neues Passwort
     </x-slot>
     <x-slot name="description">
-    Du bist nur noch einen Schritt entfernt! Erstelle jetzt ein neues Passwort, um wieder vollen Zugriff auf dein Konto bei Regulierungscheck zu erhalten. Schnell, sicher und unkompliziert – so kannst du direkt weitermachen und deine Bewertungen verwalten oder neue Erfahrungen teilen.
+    Du bist nur noch einen Schritt entfernt! Erstelle jetzt ein neues Passwort, um wieder vollen Zugriff auf dein Konto bei Regulierungs-Check zu erhalten. Schnell, sicher und unkompliziert – so kannst du direkt weitermachen und deine Bewertungen verwalten oder neue Erfahrungen teilen.
     </x-slot>
     <x-slot name="form">
     <div  class="mt-8 w-xl shrink-0">

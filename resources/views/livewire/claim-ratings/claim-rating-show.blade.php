@@ -1,26 +1,28 @@
 <div class="bg-gray-50">
     <div class="container mx-auto px-4 py-6 space-y-4">    
-        <div class="bg-white rounded shadow p-6">
-            <p class="text-sm text-gray-600 mb-1">
-                Versicherung: 
-            </p>
-            <x-insurance.insurance-name-button :insurance="$claimRating->insurance" />
-            <p class="text-sm text-gray-600 mb-1">
-                Versicherungs-art: <strong>{{ $claimRating->insuranceType->name ?? 'Keine Angabe' }}</strong>
-            </p>
-            <p class="text-sm text-gray-600 mb-1">
-                Versicherungs-typ: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
-            </p>
-        </div>
-        <div class="bg-white rounded shadow p-6">
-            <div><span class="mr-4">Regulierungsart:</span>{{ $claimRating->answers['regulationType'] ?? '–' }}</div>
-            <div><span class="mr-4">Abgeschlossen:</span>{{ $claimRating->answers['is_closed'] ? 'Ja' : 'Nein' }}</div>
-            <div><span class="mr-4">Beginn:</span>{{ $claimRating->answers['selectedDates']['started_at'] ?? '–' }}</div>
-            @if($claimRating->answers['is_closed'])
-                <div><span class="mr-4">Beendet:</span>{{ $claimRating->answers['selectedDates']['ended_at'] ?? '–' }}</div>
-            @endif
-            <hr class="my-4">
-            <div><span class="mr-4">Details:</span>{{ $claimRating->answers['regulationDetail']['selected_value'] ?? '–' }}</div>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white rounded shadow p-6">
+                <p class="text-sm text-gray-600 mb-1">
+                    Versicherung: 
+                </p>
+                <x-insurance.insurance-name-button :insurance="$claimRating->insurance" />
+                <p class="text-sm text-gray-600 mb-1">
+                    Versicherungs-art: <strong>{{ $claimRating->insuranceType->name ?? 'Keine Angabe' }}</strong>
+                </p>
+                <p class="text-sm text-gray-600 mb-1">
+                    Versicherungs-typ: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
+                </p>
+            </div>
+            <div class="bg-white rounded shadow p-6">
+                <div><span class="mr-4">Regulierungsart:</span>{{ $claimRating->answers['regulationType'] ?? '–' }}</div>
+                <div><span class="mr-4">Abgeschlossen:</span>{{ $claimRating->answers['is_closed'] ? 'Ja' : 'Nein' }}</div>
+                <div><span class="mr-4">Beginn:</span>{{ $claimRating->answers['selectedDates']['started_at'] ?? '–' }}</div>
+                @if($claimRating->answers['is_closed'])
+                    <div><span class="mr-4">Beendet:</span>{{ $claimRating->answers['selectedDates']['ended_at'] ?? '–' }}</div>
+                @endif
+                <hr class="my-4">
+                <div><span class="mr-4">Details:</span>{{ $claimRating->answers['regulationDetail']['selected_value'] ?? '–' }}</div>
+            </div>
         </div>
         <div class="bg-gray-200 rounded shadow p-6">
                 <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
