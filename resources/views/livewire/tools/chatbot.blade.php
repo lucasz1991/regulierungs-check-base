@@ -74,18 +74,18 @@
                 x-on:click.away="showChat = false"
                 class="fixed bottom-4 right-0 mx-[3vw] bg-white p-3 md:p-5 transition rounded-lg border border-[#e5e7eb] w-[440px] max-w-[94vw] h-auto shadow-xl z-50" >
                 <!-- Header -->
-                <div class="flex justify-between  pb-4">
+                <div class="flex justify-between pb-4">
                     <div>
                         <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
                         <p class="text-sm text-[#6b7280]">Hier kannst du Fragen zu Regulierungs-Check stellen.</p>
                     </div>
-                    <div>
-                        <button wire:click="clearChat()"  class="text-gray-500 hover:text-gray-700">
+                    <div class="flex space-x-4 items-start">
+                        <button wire:click="clearChat()" class="text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M8 7V4a1 1 0 011-1h6a1 1 0 011 1v3" />
                             </svg>
                         </button>
-                        <button @click="showChat = false"  class="text-gray-500 hover:text-gray-700">
+                        <button @click="showChat = false" class="text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -107,7 +107,7 @@
                         <div class="p-2 rounded-md text-gray-600 md:w-max max-w-xs mt-2 " x-transition
                         :style="'background-color: ' + (message.role === 'user' ? '#f2f2f2' : '#0c968f1c')">
                         <strong x-text="message.role === 'user' ? 'Du' : 'Assistent'"></strong>:<br> 
-                        <span x-text="message.content"></span>
+                        <span x-text="message.content" class="break-words"></span>
                         </div>
                     </template>
                 </div>
@@ -138,8 +138,24 @@
                 </div>
                 <!-- Eingabe & Buttons -->
                 <div class="relative w-full">
-                        <input x-model="messagefront" @keydown.enter="sendMessage()" class="w-full border-outline bg-white border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 "  placeholder="Frage stellen..." />
-                        <button @click="sendMessage()" class="absolute  right-3 top-1/2 -translate-y-1/2 bg-secondary text-white rounded-radius px-2 py-1 text-xs tracking-wide text-on-primary transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 ">senden</button>
+
+                        <textarea 
+                        x-data="{
+                                resize() {
+                                    this.$el.style.height = 'auto';
+                                    this.$el.style.height = this.$el.scrollHeight + 'px';
+                                    }
+                                    }"
+                            x-init="resize()"
+                            @input="resize()"
+                            x-model="messagefront" 
+                            @keydown.enter="sendMessage()" 
+                            class="w-full border-outline bg-white border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 min-h-10" 
+                            rows="2" 
+                            placeholder="Frage stellen...">
+                        </textarea>
+                        <button @click="sendMessage()" class="absolute rounded-lg right-2 bottom-3 bg-secondary text-white rounded-radius px-2 py-1 text-xs tracking-wide text-on-primary transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 ">senden</button>
+                    
                 </div>
             </div>
         </div>
