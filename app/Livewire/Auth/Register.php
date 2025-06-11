@@ -81,7 +81,7 @@ class Register extends Component
                 'country.string' => 'Das Land muss eine Zeichenkette sein.',
                 'country.max' => 'Das Land darf maximal 255 Zeichen lang sein.',
         
-                'terms.required' => 'Sie müssen den AGBs und der Datenschutzerklärung zustimmen.',
+                'terms.required' => 'Du musst den AGBs und der Datenschutzerklärung zustimmen.',
             ]
         );
 
