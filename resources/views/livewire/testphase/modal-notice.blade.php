@@ -1,6 +1,4 @@
-
 <div>
-
     <!-- Such-Modal -->
     <div x-data="{ open: @entangle('showPreflightModal') }"
          x-show="open"
@@ -13,24 +11,20 @@
                   <div name="title" class="border-b mb-4">
                      <h3 class="font-bold ">Willkommen zu RegulierungsCheck</h3>
                  </div>
-     
                  <div name="content">
                    <p class="text-gray-600 leading-relaxed">
-    RegulierungsCheck ist eine Plattform zur Bewertung und Analyse von Schadenregulierungen durch Versicherungen. Sie befindet sich derzeit in einer <strong>Testphase</strong>, in der du alle Funktionen ausprobieren und erste Eindrücke sammeln kannst.<br><br>
-    Bitte verwende möglichst <strong>Testdaten / keine echten Fälle</strong>, da noch nicht alle Prozesse final sind. Dein Feedback ist sehr wertvoll und hilft dabei, die Plattform weiter zu verbessern.<br><br>
-    Nach dem Test kannst du uns deine Eindrücke gerne über die <a href="/contact" class="text-blue-600 hover:underline">Kontaktseite</a> mitteilen.
-</p>
-
+                        RegulierungsCheck ist eine Plattform zur Bewertung und Analyse von Schadenregulierungen durch Versicherungen. Sie befindet sich derzeit in einer <strong>Testphase</strong>, in der du alle Funktionen ausprobieren und erste Eindrücke sammeln kannst.<br><br>
+                        Bitte verwende möglichst <strong>Testdaten / keine echten Fälle</strong>, da noch nicht alle Prozesse final sind. Dein Feedback ist sehr wertvoll und hilft dabei, die Plattform weiter zu verbessern.<br><br>
+                        Nach dem Test kannst du uns deine Eindrücke gerne über die <a href="/contact" class="text-blue-600 hover:underline">Kontaktseite</a> mitteilen.
+                    </p>
                  </div>
-     
-     
                  <div name="footer" class="flex  justify-between content-center mt-4">
-                     <x-buttons.button-basic wire:click="hide">
-                         Verstanden
-                     </x-buttons.button-basic>
-                         <x-buttons.button-basic  href="/contact" class="ml-3">
-                             Feedback
-                         </x-buttons.button-basic>
+                    <x-buttons.button-basic wire:click="hide">
+                        Verstanden
+                    </x-buttons.button-basic>
+                    <x-buttons.button-basic  href="/contact" class="ml-3">
+                        Feedback
+                    </x-buttons.button-basic>
                  </div>
              </div>
          </div>
