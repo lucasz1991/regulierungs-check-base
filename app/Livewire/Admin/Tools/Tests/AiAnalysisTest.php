@@ -9,7 +9,7 @@ use App\Http\Controllers\Ai\AiConnectionController;
 class AiAnalysisTest extends Component
 {       
     public $questionTitle = "Service-Kommentar";
-    public $questionText = "Wie empfanden Sie den Kundenservice?";
+    public $questionText = "Wie empfandest du den Kundenservice?";
     public $customerAnswer = "Die Regulierung hat zwar etwas gedauert, aber letztlich wurde alles korrekt abgewickelt. Der Kundenservice war freundlich, allerdings musste ich zweimal nachfragen, bis ich eine klare Antwort erhalten habe.";
 
     public $trainContent = 'Du bist ein Assistent, der die Antwort eines Versicherungskunden analysiert. 

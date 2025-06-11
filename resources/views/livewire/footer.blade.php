@@ -28,9 +28,6 @@
                             <li>
                                 <a  href="/reviews" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Bewertungen</a>
                             </li>
-                            <li>
-                                <a  href="/ranking" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Ranking</a>
-                            </li>
                             
                         </ul>
                     </div>
