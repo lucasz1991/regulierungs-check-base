@@ -31,7 +31,7 @@
                             <polygon points="12,7 15,17 12,15 9,17" fill="currentColor"/>
                         </svg>
                         <span>
-                            Aspekt
+                            Kriterium 
                         </span>
                     </label>
                     <select wire:model="selectedAspect" class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">

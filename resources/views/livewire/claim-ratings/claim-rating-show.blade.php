@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="bg-gray-200 rounded shadow p-6">
-                <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
+            <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
                 Auswertung:
             </h2>
             <div class="bg-white border border-gray-200 rounded-md p-4 mb-4">

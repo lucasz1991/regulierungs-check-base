@@ -185,7 +185,7 @@
                         <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
                         <x-alert class="w-max mx-auto mb-6" role="alert">
                                 <span>
-                                    Bitte wähle die konkrete Versicherungsgesellschaft aus, bei der du deinen Fall melden möchtest. Diese Information ist wichtig, um den Fall korrekt zuzuordnen und die richtigen Ansprechpartner zu finden.
+                                    Bitte wähle die Versicherungsgesellschaft aus, bei der du den Schaden gemeldet hast. Diese Information hilft uns, deinen Fall korrekt zuzuordnen.
                                 </span>
                             </x-alert>
                         <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
@@ -255,7 +255,7 @@
                         <h2 class="text-lg font-bold mb-6">Wie wurde der Schaden reguliert?</h2>
                         <x-alert class="w-max mx-auto mb-6" role="alert">
                                 <span>
-                                    Bitte wähle den aktuellen Status der Schadensregulierung aus. Diese Information hilft uns, den Fall besser zu verstehen und die nächsten Schritte zu planen.
+        Bitte gib an, wie der Schaden bisher reguliert wurde. Diese Angabe ist wichtig, um deine Erfahrung richtig einzuordnen – ob es sich um eine schnelle Auszahlung, eine laufende Prüfung oder eine abgelehnte Regulierung handelt.
                                 </span>
                             </x-alert>
                         <div class="flex justify-center items-center">
@@ -346,8 +346,23 @@
                             @endswitch
                         </h2>
                         <x-alert class="w-max mx-auto mb-6" role="alert">
-                                <span>
-                                    Bitte beschreibe den Grund für deine Bewertung des Falls. Deine Angaben helfen anderen Nutzern, die Qualität der Versicherung besser einzuschätzen und ihre Entscheidungen zu treffen.
+                            <span>
+                                @switch($regulationType)
+                                @case('vollzahlung')
+                                    Bitte beschreibe, warum du mit der vollständigen Regulierung deines Schadens zufrieden bist oder ob es trotz der Vollzahlung auch kritische Punkte gab. Was hat besonders gut funktioniert? Gab es positive Überraschungen oder Aspekte, die du hervorheben möchtest? Oder gab es trotz der vollständigen Zahlung Dinge, die nicht optimal liefen? Je genauer du deine Erfahrung schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
+                                    @break
+                                @case('teilzahlung')
+                                    Bitte erläutere, weshalb es nur zu einer Teilzahlung kam. Welche Gründe wurden dir genannt oder wie hast du die Entscheidung der Versicherung erlebt? Je präziser du deine Erfahrung beschreibst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
+                                    @break
+                                @case('ablehnung')
+                                    Bitte schildere, warum dein Schadenfall abgelehnt wurde. Welche Begründung hat die Versicherung gegeben und wie hast du die Kommunikation erlebt? Je detaillierter du deine Erfahrung beschreibst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
+                                    @break
+                                @case('austehend')
+                                    Bitte beschreibe, warum die Regulierung deines Schadens noch aussteht. Gibt es Verzögerungen, fehlende Unterlagen oder andere Gründe? Je genauer du deine Situation schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
+                                    @break
+                                @default
+                                    Bitte beschreibe den Grund für deine Bewertung möglichst präzise und nachvollziehbar. Je genauer du deine Erfahrung schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
+                            @endswitch
                             </span>
                         </x-alert>
                         <div class="flex justify-center items-center">
@@ -510,16 +525,14 @@
                     {{-- Step 5: Versicherungs Vertragsdaten --}}
                     <div x-show="step == 5"  x-cloak  >
                         <div>
-                            <h2 class="text-lg font-bold mb-6">Versicherungs Vertragsdaten</h2>
+                            <h2 class="text-lg font-bold mb-6">Finanzielle Eckdaten des Falls</h2>
                             <x-alert class="w-max mx-auto mb-6" role="alert">
-                                    <span>
-                                        Bitte geben Sie die Vertragsdaten der Versicherung an, bei der Sie den Schaden gemeldet haben. Diese Informationen sind wichtig, um den Schadenfall korrekt zuzuordnen und zu bearbeiten.
+                                <span>
+                                    Bitte gib die wichtigsten finanziellen Eckdaten deines Falls an. Diese Angaben helfen uns, die Regulierung besser einzuordnen und ermöglichen anderen Nutzern einen realistischen Vergleich. Trage die Beträge möglichst genau ein.
                                 </span>
                             </x-alert>
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">
                                 <div  class="mb-4 mt-4 text-left bg-secondary  rounded-lg shadow-md p-4">
-
-                                    
                                     <div class="mt-4">
                                         <label class="block text-sm font-medium text-white mb-2"> Selbstbeteiligung </label>
                                         <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
