@@ -13,26 +13,8 @@
     <div class=" p-4 border-b border-gray-300 grayscale-75 hover:grayscale-0 transition-all duration-200">
         @if(!str_contains(request()->path(), 'insurance/'))
             <div class="opacity-70 hover:opacity-100  transition-all duration-200 cursor-pointer mb-3">
-                <a href="{{ route('insurance.show-insurance', $rating->insurance->slug) }}"  class="flex gap-2 overflow-hidden">
-                    <div class="flex-none shrink-0">
-                        @if ($rating->insurance->logo)
-                            <img src="{{ asset('storage/' . $rating->insurance->logo) }}"
-                                alt=""
-                                class=" h-6 mx-auto object-contain rounded">
-                        @else
-                            <div class=" w-min rounded flex items-center justify-center text-sm border px-1 font-medium shadow-sm" style="background-color: {{ $rating->insurance->style['bg_color'] ?? '#eee' }}; color: {{ $rating->insurance->style['font_color'] ?? '#333' }}; border-color: {{ $rating->insurance->style['border_color'] ?? '#ccc' }};">
-                                {{ strtoupper(substr( $rating->insurance->initials, 0 ,8)) }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="grow">
-                        <div>
-                        <h2 class="text-base break-words  truncate text-ellipsis">
-                            {{ strlen($rating->insurance->name) > 20 ? substr($rating->insurance->name, 0, 20) . '...' : $rating->insurance->name }}
-                        </h2>
-</div>
-                    </div>
-</a>
+                <x-insurance.insurance-name-button :insurance="$rating->insurance" />
+
             </div>
         @endif
         @if(!str_contains(request()->path(), 'insurancetype/'))

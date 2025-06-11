@@ -2,8 +2,9 @@
     <div class="container mx-auto px-4 py-6 space-y-4">    
         <div class="bg-white rounded shadow p-6">
             <p class="text-sm text-gray-600 mb-1">
-                Versicherung: <strong>{{ $claimRating->insurance->name ?? 'Keine Angabe' }}</strong>
+                Versicherung: 
             </p>
+            <x-insurance.insurance-name-button :insurance="$claimRating->insurance" />
             <p class="text-sm text-gray-600 mb-1">
                 Versicherungs-art: <strong>{{ $claimRating->insuranceType->name ?? 'Keine Angabe' }}</strong>
             </p>
@@ -43,7 +44,7 @@
                 @empty
                     <div class="text-sm text-gray-500">Keine variablen Fragen gefunden.</div>
                 @endforelse
-                <div class=" mt-1 py-4">
+                <div class=" mt-1 p-4">
                     <p class="text-sm text-gray-700">
                         <strong>Scoring variable Fragen:</strong> 
                         @if($claimRating->attachments['scorings']['variable_questions'] != null) 
