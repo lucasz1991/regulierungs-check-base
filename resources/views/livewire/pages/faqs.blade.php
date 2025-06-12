@@ -7,7 +7,7 @@
                     <div class="mb-6 ">
                         <input type="text" wire:model.live.debounce.250ms="search"  class="border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Suche nach einer Frage..." />
                     </div>
-                    <div class="space-y-6">
+                    <div class="space-y-6 px-6">
                         @foreach($faqs as $faq)
                             <div x-data="{ open: false }"  @click.away="open = false" class="faq-item border-b border-gray-200 py-4">
                                 <div class="faq-question flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-800" 

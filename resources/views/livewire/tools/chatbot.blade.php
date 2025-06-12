@@ -75,9 +75,19 @@
                 class="fixed bottom-4 right-0 mx-[3vw] bg-white p-3 md:p-5 transition rounded-lg border border-[#e5e7eb] w-[440px] max-w-[94vw] h-auto shadow-xl z-50" >
                 <!-- Header -->
                 <div class="flex justify-between pb-4">
-                    <div>
-                        <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
-                        <p class="text-sm text-[#6b7280]">Hier kannst du Fragen zu Regulierungs-Check stellen.</p>
+                    <div class="flex space-x-4 items-start">
+                        <div>
+                            <img 
+                                src="{{ asset('site-images/assistent1.png') }}" 
+                                alt="Chatbot Avatar" 
+                                class="transition ease-out duration-600 h-auto"
+                                :class="chatHistory.length === 0 ? 'w-40 md:w-64' : 'w-20 md:w-36'"
+                            >
+                        </div>
+                        <div>
+                            <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
+                            <p class="text-sm text-[#6b7280]">Ich bin Milan, dein Regulierungs-Check Assistent. Mir kannst du Fragen zu Regulierungs-Check stellen.</p>
+                        </div>
                     </div>
                     <div class="flex space-x-4 items-start">
                         <button wire:click="clearChat()" class="text-gray-500 hover:text-gray-700">
@@ -92,10 +102,10 @@
                         </button>
                     </div>
                 </div>
-            
+            <hr>
                 <!-- Chat-Messages -->
                 <div 
-                    class="chat-messages mb-4 overflow-y-auto scroll-container bg-white rounded min-h-10 h-auto max-h-[474px] transition-all transition py-2" 
+                    class="chat-messages mb-4 overflow-y-auto scroll-container bg-white rounded min-h-10 h-auto max-h-[50vh] transition-all transition py-2" 
                     x-ref="messages"
                     x-init="
                     $nextTick(() => setTimeout(() => { $refs.messages.scrollTo({ top: $refs.messages.scrollHeight, behavior: 'instant' }) }, 10));
@@ -106,7 +116,7 @@
                     <template x-for="(message, index) in chatHistory" :key="index">
                         <div class="p-2 rounded-md text-gray-600 md:w-max max-w-xs mt-2 " x-transition
                         :style="'background-color: ' + (message.role === 'user' ? '#f2f2f2' : '#0c968f1c')">
-                        <strong x-text="message.role === 'user' ? 'Du' : 'Assistent'"></strong>:<br> 
+                        <strong x-text="message.role === 'user' ? 'Du' : '{{ $assistantName }}'"></strong>:<br> 
                         <span x-text="message.content" class="break-words"></span>
                         </div>
                     </template>
@@ -150,7 +160,7 @@
                             @input="resize()"
                             x-model="messagefront" 
                             @keydown.enter="sendMessage()" 
-                            class="w-full border-outline bg-white border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 min-h-10" 
+                            class="w-full border-outline bg-white border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 min-h-10 overflow-hidden" 
                             rows="2" 
                             placeholder="Frage stellen...">
                         </textarea>
