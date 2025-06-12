@@ -56,7 +56,7 @@ Route::get('/claim-rating/claim-rating-success/{hash}', ClaimRatingSuccess::clas
 Route::get('/insurances', Insurances::class)->name('insurances');
 Route::get('/reviews', Reviews::class)->name('reviews');
 Route::get('/ranking', Ranking::class)->name('ranking');
-Route::get('/premium', Premium::class)->name('premium');
+Route::get('/abos', Premium::class)->name('abos');
 Route::get('/insurance/{insurance}', ShowInsurance::class)->name('insurance.show-insurance');
 Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insurance.show-subtype');
 Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
