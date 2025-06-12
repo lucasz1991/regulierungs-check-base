@@ -14,7 +14,59 @@ use App\Http\Controllers\Ai\AiConnectionController;
 
 class AIEvalController extends Controller
 {
+    static function getInsuranceDetailEvaluation($data)
+    {
+        $possibleTags = RatingTag::get()->toArray();
+        $possibleTags = json_encode($possibleTags);
+        $trainContent = <<<EOT
+        Du bist ein KI-Assistent, der mehrere Kundenbewertungen zur Schadenregulierung einer bestimmten Versicherung (ggf. für eine bestimmte Versicherungsart) zusammenfassend analysiert.
 
+        Ziel:
+        - Erkenne häufige Probleme oder Lob, die sich aus den Texten und Bewertungsdaten ergeben.
+        - Berechne objektive Durchschnittswerte für die Bereiche:
+        1. regulation_speed
+        2. customer_service
+        3. fairness
+        4. transparency
+        - Weise maximal 3 passende Tags aus der bereitgestellten Liste `possibleTags` zu, die die erkannten Schwerpunkte am besten zusammenfassen.
+        - Verfasse eine sachliche Zusammenfassung (4–6 Sätze), die das Gesamtbild erklärt.
+
+        Eingabedaten:
+        - `reviews`: Liste von Bewertungen mit Feldern:
+        - fairness: Score zwischen 0.01 und 0.99
+        - regulation_speed
+        - customer_service
+        - transparency
+        - text: zusammenfassender Kommentar
+        - `possibleTags`: Liste von verfügbaren Tags (mit id, name, description)
+
+        Vorgaben für Tags:
+        - Wähle **maximal 3 Tags**, die sich klar aus den Bewertungen ableiten lassen.
+        - Nutze ausschließlich Tags aus `possibleTags`.
+        - Verwende keine Tags, die nicht explizit in den Texten oder Scores thematisiert werden.
+        - Vermeide semantische Dopplungen oder unspezifische Allgemeinplätze.
+
+        Antwortformat (JSON):
+        {
+        "average_fairness": 0.78,
+        "average_regulation_speed": 0.82,
+        "average_customer_service": 0.74,
+        "average_transparency": 0.69,
+        "tags": "2,5,12", // maximal 3 Tag-IDs, kommasepariert
+        "comment": "Viele Nutzer:innen berichten von einer schnellen Bearbeitung. Häufige Kritikpunkte betreffen die Transparenz der Entscheidung und eine unzureichende Kommunikation. Insgesamt ergibt sich ein gemischtes, aber eher positives Bild."
+        }
+        EOT;
+
+
+        $requestData = [
+            'data' => $data,
+            'possibleTags' => $possibleTags,
+            'trainContent' => $trainContent,
+        ];
+        $responseData = AiConnectionController::generateInsuranceDetailEvaluation($requestData);
+        return $responseData;
+
+    }
 
 
     static function getScoreForTextarea($question, $answer)

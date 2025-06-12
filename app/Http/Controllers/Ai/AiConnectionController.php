@@ -12,6 +12,101 @@ use App\Models\Setting;
 
 class AiConnectionController extends Controller
 {
+
+    static function generateInsuranceDetailEvaluation($RequestData)
+    {
+        Log::info('generateInsuranceDetailEvaluation Run');
+
+        $apiUrl = Setting::getValue('ai-scoring-settings', 'api_url');
+        $apiKey = Setting::getValue('ai-scoring-settings', 'api_key');
+        $aiModel = Setting::getValue('ai-scoring-settings', 'ai_model');
+        $modelTitle = Setting::getValue('ai-scoring-settings', 'model_title');
+        $refererUrl = Setting::getValue('ai-scoring-settings', 'referer_url');
+
+        $trainContent = $RequestData['trainContent'];
+        $reviews = json_encode($RequestData['data']); // neue Struktur
+        $possibleTags = $RequestData['possibleTags'];
+
+        $maxRetries = 3;
+        $aiScores = [
+            'average_fairness' => null,
+            'average_regulation_speed' => null,
+            'average_customer_service' => null,
+            'average_transparency' => null,
+            'tags' => '',
+            'aiResultComment' => '',
+        ];
+
+        for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
+            try {
+                $response = Http::timeout(120)->withHeaders([
+                    'Authorization' => 'Bearer ' . $apiKey,
+                    'HTTP-Referer' => $refererUrl,
+                    'X-Title' => $modelTitle,
+                    'Content-Type' => 'application/json',
+                ])->post($apiUrl, [
+                    'model' => $aiModel,
+                    'messages' => [
+                        [
+                            'role' => 'system',
+                            'content' => trim(preg_replace('/\s+/', ' ', $trainContent)),
+                        ],
+                        [
+                            'role' => 'user',
+                            'content' => <<<TEXT
+                                possibleTags: {$possibleTags}
+                                reviews: {$reviews}
+                                TEXT
+                        ]
+                    ]
+                ]);
+
+                Log::info($response->json());
+
+                if ($response->failed()) {
+                    throw new \Exception("HTTP Error: " . $response->status());
+                }
+
+                $botMessage = $response->json()['choices'][0]['message']['content'] ?? '';
+                if (!$botMessage) {
+                    throw new \Exception("No content in AI response.");
+                }
+
+                Log::info("Raw Message: $botMessage");
+                $cleaned = preg_replace('/^```(json)?|```$/m', '', trim($botMessage));
+                $decoded = json_decode($cleaned, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $cleaned = self::parsePossiblyEscapedJson($cleaned);
+                    $decoded = is_array($cleaned) ? $cleaned : json_decode($cleaned, true);
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        throw new \Exception("JSON parse error: $cleaned");
+                    }
+                }
+
+                if (!isset($decoded['average_fairness'], $decoded['average_regulation_speed'], $decoded['average_customer_service'], $decoded['average_transparency'], $decoded['comment'], $decoded['tags'])) {
+                    throw new \Exception("Missing keys in AI response: " . json_encode($decoded));
+                }
+
+                return [
+                    'average_fairness' => floatval($decoded['average_fairness']),
+                    'average_regulation_speed' => floatval($decoded['average_regulation_speed']),
+                    'average_customer_service' => floatval($decoded['average_customer_service']),
+                    'average_transparency' => floatval($decoded['average_transparency']),
+                    'tags' => $decoded['tags'],
+                    'aiResultComment' => preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $decoded['comment']),
+                ];
+            } catch (\Exception $e) {
+                Log::error("Attempt $attempt failed: " . $e->getMessage(), [
+                    'exception' => $e,
+                    'attempt' => $attempt + 1
+                ]);
+            }
+        }
+
+        return $aiScores; // falls alles fehlschlägt
+    }
+
     static function getAnswerSingleTextQuestion($RequestData){
         Log::info('getAnswerSingleTextQuestion Run');
         $apiUrl = Setting::getValue('ai-scoring-settings', 'api_url');
