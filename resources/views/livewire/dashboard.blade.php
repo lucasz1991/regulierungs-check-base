@@ -113,8 +113,8 @@
                         </div>
                         
                     </div>
-                    <div x-cloak x-show="selectedTab === 'abos'" id="tabpanelLikes" role="tabpanel" aria-label="likes"><b><a href="#" class="underline">abos</a></b> tab is selected</div>
-                    <div x-cloak x-show="selectedTab === 'verification'" id="tabpanelComments" role="tabpanel" aria-label="verification"><b><a href="#" class="underline">verification</a></b> tab is selected</div>
+                    <div x-cloak x-show="selectedTab === 'abos'" id="tabpanelLikes" role="tabpanel" aria-label="likes"><b><a href="#" class="underline"></div>
+                    <div x-cloak x-show="selectedTab === 'verification'" id="tabpanelComments" role="tabpanel" aria-label="verification"><b><a href="#" class="underline"></div>
                 </div>
             </div>
     </div>      

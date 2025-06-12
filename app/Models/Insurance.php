@@ -81,34 +81,31 @@ class Insurance extends Model
             ->first();
     }
 
-public function avgRatingDurationBySubtype(?int $subtypeId = null)
-{
-    return round(
-        $this->claimRatings()
-            ->when($subtypeId, function ($query) use ($subtypeId) {
+    public function avgRatingDurationBySubtype(?int $subtypeId = null)
+    {
+        return round(
+            $this->claimRatings()
+                ->when($subtypeId, function ($query) use ($subtypeId) {
+                    $query->where('insurance_subtype_id', $subtypeId);
+                })
+                ->get()
+                ->map(function ($rating) {
+                    return $rating->ratingDuration(); // Muss in ClaimRating definiert sein
+                })
+                ->filter()
+                ->avg(),
+            1
+        );
+    }
+
+    public function claimRatingsCountBySubtype(?int $subtypeId = null)
+    {
+        return $this->claimRatings()
+            ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
                 $query->where('insurance_subtype_id', $subtypeId);
             })
-            ->get()
-            ->map(function ($rating) {
-                return $rating->ratingDuration(); // Muss in ClaimRating definiert sein
-            })
-            ->filter()
-            ->avg(),
-        1
-    );
-}
-
-
-public function claimRatingsCountBySubtype(?int $subtypeId = null)
-{
-    return $this->claimRatings()
-        ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
-            $query->where('insurance_subtype_id', $subtypeId);
-        })
-        ->count();
-}
-
-
+            ->count();
+    }
 
     public function avgRatingDuration()
     {
