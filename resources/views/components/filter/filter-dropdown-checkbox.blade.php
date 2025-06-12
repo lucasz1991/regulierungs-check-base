@@ -77,26 +77,25 @@
 
     <!-- Alpine.js Logic -->
     <script>
-function dropdownFilter(optionIds, modelBinding) {
-    return {
-        open: false,
-        selected: modelBinding,
-        all: optionIds,
-        search: '',
-        toggle() {
-            this.open = !this.open;
-        },
-        close() {
-            this.open = false;
-        },
-        isAllSelected() {
-            return this.selected.length === this.all.length;
-        },
-        toggleAll() {
-            this.selected = this.isAllSelected() ? [] : [...this.all];
+        function dropdownFilter(optionIds, modelBinding) {
+            return {
+                open: false,
+                selected: modelBinding,
+                all: optionIds,
+                search: '',
+                toggle() {
+                    this.open = !this.open;
+                },
+                close() {
+                    this.open = false;
+                },
+                isAllSelected() {
+                    return this.selected.length === this.all.length;
+                },
+                toggleAll() {
+                    this.selected = this.isAllSelected() ? [] : [...this.all];
+                }
+            }
         }
-    }
-}
-
     </script>
 </div>

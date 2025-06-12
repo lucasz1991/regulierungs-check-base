@@ -13,8 +13,6 @@ class Insurances extends Component
     use WithPagination;
 
     public $search;
-    public $insuranceTypes = [];
-    public $selectedInsuranceTypesfilter = [];
     public $insuranceSubTypes = [];
     public $selectedInsuranceSubTypefilter = [];
     public $perPage = 20;
@@ -26,6 +24,8 @@ class Insurances extends Component
     public $minAvgScore;
     public $onlyActive;
 
+    public $isSubTypeFilter;
+    public $subTypeFilterSubType;
 
     public function mount()
     {
@@ -35,36 +35,53 @@ class Insurances extends Component
         $this->sort = 'score_desc';
         $this->minRatingCount = 1;
         $this->selectedAspect = 'allgemein';
+        $this->isSubTypeFilter = false;
     }
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
+
     public function updatingSort()
     {
         $this->resetPage();
     }
+
     public function updatingMinRatingCount()
     {
         $this->resetPage();
     }
+
     public function updatingMinAvgScore()
     {
         $this->resetPage();
     }
+
     public function updatingOnlyActive()
     {
         $this->resetPage();
     }
-    public function updatingSelectedInsuranceSubTypefilter()
+
+    public function updatingSelectedInsuranceSubTypefilter($value)
     {
         $this->resetPage();
+
+        if (is_array($value) && count($value) === 1) {
+            $this->isSubTypeFilter = true;
+            $this->subTypeFilterSubType = InsuranceSubtype::find($value[0]);
+        } else {
+            $this->isSubTypeFilter = false;
+            $this->subTypeFilterSubType = null;
+        }
     }
+
+
     public function updatingSelectedAspect()
     {
         $this->resetPage();
     }
+
     public function updatingInsuranceType()
     {
         $this->resetPage();
@@ -118,8 +135,9 @@ class Insurances extends Component
     
         return view('livewire.pages.insurances', [
             'insurances' => $insurances,
-            'insuranceTypes' => $this->insuranceTypes,
             'insuranceSubTypes' => $this->insuranceSubTypes,
+            'isSubTypeFilter' => $this->isSubTypeFilter,
+            'subTypeFilterSubType' => $this->subTypeFilterSubType,
         ])->layout('layouts.app');
     }
     

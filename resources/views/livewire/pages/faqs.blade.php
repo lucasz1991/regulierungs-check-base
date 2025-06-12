@@ -1,4 +1,4 @@
-<div class="antialiased bg-cover  relative" wire:loading.class="cursor-wait" style="background-image:url('{{ asset('site-images/faqs.jpg') }}'); background-position: 0% center; ">
+<div class="antialiased bg-cover  relative" wire:loading.class="cursor-wait" style="background-image:url('{{ asset('site-images/faqs.jpg') }}'); background-position: right center; ">
     <div class="inset-0 absolute "></div>
             <header class="relative bg-cover bg-center min-h-32  px-8 " >
             <div class="relative container mx-auto py-12 text-2xl  space-x-6 flex justify-start  items-center">

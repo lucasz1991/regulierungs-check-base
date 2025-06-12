@@ -44,6 +44,8 @@ class Insurance extends Model
             ->withPivot('order_column');
     }
 
+
+
     public function subtypes()
     {
         return $this->hasManyThrough(
@@ -66,6 +68,47 @@ class Insurance extends Model
         return $this->hasOne(DetailInsuranceRating::class)
                     ->latestOfMany();
     }
+
+    public function latestDetailInsuranceRatingBySubtype(?int $subtypeId = null)
+    {
+        return $this->detailInsuranceRatings()
+            ->when($subtypeId, function ($query) use ($subtypeId) {
+                $query->where('insurance_subtype_id', $subtypeId);
+            }, function ($query) {
+                $query->whereNull('insurance_subtype_id'); // Allgemein
+            })
+            ->latest('created_at') // oder 'id' falls das Sortierkriterium anders ist
+            ->first();
+    }
+
+public function avgRatingDurationBySubtype(?int $subtypeId = null)
+{
+    return round(
+        $this->claimRatings()
+            ->when($subtypeId, function ($query) use ($subtypeId) {
+                $query->where('insurance_subtype_id', $subtypeId);
+            })
+            ->get()
+            ->map(function ($rating) {
+                return $rating->ratingDuration(); // Muss in ClaimRating definiert sein
+            })
+            ->filter()
+            ->avg(),
+        1
+    );
+}
+
+
+public function claimRatingsCountBySubtype(?int $subtypeId = null)
+{
+    return $this->claimRatings()
+        ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
+            $query->where('insurance_subtype_id', $subtypeId);
+        })
+        ->count();
+}
+
+
 
     public function avgRatingDuration()
     {

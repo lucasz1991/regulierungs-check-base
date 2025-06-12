@@ -1,3 +1,4 @@
+@props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
 <div class="block" x-data="{ showInfos: false, hover: false }" @click.away="showInfos = false" >
 
     <div class="bg-white relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer"
@@ -47,7 +48,7 @@
         <div x-show="showInfos" x-collapse.duration.600ms
             class="relative  w-full bg-primary-50 border border-t-0  border-blue-400 rounded-b shadow-lg  z-10"
             @click.away="showInfos = false">
-            <x-insurance.insurance-card-dropdown-infos :insurance="$insurance" lazy />
+            <x-insurance.insurance-card-dropdown-infos :insurance="$insurance"  :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType"   lazy />
         </div>
     </div>
 </div>
