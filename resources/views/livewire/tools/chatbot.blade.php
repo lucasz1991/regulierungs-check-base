@@ -72,7 +72,7 @@
                 x-transition:leave-start="translate-x-0 "
                 x-transition:leave-end="translate-x-full"
                 x-on:click.away="showChat = false"
-                class="fixed bottom-4 right-0 mx-[3vw] bg-white p-3 md:p-5 transition rounded-lg border border-[#e5e7eb] w-[440px] max-w-[94vw] h-auto shadow-xl z-50" >
+                class="fixed bottom-4 right-0 mx-[3vw] bg-white p-3 md:p-5 transition rounded-lg border border-[#e5e7eb] w-[650px] max-w-[94vw] h-auto shadow-xl z-50" >
                 <!-- Header -->
                 <div class="flex justify-between pb-4">
                     <div class="flex space-x-4 items-start">
@@ -115,8 +115,8 @@
                     x-transition >
                     <template x-for="(message, index) in chatHistory" :key="index">
                         <div class="p-2 rounded-md text-gray-600 md:w-max max-w-xs mt-2 " x-transition
-                        :style="'background-color: ' + (message.role === 'user' ? '#f2f2f2' : '#0c968f1c')">
-                        <strong x-text="message.role === 'user' ? 'Du' : '{{ $assistantName }}'"></strong>:<br> 
+                        :class="message.role === 'user' ? 'ml-auto mr-2 bg-gray-100 text-left' : 'mr-auto bg-blue-100 text-left'">
+                        <strong :class="message.role != 'user' ? 'text-secondary' : 'text-primary'" x-text="message.role === 'user' ? 'Du' : '{{ $assistantName }}'"></strong>:<br> 
                         <span x-text="message.content" class="break-words"></span>
                         </div>
                     </template>
