@@ -66,7 +66,7 @@
                     <div x-show="open || screenWidth >= 768" x-collapse.duration.1000ms @click.away="open = false"  >
                         <ul class="space-y-5 mt-6 ">
                             <li>
-                                <a  href="/premium" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Premium</a>
+                                <a  href="/abos" wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>Abonnements</a>
                             </li>
                             <li>
                             <a href='/faqs' wire:navigate  class='hover:text-gray-400 text-gray-700 text-sm'>FAQ</a>
