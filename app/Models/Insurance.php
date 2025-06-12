@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\InsuranceType;
 use App\Models\InsuranceSubType;
+use App\Models\DetailInsuranceRating;
 
 class Insurance extends Model
 {
@@ -41,6 +42,29 @@ class Insurance extends Model
     {
         return $this->belongsToMany(InsuranceSubType::class, 'insurance_insurance_type')
             ->withPivot('order_column');
+    }
+
+    public function subtypes()
+    {
+        return $this->hasManyThrough(
+            InsuranceSubType::class,
+            ClaimRating::class,
+            'insurance_id',
+            'id',
+            'id',
+            'insurance_subtype_id'
+        )->distinct();
+    }
+
+    public function detailInsuranceRatings()
+    {
+        return $this->hasMany(DetailInsuranceRating::class);
+    }
+
+    public function latestDetailInsuranceRating()
+    {
+        return $this->hasOne(DetailInsuranceRating::class)
+                    ->latestOfMany();
     }
 
     public function avgRatingDuration()

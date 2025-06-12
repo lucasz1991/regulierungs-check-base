@@ -32,7 +32,6 @@ class AnalyzeInsuranceRatings extends Command
         foreach ($insurances as $insurance) {
             // Allgemeine Bewertungen zählen
             $generalRatingCount = $insurance->claimRatings()
-                ->whereNull('insurance_subtype_id')
                 ->where('status', 'rated')
                 ->count();
 
