@@ -20,7 +20,7 @@
                 </div>
             </div>
             <p class="text-gray-600 mb-4">{{ $insurance->description }}</p>
-            @if($insurance->detailInsuranceRatings())
+            @if($insurance->detailInsuranceRatings()->count() > 0)
                 <x-insurance.insurance-detail-insurance-ratings :detailInsuranceRating="$insurance->latestDetailInsuranceRating" />
             @else
                 <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg flex items-start gap-3">

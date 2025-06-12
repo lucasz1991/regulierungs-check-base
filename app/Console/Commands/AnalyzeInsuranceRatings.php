@@ -35,7 +35,7 @@ class AnalyzeInsuranceRatings extends Command
                 ->where('status', 'rated')
                 ->count();
 
-            if ($generalRatingCount >= 2) {
+            if ($generalRatingCount >= 5) {
                 EvaluateDetailInsuranceRatingWithAI::dispatch($insurance, null);
                 $this->info("Dispatched general AI job for insurance: {$insurance->name}");
             }
@@ -46,7 +46,7 @@ class AnalyzeInsuranceRatings extends Command
                     ->where('status', 'rated')
                     ->count();
 
-                if ($subtypeRatingCount >= 2) {
+                if ($subtypeRatingCount >= 5) {
                     EvaluateDetailInsuranceRatingWithAI::dispatch($insurance, $subtype->id);
                     $this->info("Dispatched subtype AI job for insurance: {$insurance->name} / {$subtype->name}");
                 }
