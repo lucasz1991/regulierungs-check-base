@@ -27,8 +27,6 @@ class Insurances extends Component
     public $onlyActive;
 
 
-
-
     public function mount()
     {
         $this->insuranceSubTypes = InsuranceSubtype::whereHas('claimRatings')->get();
@@ -38,7 +36,6 @@ class Insurances extends Component
         $this->minRatingCount = 1;
         $this->selectedAspect = 'allgemein';
     }
-
 
     public function updatingSearch()
     {
@@ -83,17 +80,16 @@ class Insurances extends Component
         $this->pages++;
     }
 
-public function resetFilters()
-{
-    $this->reset([
-        'selectedInsuranceSubTypefilter',
-        'search',
-        'minRatingCount',
-        'minAvgScore',
-        'onlyActive',
-    ]);
-}
-
+    public function resetFilters()
+    {
+        $this->reset([
+            'selectedInsuranceSubTypefilter',
+            'search',
+            'minRatingCount',
+            'minAvgScore',
+            'onlyActive',
+        ]);
+    }
 
     public function render()
     {

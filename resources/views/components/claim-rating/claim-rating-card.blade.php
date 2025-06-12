@@ -18,15 +18,14 @@
             </div>
         @endif
         @if(!str_contains(request()->path(), 'insurancetype/'))
-        <div class="">
-            <a href="/insurancetype/{{ $rating->insuranceSubType->slug }}"  class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 hover:opacity-100 transition-opacity duration-200 cursor-pointer">
-                {{ strlen($rating->insuranceSubType->name) > 25 ? substr($rating->insuranceSubType->name, 0, 25) . '...' : $rating->insuranceSubType->name }}
-            </a>
-        </div>
+            <div class="">
+                <a href="/insurancetype/{{ $rating->insuranceSubType->slug }}"  class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 hover:opacity-100 transition-opacity duration-200 cursor-pointer">
+                    {{ strlen($rating->insuranceSubType->name) > 25 ? substr($rating->insuranceSubType->name, 0, 25) . '...' : $rating->insuranceSubType->name }}
+                </a>
+            </div>
         @endif
     </div>
     <div class="p-4">
-        
         <div class="mt-2 text-gray-800 max-h-16">
         {{ strlen($rating->attachments['scorings']['ai_overall_comment']) > 100 ? substr($rating->attachments['scorings']['ai_overall_comment'], 0, 100) . '...' : $rating->attachments['scorings']['ai_overall_comment'] }}
         </div>

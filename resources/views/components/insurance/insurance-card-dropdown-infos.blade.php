@@ -1,28 +1,25 @@
 <div class="">
     <div class="px-4 py-1  bg-white border-b border-blue-200 flex items-center justify-between shadow">
+        
         <span class="text-gray-500 text-sm">Bewertungen: {{ $insurance->claim_ratings_count }}</span>
-<div class="flex items-center gap-1">
-
-    <!-- Merkliste 
-    <button class="p-1 rounded-lg hover:bg-gray-100 text-pink-500 hover:text-pink-700"
-            @click="$dispatch('toggle-favorite', { id: {{ $insurance->id }} })"
-            title="Zur Merkliste hinzufügen">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 21l7-5 7 5V5a2 2 0 00-2-2H7a2 2 0 00-2 2z" />
-        </svg>
-    </button> -->
-
-    <!-- Benachrichtigen
-    <button class="p-1 rounded-lg hover:bg-gray-100 text-yellow-500 hover:text-yellow-600"
-            @click="$dispatch('toggle-follow', { id: {{ $insurance->id }} })"
-            title="Benachrichtigen bei Updates">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 00-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-    </button> -->
-
-</div>
-
+        <div class="flex items-center gap-1">
+            <!-- Merkliste -->
+            <button class="p-1 rounded-lg hover:bg-gray-100 text-pink-500 hover:text-pink-700"
+                    @click="$dispatch('toggle-favorite', { id: {{ $insurance->id }} })"
+                    title="Zur Merkliste hinzufügen">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 21l7-5 7 5V5a2 2 0 00-2-2H7a2 2 0 00-2 2z" />
+                </svg>
+            </button> 
+            <!-- Benachrichtigen -->
+            <button class="p-1 rounded-lg hover:bg-gray-100 text-yellow-500 hover:text-yellow-600"
+                    @click="$dispatch('toggle-follow', { id: {{ $insurance->id }} })"
+                    title="Benachrichtigen bei Updates">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 00-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="px-4 pb-2 inset-shadow-xs">
         <div class="flex items-center justify-between gap-2 mt-2 border-b border-gray-300 pb-2">
