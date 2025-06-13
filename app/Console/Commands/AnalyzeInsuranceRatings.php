@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Insurance;
+use App\Models\InsuranceSubType;
 use App\Jobs\EvaluateDetailInsuranceRatingWithAI;
 use Illuminate\Console\Command;
 

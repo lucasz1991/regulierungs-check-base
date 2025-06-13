@@ -78,7 +78,7 @@
                     <div class="flex space-x-4 items-start">
                         <div>
                             <img 
-                                src="{{ asset('site-images/assistent3.png') }}" 
+                                src="{{ asset('site-images/milan-laptop.png') }}" 
                                 alt="Chatbot Avatar" 
                                 class="transition ease-out duration-600 h-auto"
                                 :class="chatHistory.length === 0 ? 'w-40 md:w-64' : 'w-20 md:w-36'"
