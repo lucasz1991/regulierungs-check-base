@@ -1,5 +1,5 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
-<div class="block" x-data="{ showInfos: false, hover: false }" @click.away="showInfos = false" >
+<div class="block" x-data="{ showInfos: false, hover: false }" @click.away="showInfos = false" x-cloak>
 
     <div class="bg-white px-4 py-4 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4"
         :class="showInfos ? 'border-blue-400 border shadow-lg  rounded-t' : 'border-gray-300 border  overflow-hidden rounded shadow '"
@@ -32,7 +32,7 @@
             </div>
             <div class="shrink-0 transition-all relative self-auto" 
                 x-show="!showInfos" x-collapse.duration.600ms>
-                <div  class="flex items-center justify-between gap-2" >
+                <div  class="flex items-center justify-between gap-2 mb-2" >
                     <div class="" style="">
                         <div class="">
                             <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'lg'" />
