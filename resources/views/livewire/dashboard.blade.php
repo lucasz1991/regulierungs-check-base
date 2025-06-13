@@ -27,14 +27,6 @@
                                 <h2 class="text-lg font-semibold text-gray-700">Verifiziert</h2>
                                 <p class="text-3xl font-bold text-green-600">{{ $verifiedRatingsCount }}</p>
                             </div>
-                            <div class="bg-white shadow-lg rounded-lg p-5">
-                                <h2 class="text-lg font-semibold text-gray-700">In Prüfung</h2>
-                                <p class="text-3xl font-bold text-yellow-600">{{ $pendingRatingsCount }}</p>
-                            </div>
-                            <div class="bg-white shadow-lg rounded-lg p-5">
-                                <h2 class="text-lg font-semibold text-gray-700">Durchschnittliche Bewertung</h2>
-                                <p class="text-3xl font-bold text-indigo-500">{{ number_format($averageScore, 1) }}/5</p>
-                            </div>
                         </div>
                     
                         <!-- Bewertungen -->
