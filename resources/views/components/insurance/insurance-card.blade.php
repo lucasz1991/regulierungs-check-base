@@ -9,7 +9,7 @@
         <div class=" transition-all duration-200">
             <div  class="flex  items-stretch gap-4 mb-4">
                 <div class="shrink-0 transition-all duration-200 flex "
-                    :class="hover || showInfos ? 'opacity-100' : 'opacity-60'">
+                    :class="hover || showInfos ? 'opacity-100' : ''">
                     
                     @if ($insurance->logo)
                         <img src="{{ asset('storage/' . $insurance->logo) }}"

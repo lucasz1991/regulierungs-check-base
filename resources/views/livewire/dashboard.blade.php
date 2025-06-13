@@ -74,7 +74,7 @@
                                         @endif
                     
                                         <a href=""
-                                           class="inline-block text-sm text-blue-600 hover:underline">Details ansehen</a>
+                                           class="inline-block text-sm text-blue-600 hover:underline disabled">Details ansehen</a>
                     
                                         <a href="#" wire:click.prevent="delete({{ $rating->id }})"
                                            class="inline-block text-sm text-red-500 hover:underline">Löschen</a>
