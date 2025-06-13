@@ -1,5 +1,20 @@
 @php  
     $scoreZeroToFive = $score > 0 ? $score * 5 : 0;
+    $size = $size ?? 'xs'; 
+    $sizeClasses = [
+        'xs' => 'w-5 h-5',
+        'sm' => 'w-5 h-5',
+        'md' => 'w-6 h-6',
+        'lg' => 'w-7 h-7',
+        'xl' => 'w-8 h-8',
+    ];
+    $fontSizeClasses = [
+        'xs' => '',
+        'sm' => 'text-sm',
+        'md' => 'text-sm',
+        'lg' => 'text-base',
+        'xl' => 'text-lg',
+    ];
 @endphp
 
 <div class="flex items-center">
@@ -8,7 +23,7 @@
             $starPercentage = min(max($scoreZeroToFive - $i, 0), 1) * 100;
             $uniqueId = uniqid('star_'.$i.'_');
         @endphp
-        <div class="w-5 h-5 relative">
+        <div class="{{ $sizeClasses[$size] ?? 'w-5 h-5' }} relative">
             <svg class="w-full h-full" viewBox="0 0 20 20">
                 <defs>
                     <linearGradient id="{{ $uniqueId }}">
@@ -20,5 +35,9 @@
             </svg>
         </div>
     @endfor
-    
+    @if ($size !== 'xs')
+        <div class="{{ $fontSizeClasses[$size] ?? '' }} ml-2 text-gray-400 font-medium">{{ number_format($scoreZeroToFive, 1) }} / 5</div>
+    @endif
 </div>
+
+

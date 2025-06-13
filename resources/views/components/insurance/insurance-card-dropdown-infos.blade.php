@@ -1,10 +1,10 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
 <div class="">
-    <div class="px-4 py-2  bg-white border-b border-blue-200 flex items-center justify-between shadow">
+    <div class="px-4 py-2  bg-white border-b border-blue-200 flex items-center justify-between shadow" >
         @if($isSubTypeFilter)
-            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-blue-500 w-max opacity-80 ">Auswertung für {{ $subTypeFilterSubType->name }}:</span>
+            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-blue-500 w-max opacity-80 ">Auswertung für {{ $subTypeFilterSubType->name }}</span>
         @else
-            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 ">Allgemeine Auswertung:</span>
+            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 ">Allgemeine Auswertung</span>
         @endif
 
         <div class="flex items-center gap-1">
