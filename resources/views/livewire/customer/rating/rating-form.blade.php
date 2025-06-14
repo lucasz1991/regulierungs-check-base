@@ -40,8 +40,8 @@
                     <div x-show="step == 0"  x-cloak >
 
                         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
-                        <x-alert class="w-max mx-auto" role="alert">
-                                <span> Bitte wähle die passende Versicherungskategorie aus, um mit der Fallmeldung zu starten.<br>Beispiel: Die Krankenversicherung findest du unter "Personenversicherungen".</span>
+                        <x-alert class="mx-auto mb-6" role="alert">
+                                <span> Bitte wähle die passende Versicherungskategorie aus, um mit der Fallmeldung zu starten.<br>Beispiel: Die Kranken&shy;versicherung findest du unter "Personenversicherungen".</span>
                         </x-alert>
                         <h2 class="text-lg mb-12">Versicherungskategorie auswählen</h2>
                         <div class="max-w-md mx-auto"  :class="{ 'selected': insuranceTypeId != null }">
@@ -113,7 +113,7 @@
 
                         <div >
                             <h2 class="text-lg mb-6">Versicherungsart auswählen</h2>
-                            <x-alert class="w-max mx-auto mb-6" role="alert">
+                            <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
                                     Bitte wähle die konkrete Versicherungsart aus, die zu deinem Fall passt. Die Auswahl hilft uns, die nachfolgenden Fragen optimal auf deinen Fall abzustimmen.
                                 </span>
@@ -183,7 +183,7 @@
                     {{-- Step 2: Konkrete Versicherung auswählen --}}
                     <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak>
                         <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
-                        <x-alert class="w-max mx-auto mb-6" role="alert">
+                        <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
                                     Bitte wähle die Versicherungsgesellschaft aus, bei der du den Schaden gemeldet hast. Diese Information hilft uns, deinen Fall korrekt zuzuordnen.
                                 </span>
@@ -253,7 +253,7 @@
                     {{-- Step 3: Fallstatus --}}
                     <div x-show="step == 3"  x-cloak  >
                         <h2 class="text-lg font-bold mb-6">Wie wurde der Schaden reguliert?</h2>
-                        <x-alert class="w-max mx-auto mb-6" role="alert">
+                        <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
         Bitte gib an, wie der Schaden bisher reguliert wurde. Diese Angabe ist wichtig, um deine Erfahrung richtig einzuordnen – ob es sich um eine schnelle Auszahlung, eine laufende Prüfung oder eine abgelehnte Regulierung handelt.
                                 </span>
@@ -526,7 +526,7 @@
                     <div x-show="step == 5"  x-cloak  >
                         <div>
                             <h2 class="text-lg font-bold mb-6">Finanzielle Eckdaten des Falls</h2>
-                            <x-alert class="w-max mx-auto mb-6" role="alert">
+                            <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
                                     Bitte gib die wichtigsten finanziellen Eckdaten deines Falls an. Diese Angaben helfen uns, die Regulierung besser einzuordnen und ermöglichen anderen Nutzern einen realistischen Vergleich. Trage die Beträge möglichst genau ein.
                                 </span>

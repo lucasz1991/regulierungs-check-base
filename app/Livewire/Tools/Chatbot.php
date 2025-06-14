@@ -41,7 +41,7 @@ class Chatbot extends Component
 
         // Benutzerfrage zur Historie hinzufügen
         //$this->chatHistory[] = ['role' => 'user', 'content' => $this->message];
-        Log::info("Chatbot: Neue Nachricht gesendet → {$this->message}");
+        Log::info($this->message);
 
         $this->isLoading = true;
         $userMessage = $this->message;
