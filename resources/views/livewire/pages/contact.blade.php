@@ -18,7 +18,7 @@
                 width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
-        <div class=" max-w-7xl px-6 md:px-12 mx-auto h-0">
+        <div class=" max-w-7xl px-6 md:px-12 mx-auto h-0 ">
             <div
                 x-init="$nextTick(() => {
                         console.log('resize init');
@@ -113,36 +113,16 @@
         </div>
     </section>
     <section class="bg-white z-10">
-        <div class="lg:grid lg:min-h-[70vh] lg:grid-cols-12 ">
-            <!-- Linker Bereich mit Bild -->
-            <div wire:ignore class="calcTopPadding relative flex h-80 items-center justify-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-                
-                <img
-                    alt=""
-                    src="{{ asset('site-images/background.jpg') }}"
-                    class=" absolute inset-0 h-full w-full object-cover opacity-80"
-                />
-                <!-- Overlay -->
-                <div class="absolute inset-0" style="background-color:var(--primary-color); opacity:0.6;"></div>
-                <div class="hidden lg:relative lg:block lg:p-12">
+        <div class=" lg:min-h-[70vh] ">
 
-                    <h2 class="mt-6 text-2xl font-bold sm:text-3xl md:text-4xl text-white">
-                        Kontaktiere uns!
-                    </h2>
-
-                    <p class="mt-4 text-xl font-bold leading-relaxed text-white">
-                        Egal, ob du Fragen, Vorschläge oder Wünsche hast – wir sind für dich da. Schreib uns einfach!
-                    </p>
-                </div>
-            </div>
 
             <!-- Rechter Bereich mit Kontaktformular -->
             <div
-                class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+                class="flex items-center justify-center px-8 py-8 sm:px-12 lg:px-16 lg:py-12 "
             >
-            <div class="max-w-xl lg:max-w-3xl" >
-                    <div wire:ignore class="w-full calcTopPadding max-lg-pt-none"></div>
-                    <div class="relative  block lg:hidden">
+            <div class="max-w-2xl mx-auto" >
+                    <div wire:ignore class="w-full calcTopPadding"></div>
+                    <div class="relative  block">
                         
 
                         <h1 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
