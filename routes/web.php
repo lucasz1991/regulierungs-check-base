@@ -41,6 +41,8 @@ use App\Http\Controllers\PublicFormController;
 
 use App\Http\Controllers\ChatStreamController;
 
+use App\Livewire\Admin\Tools\Tests\StreamChatTest;
+
 
 
 
@@ -70,6 +72,7 @@ Route::get('/posts/{post}', BlogShow::class)->name('post.show');
 
 Route::post('/form-submit', [PublicFormController::class, 'handle'])->name('form.submit');
 
+Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\StreamChatTest::class);
 
 
 Route::post('/chatbot/stream', [ChatStreamController::class, 'store']);

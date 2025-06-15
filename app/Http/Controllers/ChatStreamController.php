@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Log;
+
 
 class ChatStreamController extends Controller
 {
@@ -31,6 +33,16 @@ class ChatStreamController extends Controller
             $refererUrl = Setting::getValue('ai_assistant', 'referer_url');
             $trainContent = Setting::getValue('ai_assistant', 'train_content');
             $client = new \GuzzleHttp\Client();
+            Log::info('Guzzle Client Created', [
+                'client_config' => $client->getConfig(),
+            ]);
+            Log::info('AI API Request', [
+                'apiUrl' => $apiUrl,
+                'aiModel' => $aiModel,
+                'modelTitle' => $modelTitle,
+                'refererUrl' => $refererUrl,
+                'userMessage' => $message,
+            ]);
             $response = $client->post($apiUrl, [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $apiKey,

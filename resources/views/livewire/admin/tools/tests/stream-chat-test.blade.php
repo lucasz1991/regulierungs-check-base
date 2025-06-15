@@ -1,4 +1,4 @@
-@auth
+
 <div x-data="{
     messagefront: '',
     chatHistory: [],
@@ -134,4 +134,3 @@
             </div>
         </div>
 </div>
-@endauth
