@@ -345,7 +345,7 @@
                                     Keine gültige Auswahl getroffen.
                             @endswitch
                         </h2>
-                        <x-alert class="w-max mx-auto mb-6" role="alert">
+                        <x-alert class="mx-auto mb-6" role="alert">
                             <span>
                                 @switch($regulationType)
                                 @case('vollzahlung')
