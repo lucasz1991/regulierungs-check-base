@@ -2,7 +2,6 @@
     <div class="space-y-6 max-w-lg">
         <h2 class="text-2xl font-semibold">AI-Test<br>Teste gerne die Analyse einer einzelnen Antwort </h2>
 
-        <h4 for="question" class="block text-sm font-medium text-gray-700">{{ $questionTitle }}</h4>
         <div>
         {{ $questionText }}
         </div>

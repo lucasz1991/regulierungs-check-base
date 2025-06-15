@@ -10,7 +10,7 @@ class AiAnalysisTest extends Component
 {       
     public $questionTitle = "Service-Kommentar";
     public $questionText = "Wie empfandest du den Kundenservice?";
-    public $customerAnswer = "Die Regulierung hat zwar etwas gedauert, aber letztlich wurde alles korrekt abgewickelt. Der Kundenservice war freundlich, allerdings musste ich zweimal nachfragen, bis ich eine klare Antwort erhalten habe.";
+    public $customerAnswer = "";
 
     public $trainContent = 'Du bist ein Assistent, der die Antwort eines Versicherungskunden analysiert. 
             Deine Aufgabe ist es, diese Antwort auf einer Skala von 0.01 (sehr negativ) bis 0.99 (sehr positiv) zu bewerten 
