@@ -5,15 +5,20 @@ namespace App\Livewire\Tools;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\Session;
 use App\Models\Setting;
 
 
 class Chatbot extends Component
 {
-    public $message = '';
+    #[Session] 
     public $chatHistory;
+    #[Session] 
+    public $lastResponse;
+    
+    public $message = '';
     public $isLoading = false;
+    public $isFunctionCall = false;
 
     public $status, $assistantName, $apiUrl, $apiKey, $aiModel, $modelTitle, $refererUrl, $trainContent;
 
@@ -21,8 +26,6 @@ class Chatbot extends Component
 
     public function mount()
     {
-        // Lade die Chat-Historie aus der Session, falls vorhanden
-        $this->chatHistory = Session::get('chatbot_history', []);
         $this->status = Setting::getValue('ai_assistant', 'status');
         $this->assistantName = Setting::getValue('ai_assistant', 'assistant_name');
         $this->apiUrl = Setting::getValue('ai_assistant', 'api_url');
@@ -48,7 +51,7 @@ class Chatbot extends Component
         $this->message = '';
 
         // API-Call vorbereiten
-        $maxRetries = 5;
+        $maxRetries = 3;
         for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
             try {
                 $response = Http::withHeaders([
@@ -63,21 +66,73 @@ class Chatbot extends Component
                             'role'    => 'system',
                             'content' => trim(preg_replace('/\s+/', ' ', $this->trainContent))
                         ]
-                    ], $this->chatHistory)
+                    ], $this->chatHistory),
+                    'response_format' => [
+                        'type' => 'json_schema',
+                        'json_schema' => [
+                            'name' => 'AnswerData',
+                            'strict' => true,
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'answer' => [
+                                        'type' => 'string',
+                                        'description' => 'Die natürliche, vom Assistenten generierte Antwort in Klartext für den Nutzer.'
+                                    ],
+                                    'function_name' => [
+                                        'type' => 'string',
+                                        'enum' => ['none', 'navigate'],
+                                        'description' => 'Name einer auszuführenden Funktion in der Benutzeroberfläche, z. B. "navigate". Oder "none", falls keine Funktion vorgesehen ist. Erst wenn der Nutzer den Vorschlag ausdrücklich bestätigt (z. B. durch Zustimmung im Chat),** darfst du eine Funktion setzen.'
+                                    ],
+                                    'function_value' => [
+                                        'type' => 'string',
+                                        'enum' => ['', 'home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating' ],
+                                        'description' => 'Parameter zur Funktion, z. B. Zielroute oder ID. Muss leer sein, wenn function_name "none" ist.'
+                                    ],
+                                    'function_trigger' => [
+                                        'type' => 'boolean',
+                                        'description' => 'Gibt an, ob die Funktion direkt ausgelöst werden soll (true) oder ob es sich lediglich um einen Vorschlag handelt (false). Nur wenn der Nutzer ausdrücklich zustimmt, darf dieser Wert auf true gesetzt werden. Bei Vorschlägen muss der Wert false bleiben.'
+                                    ],
+                                    'sentiment' => [
+                                        'type' => 'string',
+                                        'description' => 'Eingestufte Tonalität der Antwort: "neutral", "positiv", "negativ", um das Framing visuell zu unterstützen.'
+                                    ],
+                                    'call_to_action' => [
+                                        'type' => 'string',
+                                        'enum' => ['none', 'start-rating', 'show-insurances', 'show-reviews'],
+                                        'description' => 'Optionaler Hinweis auf eine Handlungsempfehlung, z. B. "Bewertung starten", "Versicherungsanbieter anzeigen", "Bewertungen anzeigen"  oder none.'
+                                    ],
+                                    'tags' => [
+                                        'type' => 'array',
+                                        'items' => ['type' => 'string'],
+                                        'description' => 'Stichwörter zur Kategorisierung des Themas (z. B. ["Verzögerung", "Auszahlung", "DKV"]).'
+                                    ]
+                                ],
+                                'required' => ['answer', 'function_name', 'function_value', 'function_trigger', 'sentiment', 'call_to_action', 'tags'],
+                                'additionalProperties' => false
+                            ]
+                        ]
+                    ]
+                    
                 ]);
+                $content = $response->json()['choices'][0]['message']['content'] ?? null;
 
-                $botMessage = $response->json()['choices'][0]['message']['content'] ?? '';
+                $decoded = json_decode($content, true); // true = as array
+
+                $this->lastResponse = $decoded;
+
+                $botMessage = $decoded['answer'] ?? '';
 
                 if (!empty($botMessage)) {
-                    // Bot message auf nicht deutsche zeichen filtern und entfernen 
                     $botMessage = preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $botMessage);
-
                     $this->chatHistory[] = ['role' => 'assistant', 'content' => $botMessage];
-                    Session::put('chatbot_history', $this->chatHistory);
-
+                        if (!empty($decoded['function_trigger']) && $decoded['function_trigger'] === true) {
+                            $this->handleFunctionCallFromAI($decoded);
+                        }
                     $this->isLoading = false;
                     return;
                 }
+
 
             } catch (\Exception $e) {
             }
@@ -85,13 +140,52 @@ class Chatbot extends Component
 
         // Falls nach 5 Versuchen keine Antwort kommt
         $this->chatHistory[] = ['role' => 'assistant', 'content' => "Ich habe dazu leider keine Antwort."];
-        Session::put('chatbot_history', $this->chatHistory);
         $this->isLoading = false;
+    }
+
+    protected function handleFunctionCallFromAI(array $data): void
+    {
+        // Nur wenn Funktion vorhanden und nicht "none"
+        if (!isset($data['function_name']) || $data['function_name'] === 'none') {
+            return;
+        }
+        $function = $data['function_name'];
+        $value = $data['function_value'] ?? null;
+        // Erlaubte Funktionen + Zielwerte
+        $allowedFunctions = [
+            'navigate' => ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating']
+        ];
+
+        if (!array_key_exists($function, $allowedFunctions)) {
+            return; // Unbekannte Funktion
+        }
+
+        if (is_array($allowedFunctions[$function]) && !in_array($value, $allowedFunctions[$function])) {
+            return; // Ungültiger Zielwert
+        }
+        
+        if ($data['function_name'] === 'navigate') {
+            $this->handleFunctionCallNavigate($data);
+        }
+
+    }
+    
+    protected function handleFunctionCallNavigate(array $data): void
+    {
+            $target = $data['function_value'];
+            // Nur erlaubte Ziele verarbeiten
+            $allowedRoutes = ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
+            if (in_array($target, $allowedRoutes)) {
+                if ($target === 'home') {
+                    redirect()->to(url('/'));
+                }else{
+                    redirect()->to(url($target === '#' ? '/' : $target));
+                }
+            }
     }
 
     public function clearChat()
     {
-        Session::forget('chatbot_history');
         $this->chatHistory = [];
     }
 
