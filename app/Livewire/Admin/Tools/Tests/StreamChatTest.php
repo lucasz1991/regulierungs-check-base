@@ -38,8 +38,36 @@ class StreamChatTest extends Component
         Du bist der Regulierungs-Check Assistent mit dem Namen "Denjo" auf der Regulierungs-Check Website.
         Dein Name ist Denjo.
 
-        -----
+            -----
 
+            Du darfst bestimmte Funktionen im Chat vorschlagen, z. B. das Navigieren zu einer anderen Seite oder das Starten einer Bewertung. Dabei gelten folgende Regeln:
+
+            1. Navigieren führt zu **sofortiger Weiterleitung** in der Benutzeroberfläche.  
+            Daher gilt:
+            - Gib bei einem Vorschlag zur Navigation **zunächst nur eine Frage in natürlicher Sprache** aus.
+            - Frage den Nutzer zum Beispiel: „Möchtest du zu den Bewertungen weitergeleitet werden?“
+            - **Gib dabei noch keinen function_name oder function_value zurück.**
+
+            2. Erst wenn der Nutzer **ausdrücklich zustimmt** (z. B. durch „Ja“, „Gerne“, „bitte weiterleiten“),  
+            darfst du eine zweite Antwort senden – mit diesen Feldern:
+            - `answer`: z. B. „Ich habe dich weitergeleitet.“
+            - `function_name`: `"navigate"`
+            - `function_value`: z. B. `"reviews"`
+
+            3. Verfügbare Funktionen und Werte:
+
+            ```json
+            {
+            "functions": {
+                "navigate": {
+                "description": "Leitet den Nutzer direkt zu einem bestimmten Bereich der Website weiter",
+                "values": ["home", "reviews", "insurances", "blog", "aboutus", "guidance", "howto", "contact", "#start-rating"]
+                }
+            }
+            }
+
+
+        -----
 
         1. Über Regulierungs-Check  
         1.1 Regulierungs-Check ist eine digitale Plattform zur Bewertung von Schadenregulierungen durch Versicherungen.  
@@ -88,7 +116,6 @@ class StreamChatTest extends Component
         8. Dein nächster Schritt  
         📝 Bewertung abgeben: Teile deine Erfahrung und verbessere die Branche.  
         📊 Rankings ansehen: Finde heraus, welche Versicherungen wirklich fair regulieren.  
-        📩 KI-Analyse testen: Lass deine Antwort automatisch bewerten und verstehe die Qualität deiner Regulierung.  
         🔍 Jetzt entdecken: Gib deiner Meinung eine Stimme und mach Schadenabwicklung vergleichbar!
 
         8.10 Antworten kurz und verständlich halten (maximal vier Sätze).  
@@ -114,7 +141,7 @@ class StreamChatTest extends Component
         $this->message = '';
 
         // API-Call vorbereiten
-        $maxRetries = 5;
+        $maxRetries = 3;
         for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
             try {
                 $response = Http::withHeaders([
@@ -145,7 +172,7 @@ class StreamChatTest extends Component
                                     'function_name' => [
                                         'type' => 'string',
                                         'enum' => ['none', 'navigate'],
-                                        'description' => 'Name einer auszuführenden Funktion in der Benutzeroberfläche, z. B. "navigate" oder "none", falls keine Funktion vorgesehen ist.'
+                                        'description' => 'Name einer auszuführenden Funktion in der Benutzeroberfläche, z. B. "navigate". Oder "none", falls keine Funktion vorgesehen ist. Erst wenn der Nutzer den Vorschlag ausdrücklich bestätigt (z. B. durch Zustimmung im Chat),** darfst du eine Funktion setzen.'
                                     ],
                                     'function_value' => [
                                         'type' => 'string',
@@ -183,27 +210,13 @@ class StreamChatTest extends Component
                 $botMessage = $decoded['answer'] ?? '';
 
                 if (!empty($botMessage)) {
-                    // Bot message auf nicht deutsche zeichen filtern und entfernen 
                     $botMessage = preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $botMessage);
-                    
                     $this->chatHistory[] = ['role' => 'assistant', 'content' => $botMessage];
-                    
+                    $this->handleFunctionCallFromAI($decoded);
                     $this->isLoading = false;
-                    if (!empty($decoded['function_name']) && $decoded['function_name'] === 'navigate') {
-                        $target = $decoded['function_value'];
-    
-                        // Nur erlaubte Ziele verarbeiten
-                        $allowedRoutes = ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
-                        if (in_array($target, $allowedRoutes)) {
-                            if ($target === 'home') {
-                                return redirect()->to(url('/'));
-                            }else{
-                                return redirect()->to(url($target === '#' ? '/' : $target));
-                            }
-                        }
-                    }
                     return;
                 }
+
 
             } catch (\Exception $e) {
             }
@@ -212,6 +225,46 @@ class StreamChatTest extends Component
         // Falls nach 5 Versuchen keine Antwort kommt
         $this->chatHistory[] = ['role' => 'assistant', 'content' => "Ich habe dazu leider keine Antwort."];
         $this->isLoading = false;
+    }
+
+    protected function handleFunctionCallFromAI(array $data): void
+    {
+        // Nur wenn Funktion vorhanden und nicht "none"
+        if (!isset($data['function_name']) || $data['function_name'] === 'none') {
+            return;
+        }
+        $function = $data['function_name'];
+        $value = $data['function_value'] ?? null;
+        // Erlaubte Funktionen + Zielwerte
+        $allowedFunctions = [
+            'navigate' => ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating']
+        ];
+
+        if (!array_key_exists($function, $allowedFunctions)) {
+            return; // Unbekannte Funktion
+        }
+
+        if (is_array($allowedFunctions[$function]) && !in_array($value, $allowedFunctions[$function])) {
+            return; // Ungültiger Zielwert
+        }
+        
+        if ($data['function_name'] === 'navigate') {
+            $this->handleFunctionCallNavigate($data);
+        }
+
+    }
+    protected function handleFunctionCallNavigate(array $data): void
+    {
+            $target = $data['function_value'];
+            // Nur erlaubte Ziele verarbeiten
+            $allowedRoutes = ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
+            if (in_array($target, $allowedRoutes)) {
+                if ($target === 'home') {
+                    redirect()->to(url('/'));
+                }else{
+                    redirect()->to(url($target === '#' ? '/' : $target));
+                }
+            }
     }
 
     public function clearChat()
