@@ -182,8 +182,6 @@ class StreamChatTest extends Component
 
                 $botMessage = $decoded['answer'] ?? '';
 
-                
-                
                 if (!empty($botMessage)) {
                     // Bot message auf nicht deutsche zeichen filtern und entfernen 
                     $botMessage = preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $botMessage);
@@ -197,7 +195,11 @@ class StreamChatTest extends Component
                         // Nur erlaubte Ziele verarbeiten
                         $allowedRoutes = ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
                         if (in_array($target, $allowedRoutes)) {
-                            return redirect()->to(url($target === '#' ? '/' : $target));
+                            if ($target === 'home') {
+                                return redirect()->to(url('/'));
+                            }else{
+                                return redirect()->to(url($target === '#' ? '/' : $target));
+                            }
                         }
                     }
                     return;

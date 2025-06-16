@@ -24,11 +24,9 @@
         </div>
         <div class="container mx-auto px-4">
         <!-- Chatbot-Container -->
-            <div 
-                class="max-w-xl" >
+            <div class="max-w-xl" >
                 <!-- Header -->
                 <div class="flex justify-between pb-4">
-  
                     <div class="flex space-x-4 items-start">
                         <button wire:click="clearChat()" class="text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
