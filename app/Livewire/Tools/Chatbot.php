@@ -12,7 +12,7 @@ use App\Models\Setting;
 class Chatbot extends Component
 {
     #[Session] 
-    public $chatHistory;
+    public $chatHistory = [];
     #[Session] 
     public $lastResponse;
     
