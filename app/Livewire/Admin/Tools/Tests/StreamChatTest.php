@@ -46,7 +46,7 @@ class StreamChatTest extends Component
             Daher gilt:
             - Gib bei einem Vorschlag zur Navigation **zunächst nur eine Frage in natürlicher Sprache** aus.
             - Frage den Nutzer zum Beispiel: „Möchtest du zu den Bewertungen weitergeleitet werden?“
-            - **Gib dabei noch keinen function_name oder function_value zurück.**
+            - **Gib dabei noch keinen function_name oder function_value zurück.**  Sehr Wichtig !!!!
 
             2. Erst wenn der Nutzer **ausdrücklich zustimmt** (z. B. durch „Ja“, „Gerne“, „bitte weiterleiten“),  
             darfst du eine zweite Antwort senden – mit diesen Feldern:
