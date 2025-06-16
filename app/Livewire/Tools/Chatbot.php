@@ -12,7 +12,7 @@ use App\Models\Setting;
 class Chatbot extends Component
 {
     #[Session] 
-    public $chatHistory = [];
+    public $chatHistory;
     #[Session] 
     public $lastResponse;
     
@@ -26,6 +26,10 @@ class Chatbot extends Component
 
     public function mount()
     {
+        // Falls die Session leer ist (z. B. beim ersten Besuch)
+        if (!is_array($this->chatHistory)) {
+            $this->chatHistory = [];
+        }
         $this->status = Setting::getValue('ai_assistant', 'status');
         $this->assistantName = Setting::getValue('ai_assistant', 'assistant_name');
         $this->apiUrl = Setting::getValue('ai_assistant', 'api_url');
