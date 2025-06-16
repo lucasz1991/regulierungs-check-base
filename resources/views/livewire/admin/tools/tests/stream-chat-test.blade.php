@@ -1,60 +1,31 @@
-
-<div x-data="{
-    messagefront: '',
-    chatHistory: [],
-    isLoading: false,
-    sendMessage() {
-        if (this.messagefront.trim() === '') return;
-
-        this.chatHistory.push({ role: 'user', content: this.messagefront });
-        this.isLoading = true;
-
-        fetch('/chatbot/stream', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
-            },
-            body: JSON.stringify({ message: this.messagefront })
-        });
-
-        this.messagefront = '';
-        let botMessage = '';
-        const es = new EventSource('/chatbot/stream-feed');
-        es.onmessage = (e) => {
-            if (e.data === '[DONE]') {
-                this.chatHistory.push({ role: 'assistant', content: botMessage });
-                this.isLoading = false;
-                es.close();
-            } else {
-                botMessage += e.data;
-            }
-        };
-        es.onerror = (e) => {
-            console.error('SSE Error', e);
-
-            this.chatHistory.push({ role: 'assistant', content: 'Fehler bei der Verbindung.' });
-            this.isLoading = false;
-            es.close();
-        };
-    },
-    clearChat() {
-        this.chatHistory = [];
-        fetch('/chatbot/stream', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
-            },
-            body: JSON.stringify({ message: '' })
-        });
-    }
-}" class="chat-container mb-12">
-
-        <div >
+<div x-data="{ 
+        showChat: $persist(false).using(sessionStorage),
+        messagefront: '', 
+        message: @entangle('message'), 
+        isLoading: @entangle('isLoading'), 
+        chatHistory: @entangle('chatHistory'),
+        sendMessage() { 
+            if (this.messagefront.trim() === '') return; 
+            this.chatHistory.push({ role: 'user', content: this.messagefront });
+            this.isLoading = true;
+            this.message = this.messagefront;
+            Livewire.dispatch('sendMessage'); 
+            this.messagefront = '';
+        } 
+    }" 
+    class="chat-container" style="margin-top:200px;" >
+        <div class="container mx-auto px-4 mb-12"> 
+            <div class="max-w-xl">
+                <span>Last Response :</span> 
+                 <pre class="text-xs bg-gray-100 p-2 rounded overflow-hidden">
+                     {!! json_encode($lastResponse, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) !!}
+                 </pre>
+            </div>
+        </div>
+        <div class="container mx-auto px-4">
         <!-- Chatbot-Container -->
             <div 
-                class="container mx-auto px-4" >
+                class="max-w-xl" >
                 <!-- Header -->
                 <div class="flex justify-between pb-4">
   

@@ -18,6 +18,8 @@ class ChatStreamController extends Controller
         return response()->json(['status' => 'saved']);
     }
 
+
+
     public function stream()
     {
         $status = Setting::getValue('ai_assistant', 'status');
@@ -25,7 +27,7 @@ class ChatStreamController extends Controller
         $message = Session::get('stream_message', '');
         
         return response()->stream(function () use ($message) {
-            try {
+           
             $apiUrl = Setting::getValue('ai_assistant', 'api_url');
             $apiKey = Setting::getValue('ai_assistant', 'api_key');
             $aiModel = Setting::getValue('ai_assistant', 'ai_model');
@@ -59,23 +61,20 @@ class ChatStreamController extends Controller
                     ]
                 ])
             ]);
-
-            foreach ($response->getBody() as $line) {
-                if (str_starts_with($line, "data: ")) {
-                    $data = substr($line, 6);
-                    if (trim($data) === "[DONE]") {
-                        echo "data: [DONE]\n\n";
-                        break;
+                $body = $response->getBody();
+                while (!$body->eof()) {
+                    $line = trim($body->read(1024)); // chunkweise lesen
+                    if (str_starts_with($line, "data: ")) {
+                        $data = substr($line, 6);
+                        if (trim($data) === "[DONE]") {
+                            echo "data: [DONE]\n\n";
+                            break;
+                        }
+                        echo "data: {$data}\n\n";
+                        ob_flush(); flush();
                     }
-                    echo "data: {$data}\n\n";
-                    ob_flush(); flush();
                 }
-            }
-            } catch (\Throwable $e) {
-            echo "data: [ERROR] " . $e->getMessage() . "\n\n";
-            ob_flush(); flush();
-            \Log::error('STREAM ERROR: ' . $e->getMessage());
-        }
+        
         }, 200, [
             'Content-Type' => 'text/event-stream',
             'Cache-Control' => 'no-cache',
