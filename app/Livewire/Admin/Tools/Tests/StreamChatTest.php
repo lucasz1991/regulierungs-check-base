@@ -38,33 +38,36 @@ class StreamChatTest extends Component
         Du bist der Regulierungs-Check Assistent mit dem Namen "Denjo" auf der Regulierungs-Check Website.
         Dein Name ist Denjo.
 
-            -----
+        -----
 
-            Du darfst bestimmte Funktionen im Chat vorschlagen, z. B. das Navigieren zu einer anderen Seite oder das Starten einer Bewertung. Dabei gelten folgende Regeln:
+        Du darfst bestimmte Funktionen im Chat vorschlagen, z. B. das Navigieren zu einer anderen Seite oder das Starten einer Bewertung. Dabei gelten folgende Regeln:
 
-            1. Navigieren führt zu **sofortiger Weiterleitung** in der Benutzeroberfläche.  
-            Daher gilt:
-            - Gib bei einem Vorschlag zur Navigation **zunächst nur eine Frage in natürlicher Sprache** aus.
-            - Frage den Nutzer zum Beispiel: „Möchtest du zu den Bewertungen weitergeleitet werden?“
-            - **Gib dabei noch keinen function_name oder function_value zurück.**  Sehr Wichtig !!!!
+        1. Vorschlag:
+        - Beschreibe die Funktion in natürlicher Sprache als Vorschlag (z. B. "Möchtest du zu den Bewertungen weitergeleitet werden?").
+        - Setze dabei:
+        - `function_name`: `"navigate"` oder `"none"`
+        - `function_value`: `""` oder ein Ziel wie `"reviews"`
+        - **`function_trigger`: `false`**
+        - **Wichtig**: Bei einem Vorschlag darf `function_trigger` niemals auf `true` stehen!
 
-            2. Erst wenn der Nutzer **ausdrücklich zustimmt** (z. B. durch „Ja“, „Gerne“, „bitte weiterleiten“),  
-            darfst du eine zweite Antwort senden – mit diesen Feldern:
-            - `answer`: z. B. „Ich habe dich weitergeleitet.“
-            - `function_name`: `"navigate"`
-            - `function_value`: z. B. `"reviews"`
+        2. Bestätigung durch den Nutzer:
+        - Wenn der Nutzer den Vorschlag **ausdrücklich bestätigt** (z. B. durch "Ja", "Gerne", "Bitte weiterleiten"), darfst du:
+        - `answer`: eine knappe Bestätigung wie "Ich habe dich weitergeleitet."
+        - `function_name`: z. B. `"navigate"`
+        - `function_value`: z. B. `"reviews"`
+        - `function_trigger`: **`true`**
 
-            3. Verfügbare Funktionen und Werte:
+        3. Verfügbare Funktionen:
 
-            ```json
-            {
-            "functions": {
-                "navigate": {
-                "description": "Leitet den Nutzer direkt zu einem bestimmten Bereich der Website weiter",
-                "values": ["home", "reviews", "insurances", "blog", "aboutus", "guidance", "howto", "contact", "#start-rating"]
-                }
+        ```json
+        {
+        "functions": {
+            "navigate": {
+            "description": "Leitet den Nutzer direkt zu einem bestimmten Bereich der Website weiter",
+            "values": ["home", "reviews", "insurances", "blog", "aboutus", "guidance", "howto", "contact", "#start-rating"]
             }
-            }
+        }
+        }
 
 
         -----
@@ -179,6 +182,10 @@ class StreamChatTest extends Component
                                         'enum' => ['', 'home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating' ],
                                         'description' => 'Parameter zur Funktion, z. B. Zielroute oder ID. Muss leer sein, wenn function_name "none" ist.'
                                     ],
+                                    'function_trigger' => [
+                                        'type' => 'boolean',
+                                        'description' => 'Gibt an, ob die Funktion direkt ausgelöst werden soll (true) oder ob es sich lediglich um einen Vorschlag handelt (false). Nur wenn der Nutzer ausdrücklich zustimmt, darf dieser Wert auf true gesetzt werden. Bei Vorschlägen muss der Wert false bleiben.'
+                                    ],
                                     'sentiment' => [
                                         'type' => 'string',
                                         'description' => 'Eingestufte Tonalität der Antwort: "neutral", "positiv", "negativ", um das Framing visuell zu unterstützen.'
@@ -194,7 +201,7 @@ class StreamChatTest extends Component
                                         'description' => 'Stichwörter zur Kategorisierung des Themas (z. B. ["Verzögerung", "Auszahlung", "DKV"]).'
                                     ]
                                 ],
-                                'required' => ['answer', 'function_name', 'function_value', 'sentiment', 'call_to_action', 'tags'],
+                                'required' => ['answer', 'function_name', 'function_value', 'function_trigger', 'sentiment', 'call_to_action', 'tags'],
                                 'additionalProperties' => false
                             ]
                         ]
@@ -212,7 +219,9 @@ class StreamChatTest extends Component
                 if (!empty($botMessage)) {
                     $botMessage = preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $botMessage);
                     $this->chatHistory[] = ['role' => 'assistant', 'content' => $botMessage];
-                    $this->handleFunctionCallFromAI($decoded);
+                        if (!empty($decoded['function_trigger']) && $decoded['function_trigger'] === true) {
+                            $this->handleFunctionCallFromAI($decoded);
+                        }
                     $this->isLoading = false;
                     return;
                 }
