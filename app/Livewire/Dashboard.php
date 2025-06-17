@@ -19,7 +19,6 @@ class Dashboard extends Component
     public $averageScore;
     public $claimRatingVerificationHash;
 
-
     protected $listeners = ['refreshParent' => '$refresh'];
 
     public function render()

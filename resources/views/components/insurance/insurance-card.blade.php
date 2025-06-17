@@ -52,7 +52,7 @@
     </div>
     <div class="relative">
         <div x-show="showInfos" x-collapse.duration.600ms
-            class="relative  w-full bg-primary-50 border border-t-0  border-blue-400 rounded-b shadow-lg  z-10"
+            class="relative  w-full bg-primary-50 border border-t-0  border-blue-400 rounded-b shadow-lg"
             @click.away="showInfos = false">
             <x-insurance.insurance-card-dropdown-infos :insurance="$insurance"  :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType"   lazy />
         </div>
