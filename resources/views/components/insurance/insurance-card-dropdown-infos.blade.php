@@ -6,7 +6,6 @@
         @else
             <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 ">Allgemeine Auswertung</span>
         @endif
-
         <div class="flex items-center gap-1">
             <!-- Merkliste
             <button class="p-1 rounded-lg hover:bg-gray-100 text-pink-500 hover:text-pink-700"
@@ -27,7 +26,6 @@
         </div>
     </div>
     <div class="px-4 pb-2 inset-shadow-xs">
-
         <div class="flex items-center justify-between gap-2 mt-2 border-b border-gray-300 pb-2">
             <div>
                 <span class="text-gray-500 text-sm">Bewertungen: {{ $insurance->claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}</span>
@@ -39,7 +37,6 @@
             </div>
             <span class="text-sm text-gray-700 py-0.5 px-1 bg-white border border-gray-300 rounded-lg">Ø Dauer: {{ $insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id) }} Tage</span>
         </div>
-    
         <div class="mt-4 p-2 bg-yellow-50 border border-yellow-500 text-yellow-800 rounded-lg flex items-center  gap-3 ">
             <svg class="w-6 h-6 mt-1 flex-none text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
@@ -48,8 +45,6 @@
                 <h3 class=" text-base">Noch keine detaillierte Auswertung</h3>
             </div>
         </div>
-
-
         <div class="flex items-center justify-end gap-2 mt-4">
             <a  href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="text-blue-800 bg-gray-100 border border-gray-300 hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-2 py-1 text-center inline-flex items-center">
                 Mehr erfahren
