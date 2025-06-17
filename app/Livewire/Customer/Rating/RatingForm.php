@@ -13,6 +13,8 @@ use App\Models\RatingQuestion;
 use App\Models\RatingQuestionnaireVersion;
 use App\Models\ClaimRating;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+
 
 class RatingForm extends Component
 {
@@ -436,8 +438,14 @@ class RatingForm extends Component
             'verification_hash' => Str::uuid(),
         ]);
     
-        // Weiterleitung auf eine Dankeseite oder Bestätigungsseite
-        return redirect()->route('claim-rating.success', ['hash' => $claimRating->verification_hash]);
+        if(Auth::check()){
+            return redirect()->route('dashboard');
+        }else{
+            
+            Session::put('claim_rating_verification_hash', $claimRating->verification_hash);
+            // Weiterleitung auf eine Dankeseite oder Bestätigungsseite
+            return redirect()->route('claim-rating.success', ['hash' => $claimRating->verification_hash]);
+        }
     }
 
     public function rules()

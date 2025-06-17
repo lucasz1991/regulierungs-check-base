@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ClaimRating;
+use Illuminate\Support\Facades\Session;
 
 class Dashboard extends Component
 {
@@ -16,12 +17,20 @@ class Dashboard extends Component
     public $verifiedRatingsCount;
     public $pendingRatingsCount;
     public $averageScore;
+    public $claimRatingVerificationHash;
+
 
     protected $listeners = ['refreshParent' => '$refresh'];
 
     public function render()
     {
         $this->userData = Auth::user();
+        $value = Session::get('claim_rating_verification_hash');
+        $this->claimRatingVerificationHash = is_string($value) ? $value : '';
+       // Nur die noch nicht zugewiesenen Bewertungen aktualisieren
+        ClaimRating::where('verification_hash', $this->claimRatingVerificationHash)
+            ->whereNull('user_id')
+            ->update(['user_id' => $this->userData->id]);
 
         $ratings = ClaimRating::where('user_id', $this->userData->id)->latest()->get();
 

@@ -39,7 +39,6 @@ use App\Livewire\Articles\Blog\BlogShow;
 use App\Livewire\Pages\Guidance;
 use App\Http\Controllers\PublicFormController;
 
-use App\Http\Controllers\ChatStreamController;
 
 use App\Livewire\Admin\Tools\Tests\StreamChatTest;
 
@@ -75,9 +74,6 @@ Route::post('/form-submit', [PublicFormController::class, 'handle'])->name('form
 Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\StreamChatTest::class);
 
 
-Route::post('/chatbot/stream', [ChatStreamController::class, 'store']);
-Route::get('/chatbot/stream-feed', [ChatStreamController::class, 'stream']);
-
 
 
     Route::get('/forgot-password', RequestPasswordResetLink::class)->name('password.request');
@@ -100,8 +96,6 @@ Route::get('/chatbot/stream-feed', [ChatStreamController::class, 'stream']);
     });
 
     Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    
-
         // Customer Routes
         Route::middleware(['role:guest'])->group(function () {
             Route::get('/dashboard', Dashboard::class)->name('dashboard');
@@ -110,32 +104,3 @@ Route::get('/chatbot/stream-feed', [ChatStreamController::class, 'stream']);
 
     });
 
-
-    Route::get('/download/invoice/{filename}', function ($filename) {
-        // Logge den Dateinamen
-        Log::info("Download angefordert für Datei: {$filename}");
-    
-        $filePath = "private/bills/{$filename}";
-    
-        // Prüfe, ob die Datei existiert
-        if (!Storage::disk('local')->exists($filePath)) {
-            Log::warning("Datei nicht gefunden: {$filePath}");
-            abort(404, 'Datei nicht gefunden.');
-        }
-    
-        // Zugriffsbeschränkung prüfen
-        if (!auth()->check()) {
-            Log::warning("Nicht authentifizierter Zugriff auf Datei: {$filePath}");
-            abort(403, 'Zugriff verweigert.');
-        }
-    
-        if (!auth()->user()->hasAccessToInvoice($filename)) {
-            Log::warning("Benutzer hat keinen Zugriff auf Datei: {$filePath}");
-            abort(403, 'Zugriff verweigert.');
-        }
-    
-        Log::info("Benutzer hat Zugriff. Datei wird bereitgestellt: {$filePath}");
-    
-        // Datei zurückgeben
-        return Storage::disk('local')->download($filePath);
-    })->name('invoice.download');
