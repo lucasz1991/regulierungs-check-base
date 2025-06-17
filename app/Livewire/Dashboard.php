@@ -25,8 +25,8 @@ class Dashboard extends Component
     public function render()
     {
         $this->userData = Auth::user();
-        $value = Session::get('claim_rating_verification_hash');
-        $this->claimRatingVerificationHash = is_string($value) ? $value : '';
+        $this->claimRatingVerificationHash = (string) Session::get('claim_rating_verification_hash', '');
+
        // Nur die noch nicht zugewiesenen Bewertungen aktualisieren
         ClaimRating::where('verification_hash', $this->claimRatingVerificationHash)
             ->whereNull('user_id')
