@@ -22,7 +22,7 @@
                             <p class="text-3xl font-bold text-gray-500">{{ $ratingsCount }}</p>
                         </div>
                         <div class="bg-white shadow-lg rounded-lg p-5">
-                            <h2 class="text-lg font-semibold text-gray-700">Verifiziert</h2>
+                            <h2 class="text-lg font-semibold text-gray-700">Öffentliche Bewertungen</h2>
                             <p class="text-3xl font-bold text-green-600">{{ $verifiedRatingsCount }}</p>
                         </div>
                     </div>
