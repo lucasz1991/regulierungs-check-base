@@ -15,8 +15,10 @@ class ClaimRating extends Model
     use HasFactory, SoftDeletes;
     // Possible statuses for the ClaimRating model:
     // - pending: The claim rating is awaiting review.
+    // - rated: The claim rating is awaiting review.
     // - approved: The claim rating has been approved.
     // - rejected: The claim rating has been rejected.
+    // - published: The claim rating has been published.
     
     protected $fillable = [
         'user_id',

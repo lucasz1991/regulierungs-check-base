@@ -3,7 +3,6 @@
         <div x-data="{ selectedTab: 'basic' }" class="w-full">
             <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()" class="flex gap-2 overflow-x-auto border-b border-outline dark:border-outline-dark" role="tablist" aria-label="tab options">
                 <button x-on:click="selectedTab = 'basic'" x-bind:aria-selected="selectedTab === 'basic'" x-bind:tabindex="selectedTab === 'basic' ? '0' : '-1'" x-bind:class="selectedTab === 'basic' ? 'bg-white rounded-t-lg shadow font-bold text-primary border-b-2 border-secondary dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelBasic" >Allgemein</button>
-                <button x-on:click="selectedTab = 'abos'" x-bind:aria-selected="selectedTab === 'abos'" x-bind:tabindex="selectedTab === 'abos' ? '0' : '-1'" x-bind:class="selectedTab === 'abos' ? 'bg-white rounded-t-lg font-bold text-primary border-b-2 border-secondary dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelAbos" >Abo's</button>
                 <button x-on:click="selectedTab = 'verification'" x-bind:aria-selected="selectedTab === 'verification'" x-bind:tabindex="selectedTab === 'verification' ? '0' : '-1'" x-bind:class="selectedTab === 'verification' ? 'bg-white rounded-t-lg font-bold text-primary border-b-2 border-secondary dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelVerification" >Verifiziert</button>
             </div>
             <div class="px-2 py-20 text-on-surface dark:text-on-surface-dark">
@@ -43,8 +42,8 @@
                                         <p class="text-sm mt-2">
                                             Status:
                                             @switch($rating->status)
-                                                @case('open')
-                                                    <span class="text-blue-600 font-medium">Offen</span>
+                                                @case('rated')
+                                                    <span class="text-blue-600 font-medium">Ausgewertet</span>
                                                     @break
                                                 @case('pending')
                                                     <span class="text-yellow-600 font-medium">In Prüfung</span>
@@ -54,6 +53,9 @@
                                                     @break
                                                 @case('rejected')
                                                     <span class="text-red-600 font-medium">Abgelehnt</span>
+                                                    @break
+                                                @case('published')
+                                                    <span class="text-green-600 font-medium">Verifiziert & Veröffentlicht</span>
                                                     @break
                                                 @default
                                                     <span class="text-gray-600 font-medium">Unbekannt</span>
@@ -83,11 +85,6 @@
                             </div>
                         @endif
                     </div>
-                </div>
-                <div x-cloak x-show="selectedTab === 'abos'" id="tabpanelLikes" role="tabpanel" aria-label="likes">
-                    <x-alert>
-                        Die Verwaltung deiner Abonnements wird hier in Kürze verfügbar sein. Wir arbeiten bereits daran, dir eine komfortable und übersichtliche Möglichkeit zur Verwaltung deiner Abonnements bereitzustellen. Vielen Dank für dein Verständnis und deine Geduld!
-                    </x-alert>
                 </div>
                 <div x-cloak x-show="selectedTab === 'verification'" id="tabpanelComments" role="tabpanel" aria-label="verification">
                     <x-alert>
