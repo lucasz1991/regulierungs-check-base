@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Controllers\Customer\ClaimRatingController;
 use Carbon\Carbon;
 use App\Models\RatingTag;
+use App\Jobs\ClaimRatingAIEval;
 
 
 class ClaimRating extends Model
@@ -53,6 +54,14 @@ class ClaimRating extends Model
         static::updated(function ($claimRating) {
             ClaimRatingController::evaluateScore($claimRating);
         });
+    }
+
+    public function reanalyze()
+    {
+        $this->is_public = false;
+        $this->status = 'pending';
+        $this->saveQuietly();
+        ClaimRatingAIEval::dispatch($this);
     }
 
     public function comment()

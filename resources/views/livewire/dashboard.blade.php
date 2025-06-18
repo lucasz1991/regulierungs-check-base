@@ -1,9 +1,9 @@
-<div class="w-full relative bg-cover bg-center bg-gray-100 pb-20 pt-8" wire:loading.class="cursor-wait">
-    <div class="container mx-auto px-5" >
+<div  @if($hasActiveRating) wire:poll.3s @endif  class="w-full relative bg-cover bg-center bg-gray-100 pb-20 pt-8" wire:loading.class="cursor-wait">
+    <div class="container mx-auto px-5">
         <div x-data="{ selectedTab: 'basic' }" class="w-full">
-            <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()" class="flex gap-2 overflow-x-auto border-b border-outline dark:border-outline-dark" role="tablist" aria-label="tab options">
-                <button x-on:click="selectedTab = 'basic'" x-bind:aria-selected="selectedTab === 'basic'" x-bind:tabindex="selectedTab === 'basic' ? '0' : '-1'" x-bind:class="selectedTab === 'basic' ? 'bg-white rounded-t-lg shadow font-bold text-primary border-b-2 border-secondary dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelBasic" >Allgemein</button>
-                <button x-on:click="selectedTab = 'verification'" x-bind:aria-selected="selectedTab === 'verification'" x-bind:tabindex="selectedTab === 'verification' ? '0' : '-1'" x-bind:class="selectedTab === 'verification' ? 'bg-white rounded-t-lg font-bold text-primary border-b-2 border-secondary dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelVerification" >Verifiziert</button>
+            <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()" class="flex gap-2 overflow-x-auto border-b border-outline " role="tablist" aria-label="tab options">
+                <button x-on:click="selectedTab = 'basic'" x-bind:aria-selected="selectedTab === 'basic'" x-bind:tabindex="selectedTab === 'basic' ? '0' : '-1'" x-bind:class="selectedTab === 'basic' ? 'bg-white rounded-t-lg shadow font-bold text-primary border-b-2 border-secondary ' : 'text-on-surface font-medium  hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelBasic" >Allgemein</button>
+                <button x-on:click="selectedTab = 'verification'" x-bind:aria-selected="selectedTab === 'verification'" x-bind:tabindex="selectedTab === 'verification' ? '0' : '-1'" x-bind:class="selectedTab === 'verification' ? 'bg-white rounded-t-lg font-bold text-primary border-b-2 border-secondary ' : 'text-on-surface font-medium hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelVerification" >Verifiziert</button>
             </div>
             <div class="px-2 py-20 text-on-surface dark:text-on-surface-dark">
                 <div x-cloak x-show="selectedTab === 'basic'" id="tabpanelGroups" role="tabpanel" aria-label="basic">
@@ -15,7 +15,6 @@
                             Deine Bewertungen und dein Versicherungsprofil im Überblick
                         </p>
                     </div>
-                    <!-- Statistiken -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                         <div class="bg-white shadow-lg rounded-lg p-5">
                             <h2 class="text-lg font-semibold text-gray-700">Abgegebene Bewertungen</h2>
@@ -26,68 +25,31 @@
                             <p class="text-3xl font-bold text-green-600">{{ $verifiedRatingsCount }}</p>
                         </div>
                     </div>
-                    <!-- Bewertungen -->
                     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Deine letzten Bewertungen</h2>
-                    <div class="grid grid-cols-1 gap-6">
+                    @if(!auth()->user()->email_verified_at)
+                        <x-alert class="mb-4">
+                            <h6 class="text-xl font-semibold  mb-1" >E-Mail Verifizierung</h6>
+                            <p>Um deine Bewertungen öffentlich sichtbar zu machen, musst du zuerst deine E-Mail-Adresse verifizieren.</p>
+                        </x-alert>
+                    @endif
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         @forelse ($claimRatings as $rating)
-                            <div class="bg-white shadow rounded-lg p-5" wire:key="rating-{{ $rating->id }}" x-data="{ open: false }">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-gray-800">
-                                            {{ $rating->insurance->name ?? 'Unbekannte Versicherung' }}
-                                        </h3>
-                                        <p class="text-sm text-gray-600">
-                                            Eingereicht am {{ $rating->created_at->format('d.m.Y') }}
-                                        </p>
-                                        <p class="text-sm mt-2">
-                                            Status:
-                                            @switch($rating->status)
-                                                @case('rated')
-                                                    <span class="text-blue-600 font-medium">Ausgewertet</span>
-                                                    @break
-                                                @case('pending')
-                                                    <span class="text-yellow-600 font-medium">In Prüfung</span>
-                                                    @break
-                                                @case('verified')
-                                                    <span class="text-green-600 font-medium">Verifiziert</span>
-                                                    @break
-                                                @case('rejected')
-                                                    <span class="text-red-600 font-medium">Abgelehnt</span>
-                                                    @break
-                                                @case('published')
-                                                    <span class="text-green-600 font-medium">Verifiziert & Veröffentlicht</span>
-                                                    @break
-                                                @default
-                                                    <span class="text-gray-600 font-medium">Unbekannt</span>
-                                            @endswitch
-                                        </p>
-                                    </div>
-                                    <button @click="open = !open" class="text-blue-500 hover:underline">Optionen</button>
-                                </div>
-                                <div x-show="open" x-collapse x-cloak class="mt-4 border-t pt-3 space-y-2 text-sm text-gray-700">
-                                    @if (!$rating->user_id)
-                                        <p class="text-yellow-600">Noch nicht verifiziert – <a href="{{ route('login') }}" class="text-blue-600 underline">Jetzt verifizieren</a></p>
-                                    @endif
-                                    <a href=""
-                                       class="inline-block text-sm text-blue-600 hover:underline disabled">Details ansehen</a>
-                                    <a href="#" wire:click.prevent="delete({{ $rating->id }})"
-                                       class="inline-block text-sm text-red-500 hover:underline">Löschen</a>
-                                </div>
-                            </div>
+                            <x-profile.claim-rating.claim-rating-card :rating="$rating" />
                         @empty
                             <x-alert>
                                 Du hast noch keine Bewertungen abgegeben.
                             </x-alert>
                         @endforelse
-                        @if ($claimRatings->hasPages())
-                            <div class="mt-6">
-                                {{ $claimRatings->links('vendor.pagination.tailwind') }}
-                            </div>
-                        @endif
                     </div>
+                    @if ($claimRatings->hasPages())
+                        <div class="mt-6">
+                            {{ $claimRatings->links('vendor.pagination.tailwind') }}
+                        </div>
+                    @endif
                 </div>
                 <div x-cloak x-show="selectedTab === 'verification'" id="tabpanelComments" role="tabpanel" aria-label="verification">
                     <x-alert>
+                        <h6 class="text-xl font-semibold  mb-1" >Verifizierungen</h6>
                         Die Verifizierungsübersicht wird hier in Kürze verfügbar sein. Wir arbeiten daran, dir eine transparente Darstellung deiner Verifizierungen bereitzustellen. Vielen Dank für deine Geduld!
                     </x-alert>
                 </div>

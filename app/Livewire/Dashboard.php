@@ -18,6 +18,7 @@ class Dashboard extends Component
     public $pendingRatingsCount;
     public $averageScore;
     public $claimRatingVerificationHash;
+    public $hasActiveRating;
 
     protected $listeners = ['refreshParent' => '$refresh'];
 
@@ -32,7 +33,7 @@ class Dashboard extends Component
             ->update(['user_id' => $this->userData->id]);
 
         $ratings = ClaimRating::where('user_id', $this->userData->id)->latest()->get();
-
+        $this->hasActiveRating = $ratings->contains('status', 'pending');
         $this->ratingsCount = $ratings->count();
         $this->verifiedRatingsCount = $ratings->where('is_public', true)->count();
         $this->pendingRatingsCount = $ratings->where('status', 'pending')->count();
@@ -43,7 +44,7 @@ class Dashboard extends Component
         // Paginierte Bewertungen
         $claimRatings = ClaimRating::where('user_id', $this->userData->id)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(6);
 
         return view('livewire.dashboard', [
             'claimRatings' => $claimRatings,

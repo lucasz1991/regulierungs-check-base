@@ -7,6 +7,7 @@ use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\Dashboard;
 use App\Livewire\MessageBox;
+use App\Livewire\Profile\ClaimRating\ShowClaimRating;
 
 
 use App\Livewire\Pages\TermsAndConditions;
@@ -100,6 +101,7 @@ Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\Str
         Route::middleware(['role:guest'])->group(function () {
             Route::get('/dashboard', Dashboard::class)->name('dashboard');
             Route::get('/messages', MessageBox::class)->name('messages');
+            Route::get('/profil/ownreview/{claimRating}', ShowClaimRating::class)->name('profile.claim-rating.show');
         });
 
     });

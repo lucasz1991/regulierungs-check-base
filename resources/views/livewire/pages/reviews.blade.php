@@ -74,14 +74,14 @@
                                         Keine Bewertungen gefunden.
                                     </div>
                                 @endif
-                                @if($claimRatings && $claimRatings->count() >= $perPage * $pages)
-                                    <div class="mt-6 text-center">
-                                        <x-buttons.button-basic wire:click="loadMore">
-                                            Mehr laden
-                                        </x-buttons.button-basic>
-                                    </div>
-                                @endif
                             </div>
+                            @if($claimRatings && $claimRatings->count() >= $perPage * $pages)
+                                <div class="mt-6 text-center">
+                                    <x-buttons.button-basic wire:click="loadMore">
+                                        Mehr laden
+                                    </x-buttons.button-basic>
+                                </div>
+                            @endif
                     </x-slot>
                 </x-filter.filter-container>
         </div>
