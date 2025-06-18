@@ -27,7 +27,7 @@
                     </div>
                     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Deine letzten Bewertungen</h2>
                     @if(!auth()->user()->email_verified_at)
-                        <x-alert class="mb-4">
+                        <x-alert class="mb-6">
                             <h6 class="text-xl font-semibold  mb-1" >E-Mail Verifizierung</h6>
                             <p>Um deine Bewertungen öffentlich sichtbar zu machen, musst du zuerst deine E-Mail-Adresse verifizieren.</p>
                         </x-alert>
