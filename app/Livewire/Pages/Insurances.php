@@ -4,6 +4,7 @@ namespace App\Livewire\Pages;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Session;
 use App\Models\Insurance;
 use App\Models\InsuranceType;
 use App\Models\InsuranceSubtype;
@@ -14,6 +15,7 @@ class Insurances extends Component
 
     public $search;
     public $insuranceSubTypes = [];
+    #[Session(key: 'selectedInsuranceSubTypefilter')] 
     public $selectedInsuranceSubTypefilter = [];
     public $perPage = 20;
     public $pages = 1;

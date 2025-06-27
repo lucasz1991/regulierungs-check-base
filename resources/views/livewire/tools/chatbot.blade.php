@@ -1,5 +1,5 @@
 <div x-data="{ 
-        showChat: $persist(false).using(sessionStorage),
+        showChat: @entangle('showChat').live ?? false,
         messagefront: '', 
         message: @entangle('message'), 
         isLoading: @entangle('isLoading'), 
@@ -11,13 +11,13 @@
             this.message = this.messagefront;
             Livewire.dispatch('sendMessage'); 
             this.messagefront = '';
-        } 
+        }
     }" 
     class="chat-container">
     @if($status)
         <div>
             <!-- Chatbot-Button -->
-            <button x-show="!showChat" x-cloak x-on:click="showChat = !showChat"  :class="{ 'bounce-in-right': !showChat }" class="fixed bottom-4 right-4 z-50 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:outline-offset-0 dark:focus-visible:outline-primary-dark" >
+            <button x-show="!showChat" x-cloak  x-on:click="showChat = !showChat"  :class="{ 'bounce-in-right': !showChat }" class="fixed bottom-4 right-4 z-50 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:outline-offset-0 dark:focus-visible:outline-primary-dark" >
                 <svg class="w-16" viewBox="0 0 838 837" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                     <path class="zoom-in-out" d="M515.718 110.605C621.291 149.011 714.28 313.637 646.577 499.743C578.874 685.848 438.407 805.582 332.834 767.176C227.261 728.77 172.327 427.631 240.03 241.525C264.94 173.052 302.98 129.691 346.376 104.145C420.926 60.2597 448.989 86.3295 515.718 110.605Z" fill="url(#linearGradient1)" fill-opacity="0.6" />
                     <path class="zoom-in-out duration-6" d="M156.136 453.009C156.169 480.494 140.036 537.977 222.056 604.127C338.957 655.053 526.064 778.991 591.853 627.973C657.641 476.956 715.723 241.089 598.822 190.163C481.921 139.237 221.924 301.992 156.136 453.009Z" fill="url(#linearGradient2)" fill-opacity="0.6" />
@@ -63,9 +63,9 @@
             </button>
         
             <!-- Overlay -->
-            <div x-show="showChat" x-cloak x-transition:enter="transition ease-out duration-300 opacity-0" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black bg-opacity-20 z-40"></div>
+            <div x-show="showChat" x-cloak  x-transition:enter="transition ease-out duration-300 opacity-0" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black bg-opacity-20 z-40"></div>
             <!-- Chatbot-Container -->
-            <div x-show="showChat" x-cloak x-transition:enter="transition ease-out duration-300 transform"
+            <div x-show="showChat" x-cloak  x-transition:enter="transition ease-out duration-300 transform"
                 x-transition:enter-start="translate-x-full "
                 x-transition:enter-end="translate-x-0 "
                 x-transition:leave="transition ease-in duration-200 transform"
@@ -132,7 +132,7 @@
                 </div>
                 <!-- Fragenvorschläge anzeigen, wenn Chat leer ist -->
                 <div x-show="chatHistory.length === 0" class="text-sm text-gray-600 mb-5">
-                    <p class="mb-2 font-semibold">Fragen, die du stellen kannst:</p>
+                    <p class="mb-2 font-semibold">Fragen, die du stellen könntest:</p>
                     <ul class="space-y-2">
                         <li>
                             <button @click="messagefront='Wie funktioniert Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
@@ -162,6 +162,7 @@
                             @keydown.enter="sendMessage()" 
                             class="w-full border-outline bg-white border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 min-h-10 overflow-hidden" 
                             rows="2" 
+                            autofocus
                             placeholder="Frage stellen...">
                         </textarea>
                         <button @click="sendMessage()" class="absolute rounded-lg right-2 bottom-3 bg-secondary text-white rounded-radius px-2 py-1 text-xs tracking-wide text-on-primary transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 ">senden</button>

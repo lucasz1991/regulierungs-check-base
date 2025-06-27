@@ -10,9 +10,9 @@
             <x-insurance.insurance-rating-stars :score="$rating->rating_score" />
         </div>
     </div>
-    <div class=" p-4 border-b border-gray-300 grayscale-75 hover:grayscale-0 transition-all duration-200">
+    <div class=" p-4 border-b border-gray-300 ">
         @if(!str_contains(request()->path(), 'insurance/'))
-            <div class="opacity-70 hover:opacity-100  transition-all duration-200 cursor-pointer mb-3">
+            <div class=" cursor-pointer mb-3">
                 <x-insurance.insurance-name-button :insurance="$rating->insurance" />
 
             </div>

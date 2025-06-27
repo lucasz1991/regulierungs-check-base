@@ -20,7 +20,6 @@
                     </g>
                 </svg>
                 <div class="w-6">
-    
                     <x-profile.claim-rating.claim-rating-circleprogress/>
                 </div>
             </div>
@@ -54,8 +53,8 @@
         </div>
     </div>
     <hr class="max-w-[95%] mx-auto border-t border-gray-200">
-    <div class=" p-4  grayscale-75 hover:grayscale-0 transition-all duration-200">
-        <div class=" mb-3  opacity-80">
+    <div class=" p-4  ">
+        <div class=" mb-3 ">
             <x-insurance.insurance-name :insurance="$rating->insurance" />
         </div>
         <div class="">

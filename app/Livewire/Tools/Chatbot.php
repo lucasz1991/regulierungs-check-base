@@ -15,6 +15,8 @@ class Chatbot extends Component
     public $chatHistory;
     #[Session] 
     public $lastResponse;
+    #[Session(key: 'showChat')] 
+    public $showChat;
     
     public $message = '';
     public $isLoading = false;
@@ -130,10 +132,10 @@ class Chatbot extends Component
                 if (!empty($botMessage)) {
                     $botMessage = preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $botMessage);
                     $this->chatHistory[] = ['role' => 'assistant', 'content' => $botMessage];
-                        if (!empty($decoded['function_trigger']) && $decoded['function_trigger'] === true) {
-                            $this->handleFunctionCallFromAI($decoded);
-                        }
                     $this->isLoading = false;
+                    if (!empty($decoded['function_trigger']) && $decoded['function_trigger'] === true) {
+                        $this->handleFunctionCallFromAI($decoded);
+                    }
                     return;
                 }
 
@@ -180,10 +182,14 @@ class Chatbot extends Component
             // Nur erlaubte Ziele verarbeiten
             $allowedRoutes = ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
             if (in_array($target, $allowedRoutes)) {
+                // sleep(1);
+                
+                // Timeout für die Navigation setzen (z.B. 2 Sekunden)
+                
                 if ($target === 'home') {
-                    redirect()->to(url('/'));
-                }else{
-                    redirect()->to(url($target === '#' ? '/' : $target));
+                    $this->redirect('/', navigate: true);
+                } else {
+                    $this->redirect(url($target === '#' ? '/' : $target), navigate: true);
                 }
             }
     }
