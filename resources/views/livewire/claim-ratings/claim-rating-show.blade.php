@@ -18,7 +18,7 @@
                 <div><p class="text-sm text-gray-600 mb-1"><span class="mr-4">Abgeschlossen:</span>{{ $claimRating->answers['is_closed'] ? 'Ja' : 'Nein' }}</p></div>
                 <div><p class="text-sm text-gray-600 mb-1"><span class="mr-4">Beginn:</span>{{ $claimRating->answers['selectedDates']['started_at'] ?? '–' }}</p></div>
                 @if($claimRating->answers['is_closed'])
-                    <div><p class="text-sm text-gray-600 mb-1"><span class="mr-4">Beendet:</span>{{ $claimRating->answers['selectedDates']['ended_at'] ?? '–' }}</p></  div>
+                    <div><p class="text-sm text-gray-600 mb-1"><span class="mr-4">Beendet:</span>{{ $claimRating->answers['selectedDates']['ended_at'] ?? '–' }}</p></div>
                 @endif
                 <hr class="my-4">
                 <div><p class="text-sm text-gray-600 mb-1"><span class="mr-4">Details:</span>{{ $claimRating->answers['regulationDetail']['selected_value'] ?? '–' }}</p></div> 
