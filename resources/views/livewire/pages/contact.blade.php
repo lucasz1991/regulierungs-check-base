@@ -5,10 +5,10 @@
                 <div class="flex max-lg:flex-wrap">
                     <div class="mb-12 w-full md:w-1/2  px-6 md:px-3 lg:px-6">
                         <p class="text-gray-600 leading-relaxed">
-                        Vielen Dank für Ihr Interesse an Regulierungscheck! Wenn Sie Fragen zur Bewertung von Versicherungen haben, Unterstützung bei der Nutzung unserer Analysetools benötigen oder weitere Informationen rund um Versicherungsvergleiche wünschen, stehen wir Ihnen gerne zur Verfügung.
+                        Vielen Dank für dein Interesse an Regulierungs-check! Wenn du Fragen zur Bewertung von Versicherungen hast, Unterstützung bei der Nutzung unserer Analysetools benötigst oder weitere Informationen rund um Versicherungsvergleiche wünschst, stehen wir dir gerne zur Verfügung.
                         </p>
                     </div>
-                    <div class="flex items-center grow-0 basis-auto">
+                    <div class="flex items-center grow-0 basis-auto w-full max-md:px-6">
                         <div class="flex flex-wrap h-min justify-center">
                             <div class="mb-12 w-full shrink-0 grow-0 basis-auto md:w-1/2 md:px-3 ">
                                 <div class="flex items-start">
@@ -69,10 +69,15 @@
     </section>
     <section class="bg-white z-10 overflow-hidden">
         <div class="container px-6 md:px-12 mx-auto">
-            <div class="grid grid-cols-3 grid-rows-1  my-8  lg:pm-12" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true" data-aos-delay="500">
-                <div class="row-span-1 col-span-2 bg-gray-100 md:rounded-s-xl p-4 md:p-6">
-                    <div class="relative  block">
-                        <h1 class="mt-2 text-xl  text-gray-800 ">
+            <div class="grid grid-cols-1 md:grid-cols-3  md:grid-rows-1 my-8 lg:pm-12" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true" data-aos-delay="500">
+                <!-- Bild: Auf kleinen Geräten zuerst -->
+                <div class="row-span-1 col-span-1 order-1 md:order-2 h-64 md:h-full rounded-t-xl md:rounded-e-xl overflow-hidden">
+                    <img class="h-full w-full object-cover object-center opacity-80" src="{{ asset('/site-images/contact_img1.jpg') }}" alt="">
+                </div>
+                <!-- Formular: Auf kleinen Geräten danach -->
+                <div class="row-span-1 col-span-1 md:col-span-2 order-2 md:order-1 bg-gray-100 rounded-b-xl md:rounded-s-xl p-4 md:p-6 flex flex-col justify-center">
+                    <div class="relative block">
+                        <h1 class="mt-2 text-xl text-gray-800 ">
                             Kontaktiere uns!
                         </h1>
                         <p class="mt-4 leading-relaxed text-gray-500">
@@ -86,8 +91,8 @@
                                 {{ session('success') }}
                             </div>
                         @endif  
-                        <div class="grid grid-cols-2  gap-4">
-                            <div class="col-span-2">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="col-span-1 md:col-span-2">
                                 <x-label for="name" value="Dein Name" />
                                 <x-input wire:model="name"  id="name" class="block mt-1 w-full" type="text" name="name" required placeholder="Max Mustermann" />
                                 @error('name')
@@ -108,7 +113,7 @@
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div class="col-span-2 ">
+                            <div class="col-span-1 md:col-span-2">
                                 <x-label for="message" value="Deine Nachricht" />
                                 <textarea wire:model="message"  id="message" name="message" rows="5" required
                                     class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -117,7 +122,7 @@
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div class="col-span-2 flex items-center justify-end">
+                            <div class="col-span-1 md:col-span-2 flex items-center justify-end">
                                 <button 
                                     wire:click="send"
                                     class="inline-block shrink-0 rounded-md border border-primary-600 bg-primary px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-primary-600 focus:outline-none focus:ring active:text-primary-500">
@@ -126,9 +131,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row-span-1 col-span-1 h-full md:rounded-e-xl overflow-hidden">
-                    <img class="h-full w-full object-cover object-center opacity-80" src="{{ asset('/site-images/contact_img1.jpg') }}" alt="">
                 </div>
             </div>
         </div>

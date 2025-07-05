@@ -1,6 +1,6 @@
 <div class="bg-gray-50">
     <div class="container mx-auto px-4 py-6 space-y-4">    
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="grid md:grid-cols-2 gap-4 w-full overflow-hidden">
             <div class="bg-white rounded shadow p-6">
                 <p class="text-sm text-gray-600 mb-1">
                     Versicherung: 

@@ -24,13 +24,30 @@ class MetaPageHeader extends Component
 
     public function __construct()
     {
-        $currentSlug = trim(Request::path(), '/') ?: 'start';
-        if (strlen($currentSlug) > 25 || is_numeric($currentSlug)) {
-            $segments = explode('/', Request::path());
-            $currentSlug = $segments[count($segments) - 2] ?? 'start';
-        }
-        // Versuchen, eine passende WebPage aus der Datenbank zu laden
-        $webPage = WebPage::where('slug', $currentSlug)->first();
+$segments = explode('/', trim(Request::path(), '/'));
+$segmentCount = count($segments);
+
+// Fallback-Slug, falls keine Seite gefunden wird
+$currentSlug = 'start';
+
+// Von hinten durchgehen und auf passende WebPage prüfen
+for ($i = $segmentCount - 1; $i >= 0; $i--) {
+    $slugToTest = $segments[$i];
+
+    // Optional: sehr lange Slugs oder rein numerische ausschließen
+    if (strlen($slugToTest) > 50 || is_numeric($slugToTest)) {
+        continue;
+    }
+
+    $webPage = WebPage::where('slug', $slugToTest)->first();
+    if ($webPage) {
+        $currentSlug = $slugToTest;
+        break;
+    }
+}
+
+// Falls du mit $webPage weiterarbeiten willst, kannst du sicherstellen:
+$webPage = WebPage::where('slug', $currentSlug)->first();
 
         // Prüfen, ob eine passende WebPage existiert
         $this->isWebPage = $webPage !== null;

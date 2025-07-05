@@ -22,17 +22,30 @@ class PageHeader extends Component
      */
     public function __construct()
     {
-        $segments = explode('/', Request::path());
-            $this->page = end($segments);
-            if ($this->page === '') {
-                $this->page = 'start';
-            } else {
-                $lastSegment = end($segments);
-                if (is_numeric($lastSegment) || strlen($lastSegment) > 25) {
-                    $this->page = $segments[count($segments) - 2] ?? 'start';
-                }
-            }
-        $webPage = WebPage::where('slug', $this->page)->first();
+$segments = explode('/', trim(Request::path(), '/'));
+$segmentCount = count($segments);
+
+// Fallback-Slug, falls keine Seite gefunden wird
+$currentSlug = 'start';
+
+// Von hinten durchgehen und auf passende WebPage prüfen
+for ($i = $segmentCount - 1; $i >= 0; $i--) {
+    $slugToTest = $segments[$i];
+
+    // Optional: sehr lange Slugs oder rein numerische ausschließen
+    if (strlen($slugToTest) > 50 || is_numeric($slugToTest)) {
+        continue;
+    }
+
+    $webPage = WebPage::where('slug', $slugToTest)->first();
+    if ($webPage) {
+        $currentSlug = $slugToTest;
+        break;
+    }
+}
+
+// Falls du mit $webPage weiterarbeiten willst, kannst du sicherstellen:
+$webPage = WebPage::where('slug', $currentSlug)->first();
         $this->isWebPage = $webPage !== null;
         if ($webPage) {
             // Falls eine WebPage existiert, verwende deren Daten, ansonsten Standardwerte

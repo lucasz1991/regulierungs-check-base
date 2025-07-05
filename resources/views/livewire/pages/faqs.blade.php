@@ -1,4 +1,4 @@
-<div class="antialiased  relative" wire:loading.class="cursor-wait" style="background-image:url('{{ asset('site-images/faqs-bg-seamless.png') }}');  ">
+<div class="antialiased  relative" wire:loading.class="cursor-wait">
     <div class="inset-0 absolute bg-primary/10"></div>
     <div class="container relative mx-auto px-5 py-12">
         <div class="">

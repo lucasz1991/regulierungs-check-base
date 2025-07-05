@@ -5,8 +5,8 @@
         <section class="relative flex h-32 items-center justify-end lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt=""
-            src="{{ asset('site-images/background.jpg') }}"
-            class="absolute inset-0 h-full w-full object-cover opacity-80"
+            src="{{ asset('site-images/startbanner-img.jpg') }}"
+            class="absolute inset-0 h-full w-full object-cover"
           />
           <div class="absolute inset-0 bg-blue-50 opacity-80"></div>
 
