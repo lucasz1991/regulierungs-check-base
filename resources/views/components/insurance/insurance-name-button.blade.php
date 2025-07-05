@@ -1,4 +1,4 @@
-<a href="{{ route('insurance.show-insurance', $insurance->slug) }}"   class="flex  items-stretch gap-2">
+<a href="{{ route('insurance.show-insurance', $insurance->slug) }}"   class="flex max-w-full overflow-hidden items-stretch gap-2">
     <div class="shrink-0 py-2 transition-all duration-200 flex ">
     @if ($insurance->logo)
         <img src="{{ asset('storage/' . $insurance->logo) }}"  alt=""  class=" h-6 mx-auto object-contain rounded">
