@@ -23,12 +23,12 @@
     <template x-teleport="body">
         <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"  class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <!-- Modal Dialog -->
-            <div x-show="modalIsOpen"  x-ref="scrollTarget"   x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative text-center mx-auto rounded-lg  shadow-xl transform transition-all container max-w-4xl border border-outline bg-gray-50  w-full  px-6 py-4" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+            <div x-show="modalIsOpen"  x-ref="scrollTarget"   x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="flex flex-col gap-4 relative text-center mx-auto rounded-lg  shadow-xl transform transition-all container max-w-4xl border border-outline bg-gray-50  w-full  px-6 py-4 pt-8" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
                 <!-- Close (Abbrechen) Button oben rechts -->
                 <button 
                     type="button"
                     @click="modalIsOpen = false"
-                    class="absolute top-3 right-3 z-50 p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="absolute top-2 right-2 z-50 p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     aria-label="Abbrechen"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -355,7 +355,7 @@
                                     Bitte erläutere, weshalb es nur zu einer Teilzahlung kam. Welche Gründe wurden dir genannt oder wie hast du die Entscheidung der Versicherung erlebt? Je präziser du deine Erfahrung beschreibst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
                                     @break
                                 @case('ablehnung')
-                                    Bitte schildere, warum dein Schadenfall abgelehnt wurde. Welche Begründung hat die Versicherung gegeben und wie hast du die Kommunikation erlebt? Je detaillierter du deine Erfahrung beschreibst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
+                                    Bitte schildere, warum dein Schadenfall abgelehnt wurde. Welche Begründung hat die Versicherung angegeben und wie hast du die Kommunikation erlebt? Je detaillierter du deine Erfahrung beschreibst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
                                     @break
                                 @case('austehend')
                                     Bitte beschreibe, warum die Regulierung deines Schadens noch aussteht. Gibt es Verzögerungen, fehlende Unterlagen oder andere Gründe? Je genauer du deine Situation schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.

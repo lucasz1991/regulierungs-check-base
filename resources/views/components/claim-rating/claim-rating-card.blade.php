@@ -1,7 +1,7 @@
 <div class="bg-white rounded-lg shadow-xl  border  border-gray-300 h-full overflow-hidden" >
     <div class=" p-4 pb-0">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center">
+        <div class="flex justify-between items-start">
+            <div class="flex flex-wrap items-center">
                 <x-user.public-info :user="$rating->user" context="rating" />
                 <div class="text-sm text-gray-500 pl-1">
                       - {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
