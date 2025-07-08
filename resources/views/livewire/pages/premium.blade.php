@@ -16,13 +16,13 @@
                         Unser Ziel ist es, mit zunehmender Datenbasis auch erweiterte Funktionen zur Verfügung zu stellen: Geplant sind Abonnements, die Zugriff auf <strong>vertiefte Auswertungsanalysen</strong>, <strong>erweiterte Filtermöglichkeiten</strong> sowie <strong>detaillierte Einblicke</strong> in branchenspezifische Trends und Vergleichsdaten bieten. Diese Funktionen richten sich vor allem an Nutzer mit professionellem Interesse – etwa <strong>Versicherungsmakler</strong>, <strong>Anwälte</strong> oder <strong>Gutachter</strong> – und nicht an reguläre Endverbraucher.
                     </p>
                     <p class="mb-4">
-                        Zusätzlich werden bestimmte Zugangspakete verfügbar sein, die speziell auf die Anforderungen dieser Berufsgruppen zugeschnitten sind. Diese Pakete sollen nicht nur Analysefunktionen bieten, sondern auch die Möglichkeit, sich bei relevanten Schadenssituationen sichtbar zu machen – etwa durch ein Profil oder eine themenspezifische Angebotsbeschreibung. So entsteht ein direkter Zugang für Ratsuchende, die auf professionelle Unterstützung angewiesen sind.
+                        Zusätzlich werden bestimmte <strong>Zugangspakete</strong> verfügbar sein, die <strong>speziell</strong> auf die Anforderungen dieser <strong>Berufsgruppen zugeschnitten</strong> sind. Diese Pakete sollen nicht nur <strong>Analysefunktionen</strong> bieten, sondern auch die Möglichkeit, sich bei relevanten <strong>Schadenssituationen sichtbar</strong> zu machen – etwa durch ein Profil oder eine themenspezifische Angebotsbeschreibung. So entsteht ein <strong>direkter Zugang</strong> für <strong>Ratsuchende</strong>, die auf <strong>professionelle Unterstützung</strong> angewiesen sind.
                     </p>
                     <p class="mb-4">
                         Sobald ausreichend Bewertungen gesammelt und systematisch ausgewertet wurden, werden diese Zusatzfunktionen Schritt für Schritt freigeschaltet. Sie ermöglichen unter anderem Segmentierungen nach Versicherungsart, Schadenhöhe, Bearbeitungsdauer oder Zufriedenheitsverlauf über Zeit.
                     </p>
                     <p>
-                        Wir bitten daher noch um etwas Geduld – und freuen uns über jede eingereichte Bewertung, die hilft, unsere Datenbasis zu erweitern. Denn je mehr echte Erfahrungen geteilt werden, desto fundierter und aussagekräftiger werden die künftigen Analyse-Tools im Abonnementbereich.
+                        Wir bitten daher noch um etwas <strong>Geduld</strong> – und freuen uns über jede <strong>eingereichte Bewertung</strong>, die hilft, unsere Datenbasis zu erweitern. Denn je mehr echte <strong>Erfahrungen</strong> geteilt werden, desto <strong>fundierter</strong> und aussagekräftiger werden die künftigen Analyse-Tools im Abonnementbereich.
                     </p>
                 </div>
             </div>
