@@ -5,7 +5,7 @@
                 <div class="flex max-lg:flex-wrap">
                     <div class="mb-12 w-full md:w-1/2  px-6 md:px-3 lg:px-6">
                         <p class="text-gray-600 leading-relaxed">
-                        Vielen Dank für dein Interesse an Regulierungs-check! Wenn du Fragen zur Bewertung von Versicherungen hast, Unterstützung bei der Nutzung unserer Analysetools benötigst oder weitere Informationen rund um Versicherungsvergleiche wünschst, stehen wir dir gerne zur Verfügung.
+                        Vielen Dank für dein Interesse an Regulierungs-Check! Wenn du Fragen zur Bewertung von Versicherungen hast, Unterstützung bei der Nutzung unserer Analysetools benötigst oder weitere Informationen rund um Versicherungsvergleiche wünschst, stehen wir dir gerne zur Verfügung.
                         </p>
                     </div>
                     <div class="flex items-center grow-0 basis-auto w-full max-md:px-6">

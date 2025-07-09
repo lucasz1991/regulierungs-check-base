@@ -41,7 +41,8 @@
 
                         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
                         <x-alert class="mx-auto mb-6" role="alert">
-                                <span> Bitte wähle die passende Versicherungskategorie aus, um mit der Fallmeldung zu starten.<br>Beispiel: Die Kranken&shy;versicherung findest du unter "Personenversicherungen".</span>
+                                <span> Wähle die passende Versicherungs&shy;kategorie aus, z. B. Kranken&shy;versicherung unter ‚Personen&shy;versicherungen‘.</span>
+
                         </x-alert>
                         <h2 class="text-lg mb-12">Versicherungskategorie auswählen</h2>
                         <div class="max-w-md mx-auto"  :class="{ 'selected': insuranceTypeId != null }">
@@ -112,10 +113,10 @@
                     <div x-show="step == 1"  x-cloak  >
 
                         <div >
-                            <h2 class="text-lg mb-6">Versicherungsart auswählen</h2>
+                            <h2 class="text-lg font-bold mb-6">Versicherungsart auswählen</h2>
                             <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
-                                    Bitte wähle die konkrete Versicherungsart aus, die zu deinem Fall passt. Die Auswahl hilft uns, die nachfolgenden Fragen optimal auf deinen Fall abzustimmen.
+                                    Wähle die konkrete Versicherungsart aus, damit wir die Fragen passend abstimmen.
                                 </span>
                             </x-alert>
                             <div class="max-w-md mx-auto" :class="{ 'selected': insuranceSubTypeId != null }">
@@ -185,7 +186,7 @@
                         <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
                         <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
-                                    Bitte wähle die Versicherungsgesellschaft aus, bei der du den Schaden gemeldet hast. Diese Information hilft uns, deinen Fall korrekt zuzuordnen.
+                                    Wähle die Gesellschaft, bei der du den Schaden gemeldet hast, damit wir den Fall zuordnen können.
                                 </span>
                             </x-alert>
                         <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
@@ -255,7 +256,7 @@
                         <h2 class="text-lg font-bold mb-6">Wie wurde der Schaden reguliert?</h2>
                         <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
-        Bitte gib an, wie der Schaden bisher reguliert wurde. Diese Angabe ist wichtig, um deine Erfahrung richtig einzuordnen – ob es sich um eine schnelle Auszahlung, eine laufende Prüfung oder eine abgelehnte Regulierung handelt.
+Gib an, wie der Schaden bisher bearbeitet wurde (z. B. schnell ausgezahlt, Teilzahlung, noch offen, abgelehnt).
                                 </span>
                             </x-alert>
                         <div class="flex justify-center items-center">
@@ -347,22 +348,23 @@
                         </h2>
                         <x-alert class="mx-auto mb-6" role="alert">
                             <span>
+                                
                                 @switch($regulationType)
-                                @case('vollzahlung')
-                                    Bitte beschreibe, warum du mit der vollständigen Regulierung deines Schadens zufrieden bist oder ob es trotz der Vollzahlung auch kritische Punkte gab. Was hat besonders gut funktioniert? Gab es positive Überraschungen oder Aspekte, die du hervorheben möchtest? Oder gab es trotz der vollständigen Zahlung Dinge, die nicht optimal liefen? Je genauer du deine Erfahrung schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
-                                    @break
-                                @case('teilzahlung')
-                                    Bitte erläutere, weshalb es nur zu einer Teilzahlung kam. Welche Gründe wurden dir genannt oder wie hast du die Entscheidung der Versicherung erlebt? Je präziser du deine Erfahrung beschreibst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
-                                    @break
-                                @case('ablehnung')
-                                    Bitte schildere, warum dein Schadenfall abgelehnt wurde. Welche Begründung hat die Versicherung angegeben und wie hast du die Kommunikation erlebt? Je detaillierter du deine Erfahrung beschreibst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
-                                    @break
-                                @case('austehend')
-                                    Bitte beschreibe, warum die Regulierung deines Schadens noch aussteht. Gibt es Verzögerungen, fehlende Unterlagen oder andere Gründe? Je genauer du deine Situation schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
-                                    @break
-                                @default
-                                    Bitte beschreibe den Grund für deine Bewertung möglichst präzise und nachvollziehbar. Je genauer du deine Erfahrung schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
-                            @endswitch
+                                    @case('vollzahlung')
+Beschreibe kurz, was gut oder schlecht lief, damit unsere KI deine Erfahrung auswerten kann.
+                                        @break
+                                    @case('teilzahlung')
+Erläutere warum es nur eine Teilzahlung gab und wie du die Begründung erlebt hast.
+                                        @break
+                                    @case('ablehnung')
+Erkläre kurz, warum der Fall abgelehnt wurde und wie die Kommunikation war.
+                                        @break
+                                    @case('austehend')
+Beschreibe, warum die Regulierung noch offen ist (z. B. Verzögerung, fehlende Unterlagen).
+                                        @break
+                                    @default
+                                        Bitte beschreibe den Grund für deine Bewertung möglichst präzise und nachvollziehbar. Je genauer du deine Erfahrung schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
+                                @endswitch
                             </span>
                         </x-alert>
                         <div class="flex justify-center items-center">
@@ -528,7 +530,7 @@
                             <h2 class="text-lg font-bold mb-6">Finanzielle Eckdaten des Falls</h2>
                             <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
-                                    Bitte gib die wichtigsten finanziellen Eckdaten deines Falls an. Diese Angaben helfen uns, die Regulierung besser einzuordnen und ermöglichen anderen Nutzern einen realistischen Vergleich. Trage die Beträge möglichst genau ein.
+Gib die wichtigsten Beträge an, damit die Regulierung besser eingeordnet werden kann.
                                 </span>
                             </x-alert>
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">

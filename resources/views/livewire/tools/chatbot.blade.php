@@ -86,7 +86,7 @@
                         </div>
                         <div>
                             <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
-                            <p class="text-sm text-[#6b7280]">Ich bin Milan, dein Regulierungs-Check Assistent. Mir kannst du Fragen zu Regulierungs-Check stellen.</p>
+                            <p class="text-sm text-[#6b7280]">Dein Regulierungs-Check Assistent.</p>
                         </div>
                     </div>
                     <div class="flex space-x-4 items-start">
@@ -140,8 +140,13 @@
                             </button>
                         </li>
                         <li>
-                            <button @click="messagefront='Welchen nutzen hat Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                Welchen nutzen hat Regulierungs-Check?
+                            <button @click="messagefront='Wie melde ich meinen Fall?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
+                                Wie melde ich meinen Fall?
+                            </button>
+                        </li>
+                        <li>
+                            <button @click="messagefront='Sind meine Daten anonym?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
+                                Sind meine Daten anonym?
                             </button>
                         </li>
                     </ul>
