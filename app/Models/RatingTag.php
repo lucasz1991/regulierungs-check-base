@@ -13,5 +13,6 @@ class RatingTag extends Model
         'name',
         'tag',
         'description',
+        'positivity',
     ];
 }
