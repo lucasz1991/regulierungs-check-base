@@ -5,4 +5,4 @@
         <livewire:banner.homepage-claimratings-random-banner  />
       </section>
       <livewire:customer.rating.rating-form   />
-</div>
+</div>0
