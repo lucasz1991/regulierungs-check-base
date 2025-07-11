@@ -94,21 +94,30 @@
                                 </div>
                             </div>
                             <div class="mt-2">
-                                <div class="flex flex-wrap gap-2 mt-2">
-                                    @foreach ($claimRating->tags() as $tag)
-                                        @php
-                                            // positivity: 0.01 (rot) bis 0.99 (grün)
-                                            $positivity = $tag->positivity ?? 0.5;
-                                            // HSL: 0 (rot) bis 120 (grün), Sättigung und Helligkeit für Badge-Style
-                                            $hue = (int) round(0 + 120 * $positivity);
-                                            $color = "background-color: hsl($hue, 70%, 90%); color: #222;";
-                                        @endphp
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
-                                              style="{{ $color }}">
-                                            {{ $tag->name }}
-                                        </span>
-                                    @endforeach
-                                </div>
+<div class="flex flex-wrap gap-2 mt-2">
+    @foreach ($claimRating->tags() as $tag)
+        @php
+            // positivity: 0.01 (rot) bis 0.99 (grün)
+            $positivity = $tag->positivity ?? 0.5;
+
+            // Farbwert (Hue) zwischen 0° (Rot) und 120° (Grün)
+            $hue = (int) round(120 * $positivity);
+
+            // Sättigung und Helligkeit für deutlichere Farben
+            $saturation = 90; // kräftige Farben
+            $lightness = 90;  // bessere Sichtbarkeit, nicht zu hell
+
+            // CSS-Farbdefinition im HSL-Format
+            $color = "background-color: hsl($hue, {$saturation}%, {$lightness}%); color: #222;";
+        @endphp
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              style="{{ $color }}">
+            {{ $tag->name }}
+        </span>
+    @endforeach
+</div>
+
                             </div>
                         </div>
                     </div>
