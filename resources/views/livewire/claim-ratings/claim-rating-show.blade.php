@@ -94,21 +94,17 @@
                                 </div>
                             </div>
                             <div class="mt-2">
-                                @php
-                                    function badgeColor($id) {
-                                        $colors = [
-                                            'bg-red-100 text-red-800',
-                                            'bg-green-100 text-green-800',
-                                            'bg-yellow-100 text-yellow-800',
-                                            'bg-purple-100 text-purple-800',
-                                            'bg-blue-100 text-blue-800',
-                                        ];
-                                        return $colors[$id % count($colors)];
-                                    }
-                                @endphp
                                 <div class="flex flex-wrap gap-2 mt-2">
                                     @foreach ($claimRating->tags() as $tag)
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ badgeColor($tag->id) }}">
+                                        @php
+                                            // positivity: 0.01 (rot) bis 0.99 (grün)
+                                            $positivity = $tag->positivity ?? 0.5;
+                                            // HSL: 0 (rot) bis 120 (grün), Sättigung und Helligkeit für Badge-Style
+                                            $hue = (int) round(0 + 120 * $positivity);
+                                            $color = "background-color: hsl($hue, 70%, 90%); color: #222;";
+                                        @endphp
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+                                              style="{{ $color }}">
                                             {{ $tag->name }}
                                         </span>
                                     @endforeach
