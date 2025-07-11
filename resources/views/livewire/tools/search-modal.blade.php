@@ -1,7 +1,7 @@
 <div x-data="{ openSearchMenu: @entangle('openSearchMenu') }" @keydown.window.escape="openSearchMenu = false"  class="h-full">
     <!-- Such-Icon -->
     <div @click.prevent="() => { openSearchMenu = !openSearchMenu; }"  class="flex h-full w-12 transition-all duration-300 ease-in-out" >
-        <div x-cloak class="flex  pt-2 px-2 mr-2 rounded-t-full transition-all duration-300 absolute h-min bottom-2.5 bg-gray-100 pb-1.5"  :class="openSearchMenu ? 'text-secondary bg-gray-200 border-t border-x  border-gray-300 translate-y-[1px] rounded-b-0 !bottom-0 !pb-0' : 'text-gray-500 translate-y-0 rounded-b-full'">
+        <div x-cloak class="flex  pt-2 px-2 mr-2 rounded-t-full transition-all duration-300 absolute h-min bottom-2.5 md:bottom-3.5 bg-gray-100 pb-1.5"  :class="openSearchMenu ? 'text-secondary bg-gray-200 border-t border-x  border-gray-300 translate-y-[1px] rounded-b-0 !bottom-0 !pb-0' : 'text-gray-500 translate-y-0 rounded-b-full'">
             <svg 
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6  hover:text-gray-700 cursor-pointer transition-all duration-300 " 
