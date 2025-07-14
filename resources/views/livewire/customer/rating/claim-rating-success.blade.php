@@ -10,7 +10,8 @@
     <p class="text-gray-700 mb-6">
         Deine Bewertung wurde erfolgreich gespeichert.
         @if (!$claimRating->user_id)
-            Du hast die Bewertung anonym abgegeben.
+            Du hast sie anonym abgegeben.
+
 
             <br><br>
             <div class="flex items-start gap-3 rounded-lg bg-yellow-100 border border-yellow-300 p-4 text-yellow-800">
@@ -23,9 +24,9 @@
 
                 <!-- Text -->
                 <span class="text-sm font-semibold">
-                    Eine Registrierung oder ein Login ist nötig, damit deine Bewertung anonym veröffentlicht und berücksichtigt werden kann.
+Nur mit Registrierung oder Login wird sie auch anonym veröffentlicht und in die Auswertung einbezogen.
                                 <p class="text-sm font-normal text-gray-500 mt-4">
-                                    Wenn du keine Verifizierung durchführst, bleibt deine Bewertung anonym und wird nicht in die Analyse aufgenommen.
+Ohne Verifizierung bleibt dein Beitrag zwar gespeichert, wird aber nicht berücksichtigt.
                                 </p>
                 </span>
             </div>

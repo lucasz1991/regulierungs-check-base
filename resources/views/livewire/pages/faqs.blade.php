@@ -10,7 +10,7 @@
                     <div class="space-y-6 px-6">
                         @foreach($faqs as $faq)
                             <div x-data="{ open: false }"  @click.away="open = false" class="faq-item border-b border-gray-200 py-4">
-                                <div class="faq-question flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-800" 
+                                <div class="faq-question flex items-center justify-between cursor-pointer  text-base md:text-lg font-semibold text-gray-800" 
                                     x-on:click="open = !open" >
                                     <span>{{ $faq->key }}</span>
                                     <span class="ml-2 text-xl transition-transform transform" x-bind:class="open ? 'rotate-180' : 'rotate-0'">
@@ -20,7 +20,7 @@
                                     </span>
                                 </div>
                                 <div class="faq-answer mt-4 pr-4 md:pr-12" x-show="open" x-cloak x-collapse>
-                                    <p class="text-gray-800 text-lg">{!! $faq->value !!}</p>
+                                    <p class="text-gray-800 text-base md:text-lg ">{!! $faq->value !!}</p>
                                 </div>
                             </div>
                         @endforeach

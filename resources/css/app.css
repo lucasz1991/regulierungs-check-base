@@ -1610,26 +1610,58 @@ div.home-banner{
   opacity: 0.5;
   filter: grayscale(100%);
 }
-.default-format-text{
+.default-format-text {
   text-wrap: break-word;
 }
-.default-format-text h1{
+
+.default-format-text h1 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
 }
-.default-format-text h2{
+.default-format-text h2 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
 }
-.default-format-text h3{
+.default-format-text h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1rem;
 }
-.default-format-text p{
+.default-format-text p {
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 1rem;
+}
+
+/* Responsive Anpassung für kleinere Bildschirme */
+@media (max-width: 768px) {
+  .default-format-text h1 {
+    font-size: 1.5rem;
+  }
+  .default-format-text h2 {
+    font-size: 1.25rem;
+  }
+  .default-format-text h3 {
+    font-size: 1.1rem;
+  }
+  .default-format-text p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .default-format-text h1 {
+    font-size: 1.25rem;
+  }
+  .default-format-text h2 {
+    font-size: 1.1rem;
+  }
+  .default-format-text h3 {
+    font-size: 1rem;
+  }
+  .default-format-text p {
+    font-size: 0.9rem;
+  }
 }
