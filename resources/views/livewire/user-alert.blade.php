@@ -35,9 +35,9 @@
         >
 
 
-            <div class="shadow-[0_3px_10px_-3px_rgba(6,81,237,0.3)] border border-gray-300 text-black flex bg-white max-w-sm rounded-md overflow-hidden relative"
+            <div class="shadow-[0_3px_10px_-3px_rgba(6,81,237,0.3)]  text-black flex bg-white max-w-sm rounded-md overflow-hidden relative"
               role="alert">
-              <div class="flex items-center justify-center w-14 p-5 bg-{{ $color }}-500">
+              <div class="flex items-center justify-center w-14 p-5 bg-{{ $color }}-500 ">
                     @switch($type)
                         @case('success')
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 shrink-0 fill-white inline self-start" viewBox="0 0 512 512">
