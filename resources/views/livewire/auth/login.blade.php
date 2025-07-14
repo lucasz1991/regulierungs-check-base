@@ -59,12 +59,12 @@
             </a>
         @endif
         <div class="flex flex-wrap justify-end gap-3 ml-3 max-md:flex-col max-md:items-end flex-row-reverse">
-          <x-button>
+          <x-buttons.button-basic mode="layoutprimary" size="md">
               Einloggen
-          </x-button>
-          <x-button class="ms-0 md:ms-4" href="{{ route('register') }}" wire:navigate>
+          </x-buttons.button-basic>
+          <x-buttons.button-basic mode="layoutsecondary" class="ms-0 md:ms-4" href="{{ route('register') }}">
               Registrieren
-          </x-button>
+          </x-buttons.button-basic>
         </div>
         </div>
         </form>

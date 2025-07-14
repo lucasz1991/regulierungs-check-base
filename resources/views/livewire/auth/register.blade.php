@@ -226,10 +226,10 @@
 
                <!-- Buttons -->
                <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-                   <x-button wire:click="register"  wire:navigate >
+                   <x-buttons.button-basic mode="layoutprimary" wire:click="register"  wire:navigate >
                    
                        Registrieren
-                   </x-button >
+                   </x-buttons.button-basic>
 
                    <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                        Du hast schon ein Konto?

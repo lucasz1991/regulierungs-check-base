@@ -28,9 +28,9 @@
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Passwort bestätigen</label>
                     <input wire:model="password_confirmation" id="password_confirmation" type="password" class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
-                <x-button class="">
+                <x-buttons.button-basic mode="layoutprimary" class="">
                     Passwort zurücksetzen
-                </x-button>
+                </x-buttons.button-basic>
             </form>
         </div>
     </x-slot>
