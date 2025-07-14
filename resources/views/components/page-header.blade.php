@@ -6,7 +6,7 @@
                 <h1 class="font-semibold text-2xl text-gray-800 leading-tight flex items-center">
                     {!! $title !!}
                     @if (!empty($icon))
-                        <div class="pageheader-icon w-12 aspect-square text-[#333] ml-10  inline opacity-10 md:opacity-30 absolute right-0 top-3 md:relative">
+                        <div class="pageheader-icon w-12 aspect-square text-[#333] ml-10  inline opacity-10 md:opacity-30 max-md:absolute  max-md:right-0  max-md:top-3">
                             {!! $icon !!}
                         </div>
                     @endif
