@@ -1636,8 +1636,11 @@ div.home-banner{
 .default-format-text ul,
 .default-format-text ol, 
 .default-format-text p {
-  padding-left: 1.5rem;
   margin-bottom: 1rem;
+}
+.default-format-text ul,
+.default-format-text ol {
+  padding-left: .5rem;
 }
 
 /* Responsive Anpassung für kleinere Bildschirme */
