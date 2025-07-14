@@ -1629,7 +1629,7 @@ div.home-banner{
   font-weight: 600;
   margin-bottom: 1rem;
 }
-.default-format-text p {
+.default-format-text p , .default-format-text li , .default-format-text blockquote  {
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 1rem;
@@ -1646,7 +1646,7 @@ div.home-banner{
   .default-format-text h3 {
     font-size: 1.1rem;
   }
-  .default-format-text p {
+.default-format-text p , .default-format-text li , .default-format-text blockquote  {
     font-size: 0.95rem;
   }
 }
@@ -1661,7 +1661,7 @@ div.home-banner{
   .default-format-text h3 {
     font-size: 1rem;
   }
-  .default-format-text p {
+.default-format-text p , .default-format-text li , .default-format-text blockquote  {
     font-size: 0.9rem;
   }
 }
