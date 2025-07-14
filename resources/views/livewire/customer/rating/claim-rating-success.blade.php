@@ -13,10 +13,23 @@
             Du hast die Bewertung anonym abgegeben.
 
             <br><br>
-            <span class="block text-sm text-red-700 font-semibold">
-                Damit deine Bewertung verifiziert und anonymisiert veröffentlicht sowie in die Auswertung einbezogen werden kann, musst du dich registrieren oder einloggen.
-                Ohne eine Registrierung kann deine Bewertung leider nicht berücksichtigt werden.
-            </span>
+            <div class="flex items-start gap-3 rounded-lg bg-yellow-100 border border-yellow-300 p-4 text-yellow-800">
+                <!-- Icon -->
+                <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01M12 5.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15z" />
+                </svg>
+
+                <!-- Text -->
+                <span class="text-sm font-semibold">
+                    Eine Registrierung oder ein Login ist nötig, damit deine Bewertung anonym veröffentlicht und berücksichtigt werden kann.
+                                <p class="text-sm font-normal text-gray-500 mt-4">
+                                    Wenn du keine Verifizierung durchführst, bleibt deine Bewertung anonym und wird nicht in die Analyse aufgenommen.
+                                </p>
+                </span>
+            </div>
+
 
             <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
                 <a href="{{ route('register') }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -27,9 +40,6 @@
                 </a>
             </div>
 
-            <p class="text-sm text-gray-500 mt-4">
-                Wenn du keine Verifizierung durchführst, bleibt deine Bewertung anonym und wird nicht in die Analyse aufgenommen.
-            </p>
         @endif
     </p>
 </div>
