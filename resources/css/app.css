@@ -1632,6 +1632,11 @@ div.home-banner{
 .default-format-text p , .default-format-text li , .default-format-text blockquote  {
   font-size: 1rem;
   font-weight: 400;
+}
+.default-format-text ul,
+.default-format-text ol, 
+.default-format-text p {
+  padding-left: 1.5rem;
   margin-bottom: 1rem;
 }
 
