@@ -69,7 +69,7 @@
     </section>
     <section class="bg-white z-10 overflow-hidden">
         <div class="container px-6 md:px-12 mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3  md:grid-rows-1 my-8 lg:pm-12" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true" data-aos-delay="500">
+            <div class="grid grid-cols-1 md:grid-cols-3  md:grid-rows-1 my-8 lg:pm-12" >
                 <!-- Bild: Auf kleinen Geräten zuerst -->
                 <div class="row-span-1 col-span-1 order-1 md:order-2 h-64 md:h-full rounded-t-xl md:rounded-e-xl overflow-hidden">
                     <img class="h-full w-full object-cover object-center opacity-80" src="{{ asset('/site-images/contact_img1.jpg') }}" alt="">
