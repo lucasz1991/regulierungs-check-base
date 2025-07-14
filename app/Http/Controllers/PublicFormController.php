@@ -7,22 +7,34 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\PublicFormNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Models\Setting;
 
 
 class PublicFormController extends Controller
 {
     public function handle(Request $request)
     {
-        // Hole alle gesendeten Felder – außer sensible interne wie _token
         $data = $request->except('_token');
-         // Versenden an eine bestimmte Adresse
-        Notification::route('mail', 'lucas@zacharias-net.de')
-            ->notify(new PublicFormNotification($data));
- 
-        // Protokolliere alle Felder (z. B. zum Testen oder Weiterverarbeiten)
-        Log::info('Formular abgeschickt', $data);
+        $formType = $data['form_type'] ?? 'unbekannt';
 
-        // Optional: Weiterleitung, Flash Message oder JSON-Response
-        return redirect()->back()->with('success', 'Vielen Dank! Ihre Nachricht wurde übermittelt.');
+        // Logging je nach Formularart
+        Log::info("[$formType] Formular abgeschickt", $data);
+
+        // Empfänger dynamisch (optional)
+        $recipient = Setting::where('key', 'contact_email')->value('value') ?? 'lucas@zacharias-net.de';
+
+        // Sende Notification
+        Notification::route('mail', $recipient)
+            ->notify(new PublicFormNotification($data));
+
+        // Individuelle Flash-Nachricht oder Weiterleitung
+        if ($formType === 'newsletter') {
+            return redirect()->back()->with('success', 'Vielen Dank für deine Anmeldung zum Newsletter!');
+        } elseif ($formType === 'kontakt') {
+            return redirect()->back()->with('success', 'Vielen Dank für deine Nachricht – wir melden uns bald bei dir!');
+        }
+
+        return redirect()->back()->with('success', 'Vielen Dank! Deine Eingabe wurde übermittelt.');
     }
+
 }

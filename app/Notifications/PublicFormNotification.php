@@ -24,17 +24,37 @@ class PublicFormNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        $formType = $this->data['form_type'] ?? 'unbekannt';
+
         $mail = (new MailMessage)
-            ->subject('Neue Formularübermittlung')
-            ->greeting('Hallo!')
-            ->line('Ein Nutzer hat ein Formular ausgefüllt:')
-            ->line('');
+            ->greeting('Hallo!');
+
+        switch ($formType) {
+            case 'newsletter':
+                $mail->subject('Neue Newsletter-Anmeldung')
+                    ->line('Ein Nutzer hat sich für den Newsletter angemeldet:');
+                break;
+
+            case 'kontakt':
+                $mail->subject('Neue Kontaktanfrage')
+                    ->line('Ein Nutzer hat das Kontaktformular ausgefüllt:');
+                break;
+
+            default:
+                $mail->subject('Neue Formularübermittlung')
+                    ->line('Ein Formular wurde ausgefüllt:');
+                break;
+        }
+
+        $mail->line('');
 
         foreach ($this->data as $key => $value) {
+            if ($key === 'form_type') continue; // form_type nicht anzeigen
             $mail->line(ucfirst($key) . ': ' . $value);
         }
 
         return $mail->line('--- Ende der Nachricht ---');
     }
+
 }
 
