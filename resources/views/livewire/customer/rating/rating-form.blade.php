@@ -536,24 +536,24 @@ Gib die wichtigsten Beträge an, damit die Regulierung besser eingeordnet werden
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">
                                 <div  class="mb-4 mt-4 text-left bg-secondary  rounded-lg shadow-md p-4">
                                     <div class="mt-4">
-                                        <label class="block text-sm font-medium text-white mb-2"> Selbstbeteiligung </label>
-                                        <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                        <label class="block text-sm font-medium text-white mb-2"> Selbstbeteiligung €</label>
+                                        <input  x-mask:dynamic="$money($input, '.', '')"  wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
                                         @error('contractDetails.contract_deductible_amount')
                                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
     
                                     <div class="mt-4 ">
-                                        <label class="block text-sm font-medium text-white mb-2"> Schadenshöhe </label>
-                                        <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.claim_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                        <label class="block text-sm font-medium text-white mb-2"> Schadenshöhe €</label>
+                                        <input   x-mask:dynamic="$money($input, '.', '')" wire:model.live.debounce.250ms="contractDetails.claim_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
                                         @error('contractDetails.claim_amount')
                                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     @if ($regulationType == 'teilzahlung' || $regulationType == 'vollzahlung')
                                         <div class="my-4 ">
-                                            <label class="block text-sm font-medium text-white mb-2"> Regulierungshöhe </label>
-                                            <input  x-mask:dynamic="$money($input)" wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                            <label class="block text-sm font-medium text-white mb-2"> Regulierungshöhe €</label>
+                                            <input   x-mask:dynamic="$money($input, '.', '')" wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
                                             @error('contractDetails.claim_settlement_amount')
                                                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                                             @enderror
