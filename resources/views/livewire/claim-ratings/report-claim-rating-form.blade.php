@@ -20,7 +20,6 @@
                         <span>Du kannst eine Bewertung melden, wenn sie gegen unsere Richtlinien verstößt. Wir prüfen jede Meldung individuell.</span>
                     </x-alert>
                     <form wire:submit.prevent="submit" class="space-y-6">
-
                         {{-- Grund für die Meldung --}}
                         <div>
                             <label for="reportReason" class="block text-sm font-medium text-gray-700">Grund für die Meldung</label>

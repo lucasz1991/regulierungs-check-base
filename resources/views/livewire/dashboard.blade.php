@@ -21,17 +21,7 @@
                             <p>Um deine Bewertungen öffentlich sichtbar zu machen, musst du zuerst deine E-Mail-Adresse verifizieren.</p>
                         </x-alert>
                     @endif
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                        <div class="bg-white shadow-lg rounded-lg p-5">
-                            <h2 class="text-lg font-semibold text-gray-700">Abgegebene Bewertungen</h2>
-                            <p class="text-3xl font-bold text-gray-500">{{ $ratingsCount }}</p>
-                        </div>
-                        <div class="bg-white shadow-lg rounded-lg p-5">
-                            <h2 class="text-lg font-semibold text-gray-700">Öffentliche Bewertungen</h2>
-                            <p class="text-3xl font-bold text-green-600">{{ $verifiedRatingsCount }}</p>
-                        </div>
-                    </div>
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Deine letzten Bewertungen</h2>
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Deine Bewertungen</h2>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         @forelse ($claimRatings as $rating)

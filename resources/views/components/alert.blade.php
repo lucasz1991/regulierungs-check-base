@@ -1,4 +1,4 @@
-<div  {!! $attributes->merge(['class' => 'relative w-full overflow-hidden rounded-md border border-sky-500 bg-sky-50 text-on-surface ']) !!}  role="alert">
+<div  {!! $attributes->merge(['class' => 'relative w-full overflow-hidden rounded-md border border-sky-500 bg-sky-50 text-on-surface md:w-fit ']) !!}  role="alert">
     <div class="text-left flex w-full items-start gap-2 bg-info/10 p-4">
         <div class="bg-sky-500/15 text-sky-500 rounded-full p-1" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-6" aria-hidden="true">
