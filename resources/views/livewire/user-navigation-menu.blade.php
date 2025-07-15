@@ -135,13 +135,13 @@
                                  <x-application-mark />
                              </a>
                          </div>
-                         <div class="flex items-center space-x-4 max-md:order-3 md:order-2 flex-none" >
+                         <div class="flex items-center space-x-4 max-md:order-3 md:order-2 flex-none md:ml-4" >
                              <!-- Likes and Inbox Buttons -->
                              <div class="flex items-center space-x-6 mr-2">
                                  @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/messages'))
                                  <div class="relative" x-data="{ open: false, modalOpen: false, selectedMessage: null  }">
                                      <!-- Button zum Öffnen des Popups -->
-                                     <button @click="open = !open" class="block">
+                                     <button @click="open = !open" class="block ">
                                          <span class="relative">
                                              <svg xmlns="http://www.w3.org/2000/svg" width="30px" class="fill-[#333] hover:fill-[#077bff] stroke-2 inline" viewBox="0 0 512 512" stroke-width="106">
                                                  <g>
