@@ -1,5 +1,30 @@
 <div class="bg-gray-50 wrap-break-word w-full overflow-hidden">
     <div class="container mx-auto px-4 py-6 space-y-4">    
+        <div class="flex items-center justify-between mb-8">
+            <div class="">
+                <div class="flex flex-wrap items-center">
+                    <x-user.public-info :user="$claimRating->user" context="rating" />
+                    <div class="text-sm text-gray-500 pl-1">
+                        - {{ \Carbon\Carbon::parse($claimRating->created_at)->format('d.m.Y') }}
+                    </div>
+                </div>
+            </div>
+            <div class="flex space-x-2">
+                @auth
+                    <livewire:claim-ratings.report-claim-rating-form :claimRatingId="$claimRating->id" />
+                    <button wire:click="$dispatch('showReportClaimForm')" title="Melden"
+                        class="flex items-center justify-center shadow p-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-primary-700 focus:ring-4 focus:ring-gray-100">
+                        <svg viewBox="0 0 16 16" class="w-4 aspect-square"  xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" data-report-icon="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 .25V0H2v16h1V9.25h11.957l-4.5-4.5 4.5-4.5H3Zm0 1v7h9.543l-3.5-3.5 3.5-3.5H3Z"></path></svg>
+                    </button>
+                @else
+                    <a href="{{ route('login') }}" title="Melden"
+                        class="flex items-center justify-center shadow p-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-primary-700 focus:ring-4 focus:ring-gray-100">
+                        <svg viewBox="0 0 16 16" class="w-4 aspect-square"  xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" data-report-icon="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 .25V0H2v16h1V9.25h11.957l-4.5-4.5 4.5-4.5H3Zm0 1v7h9.543l-3.5-3.5 3.5-3.5H3Z"></path></svg>
+                    </a>
+                @endauth
+                <x-claim-rating.share-dropdown :claimRating="$claimRating" />
+            </div>
+        </div>
         <div class="grid md:grid-cols-2 gap-4 ">
             <div class="bg-white  rounded shadow p-6 w-full overflow-hidden">
                 <p class="text-sm text-gray-600 mb-1">
