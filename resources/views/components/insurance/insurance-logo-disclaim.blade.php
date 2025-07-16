@@ -4,7 +4,7 @@
                             @mouseenter="show = true"
                             @mouseleave="show = false"
                             @click.away="show = false"
-                            x-on:click="show = !show"
+                            @click.prevent="show = !show"
                             class="text-gray-400 hover:text-gray-600 focus:outline-none -mt-4"
                             aria-label="Hinweis zur Logo-Nutzung"
                             type="button"
