@@ -1,10 +1,6 @@
 <div  @if($hasActiveRating) wire:poll.3s @endif  class="w-full relative bg-cover bg-center bg-gray-100 pb-20 pt-8" wire:loading.class="cursor-wait">
     <div class="container mx-auto px-5">
         <div x-data="{ selectedTab: 'basic' }" class="w-full">
-            <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()" class="flex gap-2 overflow-x-auto border-b border-outline md:hidden" role="tablist" aria-label="tab options">
-                <button x-on:click="selectedTab = 'basic'" x-bind:aria-selected="selectedTab === 'basic'" x-bind:tabindex="selectedTab === 'basic' ? '0' : '-1'" x-bind:class="selectedTab === 'basic' ? 'bg-white rounded-t-lg shadow font-bold text-primary border-b-2 border-secondary ' : 'text-on-surface font-medium  hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelBasic" >Allgemein</button>
-                <button x-on:click="selectedTab = 'verification'" x-bind:aria-selected="selectedTab === 'verification'" x-bind:tabindex="selectedTab === 'verification' ? '0' : '-1'" x-bind:class="selectedTab === 'verification' ? 'bg-white rounded-t-lg font-bold text-primary border-b-2 border-secondary ' : 'text-on-surface font-medium hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelVerification" >Verifiziert</button>
-            </div>
             <!-- Hauptbereich -->
             <div class="container mx-auto px-4 py-10 flex flex-col lg:flex-row gap-10">
                 <!-- Sidebar -->
@@ -28,16 +24,10 @@
                                 Bewertungen
                             </button>
 
-                            <button x-on:click="selectedTab = 'verification'" x-bind:aria-selected="selectedTab === 'verification'" x-bind:tabindex="selectedTab === 'verification' ? '0' : '-1'" x-bind:class="selectedTab === 'verification' ? ' bg-primary-50 font-medium text-primary-800 ' : ' hover:bg-gray-50 '" class="flex items-center gap-3 px-4 py-2  rounded  w-full">
+                            <button x-on:click="selectedTab = 'settings'" x-bind:aria-selected="selectedTab === 'settings'" x-bind:tabindex="selectedTab === 'settings' ? '0' : '-1'" x-bind:class="selectedTab === 'settings' ? ' bg-primary-50 font-medium text-primary-800 ' : ' hover:bg-gray-50 '" class="flex items-center gap-3 px-4 py-2  rounded  w-full">
                                 <svg class="w-5  h-5  mr-1"   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                                 Einstellungen
                             </button>
-
-                            <button x-on:click="selectedTab = 'security'" x-bind:aria-selected="selectedTab === 'security'" x-bind:tabindex="selectedTab === 'security' ? '0' : '-1'" x-bind:class="selectedTab === 'security' ? ' bg-primary-50 font-medium text-primary-800 ' : ' hover:bg-gray-50 '" class="flex items-center gap-3 px-4 py-2  rounded  w-full">
-                                <svg  class="w-5 h-5 mr-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                                Sicherheit
-                            </button>
-
                             <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded  ">
                                 <svg class="w-5 h-5  mr-1" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
@@ -51,6 +41,21 @@
 
                 <!-- Contentbereich -->
                 <main class="w-full lg:w-3/4 xl:w-5/6">
+                    <div x-cloak x-show="selectedTab === 'profile'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="profile">
+                        <div class="antialiased" wire:loading.class="cursor-wait">
+                            <div class="py-2 sm:px-6 lg:px-8">
+                                @if (Laravel\Fortify\Features::canUpdateProfileInformation())
+                                    @livewire('profile.update-profile-information-form')
+
+                                    <x-section-border />
+                                @endif
+                                <!-- Customer Information Livewire-Komponente -->
+                                <div class="mt-10 sm:mt-0">
+                                    @livewire('profile.update-customer-information-form')
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div x-cloak x-show="selectedTab === 'basic'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="basic">
                         
                         <!-- if(!auth()->user()->email_verified_at)
@@ -76,11 +81,10 @@
                             </div>
                         @endif
                     </div>
-                    <div x-cloak x-show="selectedTab === 'verification'" x-collapse id="tabpanelComments" role="tabpanel" aria-label="verification">
-                        <x-alert>
-                            <h6 class="text-xl font-semibold  mb-1" >Verifizierungen</h6>
-                            Die Verifizierungsübersicht wird hier in Kürze verfügbar sein. Wir arbeiten daran, dir eine transparente Darstellung deiner Verifizierungen bereitzustellen. Vielen Dank für deine Geduld!
-                        </x-alert>
+                    <div x-cloak x-show="selectedTab === 'settings'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="settings">
+                        <div class="mt-10 sm:mt-0">
+                            @livewire('profile.edit-privacy-settings')
+                        </div>
                     </div>
                 </main>
             </div>
