@@ -2,7 +2,7 @@
     <div class="shrink-0 transition-all duration-200 flex "
         :class="hover || showInfos ? 'opacity-100' : ''">
         @if ($insurance->logo)
-        <div class="flex items-center space-x-1 relative" x-data="{ show: false }">
+        <div class="flex items-center space-x-1 relative">
             <!-- Logo -->
             <img src="{{ asset('storage/' . $insurance->logo) }}"
                 alt="Logo Versicherungs Anbieter"
