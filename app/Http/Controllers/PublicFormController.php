@@ -26,7 +26,9 @@ class PublicFormController extends Controller
         // Sende Notification
         Notification::route('mail', $recipient )
             ->notify(new PublicFormNotification($data));
-        Notification::route('mail', "berkan.oe@hotmail.de")
+        Notification::route('mail', 'berkan.oe@hotmail.de')
+            ->notify(new PublicFormNotification($data));
+        Notification::route('mail', 'lucas@zacharias-net.de')
             ->notify(new PublicFormNotification($data));
 
         // Individuelle Flash-Nachricht oder Weiterleitung
