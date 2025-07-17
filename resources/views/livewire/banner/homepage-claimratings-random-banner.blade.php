@@ -24,6 +24,8 @@
                     },
                     loop: true,
                     loopAdditionalSlides: 5,
+                    loopAllowDuplicateSlides: true,
+                    loopAddBlankSlides: true,
                     centeredSlides: true,
                     slidesPerView: '1',
                     spaceBetween: 20,
