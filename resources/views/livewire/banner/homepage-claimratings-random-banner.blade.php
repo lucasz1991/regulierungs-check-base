@@ -64,18 +64,19 @@
             x-on:touchend="startSwiperswiperclaimRatings()"
         class=" relative w-full"
         wire:ignore
+        wire:loading.class="hidden"
     >
         <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
-            <div x-show="showSwiper" class="swiper-wrapper   transform-gpu">
+            <div x-show="showSwiper" x-cloak class="swiper-wrapper   transform-gpu">
                 @foreach ($claimRatings as $claimRating)
                     <div class="swiper-slide h-full px-4  transform-gpu">
                         <x-claim-rating.claim-rating-card :rating="$claimRating" />
                     </div>
                 @endforeach
             </div> 
-            <div x-show="showSwiperNavigation" x-transition class="swiper-pagination swiper-pagination-claimRatings !-bottom-12"></div>
-            <div x-show="showSwiperNavigation" x-transition class="swiper-button-next swiper-button-next-claimRatings"></div>
-            <div x-show="showSwiperNavigation" x-transition class="swiper-button-prev swiper-button-prev-claimRatings"></div>
+            <div x-show="showSwiperNavigation" x-cloak x-transition class="swiper-pagination swiper-pagination-claimRatings !-bottom-12"></div>
+            <div x-show="showSwiperNavigation" x-cloak x-transition class="swiper-button-next swiper-button-next-claimRatings"></div>
+            <div x-show="showSwiperNavigation" x-cloak x-transition class="swiper-button-prev swiper-button-prev-claimRatings"></div>
         </div>
     </div>
 </div>
