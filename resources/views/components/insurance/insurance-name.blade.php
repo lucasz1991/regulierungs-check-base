@@ -1,6 +1,6 @@
 <div  class="flex  items-stretch gap-4 mb-4">
     <div class="shrink-0 transition-all duration-200 flex "
-        :class="hover || showInfos ? 'opacity-100' : ''">
+        >
         @if ($insurance->logo)
         <div class="flex items-center space-x-1 relative">
             <!-- Logo -->
@@ -17,7 +17,7 @@
         @endif
     </div>
     <div class="grow  min-w-0  transition-all duration-200"
-        :class="hover || showInfos ? 'opacity-100' : 'opacity-90'">
+        >
         <div >
             <h2 class="text-base break-words  truncate text-ellipsis pr-2">
                 {{  $insurance->name }}

@@ -494,9 +494,8 @@
                                          </div>
                                      </div>
                                      <div class="md:hidden max-md:flex self-end  bottom-0 left-0 justify-center p-4 pb-0 space-x-4 w-full bg-white  z-20 border-t border-gray-200">
-                                         <ul class=" flex space-x-5">
-                                             <li>
-                                             <a href='https://www.facebook.com/share/1CVkgcLL8C/?mibextid=wwXIfr' target="_blank">
+                                         <div class=" flex space-x-5">
+                                             <a href="https://www.facebook.com/share/1CVkgcLL8C/?mibextid=wwXIfr" target="_blank">
                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="fill-gray-300 hover:fill-gray-500 w-10 h-10"
                                                  viewBox="0 0 24 24">
                                                  <path fill-rule="evenodd"
@@ -505,9 +504,7 @@
                                                  </svg>
                                                  <span class="sr-only">Facebook Link</span>
                                              </a>
-                                             </li>
-                                             <li>
-                                             <a href='https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr' target="_blank">
+                                             <a  href="https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr" target="_blank">
                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                  class="fill-gray-300 hover:fill-gray-500 w-10 h-10" viewBox="0 0 24 24">
                                                  <path
@@ -515,11 +512,9 @@
                                                  </svg>
                                                  <span class="sr-only">Instagram Link</span>
                                              </a>
-                                             </li>
-                                         </ul>
+                                         </div>
                                      </div>
                                  </div>
-                             </div>
                  </div>
              </div>
             </nav>

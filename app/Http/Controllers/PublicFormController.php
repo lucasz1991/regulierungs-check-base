@@ -32,9 +32,9 @@ class PublicFormController extends Controller
             return redirect()->back()->with('success', 'Vielen Dank für deine Anmeldung zum Newsletter!');
         } elseif ($formType === 'kontakt') {
             return redirect()->back()->with('success', 'Vielen Dank für deine Nachricht – wir melden uns bald bei dir!');
+        } else {
+            return redirect()->back()->with('success', 'Vielen Dank für deine Eingabe!');
         }
-
-        return redirect()->back()->with('success', 'Vielen Dank! Deine Eingabe wurde übermittelt.');
     }
 
 }
