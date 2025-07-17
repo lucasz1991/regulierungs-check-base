@@ -4,14 +4,29 @@
             <p class="md:text-xl font-medium text-gray-700 mt-4 ">Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.</p>
     </div>
     <div x-data="{
+            showSwiper: false,
+            showSwiperNavigation: false,
             swiperclaimRatings: null,
             initSwiperswiperclaimRatings() {
                 this.swiperclaimRatings = new Swiper(this.$refs.swiperclaimRatings, {
                     autoplay: {
-                        delay: 0,
+                        delay: 2500,
                     },
                     disableOnInteraction: true,
-                    speed: 15000,
+                    speed: 500,
+                    effect: 'slide',
+                    pagination: {
+                        el: '.swiper-pagination-claimRatings',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next-claimRatings',
+                        prevEl: '.swiper-button-prev-claimRatings',
+                    },
+                    direction: 'horizontal',
+                    initialSlide: 0,
+                    slidesPerGroup: 1,
+                    loopFillGroupWithBlank: true,
                     loop: true,
                     centeredSlides: true,
                     slidesPerView: '1',
@@ -31,26 +46,36 @@
                     
                 });
                 this.swiperclaimRatings.slideNext();
+                this.showSwiper = true;
             },
             stopSwiperswiperclaimRatings() {
                 this.swiperclaimRatings.autoplay.stop();
+                this.showSwiperNavigation = true;
             },
             startSwiperswiperclaimRatings() {
                 this.swiperclaimRatings?.autoplay?.start();
+                this.showSwiperNavigation = false;
             }
         }"
         x-init="initSwiperswiperclaimRatings() "
+            x-on:click="stopSwiperswiperclaimRatings()"
+            x-on:click.away="startSwiperswiperclaimRatings()"
+            x-on:touchstart="stopSwiperswiperclaimRatings()"
+            x-on:touchend="startSwiperswiperclaimRatings()"
         class=" relative w-full"
         wire:ignore
     >
         <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
-            <div class="swiper-wrapper  !ease-linear  transform-gpu">
+            <div x-show="showSwiper" class="swiper-wrapper   transform-gpu">
                 @foreach ($claimRatings as $claimRating)
                     <div class="swiper-slide h-full px-4  transform-gpu">
                         <x-claim-rating.claim-rating-card :rating="$claimRating" />
                     </div>
                 @endforeach
-            </div>
+            </div> 
+            <div x-show="showSwiperNavigation" x-transition class="swiper-pagination swiper-pagination-claimRatings !-bottom-12"></div>
+            <div x-show="showSwiperNavigation" x-transition class="swiper-button-next swiper-button-next-claimRatings"></div>
+            <div x-show="showSwiperNavigation" x-transition class="swiper-button-prev swiper-button-prev-claimRatings"></div>
         </div>
     </div>
 </div>

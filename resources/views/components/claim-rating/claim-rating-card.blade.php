@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg shadow-xl  border  border-gray-300 h-full overflow-hidden" >
+<div class="bg-white rounded-lg shadow-xl  border  border-gray-300 h-full" >
     <div class=" p-4 pb-0">
         <div class="flex justify-between items-start">
             <div class="flex flex-wrap items-center">
