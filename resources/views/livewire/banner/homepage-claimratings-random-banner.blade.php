@@ -4,7 +4,6 @@
             <p class="md:text-xl font-medium text-gray-700 mt-4 ">Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.</p>
     </div>
     <div x-data="{
-            showSwiper: false,
             showSwiperNavigation: false,
             swiperclaimRatings: null,
             initSwiperswiperclaimRatings() {
@@ -42,7 +41,6 @@
                     
                 });
                 this.swiperclaimRatings.slideNext();
-                this.showSwiper = true;
             },
             stopSwiperswiperclaimRatings() {
                 this.swiperclaimRatings.autoplay.stop();
@@ -62,7 +60,7 @@
         wire:loading.class="hidden"
     >
         <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
-            <div x-show="showSwiper" x-cloak class="swiper-wrapper   transform-gpu">
+            <div  class="swiper-wrapper   transform-gpu">
                 @foreach ($claimRatings as $claimRating)
                     <div class="swiper-slide h-full px-4  transform-gpu">
                         <x-claim-rating.claim-rating-card :rating="$claimRating" />
