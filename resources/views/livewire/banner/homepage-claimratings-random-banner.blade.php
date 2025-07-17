@@ -23,7 +23,6 @@
                         prevEl: '.swiper-button-prev-claimRatings',
                     },
                     loop: true,
-                    loopAdditionalSlides: 5,
                     loopAllowDuplicateSlides: true,
                     loopAddBlankSlides: true,
                     centeredSlides: true,
