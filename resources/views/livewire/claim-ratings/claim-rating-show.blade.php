@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="grid md:grid-cols-2 gap-4 ">
-            <div class="bg-white  rounded shadow p-6 w-full overflow-hidden">
+            <div class="bg-white  rounded shadow p-6 w-full">
                 <p class="text-sm text-gray-600 mb-1">
                     Versicherung: 
                 </p>
