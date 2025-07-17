@@ -1,24 +1,22 @@
 <div class=""
-    x-data="{ 
-     step: @entangle('step'),
-     modalIsOpen: @entangle('showFormModal'),
-     insuranceSubTypeId: @entangle('insuranceSubTypeId'),
-    }"
-    x-init="() => {
-        $watch('step', () => { 
-            $nextTick(() => {
-                const el = $refs.scrollTarget;
-                const container = $refs.scrollcontainer;
-                if (el) {
-                    const top = el.getBoundingClientRect().top + window.scrollY - 100; // 100px Offset
-                    container.scrollTo({ top, behavior: 'smooth' });
-                }
-            });
-        });
-    }"
->
-
- 
+     x-data="{ 
+         step: @entangle('step'),
+         modalIsOpen: @entangle('showFormModal'),
+         insuranceSubTypeId: @entangle('insuranceSubTypeId'),
+     }" 
+     x-init="() => {
+         $watch('step', () => { 
+             $nextTick(() => {
+                 const el = $refs.scrollTarget;
+                 const container = $refs.scrollcontainer;
+                 if (el) {
+                     const top = el.getBoundingClientRect().top + window.scrollY - 100; // 100px Offset
+                     container.scrollTo({ top, behavior: 'smooth' });
+                 }
+             });
+         });
+     }"
+    >
     <template x-teleport="body">
         <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false" class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <!-- Modal Dialog -->
@@ -26,7 +24,6 @@
                 <div class="ratingform " >
                     {{-- Step 0: Versicherungs typ --}}
                     <div x-show="step == 0"  x-cloak >
-
                         <h2 class="text-lg font-bold mb-4">Jetzt Fall melden</h2>
                         <x-alert class="w-max mx-auto" role="alert">
                                 <span> Bitte wähle die passende Versicherungskategorie aus, um mit der Fallmeldung zu starten.<br>Beispiel: Die Krankenversicherung findest du unter "Personenversicherungen".</span>
@@ -35,9 +32,6 @@
                         <style>
                             .ratingform .swiper {
                                 padding: 0px 0px 60px 0px;
-                            }
-                            .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets {
-                                
                             }
                         </style>
                         <div x-data="{
@@ -127,8 +121,7 @@
                     </div>
                     {{-- Step 1: Versicherungs SubType --}}
                     <div x-show="step == 1"  x-cloak  >
-
-                        <div >
+                        <div>
                             <h2 class="text-lg mb-6">Versicherungsart auswählen</h2>
                             <x-alert class="w-max mx-auto mb-6" role="alert">
                                 <span>
@@ -190,10 +183,10 @@
                     <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak>
                         <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
                         <x-alert class="w-max mx-auto mb-6" role="alert">
-                                <span>
-                                    Bitte wähle die konkrete Versicherungsgesellschaft aus, bei der du deinen Fall melden möchtest. Diese Information ist wichtig, um den Fall korrekt zuzuordnen und die richtigen Ansprechpartner zu finden.
-                                </span>
-                            </x-alert>
+                            <span>
+                                Bitte wähle die konkrete Versicherungsgesellschaft aus, bei der du deinen Fall melden möchtest. Diese Information ist wichtig, um den Fall korrekt zuzuordnen und die richtigen Ansprechpartner zu finden.
+                            </span>
+                        </x-alert>
                         <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
                             <select wire:model.live="insuranceId" 
                                     class="border rounded px-4 py-2"
@@ -207,7 +200,6 @@
                                                 position: 'bottom',
                                                 itemSelectText: '',
                                                 searchPlaceholderValue: 'Suchen...',
-                                                
                                             });
                                             $el.addEventListener('change', (e) => {
                                                 insuranceId = e.target.value;
@@ -233,6 +225,9 @@
                                 @endforeach
                             </select>
                             <div id="spacerInsuranceId" class="transform transition-all" ></div>
+                            <div >
+                                
+                            </div>
                         </div>
                         @error('insuranceId')
                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
@@ -249,10 +244,10 @@
                     <div x-show="step == 3"  x-cloak  >
                         <h2 class="text-lg font-bold mb-6">Wie wurde der Schaden reguliert?</h2>
                         <x-alert class="w-max mx-auto mb-6" role="alert">
-                                <span>
-                                    Bitte wähle den aktuellen Status der Schadensregulierung aus. Diese Information hilft uns, den Fall besser zu verstehen und die nächsten Schritte zu planen.
-                                </span>
-                            </x-alert>
+                            <span>
+                                Bitte wähle den aktuellen Status der Schadensregulierung aus. Diese Information hilft uns, den Fall besser zu verstehen und die nächsten Schritte zu planen.
+                            </span>
+                        </x-alert>
                         <div class="flex justify-center items-center">
                             <div x-data="{ regulationType: @entangle('regulationType') }" class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-4 w-max justify-center">
                                 <style>
@@ -341,8 +336,8 @@
                             @endswitch
                         </h2>
                         <x-alert class="w-max mx-auto mb-6" role="alert">
-                                <span>
-                                    Bitte beschreibe den Grund für deine Bewertung des Falls. Deine Angaben helfen anderen Nutzern, die Qualität der Versicherung besser einzuschätzen und ihre Entscheidungen zu treffen.
+                            <span>
+                                Bitte beschreibe den Grund für deine Bewertung des Falls. Deine Angaben helfen anderen Nutzern, die Qualität der Versicherung besser einzuschätzen und ihre Entscheidungen zu treffen.
                             </span>
                         </x-alert>
                         <div class="flex justify-center items-center">
@@ -509,8 +504,8 @@
                         <div>
                             <h2 class="text-lg font-bold mb-6">Versicherungs Vertragsdaten</h2>
                             <x-alert class="w-max mx-auto mb-6" role="alert">
-                                    <span>
-                                        Bitte geben Sie die Vertragsdaten der Versicherung an, bei der Sie den Schaden gemeldet haben. Diese Informationen sind wichtig, um den Schadenfall korrekt zuzuordnen und zu bearbeiten.
+                                <span>
+                                    Bitte geben Sie die Vertragsdaten der Versicherung an, bei der Sie den Schaden gemeldet haben. Diese Informationen sind wichtig, um den Schadenfall korrekt zuzuordnen und zu bearbeiten.
                                 </span>
                             </x-alert>
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">

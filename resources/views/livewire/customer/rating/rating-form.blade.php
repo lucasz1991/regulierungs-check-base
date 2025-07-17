@@ -18,8 +18,6 @@
         });
     }"
 >
-
- 
     <template x-teleport="body">
         <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"  class="fixed inset-0 z-40  bg-black/20 px-4 pb-8 pt-14 backdrop-blur-md sm:items-center lg:p-8 overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
             <!-- Modal Dialog -->
@@ -29,8 +27,7 @@
                     type="button"
                     @click="modalIsOpen = false"
                     class="absolute top-2 right-2 z-50 p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    aria-label="Abbrechen"
-                >
+                    aria-label="Abbrechen">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -168,6 +165,16 @@
                                     @endforeach
                                 </select>
                                 <div id="spacerInsuranceSubTypeId" class="" ></div>
+                                {{-- Falls dieser Versicherungstyp eine Fremd-Versicherung-Regelung erlaubt --}}
+                                    @if ($thirdPartyInsuranceAllowed && $insuranceSubTypeId)
+                                        <div class="">
+                                            <label class="inline-flex items-center mt-2">
+                                                <input type="checkbox" wire:model.live="thirdPartyInsurance" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+                                                <span class="ml-2 text-sm text-gray-700">Fremdversicherung</span>
+                                            </label>
+                                            <p class="text-xs text-gray-500 mt-1">Falls du eine Fremdversicherung bewerten möchtest, aktiviere diese Option.</p>
+                                        </div>
+                                    @endif
 
                             </div>
                             @error('insuranceSubTypeId')
@@ -256,7 +263,7 @@
                         <h2 class="text-lg font-bold mb-6">Wie wurde der Schaden reguliert?</h2>
                         <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
-Gib an, wie der Schaden bisher bearbeitet wurde (z. B. schnell ausgezahlt, Teilzahlung, noch offen, abgelehnt).
+                                    Gib an, wie der Schaden bisher bearbeitet wurde (z.B. schnell ausgezahlt, Teilzahlung, noch offen, abgelehnt).
                                 </span>
                             </x-alert>
                         <div class="flex justify-center items-center">
@@ -337,7 +344,7 @@ Gib an, wie der Schaden bisher bearbeitet wurde (z. B. schnell ausgezahlt, Tei
                                     Was war deiner Meinung nach der Grund für die Teilzahlung?
                                     @break
                                 @case('ablehnung')
-                                    Wie wurde die Ablehnung deiner Versicherung begründet?
+                                    Wie wurde die Ablehnung der Versicherung begründet?
                                     @break
                                 @case('austehend')
                                     Was ist der Grund für die ausstehende Regulierung?
@@ -351,16 +358,16 @@ Gib an, wie der Schaden bisher bearbeitet wurde (z. B. schnell ausgezahlt, Tei
                                 
                                 @switch($regulationType)
                                     @case('vollzahlung')
-Beschreibe kurz, was gut oder schlecht lief, damit unsere KI deine Erfahrung auswerten kann.
+                                        Beschreibe kurz, was gut oder schlecht lief, damit unsere KI deine Erfahrung auswerten kann.
                                         @break
                                     @case('teilzahlung')
-Erläutere warum es nur eine Teilzahlung gab und wie du die Begründung erlebt hast.
+                                        Erläutere warum es nur eine Teilzahlung gab und wie du die Begründung erlebt hast.
                                         @break
                                     @case('ablehnung')
-Erkläre kurz, warum der Fall abgelehnt wurde und wie die Kommunikation war.
+                                        Erkläre kurz, warum der Fall abgelehnt wurde und wie die Kommunikation war.
                                         @break
                                     @case('austehend')
-Beschreibe, warum die Regulierung noch offen ist (z. B. Verzögerung, fehlende Unterlagen).
+                                        Beschreibe, warum die Regulierung noch offen ist (z. B. Verzögerung, fehlende Unterlagen).
                                         @break
                                     @default
                                         Bitte beschreibe den Grund für deine Bewertung möglichst präzise und nachvollziehbar. Je genauer du deine Erfahrung schilderst, desto besser kann unsere KI deine Bewertung auswerten und anderen Nutzern eine fundierte Einschätzung der Versicherung ermöglichen.
@@ -370,7 +377,6 @@ Beschreibe, warum die Regulierung noch offen ist (z. B. Verzögerung, fehlende
                         <div class="flex justify-center items-center">
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">
                                 {{-- Karte: Vollzahlung --}}
-                                
                                 <div class="mb-4">
                                     <div class="mt-4 text-left bg-secondary text-white rounded-lg shadow-md p-4">
                                         <h3 class="text-lg font-semibold mb-2">Bitte wähle eine Option:</h3>
@@ -530,18 +536,20 @@ Beschreibe, warum die Regulierung noch offen ist (z. B. Verzögerung, fehlende
                             <h2 class="text-lg font-bold mb-6">Finanzielle Eckdaten des Falls</h2>
                             <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
-Gib die wichtigsten Beträge an, damit die Regulierung besser eingeordnet werden kann.
+                                    Gib die wichtigsten Beträge an, damit die Regulierung besser eingeordnet werden kann.
                                 </span>
                             </x-alert>
                             <div class="xl:grid xl:grid-cols-2 xl:justify-center  items-center xl:space-x-4 w-full">
                                 <div  class="mb-4 mt-4 text-left bg-secondary  rounded-lg shadow-md p-4">
-                                    <div class="mt-4">
-                                        <label class="block text-sm font-medium text-white mb-2"> Selbstbeteiligung €</label>
-                                        <input  x-mask:dynamic="$money($input, '.', '')"  wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
-                                        @error('contractDetails.contract_deductible_amount')
-                                            <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    @if (!$thirdPartyInsurance)
+                                        <div class="mt-4">
+                                            <label class="block text-sm font-medium text-white mb-2"> Selbstbeteiligung €</label>
+                                            <input  x-mask:dynamic="$money($input, '.', '')"  wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />
+                                            @error('contractDetails.contract_deductible_amount')
+                                                <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    @endif
                                     <div class="mt-4 ">
                                         <label class="block text-sm font-medium text-white mb-2"> Schadenshöhe €</label>
                                         <input   x-mask:dynamic="$money($input, '.', '')" wire:model.live.debounce.250ms="contractDetails.claim_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />

@@ -23,6 +23,8 @@ class RatingForm extends Component
     public $insuranceType;
     public $insuranceSubTypeId = null;
     public $insuranceSubType;
+    public $thirdPartyInsuranceAllowed = false; 
+    public $thirdPartyInsurance = false; 
     public $insuranceSubTypes = [];
     public $insurances = [];
     public $insuranceId = null;
@@ -233,10 +235,16 @@ class RatingForm extends Component
         }else {
             
             $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
+            $this->thirdPartyInsuranceAllowed = $this->insuranceSubType?->allow_third_party ?? false;
             $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
             $this->insurances = $this->insuranceSubType?->insurances()->get() ?? [];
             $this->loadQuestions();
         }
+    }
+
+    public function updatedThirdPartyInsurance()
+    {   
+        $this->answers['thirdPartyInsurance'] = $this->thirdPartyInsurance;
     }
 
     public function updatedInsuranceId()
