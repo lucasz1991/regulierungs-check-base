@@ -4,8 +4,8 @@
                             @mouseenter="show = true"
                             @mouseleave="show = false"
                             @click.away="show = false"
-                            @click.prevent="show = !show"
-                            
+                            @click.prevent="show = true"
+
                             class="text-gray-400 hover:text-gray-600 focus:outline-none -mt-4"
                             aria-label="Hinweis zur Logo-Nutzung"
                             type="button"
@@ -18,7 +18,7 @@
                         <div
                             x-show="show"
                             x-transition
-                            class="absolute z-50 top-full left-0 mt-2 w-64 bg-white text-sm text-gray-800 rounded shadow-lg p-3"
+                            class="absolute z-50 top-full left-0 mt-2 w-64 bg-gray-100 text-sm text-gray-800 rounded shadow-lg p-3"
                         >
                             <p class="leading-snug">
                             Das Logo wird ausschließlich zur Identifikation verwendet. Es besteht keine geschäftliche Verbindung. Markenrechte liegen beim jeweiligen Versicherer.
