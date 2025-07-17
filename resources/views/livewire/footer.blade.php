@@ -36,7 +36,7 @@
                     <h4 class="text-gray-400 font-semibold text-lg relative max-sm:cursor-pointer" @click="open = !open">Unternehmen <svg
                         xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
                         :class="open ? 'transform rotate-180' : ''"
-                            class="sm:hidden absolute transition-all ease-in duration-200 absolute right-0 top-1 fill-[#d6d6d6]" viewBox="0 0 24 24">
+                            class="sm:hidden transition-all ease-in duration-200 absolute right-0 top-1 fill-[#d6d6d6]" viewBox="0 0 24 24">
                         <path
                         d="M12 16a1 1 0 0 1-.71-.29l-6-6a1 1 0 0 1 1.42-1.42l5.29 5.3 5.29-5.29a1 1 0 0 1 1.41 1.41l-6 6a1 1 0 0 1-.7.29z"
                         data-name="16" data-original="#000000"></path>

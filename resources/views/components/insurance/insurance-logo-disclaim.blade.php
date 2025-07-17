@@ -5,6 +5,7 @@
                             @mouseleave="show = false"
                             @click.away="show = false"
                             @click.prevent="show = !show"
+                            
                             class="text-gray-400 hover:text-gray-600 focus:outline-none -mt-4"
                             aria-label="Hinweis zur Logo-Nutzung"
                             type="button"
