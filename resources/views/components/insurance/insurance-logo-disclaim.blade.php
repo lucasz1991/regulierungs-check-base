@@ -18,6 +18,7 @@
                         <div
                             x-show="show"
                             x-transition
+                            x-cloak
                             class="absolute z-50 top-full left-0 mt-2 w-64 bg-gray-100 text-sm text-gray-800 rounded shadow-lg p-3"
                         >
                             <p class="leading-snug">
