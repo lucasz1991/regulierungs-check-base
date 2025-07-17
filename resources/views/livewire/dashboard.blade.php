@@ -29,13 +29,13 @@
                                 Einstellungen
                             </button>
                             <form method="POST" action="{{ route('logout') }}" x-data>
-                                                 @csrf
-                                                 <a href="{{ route('logout') }}" @click.prevent="$root.submit();" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded  ">
-                                                     <svg class="w-5 h-5  mr-1" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
-                                                     </svg>
-                                                     Abmelden
-                                                 </a>
+                                @csrf
+                                <a href="{{ route('logout') }}" @click.prevent="$root.submit();" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded  ">
+                                    <svg class="w-5 h-5  mr-1" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
+                                    </svg>
+                                    Abmelden
+                                </a>
                             </form>
                         </nav>
 
