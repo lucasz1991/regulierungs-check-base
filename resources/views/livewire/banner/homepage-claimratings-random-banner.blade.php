@@ -61,7 +61,6 @@
             x-on:click="stopSwiperswiperclaimRatings()"
             x-on:click.away="startSwiperswiperclaimRatings()"
             x-on:touchstart="stopSwiperswiperclaimRatings()"
-            x-on:touchend="startSwiperswiperclaimRatings()"
         class=" relative w-full"
         wire:ignore
         wire:loading.class="hidden"
