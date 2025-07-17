@@ -542,7 +542,6 @@ Gib die wichtigsten Beträge an, damit die Regulierung besser eingeordnet werden
                                             <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
-    
                                     <div class="mt-4 ">
                                         <label class="block text-sm font-medium text-white mb-2"> Schadenshöhe €</label>
                                         <input   x-mask:dynamic="$money($input, '.', '')" wire:model.live.debounce.250ms="contractDetails.claim_amount" class="w-full border px-3 py-2 rounded" placeholder="z.B. 100 000 €" />

@@ -17,8 +17,7 @@
 @endphp
 
 
-<div 
-        x-data="{ alertShow: @entangle('alertShow')}"
+<div    x-data="{ alertShow: @entangle('alertShow')}"
         x-show="alertShow"
         x-init="() => {$watch('alertShow', value => {setTimeout(() => alertShow = false, 5000) });}"
         @toast:hide.window="setTimeout(() => alertShow = false, $event.detail.timeout)"
@@ -33,8 +32,6 @@
         role="alert"
         x-cloak
         >
-
-
             <div class="shadow-[0_3px_10px_-3px_rgba(6,81,237,0.3)]  text-black flex bg-white max-w-sm rounded-md overflow-hidden relative"
               role="alert">
               <div class="flex items-center justify-center w-14 p-5 bg-{{ $color }}-500 ">

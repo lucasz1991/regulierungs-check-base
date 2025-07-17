@@ -14,7 +14,7 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 
 body {
     -webkit-text-size-adjust: none;
-    background-color: #effffe;  /* Hellgrauer Hintergrund */
+    background-color: #7ab5df;  /* Hellgrauer Hintergrund */
     color: var(--primary-font-color);  /* Dunkelgrauer Text */
     height: 100%;
     line-height: 1.4;
@@ -32,7 +32,7 @@ blockquote {
 }
 
 a {
-    color: #b2d6a4;  /* Primärfarbe */
+    color: #083554;  /* Primärfarbe */
     text-decoration: none;
 }
 
