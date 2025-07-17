@@ -14,7 +14,7 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 
 body {
     -webkit-text-size-adjust: none;
-    background-color: #84b9d8;  /* Hellgrauer Hintergrund */
+    background-color: #a6cbe0;  /* Hellgrauer Hintergrund */
     color: var(--primary-font-color);  /* Dunkelgrauer Text */
     height: 100%;
     line-height: 1.4;
