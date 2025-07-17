@@ -23,10 +23,10 @@
                         prevEl: '.swiper-button-prev-claimRatings',
                     },
                     loop: true,
+                    loopAdditionalSlides: 5,
                     centeredSlides: true,
                     slidesPerView: '1',
                     spaceBetween: 20,
-                    disableOnMobile: true,
                     breakpoints: {
                         1000: {
                             slidesPerView: 2,
