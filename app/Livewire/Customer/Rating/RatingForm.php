@@ -53,6 +53,7 @@ class RatingForm extends Component
     public $standardSteps = 7;
     public $totalSteps = 0;
     
+    public $standardQuestions = [];
     public $questions = [];
     public $variableQuestions = [];
     public $answers = [];
@@ -74,7 +75,7 @@ class RatingForm extends Component
         $this->questions = collect();
 
         // Standardfragen hinzufügen (hardcodiert)
-        $standardQuestions = collect([
+        $this->standardQuestions = collect([
             (object)[
                 'id' => 1,
                 'title' => 'insuranceTypeId',
@@ -195,7 +196,7 @@ class RatingForm extends Component
                 'tags' => [],
             ],
         ]);
-        $this->questions = $this->questions->merge($standardQuestions);
+        $this->questions = $this->questions->merge($this->standardQuestions);
         $this->answers = array_fill_keys($this->questions->pluck('title')->toArray(), null);
     }
 
@@ -236,6 +237,8 @@ class RatingForm extends Component
             
             $this->insuranceSubType = InsuranceSubtype::find($this->insuranceSubTypeId);
             $this->thirdPartyInsuranceAllowed = $this->insuranceSubType?->allow_third_party ?? false;
+            $this->thirdPartyInsurance = false;
+            $this->answers['thirdPartyInsurance'] = false;
             $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
             $this->insurances = $this->insuranceSubType?->insurances()->get() ?? [];
             $this->loadQuestions();
@@ -245,6 +248,7 @@ class RatingForm extends Component
     public function updatedThirdPartyInsurance()
     {   
         $this->answers['thirdPartyInsurance'] = $this->thirdPartyInsurance;
+        $this->loadQuestions();
     }
 
     public function updatedInsuranceId()
@@ -291,15 +295,32 @@ class RatingForm extends Component
 
     public function loadQuestions()
     {
-        // Variablen Ratingfragen hinzufügen
+        // Fragen laden (aus Pivot-Tabelle geordnet)
         $this->variableQuestions = $this->insuranceSubType
             ->ratingQuestions()
             ->orderBy('insurance_subtype_rating_question.order_column')
-            ->get();
+            ->get()
+            ->filter(function ($question) {
+                $visibility_condition = $question->visibility_condition ?? [];
+
+                // Wenn das Model `casts['visibility'] => 'array'` hat, geht das direkt
+                if (!is_array($visibility_condition)) {
+                    $visibility_condition = json_decode($visibility_condition, true);
+                }
+
+                // Wenn Bedingung gesetzt ist, z. B. {"thirdPartyInsurance": false}
+                if (isset($visibility_condition['thirdPartyInsurance'])) {
+                    return $this->thirdPartyInsurance === $visibility_condition['thirdPartyInsurance'];
+                }
+
+                return true; // keine Einschränkung
+            });
+
+        // Fragen in Collection übernehmen
+        $this->questions = $this->standardQuestions;
         $this->questions = collect($this->questions)->merge($this->variableQuestions);
 
-        
-        $this->totalSteps = $this->questions->count(); 
+        $this->totalSteps = $this->questions->count();
     }
 
     public function nextStep()

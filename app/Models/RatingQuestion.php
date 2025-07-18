@@ -40,6 +40,7 @@ class RatingQuestion extends Model
         'input_constraints',
         'read_only',
         'tags',
+        'visibility_condition',
     ];
 
     protected $casts = [
@@ -49,6 +50,7 @@ class RatingQuestion extends Model
         'is_required' => 'boolean',
         'is_active' => 'boolean',
         'read_only' => 'boolean',
+        'visibility_condition' => 'array',
     ];
 
     public function insuranceSubtypes()
