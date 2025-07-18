@@ -14,6 +14,7 @@ class HomepageClaimratingsRandomBanner extends Component
     {
         $this->claimRatings = ClaimRating::with('insurance')
             ->where('status', 'rated')
+            ->where('is_public', true)
             ->inRandomOrder()
             ->take(15)
             ->get();

@@ -7,7 +7,7 @@
                 <aside class="lg:w-1/4  xl:w-1/6">
                     <div class="bg-white rounded-lg shadow-xl  border  border-gray-300 w-full  p-6 ">
                         <div class="flex flex-col items-center text-center">
-                            <div class="w-24 aspect-square rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-2xl font-bold"><img class="w-full rounded-full object-cover"
+                            <div class="w-24 aspect-square rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-2xl font-bold"><img class="w-full aspect-square rounded-full object-cover"
                                                          src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" /></div>
                             <h2 class="mt-4 text-lg font-semibold">{{ $userData->name }}</h2>
                             <p class="text-sm text-gray-500">{{ $userData->email }}</p>
