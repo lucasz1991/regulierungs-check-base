@@ -1,10 +1,10 @@
 <div x-data="{
-                percentage: 5,
-                strokeLength: 565.5, // 2π * 90
-                get offset() {
-                  return this.strokeLength - (this.percentage / 100) * this.strokeLength;
-                }
-              }" class="flex mr-3" >
+    percentage: 5,
+    strokeLength: 565.5, // 2π * 90
+    get offset() {
+      return this.strokeLength - (this.percentage / 100) * this.strokeLength;
+    }
+  }" class="flex mr-3" >
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1 opacity-40 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <g>
               <!-- Schild (Shield) -->
@@ -47,7 +47,7 @@
                 />
               </svg>
         </div>
-        <div x-show="show"  x-anchor.offset.10="$refs.anchor" class="z-50 text-sm text-white bg-gray-800 rounded-md shadow-lg p-3">
+        <div x-show="show" x-cloak  x-anchor.offset.10="$refs.anchor" class="z-50 text-sm text-white bg-gray-800 rounded-md shadow-lg p-3">
           Verrifizierungsstatus:<br><span class="font-semibold">Niedrig</span>
         </div>
     </div>
