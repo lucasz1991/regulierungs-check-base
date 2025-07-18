@@ -5,6 +5,7 @@ namespace App\Livewire\ClaimRatings;
 use Livewire\Component;
 use App\Models\ClaimRating;
 use App\Models\ClaimRatingReport;
+use App\Models\AdminTask;
 use Illuminate\Support\Facades\Auth;
 
 class ReportClaimRatingForm extends Component
@@ -64,6 +65,17 @@ class ReportClaimRatingForm extends Component
             'reason' => $this->reportReason,
             'comment' => $this->comment,
             'status' => 'pending',
+        ]);
+        // Optional: Erstelle eine Admin-Aufgabe für die Überprüfung der Meldung
+        AdminTask::create([
+            'title' => 'Überprüfung der Meldung für Claim Rating #' . $this->claimRating->id,
+            'description' => 'Eine neue Meldung wurde für die Claim Rating-ID ' . $this->claimRating->id . ' erstellt. Bitte überprüfe die Meldung.',
+            'status' => AdminTask::STATUS_OPEN,
+            'type' => 'review',
+            'priority' => AdminTask::PRIORITY_NORMAL,
+            'related_model_type' => ClaimRating::class,
+            'related_model_id' => $this->claimRating->id,
+            'assigned_to_user_id' => null, // Optional: Hier kannst du einen Benutzer zuweisen
         ]);
 
         $this->dispatch('showAlert', 'Vielen Dank! Wir haben deine Meldung erhalten.');

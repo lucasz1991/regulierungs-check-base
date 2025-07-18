@@ -37,7 +37,7 @@
                                         <div class="ml-6 grow">
                                             <ul class="flex space-x-5">
                                                 <li>
-                                                <a href='https://www.facebook.com' target="_blank">
+                                                <a href='https://www.facebook.com/share/1CVkgcLL8C/?mibextid=wwXIfr' target="_blank">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="fill-[#5796fc] hover:fill-[#0866ff] w-10 h-10"
                                                     viewBox="0 0 24 24">
                                                     <path fill-rule="evenodd"
@@ -48,7 +48,7 @@
                                                 </a>
                                                 </li>
                                                 <li>
-                                                <a href='https://www.instagram.com' target="_blank">
+                                                <a href='https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr' target="_blank">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     class="fill-[#fc7dcb] hover:fill-[#ff05a0] w-10 h-10" viewBox="0 0 24 24">
                                                     <path

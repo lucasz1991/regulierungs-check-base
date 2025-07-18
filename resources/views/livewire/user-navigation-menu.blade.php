@@ -47,15 +47,11 @@
     @click.away="$store.nav.isMobileMenuOpen = false"
     >
     <div>
-        <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed  w-screen bg-white   z-30 transition-all duration-300 ease-in-out"  
-                wire:loading.class="cursor-wait"
-            >
-             <div class="w-full border-b border-gray-300 px-3 md:px-8">
-
-                 <!-- Primary Navigation Menu -->
-                 <div class="container mx-auto flex flex-wrap justify-between items-center  ">
-                         <div class="max-md:order-1  md:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
-                             <livewire:tools.search-modal />
+        <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed  w-screen bg-white   z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">
+            <div class="w-full border-b border-gray-300 px-3 md:px-8">
+                <div class="container mx-auto flex flex-wrap justify-between items-center  ">
+                        <div class="max-md:order-1  md:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
+                            <livewire:tools.search-modal />
                             <div class="md:hidden flex  items-center ">
              
                                  @auth
@@ -496,8 +492,8 @@
                           
                                  </div>
                  </div>
-             </div>
-            </nav>
+            </div>
+        </nav>
     </div>
     <div :style="'height: ' + $store.nav.height + 'px'" class="min-h-12 md:min-h-[4rem] duration-300 ease-in-out transition-all" > </div>
     <div id="megamenu"   class="transition-all duration-200 ease-in-out "></div>
