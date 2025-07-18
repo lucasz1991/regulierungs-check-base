@@ -95,19 +95,19 @@ img {
 /* Header */
 
 .header {
-    padding: 20px 0;
+    padding: 20px 0 0 0;
     text-align: center;
     background-color: #ffffff;  /* Primärfarbe */
     color: #ffffff; /* Weißer Text */
 }
 
 .header a {
-    color: #ffffff; /* Weißer Text */
+    color: var(--primary-font-color); /* Weißer Text */
     font-size: 20px;
     font-weight: bold;
     text-decoration: none;
 }
-
+    
 /* Body */
 
 .body {
