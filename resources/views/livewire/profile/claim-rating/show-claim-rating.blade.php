@@ -179,6 +179,18 @@
                     </div>
             </div>
         </div>
+        @else
+            <div class="bg-gray-200 rounded shadow p-6">
+                <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
+                    Auswertung:
+                </h2>
+                <p class="text-sm text-gray-600 mb-4">
+                    Die Auswertung wird durchgeführt, sobald die Prüfung abgeschlossen ist.
+                </p>
+                <p class="text-sm text-gray-600 mb-4">
+                    Derzeit befindet sich die Regulierung in der Prüfung. Bitte warten Sie, bis die Prüfung abgeschlossen ist, um die Auswertung zu sehen.
+                </p>
+            </div>
         @endif
     </div>
 </div>
