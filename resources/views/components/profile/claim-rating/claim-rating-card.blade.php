@@ -67,6 +67,9 @@
     <div class="p-4">
         @switch($rating->status)
             @case('pending')
+                <span class="text-yellow-600 font-medium">Prüfung steht bevor</span>
+                @break
+            @case('rating')
                 <span class="text-yellow-600 font-medium">In Prüfung</span>
                 @break
             @default
