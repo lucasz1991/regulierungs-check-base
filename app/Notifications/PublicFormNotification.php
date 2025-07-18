@@ -26,22 +26,24 @@ class PublicFormNotification extends Notification
     {
         $formType = $this->data['form_type'] ?? 'unbekannt';
 
-        $mail = (new MailMessage)
-            ->greeting('Hallo!');
+        $mail = (new MailMessage);
 
         switch ($formType) {
             case 'newsletter':
                 $mail->subject('Neue Newsletter-Anmeldung')
+                    ->greeting('Neue Newsletter-Anmeldung')
                     ->line('Ein Nutzer hat sich für den Newsletter angemeldet:');
                 break;
 
             case 'kontakt':
                 $mail->subject('Neue Kontaktanfrage')
+                    ->greeting('Neue Kontaktanfrage')
                     ->line('Ein Nutzer hat das Kontaktformular ausgefüllt:');
                 break;
 
             default:
                 $mail->subject('Neue Formularübermittlung')
+                    ->greeting('Neue Formularübermittlung')
                     ->line('Ein Formular wurde ausgefüllt:');
                 break;
         }
