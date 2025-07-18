@@ -104,7 +104,12 @@ body:focus::-webkit-scrollbar,
 body:hover::-webkit-scrollbar {
   opacity: 1;
 }
-
+.dropdown-panel {
+  width: max-content;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .admin-side-navigation{
   z-index: 49;
   transition: all 0.3s ease;

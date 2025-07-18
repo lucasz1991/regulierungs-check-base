@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg shadow-xl  border  border-gray-300 h-full overflow-hidden" >
+<div class="bg-white rounded-lg shadow-xl  border  border-gray-300 h-full" >
     <div class=" p-4 py-3">
         <div class="flex justify-between ">
             <div class="">
@@ -8,21 +8,7 @@
             </div>
 
             <div class="flex justify-between items-start">
-                <div class="flex mr-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1 opacity-40 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <g>
-                        <!-- Schild (Shield) -->
-                        <path stroke="currentColor" stroke-width="1.5" fill="#f3f4f6" d="M12 3l7 3v5c0 5.25-3.5 9.75-7 11-3.5-1.25-7-5.75-7-11V6l7-3z"/>
-                        <!-- Auge (Eye) -->
-                        <ellipse cx="12" cy="11" rx="3" ry="2" fill="#fff" stroke="currentColor" stroke-width="1"/>
-                        <circle cx="12" cy="11" r="0.8" fill="#1f2937"/>
-                        <path d="M9.5 11c.5-.7 1.5-1.2 2.5-1.2s2 .5 2.5 1.2" stroke="#6b7280" stroke-width="0.7" fill="none"/>
-                    </g>
-                </svg>
-                <div class="w-6">
-                    <x-profile.claim-rating.claim-rating-circleprogress/>
-                </div>
-            </div>
+                <x-profile.claim-rating.claim-rating-circleprogress/>
                 <div class="mr-3">
                     @if($rating->is_public)
                         <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-semibold">Öffentlich</span>
