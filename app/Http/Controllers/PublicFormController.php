@@ -24,10 +24,8 @@ class PublicFormController extends Controller
         $recipient = Setting::where('key', 'contact_email')->value('value') ?? 'lucas@zacharias-net.de';
 
         // Sende Notification
-        Notification::route('mail', $recipient )
-            ->notify(new PublicFormNotification($data));
-        Notification::route('mail', 'berkan.oe@hotmail.com')
-            ->notify(new PublicFormNotification($data));
+        //Notification::route('mail', $recipient )
+            //->notify(new PublicFormNotification($data));
         Notification::route('mail', 'lucas@zacharias-net.de')
             ->notify(new PublicFormNotification($data));
 
