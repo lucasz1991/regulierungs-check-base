@@ -98,7 +98,7 @@
                 <div><span class="mr-4">Details:</span>{{ $claimRating->answers['regulationDetail']['selected_value'] ?? '–' }}</div>
             </div>
         </div>
-        @if($claimRating->status != 'pending')
+        @if($claimRating->status != 'pending' && $claimRating->status != 'rating')
         <div class="bg-gray-200 rounded shadow p-6">
             <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
                 Auswertung:
