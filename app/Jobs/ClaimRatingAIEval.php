@@ -78,6 +78,9 @@ class ClaimRatingAIEval implements ShouldQueue
         $variableQuestionScore = 0;
         $variableQuestionCount = 0;
         foreach ($questionnaireVersionSnapshot as $snapshotQuestion) {
+            if (!isset($this->claimRating->answers[$snapshotQuestion['title']])) {
+                continue; // Frage überspringen, wenn keine Antwort vorhanden ist
+            }
             $calculatedScore = $this->calculateScore($snapshotQuestion);
             if(is_array($calculatedScore)){
                 $responseData = $calculatedScore;
@@ -89,6 +92,7 @@ class ClaimRatingAIEval implements ShouldQueue
                 $type = 'calc';
             }
             if($calculatedScore != -1 ){
+
                 if($type == 'ai'){
                     $attachments['scorings']['questions'][$snapshotQuestion['title']] = [
                         'question_title' => $snapshotQuestion['title'],
