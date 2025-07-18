@@ -74,7 +74,7 @@ class Reviews extends Component
     public function render()
     {
         $query = ClaimRating::with(['insurance', 'insuranceSubtype'])
-            ->whereNotNull('rating_score');
+            ->whereNotNull('rating_score')->where('status', 'rated')->where('is_public', true);
 
         if (!empty($this->search)) {
             $query->where(function ($query) {

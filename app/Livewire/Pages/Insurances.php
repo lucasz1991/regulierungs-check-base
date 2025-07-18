@@ -116,7 +116,8 @@ class Insurances extends Component
             ->withCount('claimRatings')
             ->withAvg('claimRatings', 'rating_score')
             ->whereHas('claimRatings', function ($query) {
-                $query->where('status', 'rated');
+                $query->where('status', 'rated')
+                    ->where('is_public', true);
             })
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
