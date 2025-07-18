@@ -154,7 +154,7 @@ class AIEvalController extends Controller
         "customer_service": 0.6,
         "fairness": 0.5,
         "transparency": 0.7,
-        "tags": "4,13", // Mindestens 1 und Maximal 3 Tag-IDs, kommasepariert, aus possibleTags
+        "tags": "4,13", // Mindestens 0 und Maximal 3 Tag-IDs, kommasepariert, aus possibleTags. Falls keine Tags passen, leer lassen !!!
         "comment": "Kurze Zusammenfassung in 4-5 Zeilen. Neutral, sachlich, kein Lob oder Kritik überbetonen."
         }
         EOT;
