@@ -19,13 +19,13 @@ class PublicFormController extends Controller
 
         // Logging je nach Formularart
         Log::info("[$formType] Formular abgeschickt", $data);
-
+        
         // Empfänger dynamisch (optional)
         $recipient = Setting::where('key', 'contact_email')->value('value') ?? 'lucas@zacharias-net.de';
 
         // Sende Notification
-        //Notification::route('mail', $recipient )
-            //->notify(new PublicFormNotification($data));
+        Notification::route('mail', $recipient )
+            ->notify(new PublicFormNotification($data));
         Notification::route('mail', 'lucas@zacharias-net.de')
             ->notify(new PublicFormNotification($data));
 
