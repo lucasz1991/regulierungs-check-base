@@ -365,7 +365,7 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " fill="currentColor" viewBox="0 0 24 24">
                                                  <path d="M7 10H3v10h4V10zm7-6h-4v16h4V4zm7 10h-4v6h4v-6z"/>
                                                 </svg>
-                                                {{ __('Ergebnisse') }}
+                                                {{ __('BonitätsCheck') }}
                                             </x-slot>
                                             <x-slot name="content">
                                                 <x-nav.nav-link-submenu-link href="/insurances" wire:navigate  :active="request()->is('insurances')">
