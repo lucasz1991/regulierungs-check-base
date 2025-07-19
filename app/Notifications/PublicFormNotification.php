@@ -55,7 +55,7 @@ class PublicFormNotification extends Notification
             $mail->line(ucfirst($key) . ': ' . $value);
         }
         $mail->salutation('Mit freundlichen Grüßen, dein Regulierungs-Check Team');
-        return $mail->line('--- Ende der Nachricht ---');
+        return $mail;
     }
 
 }
