@@ -7,9 +7,9 @@
         
         <x-meta-page-header />
         <title>@yield('title') | {{ config('app.name', 'Regulierungs-check') }}</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('site-images/favicon/favicon.jpg') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('site-images/favicon/favicon.jpg') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('site-images/favicon/favicon.jpg') }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('site-images/logo/logo-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('site-images/logo/logo-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('site-images/logo/logo-icon.png') }}">
 
         <link rel="stylesheet" href="/adminresources/css/swiper-bundle.min.css">
         <script src="/adminresources/js/swiper-bundle.min.js"></script>
