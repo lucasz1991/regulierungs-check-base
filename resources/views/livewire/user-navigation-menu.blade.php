@@ -10,7 +10,6 @@
         $store.nav.isScreenXl = window.innerWidth >= 1280;
         $store.nav.isMobile = window.innerWidth <= 768;
     })"
-
     x-on:scroll.window="
         scrollTop = window.scrollY;
         isScrolled = scrollTop > 0;
@@ -27,7 +26,6 @@
 
         lastScrollTop = scrollTop;
     "
-
     x-resize="
         $nextTick(() => {
             screenWidth = window.innerWidth;
@@ -365,7 +363,7 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " fill="currentColor" viewBox="0 0 24 24">
                                                  <path d="M7 10H3v10h4V10zm7-6h-4v16h4V4zm7 10h-4v6h4v-6z"/>
                                                 </svg>
-                                                {{ __('BonitätsCheck') }}
+                                                {{ __('Bonitäts-Check') }}
                                             </x-slot>
                                             <x-slot name="content">
                                                 <x-nav.nav-link-submenu-link href="/insurances" wire:navigate  :active="request()->is('insurances')">
