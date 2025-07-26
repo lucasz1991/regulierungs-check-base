@@ -1,6 +1,6 @@
 <div  @if($hasActiveRating) wire:poll.3s @endif  class="w-full relative bg-cover bg-center bg-gray-100 pb-20 pt-8" wire:loading.class="cursor-wait">
     <div class="container mx-auto px-5">
-        <div x-data="{ selectedTab: 'basic' }" class="w-full">
+        <div x-data="{ selectedTab: $persist('basic') }" class="w-full">
             <!-- Hauptbereich -->
             <div class="container mx-auto px-4 py-10 flex flex-col lg:flex-row gap-10">
                 <!-- Sidebar -->
