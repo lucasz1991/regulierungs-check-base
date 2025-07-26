@@ -94,7 +94,29 @@
                     </div>
                     <div x-cloak x-show="selectedTab === 'security'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="security">
                         <div class="mt-10 sm:mt-0">
-                            @livewire('profile.edit-security-settings')
+                              <div class="antialiased" wire:loading.class="cursor-wait">
+                                <div class="py-2 sm:px-6 lg:px-8">
+                                    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+                                        <div class="mt-10 sm:mt-0">
+                                            @livewire('profile.update-password-form')
+                                        </div>
+    
+                                        <x-section-border />
+                                    @endif
+    
+                                    @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                                        <div class="mt-10 sm:mt-0">
+                                            @livewire('profile.two-factor-authentication-form')
+                                        </div>
+    
+                                        <x-section-border />
+                                    @endif
+    
+                                    <div class="mt-10 sm:mt-0">
+                                        @livewire('profile.logout-other-browser-sessions-form')
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>
