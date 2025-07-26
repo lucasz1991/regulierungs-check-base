@@ -28,6 +28,10 @@
                                 <svg class="w-5  h-5  mr-1"   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                                 Einstellungen
                             </button>
+                            <button x-on:click="selectedTab = 'security'" x-bind:aria-selected="selectedTab === 'security'" x-bind:tabindex="selectedTab === 'security' ? '0' : '-1'" x-bind:class="selectedTab === 'security' ? ' bg-primary-50 font-medium text-primary-800 ' : ' hover:bg-gray-50 '" class="flex items-center gap-3 px-4 py-2  rounded  w-full">
+                                <svg class="w-5  h-5  mr-1"   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                Sicherheit
+                            </button>
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
                                 <a href="{{ route('logout') }}" @click.prevent="$root.submit();" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded  ">
@@ -86,6 +90,11 @@
                     <div x-cloak x-show="selectedTab === 'settings'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="settings">
                         <div class="mt-10 sm:mt-0">
                             @livewire('profile.edit-privacy-settings')
+                        </div>
+                    </div>
+                    <div x-cloak x-show="selectedTab === 'security'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="security">
+                        <div class="mt-10 sm:mt-0">
+                            @livewire('profile.edit-security-settings')
                         </div>
                     </div>
                 </main>
