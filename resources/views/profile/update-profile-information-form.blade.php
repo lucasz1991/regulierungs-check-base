@@ -107,7 +107,9 @@
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
                 <p class="text-sm mt-2">
-                    {{ __('Deine E-Mail-Adresse ist nicht verifiziert.') }}
+                    <span class="font-medium text-red-600">
+                        {{ __('Deine E-Mail-Adresse ist nicht verifiziert.') }}
+                    </span>
 
                     <button type="button" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" wire:click.prevent="sendEmailVerification">
                         {{ __('Klicke hier, um die Verifizierungs-E-Mail erneut zu senden.') }}
