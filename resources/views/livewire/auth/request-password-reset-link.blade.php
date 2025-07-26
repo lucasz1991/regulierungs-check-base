@@ -6,7 +6,7 @@
     Passwort vergessen? Kein Problem! Gib einfach deine E-Mail-Adresse ein, und wir senden dir einen Link zum Zurücksetzen deines Passworts. So kannst du schnell wieder auf deine Bewertungen zugreifen und weiterhin die Regulierungserfahrungen mit deiner Versicherung verfolgen oder aktualisieren.
     </x-slot>
     <x-slot name="form">
-             <div  class="mt-8 w-xl shrink-0">
+             <div  class="mt-8 min-w-2xl max-w-full shrink-0">
                                 <x-validation-errors class="mb-4" />
 
                    

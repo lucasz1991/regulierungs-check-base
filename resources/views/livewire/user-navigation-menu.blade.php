@@ -8,7 +8,7 @@
     x-init="$nextTick(() => {
         $store.nav.height = $refs.nav.offsetHeight;
         $store.nav.isScreenXl = window.innerWidth >= 1280;
-        $store.nav.isMobile = window.innerWidth <= 768;
+        $store.nav.isMobile = window.innerWidth <= 1280;
     })"
     x-on:scroll.window="
         scrollTop = window.scrollY;
@@ -32,11 +32,9 @@
             if (screenWidth >= 1280) {
                 $store.nav.isScreenXl = true;
                 $store.nav.isMobileMenuOpen = false;
-            } else if (screenWidth <= 768) {
-                $store.nav.isMobile = true;
-                $store.nav.isMobileMenuOpen = false;
-            } else {
                 $store.nav.isMobile = false;
+            } else {
+                $store.nav.isMobile = true;
                 $store.nav.isScreenXl = false;
                 $store.nav.isMobileMenuOpen = false;
             }
@@ -46,11 +44,11 @@
     >
     <div>
         <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed  w-screen bg-white   z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">
-            <div class="w-full border-b border-gray-300 px-3 md:px-8">
+            <div class="w-full border-b border-gray-300 px-3 md:px-4 xl:px-8">
                 <div class="container mx-auto flex flex-wrap justify-between items-center  ">
-                        <div class="max-md:order-1  md:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
+                        <div class="max-xl:order-1  xl:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
                             <livewire:tools.search-modal />
-                            <div class="md:hidden flex  items-center ">
+                            <div class="xl:hidden flex  items-center ">
              
                                  @auth
                                      <!-- Settings Dropdown -->
@@ -124,15 +122,15 @@
                                  @endauth
                              </div>
                          </div>
-                         <div class=" flex items-center h-full py-2 max-md:order-1  flex-none" >
+                         <div class=" flex items-center h-full py-2 max-xl:order-1  flex-none" >
                              <a href="/" wire:navigate   class="h-full flex items-center max-sm:max-w-[120px]">
                                  <x-application-mark />
                              </a>
                          </div>
-                         <div class="flex items-center space-x-4 max-md:order-3 md:order-2 flex-none md:ml-4" >
+                         <div class="flex items-center space-x-4 max-xl:order-3 xl:order-2 flex-none md:ml-4" >
                              <!-- Likes and Inbox Buttons -->
+                             @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/messages'))
                              <div class="flex items-center space-x-6 mr-2">
-                                 @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/messages'))
                                  <div class="relative" x-data="{ open: false, modalOpen: false, selectedMessage: null  }">
                                      <!-- Button zum Öffnen des Popups -->
                                      <button @click="open = !open" class="block ">
@@ -243,12 +241,12 @@
                                          </div>
                                      </div>
                                  </div>
-                                 @endif
-                             </div>
+                                </div>
+                                @endif
              
              
-                             <div class="hidden md:block">
-             
+                             <div class="hidden xl:block">
+                                
                                  @auth
                                      <!-- Settings Dropdown -->
                                      <div class="ms-3 relative">
@@ -321,7 +319,7 @@
                                  @endauth
                              </div>
                              
-                            <a class="inline-flex items-center p-2  md:hidden focus:outline-none"
+                            <a class="inline-flex items-center p-2  xl:hidden focus:outline-none"
                                 @click="$store.nav.isMobileMenuOpen = !$store.nav.isMobileMenuOpen; $dispatch('navhide')">
                                  <div class=" z-50  text-sm text-gray-500 rounded-lg hover:bg-gray-100  burger-container "
                                         :class="$store.nav.isMobileMenuOpen ? 'is-open' : ''" >
@@ -341,15 +339,15 @@
                                  x-transition:leave-start="opacity-100 "
                                  x-transition:leave-end="opacity-0"
                                  :style="$store.nav.isMobile ? 'top: ' + $store.nav.height + 'px; height: calc(100dvh - ' + $store.nav.height + 'px);' : ''"
-                                 :class="$store.nav.isMobileMenuOpen ? 'max-md:inset-0  max-md:bg-black max-md:bg-opacity-50 max-md:z-30' : ''"   
+                                 :class="$store.nav.isMobileMenuOpen ? 'max-xl:inset-0  max-xl:bg-black max-xl:bg-opacity-50 max-xl:z-30' : ''"   
                                  
-                                 x-cloak   class="max-md:order-3 md:order-1 max-md:fixed   md:grow" >
+                                 x-cloak   class="max-xl:order-3 xl:order-1 max-xl:fixed   xl:grow" >
                                  
                                  <div @click.prevent="$store.nav.isMobileMenuOpen = true" 
-                                         :class="$store.nav.isMobileMenuOpen ? 'max-md:translate-x-0' : 'max-md:translate-x-full'"    
+                                         :class="$store.nav.isMobileMenuOpen ? 'max-xl:translate-x-0' : 'max-xl:translate-x-full'"    
                                          :style="$store.nav.isMobile ? 'height: calc(100dvh - ' + $store.nav.height + 'px);' : ''"   
-                                         x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-md:bg-white  max-md:right-0 max-md:h-full max-md:fixed max-md:overflow-y-auto max-md:py-5 max-md:px-3  max-md:border-r max-md:border-gray-200">
-                                     <div  class="md:space-x-8 max-md:block   max-md:space-y-4 md:-my-px md:mx-4 max-md:gap-3 md:flex  items-center   w-max  mx-auto  " >
+                                         x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-xl:bg-white  max-xl:right-0 max-xl:h-full max-xl:fixed max-xl:overflow-y-auto max-xl:py-5 max-xl:px-3  max-xl:border-r max-xl:border-gray-200">
+                                     <div  class="md:space-x-4 xl:space-x-8 max-xl:block   max-xl:space-y-4 xl:-my-px md:mx-4 max-xl:gap-3 xl:flex  items-center   w-max  mx-auto  " >
                                          <!-- Gäste-Spezifische Navigation -->
                                          <x-nav.nav-link href="/" wire:navigate  :active="request()->is('/')">
                                                  <svg class="w-5 max-md:w-6 aspect-square mr-1 max-md:mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  stroke="currentColor" fill="none" viewBox="0 0 24 24">
