@@ -121,6 +121,12 @@
                         {{ __('Ein neuer Verifizierungslink wurde an deine E-Mail-Adresse gesendet.') }}
                     </p>
                 @endif
+            @elseif ($this->user->hasVerifiedEmail())
+                <p class="text-sm mt-2">
+                    <span class="font-medium text-green-600">
+                        {{ __('Deine E-Mail-Adresse ist verifiziert.') }}
+                    </span>
+                </p>
             @endif
         </div>
     </x-slot>
