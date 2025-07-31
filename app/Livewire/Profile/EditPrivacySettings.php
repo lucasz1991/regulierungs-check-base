@@ -13,12 +13,12 @@ class EditPrivacySettings extends Component
     {
         $this->privacy = Auth::user()->privacy_settings ?? [
             'comments' => [
-                'name_visibility' => 'users',
-                'avatar_visibility' => 'users',
+                'name_visibility' => 'none',
+                'avatar_visibility' => 'none',
             ],
             'ratings' => [
-                'name_visibility' => 'users',
-                'avatar_visibility' => 'users',
+                'name_visibility' => 'none',
+                'avatar_visibility' => 'none',
             ],
         ];
     }
