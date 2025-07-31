@@ -43,7 +43,7 @@ class Login extends Component
             ]);
         }
         $this->dispatch('showAlert','Willkommen zurück!', 'success');
-        return $this->redirectIntended(route('dashboard'));
+        return $this->redirectIntended('/dashboard');
     }
 
     public function mount()
