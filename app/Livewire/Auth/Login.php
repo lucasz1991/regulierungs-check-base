@@ -9,20 +9,17 @@ use Illuminate\Validation\ValidationException;
 
 class Login extends Component
 {
-
     public $message;
     public $messageType;
     public $email = '';
     public $password = '';
     public $remember = false;
 
-
-
     protected $rules = [
         'email' => 'required|email|max:255|exists:users,email',
         'password' => 'required|min:6|max:255',
     ];
-    
+
     protected $messages = [
         'email.required' => 'Bitte gib deine E-Mail-Adresse ein.',
         'email.email' => 'Bitte gib eine gültige E-Mail-Adresse ein.',
@@ -56,7 +53,6 @@ class Login extends Component
             $this->dispatch('showAlert', $this->message, $this->messageType);
         }
     }
-
 
     public function render()
     {
