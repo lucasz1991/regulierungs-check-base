@@ -102,13 +102,8 @@
         <!-- E-Mail -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="email" value="{{ __('E-Mail') }}" />
-            <x-input id="email" type="email" class="mt-2 block w-full ring !ring-offset-4 
-            @if ($this->user->hasVerifiedEmail())
-             !ring-green-200 
-            @elseif (! $this->user->hasVerifiedEmail())
-              !ring-red-200 
-            @endif" 
-            wire:model="state.email" required autocomplete="username" />
+            <x-input id="email" type="email"     
+            class="mt-2 block w-full ring !ring-offset-4 {{ $this->user->hasVerifiedEmail() ? '!ring-green-200' : '!ring-red-200' }}" wire:model="state.email" required autocomplete="username" />
             <x-input-error for="email" class="mt-2" />
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
