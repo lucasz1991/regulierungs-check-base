@@ -463,7 +463,7 @@ class RatingForm extends Component
             ], 
             'rating_score' => null, 
             'moderator_comment' => null,
-            'is_public' => false,
+            'is_public' => Auth::check() && Auth::user()->email_verified_at != null ? true : false,
             'verification_hash' => Str::uuid(),
         ]);
     
