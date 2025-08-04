@@ -13,6 +13,10 @@ class ClaimRatingCard extends Component
     public function __construct($rating)
     {
         $this->rating = $rating;
+        // Ensure the rating has the necessary relationships loaded
+        if (!$this->rating->relationLoaded('user')) {
+            $this->rating->load('user');
+        }
     }
 
     /**

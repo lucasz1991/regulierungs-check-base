@@ -204,19 +204,19 @@ class User extends Authenticatable
             'all' => true,
             'users' => $viewerRole === 'user',
             'none' => false,
-            default => false,
+            default => true,
         };
     }
 
     public function isNameVisibleIn(string $section, $viewer): bool
     {
-        $role = $viewer ? 'user' : 'guest';
+        $role = $viewer != null ? 'user' : 'guest';
         return $this->getPrivacySetting($section, 'name_visibility', $role);
     }
 
     public function isAvatarVisibleIn(string $section, $viewer): bool
     {
-        $role = $viewer ? 'user' : 'guest';
+        $role = $viewer != null ? 'user' : 'guest';
         return $this->getPrivacySetting($section, 'avatar_visibility', $role);
     }
 

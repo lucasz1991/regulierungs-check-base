@@ -1,7 +1,7 @@
 @props([
     'user' => null,
-    'context' => 'comments', // z. B. 'comments' oder 'ratings'
-    'viewer' => auth()->user()
+    'context' => 'ratings',
+    'viewer' => auth()->user() ? auth()->user() : null,
 ])
 
 @php
@@ -19,7 +19,6 @@
              class="w-8 h-8 rounded-full object-cover"
              alt="Default User bild">
     @endif
-
     <span class="text-sm font-medium text-gray-800">
         {{ $showName ? $user->name : 'Anonym' }}
     </span>

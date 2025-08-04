@@ -73,7 +73,7 @@ class Reviews extends Component
 
     public function render()
     {
-        $query = ClaimRating::with(['insurance', 'insuranceSubtype'])
+        $query = ClaimRating::with(['insurance', 'insuranceSubtype', 'user'])
             ->whereNotNull('rating_score')->where('status', 'rated')->where('is_public', true);
 
         if (!empty($this->search)) {
@@ -126,7 +126,6 @@ class Reviews extends Component
             default:
                 $query->orderBy('created_at', 'desc');
         }
-
 
         // Pagination (Load More)
         $claimRatings = $query->paginate($this->perPage * $this->pages);

@@ -98,14 +98,12 @@
             <x-input id="name" type="text" class="mt-2 block w-full" wire:model="state.name" required autocomplete="name" />
             <x-input-error for="name" class="mt-2" />
         </div>
-
         <!-- E-Mail -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="email" value="{{ __('E-Mail') }}" />
             <x-input id="email" type="email"     
             class="mt-2 block w-full ring !ring-offset-4 {{ $this->user->hasVerifiedEmail() ? '!ring-green-200' : '!ring-red-200' }}" wire:model="state.email" required autocomplete="username" />
             <x-input-error for="email" class="mt-2" />
-
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
                 <p class="text-sm mt-2">
                     <span class="font-medium text-red-600">
@@ -116,7 +114,6 @@
                         {{ __('Klicke hier, um die Verifizierungs-E-Mail erneut zu senden.') }}
                     </button>
                 </p>
-
                 @if ($this->verificationLinkSent)
                     <p class="mt-2 font-medium text-sm text-green-600">
                         {{ __('Ein neuer Verifizierungslink wurde an deine E-Mail-Adresse gesendet.') }}
@@ -131,12 +128,10 @@
             @endif
         </div>
     </x-slot>
-
     <x-slot name="actions">
         <x-action-message class="me-3" on="saved">
             {{ __('Gespeichert.') }}
         </x-action-message>
-
         <x-button wire:loading.attr="disabled" wire:target="photo">
             {{ __('Speichern') }}
         </x-button>
