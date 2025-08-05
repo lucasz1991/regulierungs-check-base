@@ -30,10 +30,10 @@
                                 Details ansehen
                             </x-dropdown-link>
                         @endif
-                        <x-dropdown-link href="#"  wire:confirm="Möchten Sie diesen Eintrag wirklich löschen?">
+                        <x-dropdown-link wire:click="deleteRating({{ $rating->id }})" wire:confirm="Möchten Sie diesen Eintrag wirklich löschen?">
                             Löschen
                         </x-dropdown-link>
-                    </x-slot>
+                    </x-slot>   
                 </x-dropdown>
             </div>
         </div>
@@ -61,7 +61,7 @@
             @default
                 <x-insurance.insurance-rating-stars :score="$rating->rating_score" />
                 <div class="mt-2 text-gray-800 max-h-16">
-                    {{ strlen($rating->attachments['scorings']['ai_overall_comment']) > 100 ? substr($rating->attachments['scorings']['ai_overall_comment'], 0, 100) . '...' : $rating->attachments['scorings']['ai_overall_comment'] }}
+                    {{ strlen($rating->attachments['scorings']['ai_overall_comment']) > 80 ? substr($rating->attachments['scorings']['ai_overall_comment'], 0, 80) . '...' : $rating->attachments['scorings']['ai_overall_comment'] }}
                 </div>
         @endswitch
     </div>

@@ -1,4 +1,4 @@
-<div  @if($hasActiveRating) wire:poll.3s @endif  class="w-full relative bg-cover bg-center bg-gray-100 pb-20 pt-8" wire:loading.class="cursor-wait">
+<div    class="w-full relative bg-cover bg-center bg-gray-100 pb-20 pt-8" wire:loading.class="cursor-wait">
     <div class="container mx-auto px-5">
         <div x-data="{ selectedTab: $persist('basic') }" class="w-full">
             <!-- Hauptbereich -->
@@ -63,29 +63,8 @@
                         </div>
                     </div>
                     <div x-cloak x-show="selectedTab === 'basic'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="basic">
-                        
-                        <!-- if(!auth()->user()->email_verified_at)
-                            <alert class="mb-6 md:w-full">
-                                <h6 class="text-xl font-semibold  mb-1" >E-Mail Verifizierung</h6>
-                                <p>Um deine Bewertungen öffentlich sichtbar zu machen, musst du zuerst deine E-Mail-Adresse verifizieren.</p>
-                            </alert>
-                        endif -->
-                        <h2 class="text-xl font-semibold text-gray-600 mb-4">Meine Bewertungen</h2>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            @forelse ($claimRatings as $rating)
-                                <x-profile.claim-rating.claim-rating-card :rating="$rating" />
-                            @empty
-                                <x-alert>
-                                    Du hast noch keine Bewertungen abgegeben.
-                                </x-alert>
-                            @endforelse
-                        </div>
-                        @if ($claimRatings->hasPages())
-                            <div class="mt-6">
-                                {{ $claimRatings->links('vendor.pagination.tailwind') }}
-                            </div>
-                        @endif
+                        @livewire('profile.claim-rating.confirm-claim-rating')
+                        @livewire('profile.claim-rating.claim-rating-list')
                     </div>
                     <div x-cloak x-show="selectedTab === 'settings'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="settings">
                         <div class="mt-10 sm:mt-0">
@@ -100,18 +79,14 @@
                                         <div class="mt-10 sm:mt-0">
                                             @livewire('profile.update-password-form')
                                         </div>
-    
                                         <x-section-border />
                                     @endif
-    
                                     @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
                                         <div class="mt-10 sm:mt-0">
                                             @livewire('profile.two-factor-authentication-form')
                                         </div>
-    
                                         <x-section-border />
                                     @endif
-    
                                     <div class="mt-10 sm:mt-0">
                                         @livewire('profile.logout-other-browser-sessions-form')
                                     </div>
