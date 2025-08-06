@@ -1,12 +1,15 @@
-<div>
-    <x-dialog-modal wire:model="openModal">
+<div  @if($claimRating != null && ($claimRating->status == 'rating' || $claimRating->status == 'pending')) wire:poll.3s @endif>
+    <x-dialog-modal wire:model="openModal" :maxWidth="'4xl'">
         <x-slot name="title">
             <h2 class="text-xl font-semibold mb-4">Bewertung veröffentlichen</h2>
-            <p class="text-gray-700 mb-2">Bitte überprüfe die Analyse deiner Bewertung, bevor du sie veröffentlichst.</p>
-            <p class="text-gray-700 mb-2">Möchtest du deine Bewertung öffentlich machen?</p>
+            <x-alert class="mb-4 w-full md:w-full">
+                <p class="text-gray-700 mb-2 text-sm">Bitte überprüfe die Analyse deiner Bewertung, bevor du sie veröffentlichst.</p>
+                <p class="text-gray-700 mb-2 text-sm">Die Analyse kann neu durchgeführt werden, wenn du mit ihr unzufrieden bist.</p>
+                <p class="text-gray-700 mb-2 text-sm">Möchtest du deine Bewertung öffentlich machen?</p>
+            </x-alert>
         </x-slot>
         <x-slot name="content">
-            @if($claimRating && $claimRating->attachments['scorings'] != null)
+            @if($claimRating && $claimRating->attachments['scorings'] != null && $claimRating->status == 'rated')
                 <div class="bg-gray-200 rounded shadow p-6">
                     <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
                         Auswertung:
@@ -59,12 +62,20 @@
                         </div>
                     </div>
                 </div>
+            @else
+                <div class="bg-gray-200 rounded shadow p-6 flex items-center justify-center h-20">
+                    <div class="w-6 h-6 border-4 border-t-transparent border-gray-400 rounded-full animate-spin"></div>
+                    <span class="ml-3 text-gray-700 text-sm">Analyse läuft …</span>
+                </div>
             @endif
         </x-slot>
         <x-slot name="footer">
                 <div class="flex justify-end space-x-2">
-                    <button wire:click="$set('openModal', false)" class="bg-gray-200 px-4 py-2 rounded">Abbrechen</button>
-                    <button wire:click="confirm" class="bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700">Veröffentlichen</button>
+                    <x-button wire:click="$set('openModal', false)" class=" text-sm">Abbrechen</x-button>
+                    <x-button  wire:click="reanalyze" class=" text-sm" wire:loading.attr="disabled" wire:target="reanalyze">
+                        Erneut analysieren
+                    </x-button>
+                    <x-button wire:click="confirm" class=" text-sm">Veröffentlichen</x-button>
                 </div>
         </x-slot>
     </x-dialog-modal>

@@ -11,13 +11,13 @@
             <div class="space-y-2">
                 <h2 class="font-semibold">Kommentare</h2>
                 <label class="block">Name anzeigen für:</label>
-                <select wire:model.defer="privacy.comments.name_visibility" class="w-full border p-2 rounded">
+                <select wire:model.defer="privacy.comments.name_visibility" class="w-full border p-2 pr-8 rounded">
                     <option value="all">Alle</option>
                     <option value="users">Nur eingeloggte Benutzer</option>
                     <option value="none">Niemand</option>
                 </select>
                 <label class="block mt-2">Profilbild anzeigen für:</label>
-                <select wire:model.defer="privacy.comments.avatar_visibility" class="w-full border p-2 rounded">
+                <select wire:model.defer="privacy.comments.avatar_visibility" class="w-full border p-2 pr-8 rounded">
                     <option value="all">Alle</option>
                     <option value="users">Nur eingeloggte Benutzer</option>
                     <option value="none">Niemand</option>
@@ -27,13 +27,13 @@
             <div class="space-y-2">
                 <h2 class="font-semibold">Bewertungen</h2>
                 <label class="block">Name anzeigen für:</label>
-                <select wire:model.defer="privacy.ratings.name_visibility" class="w-full border p-2 rounded">
+                <select wire:model.defer="privacy.ratings.name_visibility" class="w-full border p-2 pr-8 rounded">
                     <option value="all">Alle</option>
                     <option value="users">Nur eingeloggte Benutzer</option>
                     <option value="none">Niemand</option>
                 </select>
                 <label class="block mt-2">Profilbild anzeigen für:</label>
-                <select wire:model.defer="privacy.ratings.avatar_visibility" class="w-full border p-2 rounded">
+                <select wire:model.defer="privacy.ratings.avatar_visibility" class="w-full border p-2 pr-8 rounded">
                     <option value="all">Alle</option>
                     <option value="users">Nur eingeloggte Benutzer</option>
                     <option value="none">Niemand</option>

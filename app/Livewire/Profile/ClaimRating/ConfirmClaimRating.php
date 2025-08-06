@@ -38,6 +38,12 @@ class ConfirmClaimRating extends Component
         session()->flash('message', 'Bewertung wurde veröffentlicht.');
     }
 
+    public function reanalyze()
+    {
+        abort_if($this->claimRating->user_id !== Auth::id(), 403);
+        $this->claimRating->reanalyze();
+    }
+
     public function render()
     {
         return view('livewire.profile.claim-rating.confirm-claim-rating');
