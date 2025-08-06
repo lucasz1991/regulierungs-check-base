@@ -54,7 +54,7 @@ class PublicFormNotification extends Notification
             if ($key === 'form_type') continue; // form_type nicht anzeigen
             $mail->line(ucfirst($key) . ': ' . $value);
         }
-        $mail->salutation('Mit freundlichen Grüßen, dein Regulierungs-Check Team');
+        $mail->salutation('Mit freundlichen Grüßen, dein Regulierungs-CHECK Team');
         return $mail;
     }
 

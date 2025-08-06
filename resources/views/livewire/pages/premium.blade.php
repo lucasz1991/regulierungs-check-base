@@ -10,7 +10,7 @@
                 <div class="pl-10">
                     <h2 class="text-xl font-semibold mb-2">Abonnements – in Vorbereitung</h2>
                     <p class="mb-4">
-                        Aktuell befinden wir uns mit <strong>Regulierungs-Check</strong> noch in der Aufbau- und Testphase. Unsere Plattform lebt von echten Erfahrungsberichten und fundierten Auswertungen – und genau davon gibt es zum jetzigen Zeitpunkt noch nicht genug, um bereits professionelle Abonnement-Modelle anzubieten.
+                        Aktuell befinden wir uns mit <strong>Regulierungs-CHECK</strong> noch in der Aufbau- und Testphase. Unsere Plattform lebt von echten Erfahrungsberichten und fundierten Auswertungen – und genau davon gibt es zum jetzigen Zeitpunkt noch nicht genug, um bereits professionelle Abonnement-Modelle anzubieten.
                     </p>
                     <p class="mb-4">
                         Unser Ziel ist es, mit zunehmender Datenbasis auch erweiterte Funktionen zur Verfügung zu stellen: Geplant sind Abonnements, die Zugriff auf <strong>vertiefte Auswertungsanalysen</strong>, <strong>erweiterte Filtermöglichkeiten</strong> sowie <strong>detaillierte Einblicke</strong> in branchenspezifische Trends und Vergleichsdaten bieten. Diese Funktionen richten sich vor allem an Nutzer mit professionellem Interesse – etwa <strong>Versicherungsmakler</strong>, <strong>Anwälte</strong> oder <strong>Gutachter</strong> – und nicht an reguläre Endverbraucher.

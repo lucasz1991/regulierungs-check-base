@@ -3,7 +3,7 @@
         Willkommen!
     </x-slot>
     <x-slot name="description">
-        Noch kein Konto bei Regulierungs-Check? Registriere dich jetzt kostenlos und teile deine Erfahrungen mit Versicherungen, bewerte die Schadensregulierung und hilf anderen, die faire Wahl zu treffen. Gemeinsam schaffen wir mehr Transparenz!
+        Noch kein Konto bei Regulierungs-CHECK? Registriere dich jetzt kostenlos und teile deine Erfahrungen mit Versicherungen, bewerte die Schadensregulierung und hilf anderen, die faire Wahl zu treffen. Gemeinsam schaffen wir mehr Transparenz!
     </x-slot>
     <x-slot name="form">
     <div  class="mt-8 grid grid-cols-6 gap-6">

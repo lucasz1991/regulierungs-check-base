@@ -71,13 +71,13 @@
                     <p class="mb-2 font-semibold">Fragen, die du stellen kannst:</p>
                     <ul class="space-y-2">
                         <li>
-                            <button @click="messagefront='Wie funktioniert Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                Wie funktioniert Regulierungs-Check?
+                            <button @click="messagefront='Wie funktioniert Regulierungs-CHECK?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
+                                Wie funktioniert Regulierungs-CHECK?
                             </button>
                         </li>
                         <li>
-                            <button @click="messagefront='Welchen nutzen hat Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                Welchen nutzen hat Regulierungs-Check?
+                            <button @click="messagefront='Welchen nutzen hat Regulierungs-CHECK?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
+                                Welchen nutzen hat Regulierungs-CHECK?
                             </button>
                         </li>
                     </ul>

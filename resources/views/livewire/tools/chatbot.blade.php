@@ -86,7 +86,7 @@
                         </div>
                         <div>
                             <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
-                            <p class="text-sm text-[#6b7280]">Dein Regulierungs-Check Assistent.</p>
+                            <p class="text-sm text-[#6b7280]">Dein Regulierungs-CHECK Assistent.</p>
                         </div>
                     </div>
                     <div class="flex space-x-4 items-start">
@@ -135,8 +135,8 @@
                     <p class="mb-2 font-semibold">Fragen, die du stellen könntest:</p>
                     <ul class="space-y-2">
                         <li>
-                            <button @click="messagefront='Wie funktioniert Regulierungs-Check?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                Wie funktioniert Regulierungs-Check?
+                            <button @click="messagefront='Wie funktioniert Regulierungs-CHECK?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
+                                Wie funktioniert Regulierungs-CHECK?
                             </button>
                         </li>
                         <li>
