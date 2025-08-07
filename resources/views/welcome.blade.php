@@ -19,8 +19,6 @@
 </head>
 <body class="font-sans antialiased">
 
-
-
     @stack('modals')
     @livewireScripts
 </body>

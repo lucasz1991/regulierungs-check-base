@@ -50,7 +50,7 @@ class ClaimRatingList extends Component
             ->orderBy('created_at', 'desc')
             ->paginate(6);
         $this->hasActiveRating = $claimRatings->contains('status', 'pending');
-        if ($this->privateClaimRating && !$this->privateClaimRating->is_public) {
+        if ($this->privateClaimRating && !$this->privateClaimRating->is_public && $this->userData->email_verified_at != null) {
             $this->dispatch('claimRatingConfirm', $this->privateClaimRating->id);
             $this->privateClaimRating = null; // wichtig: nur einmal senden
         }
