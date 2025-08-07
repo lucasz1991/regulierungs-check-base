@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between mb-8">
             <div class="">
                 <div class="flex flex-wrap items-center">
-                    <x-user.public-info :user="$claimRating->user" context="rating" />
+                    <x-user.public-info :user="$claimRating->user" context="ratings" />
                     <div class="text-sm text-gray-500 pl-1">
                         - {{ \Carbon\Carbon::parse($claimRating->created_at)->format('d.m.Y') }}
                     </div>
