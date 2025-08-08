@@ -16,6 +16,8 @@ class PageHeader extends Component
     public $title;
     public $icon;
     public $header_image;
+    public $header_image_url;
+
 
     /**
      * Create a new component instance.
@@ -53,6 +55,7 @@ $webPage = WebPage::where('slug', $currentSlug)->first();
             $this->title = $webPage->title;
             $this->icon = $webPage->icon;
             $this->header_image = $webPage->header_image;
+            $this->header_image_url = $webPage->getHeaderImageUrlAttribute(); 
         }
     }
 

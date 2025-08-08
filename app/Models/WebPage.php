@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use App\Models\Setting;
 
 class WebPage extends Model
 {
@@ -41,6 +42,17 @@ class WebPage extends Model
                 $page->last_editor = auth()->id();
             }
         });
+    }
+
+    public function getHeaderImageUrlAttribute()
+    {
+        if($this->header_image){
+            $apiUrl = Setting::where('key', 'base_api_url')->value('value');
+        }else{
+            $apiUrl = '';
+        }
+
+        return $this->header_image ? $apiUrl . '/storage/' . $this->header_image : null;
     }
 
     // Prüft, ob die Seite aktuell veröffentlicht ist
