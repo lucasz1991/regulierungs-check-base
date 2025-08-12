@@ -140,11 +140,6 @@
                             </button>
                         </li>
                         <li>
-                            <button @click="messagefront='Wie melde ich meinen Fall?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                Wie melde ich meinen Fall?
-                            </button>
-                        </li>
-                        <li>
                             <button @click="messagefront='Sind meine Daten anonym?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
                                 Sind meine Daten anonym?
                             </button>
