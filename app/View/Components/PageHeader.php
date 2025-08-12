@@ -56,7 +56,7 @@ $webPage = WebPage::where('slug', $currentSlug)->first();
             $this->title = $webPage->title;
             $this->icon = $webPage->icon;
             $this->header_image = $webPage->header_image;
-            $this->header_image_positioning = $webPage->settings['header_image_positioning'];
+            $this->header_image_positioning = $webPage->settings['header_image_positioning'] ?? 'center';
             $this->header_image_url = $webPage->getHeaderImageUrlAttribute(); 
         }
     }
