@@ -30,25 +30,25 @@
                             <strong class="mb-4">Scorings:</strong> 
                             <div label="Regulations Dauer">
                                 <div class="flex items-center justify-between space-x-2">
-                                    <span class="mr-4">Dauer:</span>
+                                    <span class="mr-4 max-sm:text-sm">Dauer:</span>
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['regulation_speed']" />
                                 </div>
                             </div>
                             <div label="Kundenservice">
                                 <div class="flex items-center justify-between space-x-2">
-                                <span class="mr-4">Kundenservice:</span>
+                                <span class="mr-4 max-sm:text-sm">Kundenservice:</span>
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['customer_service']" />
                                 </div>
                             </div>
                             <div label="Fairness">
                                 <div class="flex items-center justify-between space-x-2">
-                                <span class="mr-4">Fairness:</span>
+                                <span class="mr-4 max-sm:text-sm">Fairness:</span>
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['fairness']" />
                                 </div>
                             </div>
                             <div label="Transparency">
                                 <div class="flex items-center justify-between space-x-2">
-                                <span class="mr-4">Transparenz:</span>
+                                <span class="mr-4 max-sm:text-sm">Transparenz:</span>
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['transparency']" />
                                 </div>
                             </div>
