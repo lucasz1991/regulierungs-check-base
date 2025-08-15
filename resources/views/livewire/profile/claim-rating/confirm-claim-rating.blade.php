@@ -70,11 +70,11 @@
             @endif
         </x-slot>
         <x-slot name="footer">
-                <div class="space-2">
-                    <x-button wire:click="$set('openModal', false)" class=" text-sm">Abbrechen</x-button>
+                <div class="space-x-2 space-y-2">
                     <x-button  wire:click="reanalyze" class=" text-sm" wire:loading.attr="disabled" wire:target="reanalyze">
                         Erneut analysieren
                     </x-button>
+                    <x-button wire:click="$set('openModal', false)" class=" text-sm">Abbrechen</x-button>
                     <x-button wire:click="confirm" class=" text-sm">Veröffentlichen</x-button>
                 </div>
         </x-slot>
