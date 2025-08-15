@@ -70,7 +70,7 @@
             @endif
         </x-slot>
         <x-slot name="footer">
-                <div class="sm:space-x-2 sm:space-y-2">
+                <div class="sm:space-x-2 space-y-2">
                     <x-button  wire:click="reanalyze" class="max-sm:w-full text-sm" wire:loading.attr="disabled" wire:target="reanalyze">
                         Erneut analysieren
                     </x-button>
