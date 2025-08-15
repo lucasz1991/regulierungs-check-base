@@ -10,7 +10,7 @@
         </x-slot>
         <x-slot name="content">
             @if($claimRating && $claimRating->attachments['scorings'] != null && $claimRating->status == 'rated')
-                <div class="bg-gray-200 rounded shadow p-6">
+                <div class="bg-gray-200 rounded shadow p-2 md:p-6">
                     <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
                         Auswertung:
                     </h2>
