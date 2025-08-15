@@ -52,7 +52,7 @@
                                     <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['transparency']" />
                                 </div>
                             </div>
-                            <div class="mt-2">
+                            <div class="mt-4">
                                 <div class="flex flex-wrap gap-2 mt-2">
                                     @foreach ($claimRating->tags() as $tag)
                                         <x-profile.claim-rating.claim-rating-tag-badge :tag="$tag" />
