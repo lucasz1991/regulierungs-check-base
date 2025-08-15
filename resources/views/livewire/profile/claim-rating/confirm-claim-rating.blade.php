@@ -70,7 +70,7 @@
             @endif
         </x-slot>
         <x-slot name="footer">
-                <div class="flex justify-end space-x-2">
+                <div class="space-2">
                     <x-button wire:click="$set('openModal', false)" class=" text-sm">Abbrechen</x-button>
                     <x-button  wire:click="reanalyze" class=" text-sm" wire:loading.attr="disabled" wire:target="reanalyze">
                         Erneut analysieren
