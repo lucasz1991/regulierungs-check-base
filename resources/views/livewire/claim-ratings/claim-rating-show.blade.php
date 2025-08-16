@@ -22,7 +22,7 @@
                         <svg viewBox="0 0 16 16" class="w-4 aspect-square"  xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" data-report-icon="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 .25V0H2v16h1V9.25h11.957l-4.5-4.5 4.5-4.5H3Zm0 1v7h9.543l-3.5-3.5 3.5-3.5H3Z"></path></svg>
                     </a>
                 @endauth
-                <x-claim-rating.share-dropdown :claimRating="$claimRating" />
+                <!-- <-claim-rating.share-dropdown claimRating="$claimRating" /> -->
             </div>
         </div>
         <div class="grid md:grid-cols-2 gap-4 ">
