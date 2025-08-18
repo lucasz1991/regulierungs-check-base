@@ -1,5 +1,5 @@
-<a href="{{ route('insurance.show-insurance', $insurance->slug) }}"   class="sm:flex max-w-full sm:items-stretch sm:gap-2">
-    <div class="shrink-0 py-2 transition-all duration-200 flex max-sm:mb-2">
+<a href="{{ route('insurance.show-insurance', $insurance->slug) }}"   class="block sm:flex max-w-full sm:items-stretch sm:gap-2">
+    <div class="shrink-0 py-2 transition-all duration-200 flex ">
     @if ($insurance->logo)
         <div class="flex items-center space-x-1 relative">
             <!-- Logo -->
