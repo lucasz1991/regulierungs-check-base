@@ -72,15 +72,39 @@
                     Versicherungs-typ: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
                 </p>
             </div>
-            <div class="bg-white rounded shadow p-6">
-                <div><span class="mr-4">Regulierungsart:</span>{{ $claimRating->answers['regulationType'] ?? '–' }}</div>
-                <div><span class="mr-4">Abgeschlossen:</span>{{ $claimRating->answers['is_closed'] ? 'Ja' : 'Nein' }}</div>
-                <div><span class="mr-4">Beginn:</span>{{ $claimRating->answers['selectedDates']['started_at'] ?? '–' }}</div>
-                @if($claimRating->answers['is_closed'])
-                    <div><span class="mr-4">Beendet:</span>{{ $claimRating->answers['selectedDates']['ended_at'] ?? '–' }}</div>
-                @endif
-                <hr class="my-4">
-                <div><span class="mr-4">Details:</span>{{ $claimRating->answers['regulationDetail']['selected_value'] ?? '–' }}</div>
+                        <div class="bg-white rounded shadow p-6 w-full space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm text-gray-700">
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-500">Regulierungsart:</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['regulationType'] ?? '–' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-500">Abgeschlossen:</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['is_closed'] ? 'Ja' : 'Nein' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-500">Beginn:</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['selectedDates']['started_at'] ?? '–' }}</span>
+                    </div>
+                    @if($claimRating->answers['is_closed'])
+                        <div class="flex justify-between">
+                            <span class="font-medium text-gray-500">Beendet:</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['selectedDates']['ended_at'] ?? '–' }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="border-t border-gray-200 pt-4">
+                    <div class="flex justify-between text-sm text-gray-700">
+                        <span class="font-medium text-gray-500">Details:</span>
+                        <span class="text-right">{{ $claimRating->answers['regulationDetail']['selected_values'] ?? '' }}</span>
+                    </div>
+                    @if($claimRating->answers['regulationDetail']['textarea_value'])
+                        <p class="text-sm text-gray-600 mt-2">
+                            <strong>Kommentar:</strong> {{ $claimRating->answers['regulationDetail']['textarea_value'] ?? '' }}
+                        </p>
+                    @endif
+                </div>
             </div>
         </div>
         @if($claimRating->status != 'pending' && $claimRating->status != 'rating')

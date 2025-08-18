@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gray-200 rounded shadow  p-2 md:p-6">
+        <div class="bg-gray-200 rounded shadow p-6">
             <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
                 Auswertung:
             </h2>
