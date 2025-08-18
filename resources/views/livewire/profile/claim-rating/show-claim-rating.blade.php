@@ -60,13 +60,13 @@
         </div>
         </div>
         <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-white rounded shadow p-6">
+            <div class="bg-white  rounded shadow p-6 w-full">
                 <p class="text-sm text-gray-600 mb-1">
                     Versicherung: 
                 </p>
                 <x-insurance.insurance-name-button :insurance="$claimRating->insurance" />
                 <p class="text-sm text-gray-600 mb-1">
-                    Versicherungs-art: <strong>{{ $claimRating->insuranceType->name ?? 'Keine Angabe' }}</strong>
+                    Versicherungs-Art: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
                 </p>
                 <p class="text-sm text-gray-600 mb-1">
                     Versicherungs-typ: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
