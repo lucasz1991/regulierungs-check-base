@@ -36,7 +36,7 @@
                 </p>
             </div>
             <div class="bg-white rounded shadow p-6 w-full space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm text-gray-700">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-4 text-sm text-gray-700">
                     <div class="flex justify-between">
                         <span class="font-medium text-gray-500">Regulierungsart:</span>
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['regulationType'] ?? '–' }}</span>
