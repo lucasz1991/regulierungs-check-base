@@ -25,9 +25,6 @@
             <div x-trap.inert.noscroll="openSearchMenu"
                 :class="openSearchMenu ? '!translate-y-0' : ''"
                 class="fixed translate-y-[-200%] bg-gray-200 w-full  px-3 py-3 md:py-6 md:px-8 border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
-                    <!-- Overlay -->
-
-
                 <div class="container mx-auto">
                     <div class=""> 
                         <div class="flex relative" x-data="{ openSelectSearchTypeDropdown: false }" @click.away="openSelectSearchTypeDropdown = false">
