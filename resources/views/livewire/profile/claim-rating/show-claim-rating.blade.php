@@ -66,7 +66,7 @@
                 </p>
                 <x-insurance.insurance-name-button :insurance="$claimRating->insurance" />
                 <p class="text-sm text-gray-600 mb-1">
-                    Versicherungs-Art: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
+                    Versicherungs-art: <strong>{{ $claimRating->insuranceType->name ?? 'Keine Angabe' }}</strong>
                 </p>
                 <p class="text-sm text-gray-600 mb-1">
                     Versicherungs-typ: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
