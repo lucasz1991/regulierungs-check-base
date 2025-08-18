@@ -62,15 +62,10 @@
                         <span class="font-medium text-gray-500">Details:</span>
                         <span class="text-right">{{ $claimRating->answers['regulationDetail']['selected_values'] ?? '' }}</span>
                     </div>
-                    @if($claimRating->answers['regulationDetail']['textarea_value'])
-                        <p class="text-sm text-gray-600 mt-2">
-                            <strong>Kommentar:</strong> {{ $claimRating->answers['regulationDetail']['textarea_value'] ?? '' }}
-                        </p>
-                    @endif
                 </div>
             </div>
         </div>
-        <div class="bg-gray-200 rounded shadow p-6">
+        <div class="bg-gray-200 rounded shadow  p-2 md:p-6">
             <h2 class="text-xl md:text-xl  text-gray-800 mb-4">
                 Auswertung:
             </h2>
@@ -80,7 +75,6 @@
                     <div class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4">
                         <p class="text-sm text-gray-600"><strong>Frage:</strong> {{ $question['question_title'] }}</p>
                         <p class="text-sm text-gray-600"><strong>Beschreibung:</strong> {{ $question['question_text'] }}</p>
-                        <p class="text-sm text-gray-700 mt-1"><strong>Antwort:</strong> {{ $question['answer'] }}</p>
                         @if($question['type'] == 'calc')
                             <p class="text-sm text-gray-700 mt-1"><x-insurance.insurance-rating-stars :score="$question['score']" /></p>
                         @endif
