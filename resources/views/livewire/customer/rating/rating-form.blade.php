@@ -688,7 +688,6 @@
                                         @case('textarea')
                                             <div x-data="{ charCount: 0 }">
                                                 <textarea wire:model.defer="{{ $fieldName }}"
-                                                        x-ignore
                                                         class="mt-2 w-full text-base mx-auto border px-3 py-2 rounded" rows="4"
                                                         x-on:input="charCount = $event.target.value.length"
                                                         maxlength="255"></textarea>

@@ -1,4 +1,4 @@
-<div x-data="{ openSearchMenu: @entangle('openSearchMenu') }" @keydown.window.escape="openSearchMenu = false"  class="h-full">
+<div x-data="{ openSearchMenu: false }" @keydown.window.escape="openSearchMenu = false"  class="h-full">
     <!-- Such-Icon -->
     <div @click.prevent="() => { openSearchMenu = !openSearchMenu; }"  class="flex h-full w-12 transition-all duration-300 ease-in-out" >
         <div x-cloak class="flex  pt-2 px-2 mr-2 rounded-t-full transition-all duration-300 absolute h-min bottom-2.5 md:bottom-3.5 bg-gray-100 pb-1.5"  :class="openSearchMenu ? 'text-secondary bg-gray-200 border-t border-x  border-gray-300 translate-y-[1px] rounded-b-0 !bottom-0 !pb-0' : 'text-gray-500 translate-y-0 rounded-b-full'">
@@ -12,7 +12,7 @@
             </svg>
         </div>
     </div>
-    <template x-teleport="#megamenu">
+    <template x-teleport="#megamenu" >
         <!-- Such-Modal -->
         <div id="Search-menü" class="relative z-20">
             <div 
@@ -23,8 +23,8 @@
                 x-cloak
             ></div>
             <div x-trap.inert.noscroll="openSearchMenu"
-                :class="openSearchMenu ? 'translate-y-0' : 'translate-y-[-200%]'"
-                class="fixed  bg-gray-200 w-full  px-3 py-3 md:py-6 md:px-8 border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
+                :class="openSearchMenu ? '!translate-y-0' : ''"
+                class="fixed translate-y-[-200%] bg-gray-200 w-full  px-3 py-3 md:py-6 md:px-8 border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
                     <!-- Overlay -->
 
 

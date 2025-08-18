@@ -492,6 +492,6 @@
         </nav>
     </div>
     <div :style="'height: ' + $store.nav.height + 'px'" class="min-h-12 md:min-h-[4rem] duration-300 ease-in-out transition-all" > </div>
-    <div id="megamenu"   class="transition-all duration-200 ease-in-out "></div>
+    <div id="megamenu"   class="transition-all duration-200 ease-in-out " wire:ignore x-ignore></div>
 </div>
  
