@@ -3,7 +3,7 @@
         <img src="{{ $post->cover_image_url }}" alt="{{ $post->title }}" class="w-full h-auto object-cover rounded mb-1">
     @endif
     <div class="p-2 md:p-4">
-        <h2 class="text-xl font-semibold">{{ $post->title }}</h2>
+        <h2 class="text-xl font-semibold">{!! $post->title !!}</h2>
         <div class="flex content-center justify-between border-t pt-2 mt-2">
             <p class="text-sm text-gray-500">{{ $post->published_at->format('d.m.Y') }}</p>
             <div>
