@@ -26,7 +26,7 @@
     </div>
     <div class="p-4">
         <div class="mt-2 text-gray-800 h-16">
-        {{ strlen($rating->attachments['scorings']['ai_overall_comment']) > 100 ? substr($rating->attachments['scorings']['ai_overall_comment'], 0, 100) . '...' : $rating->attachments['scorings']['ai_overall_comment'] }}
+        {!! strlen($rating->attachments['scorings']['ai_overall_comment']) > 100 ? substr($rating->attachments['scorings']['ai_overall_comment'], 0, 100) . '...' : $rating->attachments['scorings']['ai_overall_comment'] !!}
         </div>
     </div>
     <div class=" p-4 flex justify-end">
