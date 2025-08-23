@@ -2,9 +2,9 @@
     <div class=" p-4 pb-0">
         <div class="flex justify-between items-start">
             <div class="flex flex-wrap items-center">
-                <x-user.public-info :user="$rating->user" context="ratings" />
-                <div class="text-sm text-gray-500 pl-1">
-                      - {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
+                <x-user.public-info :user="$rating->user" context="ratings" /><br />
+                <div class="text-sm text-gray-500 mt-1">
+                      {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
                 </div>
             </div>
             <x-insurance.insurance-rating-stars :score="$rating->rating_score" />
