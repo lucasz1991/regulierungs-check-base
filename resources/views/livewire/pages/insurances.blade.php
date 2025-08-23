@@ -99,7 +99,7 @@
 
                 @if($insurances->count())
                     {{-- Desktop-Layout (ab md) --}}
-                    <div x-show="!$store.nav.isMobile" class="hidden md:grid grid-cols-2 gap-6">
+                    <div  class="hidden md:grid grid-cols-2 gap-6">
                         <ul class="space-y-6">
                             @foreach($leftColumn as $insurance)
                                 <li>
@@ -116,7 +116,7 @@
                         </ul>
                     </div>
                     {{-- Mobile-Layout (unter md) --}}
-                    <ul x-show="$store.nav.isMobile" class="md:hidden space-y-6">
+                    <ul  class="md:hidden space-y-6">
                         @foreach($insurances as $insurance)
                             <li>
                                 <x-insurance.insurance-card :insurance="$insurance" :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType" />
