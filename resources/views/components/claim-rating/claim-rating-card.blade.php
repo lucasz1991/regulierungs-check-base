@@ -2,7 +2,7 @@
     <div class=" p-4 pb-0">
         <div class="flex justify-between items-start">
             <div class="">
-                <x-user.public-info :user="$rating->user" context="ratings" /><br />
+                <x-user.public-info :user="$rating->user" context="ratings" />
                 <div class="text-sm text-gray-500 mt-1">
                       {{ \Carbon\Carbon::parse($rating->created_at)->format('d.m.Y') }}
                 </div>
