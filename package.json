@@ -21,7 +21,7 @@
         "@alpinejs/collapse": "^3.14.3",
         "@alpinejs/intersect": "^3.14.7",
         "@alpinejs/mask": "^3.14.7",
-        "@alpinejs/persist": "^3.14.5",
+        "@alpinejs/persist": "^3.14.9",
         "@alpinejs/resize": "^3.14.7",
         "alpinejs": "^3.14.3",
         "aos": "^2.3.4",
