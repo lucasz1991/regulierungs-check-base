@@ -20,18 +20,10 @@ class Reviews extends Component
 
     public $perPage = 20;
     public $pages = 1;
-    public $sort;
-    public $search;
+    public $sort = 'score_desc';
+    public $search = '';
     public $minAvgScore;
 
-    public function mount()
-    {
-        $this->insuranceSubTypes = InsuranceSubtype::has('claimRatings')->get();
-        $this->insurances = Insurance::has('claimRatings')->get();
-        $this->search = '';
-        $this->pages = 1;
-        $this->sort = 'score_desc';
-    }
 
     public function loadMore()
     {
@@ -74,6 +66,15 @@ class Reviews extends Component
 
     public function render()
     {
+                // Optionen für die Filter (lokal, nicht als $this->… setzen)
+        $insuranceSubTypes = InsuranceSubtype::has('claimRatings')
+            ->orderBy('name')
+            ->get(['id','name','slug']);
+
+        $insurances = Insurance::has('claimRatings')
+            ->orderBy('name')
+            ->get(['id','name','slug']);
+
         $query = ClaimRating::with(['insurance', 'insuranceSubtype', 'user'])
             ->whereNotNull('rating_score')->where('status', 'rated')->where('is_public', true);
 
