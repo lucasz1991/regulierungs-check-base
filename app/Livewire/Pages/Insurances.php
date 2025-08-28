@@ -17,7 +17,7 @@ class Insurances extends Component
     public $insuranceSubTypes = [];
     #[Session(key: 'selectedInsuranceSubTypefilter')] 
     public $selectedInsuranceSubTypefilter = [];
-    public $perPage = 20;
+    public $perPage = 10;
     public $pages = 1;
 
     public $selectedAspect;
@@ -77,7 +77,6 @@ class Insurances extends Component
             $this->subTypeFilterSubType = null;
         }
     }
-
 
     public function updatingSelectedAspect()
     {
@@ -143,5 +142,4 @@ class Insurances extends Component
             'subTypeFilterSubType' => $this->subTypeFilterSubType,
         ])->layout('layouts.app');
     }
-    
 }

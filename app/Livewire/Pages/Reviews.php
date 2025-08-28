@@ -47,6 +47,7 @@ class Reviews extends Component
     {
         $this->resetPage();
     }
+    
     public function updatingMinAvgScore()
     {
         $this->resetPage();
