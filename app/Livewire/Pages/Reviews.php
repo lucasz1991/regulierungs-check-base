@@ -66,14 +66,8 @@ class Reviews extends Component
 
     public function render()
     {
-                // Optionen für die Filter (lokal, nicht als $this->… setzen)
-        $insuranceSubTypes = InsuranceSubtype::has('claimRatings')
-            ->orderBy('name')
-            ->get(['id','name','slug']);
-
-        $insurances = Insurance::has('claimRatings')
-            ->orderBy('name')
-            ->get(['id','name','slug']);
+        $this->insuranceSubTypes = InsuranceSubtype::has('claimRatings')->get();
+        $this->insurances = Insurance::has('claimRatings')->get();
 
         $query = ClaimRating::with(['insurance', 'insuranceSubtype', 'user'])
             ->whereNotNull('rating_score')->where('status', 'rated')->where('is_public', true);
