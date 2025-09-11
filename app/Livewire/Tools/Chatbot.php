@@ -138,10 +138,15 @@ class Chatbot extends Component
                         $this->handleFunctionCallFromAI($decoded);
                     }
                     return;
+                }else {
+                    Log::error('Leere Antwort vom AI-Modell erhalten.'. $response->json());
                 }
 
 
             } catch (\Exception $e) {
+                Log::error('Fehler bei der API-Anfrage: ' . $e->getMessage());
+                // Kurze Pause vor dem nächsten Versuch
+                sleep(1);
             }
         }
 
