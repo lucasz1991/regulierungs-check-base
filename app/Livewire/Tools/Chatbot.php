@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Session;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Crypt;
 
 
 class Chatbot extends Component
@@ -22,7 +23,7 @@ class Chatbot extends Component
     public $isLoading = false;
     public $isFunctionCall = false;
 
-    public $status, $assistantName, $apiUrl, $apiKey, $aiModel, $modelTitle, $refererUrl, $trainContent;
+    public $status, $assistantName, $v1, $v2, $aiModel, $modelTitle, $refererUrl, $trainContent;
 
     protected $listeners = ['sendMessage' => 'sendMessage'];
 
@@ -34,8 +35,8 @@ class Chatbot extends Component
         }
         $this->status = Setting::getValue('ai_assistant', 'status');
         $this->assistantName = Setting::getValue('ai_assistant', 'assistant_name');
-        $this->apiUrl = Setting::getValue('ai_assistant', 'api_url');
-        $this->apiKey = Setting::getValue('ai_assistant', 'api_key');
+        $this->v1 = Crypt::encryptString(Setting::getValue('ai_assistant', 'api_url'));
+        $this->v2 = Crypt::encryptString(Setting::getValue('ai_assistant', 'api_key'));
         $this->aiModel = Setting::getValue('ai_assistant', 'ai_model');
         $this->modelTitle = Setting::getValue('ai_assistant', 'model_title');
         $this->refererUrl = Setting::getValue('ai_assistant', 'referer_url');
@@ -61,11 +62,11 @@ class Chatbot extends Component
         for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
             try {
                 $response = Http::withHeaders([
-                    'Authorization' => 'Bearer '.$this->apiKey, 
-                    'HTTP-Referer' => $this->refererUrl, 
-                    'X-Title' => $this->modelTitle, 
+                    'Authorization' => 'Bearer '.Crypt::decryptString($this->v2),
+                    'HTTP-Referer' => $this->refererUrl,
+                    'X-Title' => $this->modelTitle,
                     'Content-Type'  => 'application/json',
-                ])->post($this->apiUrl, [
+                ])->post($this->v1, [
                     'model'    => $this->aiModel,
                     'messages' => array_merge([
                         [
@@ -145,7 +146,7 @@ class Chatbot extends Component
         }
 
         // Falls nach 5 Versuchen keine Antwort kommt
-        $this->chatHistory[] = ['role' => 'assistant', 'content' => "Ich habe dazu leider keine Antwort."];
+        $this->chatHistory[] = ['role' => 'assistant', 'content' => "Ich habe dazu leider keine Antwort. ( Es ist ein Fehler aufgetreten. )"];
         $this->isLoading = false;
     }
 
