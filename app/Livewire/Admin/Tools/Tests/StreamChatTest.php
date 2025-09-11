@@ -7,6 +7,7 @@ use Livewire\Attributes\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Crypt;
 
 class StreamChatTest extends Component
 {
@@ -21,7 +22,7 @@ class StreamChatTest extends Component
 
 
 
-    public $status, $assistantName, $apiUrl, $apiKey, $aiModel, $modelTitle, $refererUrl, $trainContent;
+    public $status, $assistantName, $v1, $v2, $aiModel, $modelTitle, $refererUrl, $trainContent;
 
     protected $listeners = ['sendMessage' => 'sendMessage'];
 
@@ -29,11 +30,11 @@ class StreamChatTest extends Component
     {
         $this->status = Setting::getValue('ai_assistant', 'status');
         $this->assistantName = 'Milan';
-        $this->apiUrl = Setting::getValue('ai_assistant', 'api_url');
-        $this->apiKey = Setting::getValue('ai_assistant', 'api_key');
-        $this->aiModel = Setting::getValue('ai_assistant', 'ai_model');
-        $this->modelTitle = Setting::getValue('ai_assistant', 'model_title');
-        $this->refererUrl = Setting::getValue('ai_assistant', 'referer_url');
+        $this->v1 = Crypt::encryptString(Setting::getValue('ai_assistant', 'api_url'));
+        $this->v2 = Crypt::encryptString(Setting::getValue('ai_assistant', 'api_key'));
+        $this->aiModel = Crypt::encryptString(Setting::getValue('ai_assistant', 'ai_model'));
+        $this->modelTitle = Crypt::encryptString(Setting::getValue('ai_assistant', 'model_title'));
+        $this->refererUrl = Crypt::encryptString(Setting::getValue('ai_assistant', 'referer_url'));
         $this->trainContent = <<<EOT
             Du bist der Regulierungs-Check Assistent mit dem Namen "Milan" auf der offiziellen Regulierungs-Check Website.  
             Du hilfst Nutzern dabei, die Plattform zu verstehen, ihre Möglichkeiten zu entdecken und ggf. zu interagieren.  
@@ -193,12 +194,12 @@ class StreamChatTest extends Component
         for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
             try {
                 $response = Http::withHeaders([
-                    'Authorization' => 'Bearer '.$this->apiKey, 
-                    'HTTP-Referer' => $this->refererUrl, 
-                    'X-Title' => $this->modelTitle, 
+                    'Authorization' => 'Bearer '.Crypt::decryptString($this->v2),
+                    'HTTP-Referer' => Crypt::decryptString($this->refererUrl),
+                    'X-Title' => Crypt::decryptString($this->modelTitle),
                     'Content-Type'  => 'application/json',
-                ])->post($this->apiUrl, [
-                    'model'    => $this->aiModel,
+                ])->post(Crypt::decryptString($this->v1), [
+                    'model'    => Crypt::decryptString($this->aiModel),
                     'messages' => array_merge([
                         [
                             'role'    => 'system',
