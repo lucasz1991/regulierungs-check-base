@@ -37,10 +37,10 @@ class Chatbot extends Component
         $this->assistantName = Setting::getValue('ai_assistant', 'assistant_name');
         $this->v1 = Crypt::encryptString(Setting::getValue('ai_assistant', 'api_url'));
         $this->v2 = Crypt::encryptString(Setting::getValue('ai_assistant', 'api_key'));
-        $this->aiModel = Setting::getValue('ai_assistant', 'ai_model');
-        $this->modelTitle = Setting::getValue('ai_assistant', 'model_title');
-        $this->refererUrl = Setting::getValue('ai_assistant', 'referer_url');
-        $this->trainContent = Setting::getValue('ai_assistant', 'train_content');
+        $this->aiModel = Crypt::encryptString(Setting::getValue('ai_assistant', 'ai_model'));
+        $this->modelTitle = Crypt::encryptString(Setting::getValue('ai_assistant', 'model_title'));
+        $this->refererUrl = Crypt::encryptString(Setting::getValue('ai_assistant', 'referer_url'));
+        $this->trainContent = Crypt::encryptString(Setting::getValue('ai_assistant', 'train_content'));
     }
 
     public function sendMessage()
@@ -63,15 +63,15 @@ class Chatbot extends Component
             try {
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer '.Crypt::decryptString($this->v2),
-                    'HTTP-Referer' => $this->refererUrl,
-                    'X-Title' => $this->modelTitle,
+                    'HTTP-Referer' => Crypt::decryptString($this->refererUrl),
+                    'X-Title' => Crypt::decryptString($this->modelTitle),
                     'Content-Type'  => 'application/json',
-                ])->post($this->v1, [
-                    'model'    => $this->aiModel,
+                ])->post(Crypt::decryptString($this->v1), [
+                    'model'    => Crypt::decryptString($this->aiModel),
                     'messages' => array_merge([
                         [
                             'role'    => 'system',
-                            'content' => trim(preg_replace('/\s+/', ' ', $this->trainContent))
+                            'content' => trim(preg_replace('/\s+/', ' ', Crypt::decryptString($this->trainContent)))
                         ]
                     ], $this->chatHistory),
                     'response_format' => [
