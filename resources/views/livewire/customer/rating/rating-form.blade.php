@@ -533,7 +533,7 @@
                     {{-- Step 5: Versicherungs Vertragsdaten --}}
                     <div x-show="step == 5"  x-cloak  >
                         <div>
-                            <h2 class="text-lg font-bold mb-6">Finanzielle Eckdaten des Falls</h2>
+                            <h2 class="text-lg font-bold mb-6">Zusatzinfos zur Regulierung</h2>
                             <x-alert class="mx-auto mb-6" role="alert">
                                 <span>
                                     Gib die wichtigsten Beträge an, damit die Regulierung besser eingeordnet werden kann.

@@ -5,8 +5,17 @@
 ])
 
 @php
-    $showAvatar = $user?->isAvatarVisibleIn($context, $viewer);
-    $showName = $user?->isNameVisibleIn($context, $viewer);
+
+    if (!$user || $user->isAdmin()) {
+        // Kein User vorhanden, zeige anonym
+        $showAvatar = false;
+        $showName = false;
+    } else {
+        // Prüfe Sichtbarkeit basierend auf Kontext und Betrachter
+        $showAvatar = $user?->isAvatarVisibleIn($context, $viewer);
+        $showName = $user?->isNameVisibleIn($context, $viewer);
+    }
+    
 @endphp
 
 <div class="flex items-center gap-2">
