@@ -49,36 +49,51 @@
 
                <div class="col-span-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                    <!-- Passwort -->
-                   <div class="">
-                       <label for="password" class="block text-sm font-medium text-gray-700">Passwort</label>
-                       <input 
-                           type="password" 
-                           id="password" 
-                           name="password" 
-                           wire:model="password"
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
-                           placeholder="Passwort" 
-                         
-                       />
-                       <x-input-error for="password" class="mt-2" />
 
-                   </div>
-   
-                   <!-- Passwort bestätigen -->
-                   <div class="">
-                       <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Passwort bestätigen</label>
-                       <input 
-                           type="password" 
-                           id="password_confirmation" 
-                           name="password_confirmation" 
-                           wire:model="password_confirmation"
-                           class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
-                           placeholder="Passwort bestätigen" 
-                          
-                       />
-                       <x-input-error for="password_confirmation" class="mt-2" />
+                    <div class="" x-data="{ show: false }">
+                        <div class="relative" @click.away="show = false">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Passwort</label>
+                            <input 
+                                type="password" 
+                                :type="show ? 'text' : 'password'" 
+                                id="password" 
+                                name="password" 
+                                wire:model="password"
+                                class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
+                                placeholder="Passwort" 
+                                
+                            />
+                            <button @click="show = !show" type="button" class="absolute inset-y-0 right-1 pr-3 flex items-center text-sm text-gray-600 hover:text-gray-900 opacity-50 hover:opacity-100 " title="Passwort anzeigen">
+                                <span class="sr-only">Passwort anzeigen</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                        <x-input-error for="password" class="mt-2" />
+                    </div>
 
-                   </div>
+    
+                    <!-- Passwort bestätigen -->
+                    <div class="" x-data="{ show: false }">
+                        <div class="relative" @click.away="show = false">
+                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Passwort bestätigen</label>
+                            <input 
+                                type="password" 
+                                :type="show ? 'text' : 'password'" 
+                                id="password_confirmation" 
+                                name="password_confirmation" 
+                                wire:model="password_confirmation"
+                                class="w-full rounded-lg border-gray-300 p-3 mt-1 pr-8 text-base"
+                                placeholder="Passwort bestätigen" 
+                                
+                            />
+                            <button @click="show = !show" type="button" class="absolute inset-y-0 right-1 pr-3 flex items-center text-sm text-gray-600 hover:text-gray-900 opacity-50 hover:opacity-100 " title="Passwort anzeigen">
+                                <span class="sr-only">Passwort anzeigen</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                        <x-input-error for="password_confirmation" class="mt-2" />
+                    </div>
+
                </div>
                    </hr>
                <!-- Persönliche Daten -->
