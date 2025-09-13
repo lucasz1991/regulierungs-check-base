@@ -124,7 +124,7 @@
                                  <x-application-mark />
                              </a>
                          </div>
-                         <div class="flex items-center space-x-4 max-xl:order-3 xl:order-2 flex-none md:ml-4 max-md:pl-4" >
+                         <div class="flex items-center space-x-4 max-xl:order-3 xl:order-2 flex-none md:ml-4 max-md:pl-3" >
                              <!-- Likes and Inbox Buttons -->
                              @if (optional(Auth::user())->role === 'guest' && $currentUrl !== url('/messages'))
                              <div class="flex items-center space-x-6 mr-2">
