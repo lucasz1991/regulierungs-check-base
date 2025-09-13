@@ -26,16 +26,26 @@
         </div>
 
         <div class="mt-4">
-        <x-label for="password" value="Passwort" />
-        <x-input 
-            id="password" 
-            class="block mt-1 w-full" 
-            type="password" 
-            wire:model="password" 
-            required 
-            autocomplete="current-password" 
-        />
-        <x-input-error for="password" class="mt-2" />
+                    <div class="" x-data="{ show: false }">
+                        <div class="relative" @click.away="show = false">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Passwort</label>
+                            <input 
+                                type="password" 
+                                :type="show ? 'text' : 'password'" 
+                                id="password" 
+                                name="password" 
+                                wire:model="password"
+                                class="w-full rounded-lg border-gray-300 p-3 mt-1 text-base"
+                                placeholder="Passwort" 
+                                
+                            />
+                            <button @click="show = !show" type="button" class="absolute inset-y-0 right-1 pr-3 flex items-center text-sm text-gray-600 hover:text-gray-900 opacity-50 hover:opacity-100 " title="Passwort anzeigen">
+                                <span class="sr-only">Passwort anzeigen</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                        <x-input-error for="password" class="mt-2" />
+                    </div>
         </div>
 
         <div class="block mt-4">
