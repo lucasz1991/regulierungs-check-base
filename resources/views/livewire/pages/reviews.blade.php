@@ -61,13 +61,7 @@
                         </div>
                     </x-slot>
                     <x-slot name="listContent">
-                            <div
-                                x-data="{ scrollY: 0 }"
-                                x-init="
-                                    Livewire.hook('message.sent', () => { scrollY = window.scrollY })
-                                    Livewire.hook('message.processed', () => { window.scrollTo(0, scrollY) })
-                                "
-                            class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                            <div  class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 @if($claimRatings && $claimRatings->count())
                                     @foreach ($claimRatings as $rating)
                                         <div class="swiper-slide h-full"  wire:key="rating-{{ $rating->id }}">
