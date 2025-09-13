@@ -1,4 +1,5 @@
 <div>
+    @this->preserveScroll()
 
     <div class=" bg-gray-100 pt-8">
         <div class="container mx-auto ">
