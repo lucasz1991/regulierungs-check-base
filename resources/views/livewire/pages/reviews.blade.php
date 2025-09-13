@@ -1,7 +1,6 @@
 <div>
 
     <div class=" bg-gray-100 pt-8">
-    @persist('scrollbar')
         <div class="container mx-auto ">
             {{-- Einzelbewertungen --}}
                 <x-filter.filter-container>
@@ -91,6 +90,5 @@
                         </x-slot>
                     </x-filter.filter-container>
         </div>
-        @endpersist
     </div>
 </div>
