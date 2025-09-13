@@ -75,15 +75,15 @@
                                     </div>
                                 @endif
                             </div>
-                            @if($claimRatings && $claimRatings->count() >= $perPage * $pages)
-                                <div class="mt-6 text-center">
-                                    <x-buttons.button-basic wire:click="loadMore">
-                                        Mehr laden
-                                    </x-buttons.button-basic>
-                                </div>
-                            @endif
-                    </x-slot>
-                </x-filter.filter-container>
+                        </x-slot>
+                    </x-filter.filter-container>
+                    @if($claimRatings && $claimRatings->count() >= $perPage * $pages)
+                        <div class="mt-6 text-center">
+                            <x-buttons.button-basic wire:click.prefetch="loadMore">
+                                Mehr laden
+                            </x-buttons.button-basic>
+                        </div>
+                    @endif
         </div>
         @endpersist
     </div>

@@ -24,6 +24,9 @@ class Reviews extends Component
     public $search = '';
     public $minAvgScore;
 
+    public $preserveScroll = true;
+
+
 
     public function loadMore()
     {
