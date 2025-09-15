@@ -34,7 +34,7 @@ class Insurances extends Component
         $this->insuranceSubTypes = InsuranceSubtype::whereHas('claimRatings')->get();
         $this->search = '';
         $this->pages = 1;
-        $this->sort = 'score_desc';
+        $this->sort = 'count_desc';
         $this->minRatingCount = 1;
         $this->selectedAspect = 'allgemein';
         $this->isSubTypeFilter = false;
