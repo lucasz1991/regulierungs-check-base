@@ -32,6 +32,8 @@
         <meta property="og:image" content="{{ $ogImage }}">
     @else 
         <meta property="og:image" content="{{ asset('site-images/logo/logo-padded.jpg') }}">
+        <meta property="og:image:width" content="2163">
+        <meta property="og:image:height" content="807">
     @endif
     @if($canonicalUrl)
         <meta property="og:url" content="{{ $canonicalUrl }}">
