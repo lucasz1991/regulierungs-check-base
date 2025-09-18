@@ -16,12 +16,22 @@
     @endif
     @if($ogTitle)
         <meta property="og:title" content="{{ $ogTitle }}">
+    @else 
+        @if($metaTitle)
+            <meta property="og:title" content="{{ $metaTitle }}">
+        @endif
     @endif
     @if($ogDescription)
         <meta property="og:description" content="{{ $ogDescription }}">
+    @else 
+        @if($metaDescription)
+            <meta property="og:description" content="{{ $metaDescription }}">
+        @endif
     @endif
     @if($ogImage)
         <meta property="og:image" content="{{ $ogImage }}">
+    @else 
+        <meta property="og:image" content="{{ asset('site-images/logo/logo-padded.jpg') }}">
     @endif
     @if($canonicalUrl)
         <meta property="og:url" content="{{ $canonicalUrl }}">
