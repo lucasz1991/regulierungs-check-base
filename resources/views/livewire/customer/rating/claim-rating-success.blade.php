@@ -8,11 +8,7 @@
     <h1 class="text-2xl font-bold text-green-700 mb-4">Vielen Dank für deine Bewertung!</h1>
 
     <p class="text-gray-700 mb-6">
-        Deine Bewertung wurde erfolgreich gespeichert.
         @if (!$claimRating->user_id)
-            Du hast sie anonym abgegeben.
-
-
             <br><br>
             <div class="flex items-start gap-3 rounded-lg bg-yellow-100 border border-yellow-300 p-4 text-yellow-800">
                 <!-- Icon -->
