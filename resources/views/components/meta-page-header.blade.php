@@ -17,9 +17,8 @@
     @if($ogTitle)
         <meta property="og:title" content="{{ $ogTitle }}">
     @else 
-        @if($metaTitle)
-            <meta property="og:title" content="{{ $metaTitle }}">
-        @endif
+        <meta property="og:title" content="Regulierungs-Check – Versicherungen im Schadenfall vergleichen">
+        <meta property="og:site_name" content="{{ config('app.name') }}">
     @endif
     @if($ogDescription)
         <meta property="og:description" content="{{ $ogDescription }}">
