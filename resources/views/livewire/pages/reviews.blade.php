@@ -80,6 +80,8 @@
                                         Mehr laden
                                     </x-buttons.button-basic>
                                 </div>
+                                <button type="button" class="" wire:click.prevent="loadMore">Mehr laden</button>
+
                             @endif
                         </x-slot>
                     </x-filter.filter-container>
