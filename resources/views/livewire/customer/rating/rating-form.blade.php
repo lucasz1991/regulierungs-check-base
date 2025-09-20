@@ -753,9 +753,9 @@
                                     {{-- Navigation --}}
                                     <div class="flex justify-center space-x-4 mt-12">
                                         @if ($step > 0)
-                                        <x-buttons.backbutton wire:click="previousStep" />
+                                            <x-buttons.backbutton wire:click="previousStep" />
                                         @endif
-                                            <x-buttons.furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
+                                        <x-buttons.furtherbutton wire:click="{{ ($currentStep + 1) === $totalSteps ? 'submit' : 'nextStep' }}" />
                                     </div>
                                 </div>
                             </div>

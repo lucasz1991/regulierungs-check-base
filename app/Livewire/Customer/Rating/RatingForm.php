@@ -241,14 +241,12 @@ class RatingForm extends Component
             $this->answers['thirdPartyInsurance'] = false;
             $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
             $this->insurances = $this->insuranceSubType?->insurances()->get() ?? [];
-            $this->loadQuestions();
         }
     }
 
     public function updatedThirdPartyInsurance()
     {   
         $this->answers['thirdPartyInsurance'] = $this->thirdPartyInsurance;
-        $this->loadQuestions();
     }
 
     public function updatedInsuranceId()
@@ -303,20 +301,25 @@ class RatingForm extends Component
             ->filter(function ($question) {
                 $visibility_condition = $question->visibility_condition ?? [];
 
-                // Wenn das Model `casts['visibility'] => 'array'` hat, geht das direkt
                 if (!is_array($visibility_condition)) {
                     $visibility_condition = json_decode($visibility_condition, true);
                 }
 
-                // Wenn Bedingung gesetzt ist, z. B. {"thirdPartyInsurance": false}
                 if (isset($visibility_condition['thirdPartyInsurance'])) {
                     return $this->thirdPartyInsurance === $visibility_condition['thirdPartyInsurance'];
                 }
 
-                return true; // keine Einschränkung
-            });
+                if (isset($visibility_condition['regulationType']) && is_array($visibility_condition['regulationType']) && $this->regulationType != null) {
+                    $map = $visibility_condition['regulationType'];
+                    $current = $this->regulationType;
+                    if (array_key_exists($current, $map)) {
+                        return (bool) $map[$current];
+                    }
+                }
 
-        // Fragen in Collection übernehmen
+                return true; // keine Einschränkung
+            })->values();
+
         $this->questions = $this->standardQuestions;
         $this->questions = collect($this->questions)->merge($this->variableQuestions);
 
@@ -332,6 +335,9 @@ class RatingForm extends Component
             }
         }else {
             $this->step++;
+        }
+        if ($this->step == 5) {
+            $this->loadQuestions();
         }
     }
 
@@ -431,8 +437,6 @@ class RatingForm extends Component
         }
     }
     
-
-
     public function submit()
     {
         $this->saveAnswers();
