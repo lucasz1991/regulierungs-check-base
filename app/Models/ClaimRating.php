@@ -35,6 +35,7 @@ class ClaimRating extends Model
         'moderator_comment',
         'is_public',
         'admin_review',
+        'data',
         'verification_hash',
     ];
 
@@ -44,6 +45,7 @@ class ClaimRating extends Model
         'is_public' => 'boolean',
         'tag_ids' => 'array',
         'admin_review' => 'array',
+        'data' => 'array',
     ];
 
     protected static function boot()
