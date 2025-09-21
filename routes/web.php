@@ -68,7 +68,7 @@ Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insur
 Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
 Route::get('/guidance', Guidance::class)->name('guidance');
 
-Route::get('/reward-quest', RewardQuest::class)->name('reward-quest');
+Route::get('/rewardquest', RewardQuest::class)->name('reward-quest');
 
 Route::get('/blog', BlogList::class)->name('blog.index');
 Route::get('/posts/{post}', BlogShow::class)->name('post.show');
