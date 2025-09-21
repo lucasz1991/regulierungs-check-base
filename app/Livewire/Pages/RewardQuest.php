@@ -12,9 +12,9 @@ class RewardQuest extends Component
     {
         $this->refferer = url()->previous();
     }
-    
+
     public function render()
     {
-        return view('livewire.pages.reward-quest');
+        return view('livewire.pages.reward-quest')->layout('layouts.app');
     }
 }
