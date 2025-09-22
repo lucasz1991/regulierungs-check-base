@@ -7,6 +7,7 @@ use Livewire\Component;
 class RewardQuest extends Component
 {
     public $refferer;
+    public $showTermsModal = false;
 
     public function mount()
     {

@@ -1607,6 +1607,11 @@ div.home-banner{
     min-height: 70vh;
   }
 }
+div.unterseiten-banner{
+  background-position: center center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
 .control-buttons{
   transition: all 0.3s ease-in-out;
 }
