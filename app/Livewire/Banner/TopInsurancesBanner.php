@@ -13,8 +13,8 @@ class TopInsurancesBanner extends Component
     {
         // Top 5 Versicherungen nach Bewertungsdurchschnitt
         $this->insurances = Insurance::with('style')
-            ->withAvg('ratings', 'score')
-            ->orderByDesc('ratings_avg_score')
+            ->withAvg('claimRatings', 'score')
+            ->orderByDesc('claim_ratings_avg_score')
             ->take(5)
             ->get();
     }
