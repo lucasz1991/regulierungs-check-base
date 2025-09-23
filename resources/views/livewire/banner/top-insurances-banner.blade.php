@@ -1,14 +1,17 @@
 <div>
     {{-- TOP 5 SWIPER --}}
-    <div class="m-4">
+    <div class="my-4">
         <div x-data="{
                 swiper: null,
                 initSwiper() {
                     this.swiper = new Swiper(this.$refs.topSwiper, {
-                        slidesPerView: 1,
+                        slidesPerView: 2,
                         spaceBetween: 20,
+                        slidesOffsetBefore: 20,
+                        slidesOffsetAfter: 20,
                         speed: 2500,
                         loop: false,
+                        freeMode: true,
                         pagination: {
                             el: '.swiper-pagination-top',
                             clickable: true,
