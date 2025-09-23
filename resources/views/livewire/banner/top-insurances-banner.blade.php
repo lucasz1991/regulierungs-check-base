@@ -1,6 +1,6 @@
 <div>
     {{-- TOP 5 SWIPER --}}
-    <div class="my-4">
+    <div class="m-4">
         <div x-data="{
                 swiper: null,
                 initSwiper() {
