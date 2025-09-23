@@ -30,7 +30,7 @@
             <div class="swiper" x-ref="topSwiper">
                 <div class="swiper-wrapper">
                     @foreach ($insurances as $insurance)
-                        <div class="swiper-slide pr-4" wire:key="top-insurance-{{ $insurance->id }}">
+                        <div class="swiper-slide pr-8" wire:key="top-insurance-{{ $insurance->id }}">
                             <x-insurance.insurance-card-startswiper :insurance="$insurance" :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType" />
                         </div>
                     @endforeach
