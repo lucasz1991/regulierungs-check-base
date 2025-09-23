@@ -6,7 +6,7 @@
                 initSwiper() {
                     this.swiper = new Swiper(this.$refs.topSwiper, {
                         slidesPerView: 2,
-                        spaceBetween: 20,
+                        spaceBetween: 0,
                         slidesOffsetBefore: 20,
                         slidesOffsetAfter: 20,
                         speed: 2500,
