@@ -21,19 +21,9 @@
                             1024: { slidesPerView: 3 },
                         }
                     });
-                },
-                stopSwiper() {
-                    this.swiper.autoplay.stop();
-                },
-                playSwiper() {
-                    this.swiper.autoplay.start();
                 }
             }"
             x-init="initSwiper()"
-            x-on:click="stopSwiper()"
-            x-on:click.away="playSwiper()"
-            x-on:touchstart="stopSwiper()"
-            x-on:touchend="playSwiper()"
             class="relative"
             wire:ignore
         >
