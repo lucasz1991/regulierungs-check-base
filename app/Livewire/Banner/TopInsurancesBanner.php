@@ -8,13 +8,14 @@ use App\Models\Insurance;
 class TopInsurancesBanner extends Component
 {
     public $insurances;
+    public $isSubTypeFilter = false;
+    public $subTypeFilterSubType;
 
     public function mount()
     {
         // Top 5 Versicherungen nach Bewertungsdurchschnitt
-        $this->insurances = Insurance::with('style')
-            ->withAvg('claimRatings', 'score')
-            ->orderByDesc('claim_ratings_avg_score')
+        $this->insurances = Insurance::withAvg('claimRatings', 'rating_score')
+            ->orderByDesc('claim_ratings_avg_rating_score')
             ->take(5)
             ->get();
     }

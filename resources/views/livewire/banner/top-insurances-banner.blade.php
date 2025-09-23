@@ -1,18 +1,14 @@
 <div>
     {{-- TOP 5 SWIPER --}}
-    <div class="my-12">
-        <h2 class="text-xl font-bold mb-4 text-green-900">5 Versicherungen mit den besten Bewertungen</h2>
+    <div class="my-4">
         <div x-data="{
                 swiper: null,
                 initSwiper() {
                     this.swiper = new Swiper(this.$refs.topSwiper, {
                         slidesPerView: 1,
                         spaceBetween: 20,
-                        autoplay: {
-                            delay: 1300,
-                        },
                         speed: 2500,
-                        loop: true,
+                        loop: false,
                         pagination: {
                             el: '.swiper-pagination-top',
                             clickable: true,
@@ -40,9 +36,9 @@
         >
             <div class="swiper" x-ref="topSwiper">
                 <div class="swiper-wrapper">
-                    @foreach ($top5 as $insurance)
+                    @foreach ($insurances as $insurance)
                         <div class="swiper-slide">
-                            <x-insurance.insurance-card :insurance="$insurance" />
+                            <x-insurance.insurance-card :insurance="$insurance" :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType" />
                         </div>
                     @endforeach
                 </div>
