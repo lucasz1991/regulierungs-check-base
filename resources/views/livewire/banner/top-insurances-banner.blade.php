@@ -41,7 +41,7 @@
                 <div class="swiper-wrapper">
                     @foreach ($insurances as $insurance)
                         <div class="swiper-slide">
-                            <x-insurance.insurance-card :insurance="$insurance" :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType" />
+                            <x-insurance.insurance-card-startswiper :insurance="$insurance" :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType" />
                         </div>
                     @endforeach
                 </div>
