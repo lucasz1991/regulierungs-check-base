@@ -1,16 +1,16 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
 <div class="block" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
-    <div class="bg-white px-4 py-4 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4 border-gray-300 border   rounded shadow"
+    <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4 border-gray-300 border   rounded shadow"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
         >
         <div class=" transition-all duration-200">
-            <x-insurance.insurance-name :insurance="$insurance" />
+            <x-insurance.insurance-name-startswiper :insurance="$insurance" />
             <div class="shrink-0 transition-all relative self-auto" >
                 <div  class="" >
                     <div class="mb-2" style="">
                         <div class="">
-                            <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'md'" />
+                            <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'" />
                         </div>
                     </div>
                     <span class=" bg-gray-100 text-gray-800 text-xs font-medium  px-2 pr-2.5 py-0.5 rounded-xl  border border-gray-500 w-max opacity-60 ">

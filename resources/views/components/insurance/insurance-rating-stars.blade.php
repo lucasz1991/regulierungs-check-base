@@ -9,7 +9,7 @@
         'xl' => 'w-8 h-8',
     ];
     $fontSizeClasses = [
-        'xs' => '',
+        'xs' => 'text-xs',
         'sm' => 'text-sm',
         'md' => 'text-sm',
         'lg' => 'text-base',
@@ -17,7 +17,7 @@
     ];
 @endphp
 
-<div class="flex items-center">
+<div class="flex items-center justify-center">
     @for ($i = 0; $i < 5; $i++)
         @php
             $starPercentage = min(max($scoreZeroToFive - $i, 0), 1) * 100;

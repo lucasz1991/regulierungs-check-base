@@ -5,7 +5,7 @@
                 swiper: null,
                 initSwiper() {
                     this.swiper = new Swiper(this.$refs.topSwiper, {
-                        slidesPerView: 2,
+                        slidesPerView: 'auto',
                         spaceBetween: 0,
                         slidesOffsetBefore: 20,
                         slidesOffsetAfter: 20,
@@ -17,8 +17,8 @@
                             clickable: true,
                         },
                         breakpoints: {
-                            640: { slidesPerView: 2 },
-                            1024: { slidesPerView: 3 },
+                            640: { slidesPerView: 'auto' },
+                            1024: { slidesPerView: 'auto' },
                         }
                     });
                 }
@@ -30,7 +30,7 @@
             <div class="swiper" x-ref="topSwiper">
                 <div class="swiper-wrapper">
                     @foreach ($insurances as $insurance)
-                        <div class="swiper-slide pr-8" wire:key="top-insurance-{{ $insurance->id }}">
+                        <div class="swiper-slide w-44 pr-4" wire:key="top-insurance-{{ $insurance->id }}">
                             <x-insurance.insurance-card-startswiper :insurance="$insurance" :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType" />
                         </div>
                     @endforeach
