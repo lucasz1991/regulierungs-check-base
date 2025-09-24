@@ -6,7 +6,7 @@
             <!-- Logo -->
             <img src="{{ asset('storage/' . $insurance->logo) }}"
                 alt="Logo Versicherungs Anbieter"
-                class=" h-8 mx-auto object-contain rounded">
+                class="w-26 h-8  object-contain rounded">
             <!-- Info-Icon -->
             <x-insurance.insurance-logo-disclaim />
         </div>
