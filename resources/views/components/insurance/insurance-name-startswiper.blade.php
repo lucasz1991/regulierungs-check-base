@@ -2,11 +2,11 @@
     <div class=""
         >
         @if ($insurance->logo)
-        <div class="flex items-center space-x-1 relative">
+        <div class="flex items-center space-x-1 relative w-full">
             <!-- Logo -->
             <img src="{{ asset('storage/' . $insurance->logo) }}"
                 alt="Logo Versicherungs Anbieter"
-                class="w-26 h-8  object-contain rounded">
+                class="w-[90%] h-8  object-contain rounded">
             <!-- Info-Icon -->
             <x-insurance.insurance-logo-disclaim />
         </div>
