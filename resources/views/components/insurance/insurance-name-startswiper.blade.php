@@ -6,7 +6,7 @@
             <!-- Logo -->
             <img src="{{ asset('storage/' . $insurance->logo) }}"
                 alt="Logo Versicherungs Anbieter"
-                class="w-[90%] h-8  object-contain rounded">
+                class="w-[90%] h-8  object-contain object-left rounded">
             <!-- Info-Icon -->
             <x-insurance.insurance-logo-disclaim />
         </div>
@@ -16,7 +16,7 @@
             </div>
         @endif
     </div>
-    <div class=""
+    <div class="mt-4"
         >
         <div >
             <h2 class="text-base break-words  truncate text-ellipsis pr-2">
