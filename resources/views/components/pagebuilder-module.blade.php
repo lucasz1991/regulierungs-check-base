@@ -1,4 +1,4 @@
-<div  class="{{ $position }}" >
+<div  class="{{ $position }}" wire:ignore >
     @if($modules && count($modules) > 0)
         @foreach($modules as $module)
         <div  id="module-{{ $module->id }}" class="module-{{ $module->id }}">

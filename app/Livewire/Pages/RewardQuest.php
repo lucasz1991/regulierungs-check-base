@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class RewardQuest extends Component
 {
@@ -12,6 +13,12 @@ class RewardQuest extends Component
     public function mount()
     {
         $this->refferer = url()->previous();
+    }
+
+    #[On('showTermsModal')]
+    public function showTermsModal()
+    {
+        $this->showTermsModal = true;
     }
 
     public function render()
