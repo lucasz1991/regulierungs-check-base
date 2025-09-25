@@ -9,7 +9,7 @@
                         spaceBetween: 0,
                         slidesOffsetBefore: 20,
                         slidesOffsetAfter: 20,
-                        speed: 2500,
+                        speed: 500,
                         loop: false,
                         freeMode: true,
                         pagination: {
