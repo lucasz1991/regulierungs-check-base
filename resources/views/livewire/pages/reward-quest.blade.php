@@ -6,7 +6,6 @@
         <x-slot name="content" class="">
             <div>
                 <x-pagebuilder-module :position="'content_between_1'"/>
-
             </div>
         </x-slot>
         <x-slot name="footer">
