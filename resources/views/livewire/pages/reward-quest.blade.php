@@ -1,4 +1,5 @@
-<div wire:loading.class="cursor-wait" class="py-12 px-4 sm:px-6 lg:px-8">
+<div wire:loading.class="cursor-wait" class="">
+
     <x-dialog-modal wire:model="showTermsModal" :maxWidth="'4xl'">
         <x-slot name="title">
             Teilnahmebedingungen
