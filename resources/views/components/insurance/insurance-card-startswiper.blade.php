@@ -18,7 +18,7 @@
                                 <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'" />
                             </div>
                         </div>
-                    <div class="flex items-center justify-center text-xs text-gray-500 font-medium">
+                    <div class="flex items-center justify-center text-[10px] text-gray-500 font-medium">
                         Bewertungen {{ $insurance->claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}
                     </div>
                 </div>
