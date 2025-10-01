@@ -1,5 +1,5 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
-<div class="block  hover:shadow-lg  cursor-pointer  overflow-hidden   rounded shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
+<a href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="block  hover:shadow-lg  cursor-pointer  overflow-hidden   rounded shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
     <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
@@ -7,7 +7,7 @@
         <div class=" transition-all duration-200">
             <x-insurance.insurance-name-startswiper :insurance="$insurance" />
             <div class="shrink-0 transition-all relative self-auto" >
-                <div  class="" >
+                <div  class="">
                     </div>
                     <div class="mt-5">
                         <div class="text-sm text-gray-500 font-medium text-center mb-3">
@@ -27,4 +27,4 @@
                 </div>
             </div>
         </div>
-</div>
+</a>

@@ -1,18 +1,18 @@
 <div  wire:loading.class="cursor-wait">
-      <div id="ix1xm-2" class="relative  overflow-hidden home-banner py-12">
+      <div id="ix1xm-2" class="relative  overflow-hidden home-banner py-8">
         <div id="iy0ef-2-3" class="absolute inset-0" style="background: url('/site-images/startbanner-img.jpg') center center / cover no-repeat;">
           <div class="absolute inset-0 bg-black/10"></div>
 
         </div>
         <livewire:banner.top-insurances-banner  />
         <div id="i52c7-2" class="container mx-auto">
-          <div id="ib4xx-2" data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4 md:py-6  relative h-max z-10 py-6">
+          <div id="ib4xx-2" data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4 md:py-6  relative h-max z-10 py-4">
               <div id="ijooq">
                 <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
                   <p id="i3ouj" class="MsoNormal">Versicherungen im Bonitäts-CHECK.</p>
                   <p class="MsoNormal"></p>
                 </h1>
-                <h1 id="ilifi-2-2" class="title-font text-3xl mb-4 text-white">
+                <h1 id="ilifi-2-2" class="title-font text-3xl max-md:text-xl mb-4 text-white">
                         Weil du vorher wissen solltest, wie nachher
                   geregelt wird.
                 </h1>
