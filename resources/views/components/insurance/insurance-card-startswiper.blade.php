@@ -18,10 +18,10 @@
             </div>
         </div>
         <div class="mt-2" style="">
-            <div class="bg-[#013370] p-1 w-full rounded mb-2">
+            <div class="bg-[#223d65] p-1 w-full rounded mb-2">
                 <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'"  class="text-white"/>
             </div>
-            <div class="bg-[#013370] p-1 w-full rounded">
+            <div class="bg-[#223d65] p-1 w-full rounded">
                 <div class="flex items-center justify-center text-[10px] text-white font-medium">
                     Bewertungen {{ $insurance->claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}
                 </div>
