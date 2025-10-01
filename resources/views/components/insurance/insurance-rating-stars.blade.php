@@ -16,7 +16,7 @@
         'xl' => 'text-lg',
     ];
 @endphp
-
+ 
 <div class="flex items-center justify-center">
     @for ($i = 0; $i < 5; $i++)
         @php
