@@ -15,11 +15,4 @@
             </div>
         @endif
     </div>
-    <div class="mt-4">
-        <div>
-            <h2 class="text-base break-words line-clamp-2 pr-2 min-h-12">
-                {{ $insurance->name }}
-            </h2>
-        </div>
-    </div>
 </div>

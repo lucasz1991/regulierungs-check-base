@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class Welcome extends Component
 {
-
-    
-
-
-
     public function mount()
     {
         

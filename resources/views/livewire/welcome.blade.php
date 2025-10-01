@@ -4,6 +4,7 @@
           <div class="absolute inset-0 bg-black/10"></div>
 
         </div>
+        <livewire:banner.top-insurances-banner  />
         <div id="i52c7-2" class="container mx-auto">
           <div id="ib4xx-2" data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4 md:py-6  relative h-max z-10 py-6">
               <div id="ijooq">
@@ -15,11 +16,9 @@
                         Weil du vorher wissen solltest, wie nachher
                   geregelt wird.
                 </h1>
-
               </div>
           </div>
         </div>
-        <livewire:banner.top-insurances-banner  />
 
         <div  class="container mx-auto">
           <div  data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4 md:py-6  relative h-max z-10 py-6">

@@ -35,9 +35,7 @@
             </svg>
         </div>
     @endfor
-    @if ($size !== 'xs')
-        <div class="{{ $fontSizeClasses[$size] ?? '' }} ml-2 text-gray-400 font-medium">{{ number_format($scoreZeroToFive, 1) }} / 5</div>
-    @endif
+    <div class="{{ $fontSizeClasses[$size] ?? '' }} ml-2 text-gray-400 font-medium">{{ number_format($scoreZeroToFive, 1) }} @if($size != 'xs') / 5 @endif</div>
 </div>
 
 
