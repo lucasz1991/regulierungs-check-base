@@ -1,6 +1,6 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
-<div class="block bg-[#3684b5] p-2 hover:shadow-lg  cursor-pointer    rounded shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
-    <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full  rounded "
+<div class="block  hover:shadow-lg  cursor-pointer  overflow-hidden   rounded shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
+    <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
         >
@@ -17,11 +17,11 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2" style="">
-            <div class="bg-[#223d65] p-1 w-full rounded mb-2">
+        <div class="bg-[#223d65] p-2" style="">
+            <div class=" w-full ">
                 <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'"  class="text-white"/>
             </div>
-            <div class="bg-[#223d65] p-1 w-full rounded">
+            <div class=" w-full">
                 <div class="flex items-center justify-center text-[10px] text-white font-medium">
                     Bewertungen {{ $insurance->claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}
                 </div>
