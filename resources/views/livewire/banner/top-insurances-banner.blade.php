@@ -12,6 +12,7 @@
                         speed: 500,
                         loop: false,
                         freeMode: true,
+                        autoHeight: false,
                         pagination: {
                             el: '.swiper-pagination-top',
                             clickable: true,
@@ -34,6 +35,20 @@
                             <x-insurance.insurance-card-startswiper :insurance="$insurance" :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType" />
                         </div>
                     @endforeach
+                    <div class="swiper-slide w-36 pr-4 h-full">
+                          <a href="/insurances" class="block  hover:shadow-lg  cursor-pointer  overflow-hidden   rounded shadow h-full" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
+                            <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-center items-center h-full"
+                                x-on:mouseenter="hover = true"
+                                x-on:mouseleave="hover = false"
+                                >
+                                <div class=" transition-all duration-200 text-center">
+                                    <div class="h-8 w-min rounded flex items-center justify-center text-sm border px-1 font-medium shadow-sm bg-gray-100 text-gray-600 border-gray-300">
+                                        weitere Anbieter vergleichen
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
