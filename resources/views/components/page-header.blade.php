@@ -1,5 +1,5 @@
     @if ($isWebPage && $showHeader)
-        <header class="relative bg-cover min-h-32  px-8 bg-[#69a1c9]" >
+        <header class="relative bg-cover min-h-32  px-8 bg-[#9cc7e6]" >
             
             <div class="relative container mx-auto py-12 text-2xl  space-x-6 flex justify-start  items-center">
                 <x-back-button />
