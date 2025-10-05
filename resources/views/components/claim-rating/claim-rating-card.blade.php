@@ -18,7 +18,12 @@
         @endif
         @if(!str_contains(request()->path(), 'insurancetype/'))
             <div class="">
-                <a href="/insurancetype/{{ $rating->insuranceSubType->slug }}"  class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 hover:opacity-100 transition-opacity duration-200 cursor-pointer">
+                @php
+                    $bgColor = $rating->insuranceSubType->style['bg_color'] ?? '#f3f4f6';
+                    $fontColor = $rating->insuranceSubType->style['font_color'] ?? '#4d4d4d';
+                    $borderColor = $rating->insuranceSubType->style['border_color'] ?? '#4d4d4d';
+                @endphp
+                <a href="/insurancetype/{{ $rating->insuranceSubType->slug }}"  class=" text-xs font-medium me-2 px-2.5 py-0.5 rounded  border  w-max opacity-80 hover:opacity-100 transition-opacity duration-200 cursor-pointer" style="background-color: {{ $bgColor }}; color: {{ $fontColor }}; border-color: {{ $borderColor }};" title="{{ $rating->insuranceSubType->name }}">
                     {{ strlen($rating->insuranceSubType->name) > 25 ? substr($rating->insuranceSubType->name, 0, 25) . '...' : $rating->insuranceSubType->name }}
                 </a>
             </div>

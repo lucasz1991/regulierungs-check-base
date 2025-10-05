@@ -24,30 +24,30 @@ class MetaPageHeader extends Component
 
     public function __construct()
     {
-$segments = explode('/', trim(Request::path(), '/'));
-$segmentCount = count($segments);
+        $segments = explode('/', trim(Request::path(), '/'));
+        $segmentCount = count($segments);
 
-// Fallback-Slug, falls keine Seite gefunden wird
-$currentSlug = 'start';
+        // Fallback-Slug, falls keine Seite gefunden wird
+        $currentSlug = 'start';
 
-// Von hinten durchgehen und auf passende WebPage prüfen
-for ($i = $segmentCount - 1; $i >= 0; $i--) {
-    $slugToTest = $segments[$i];
+        // Von hinten durchgehen und auf passende WebPage prüfen
+        for ($i = $segmentCount - 1; $i >= 0; $i--) {
+            $slugToTest = $segments[$i];
 
-    // Optional: sehr lange Slugs oder rein numerische ausschließen
-    if (strlen($slugToTest) > 50 || is_numeric($slugToTest)) {
-        continue;
-    }
+            // Optional: sehr lange Slugs oder rein numerische ausschließen
+            if (strlen($slugToTest) > 50 || is_numeric($slugToTest)) {
+                continue;
+            }
 
-    $webPage = WebPage::where('slug', $slugToTest)->first();
-    if ($webPage) {
-        $currentSlug = $slugToTest;
-        break;
-    }
-}
+            $webPage = WebPage::where('slug', $slugToTest)->first();
+            if ($webPage) {
+                $currentSlug = $slugToTest;
+                break;
+            }
+        }
 
-// Falls du mit $webPage weiterarbeiten willst, kannst du sicherstellen:
-$webPage = WebPage::where('slug', $currentSlug)->first();
+        // Falls du mit $webPage weiterarbeiten willst, kannst du sicherstellen:
+        $webPage = WebPage::where('slug', $currentSlug)->first();
 
         // Prüfen, ob eine passende WebPage existiert
         $this->isWebPage = $webPage !== null;
