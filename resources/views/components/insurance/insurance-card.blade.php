@@ -1,6 +1,6 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
 <div class="block" x-data="{ showInfos: false, hover: false }" @click.away="showInfos = false" x-cloak>
-    <div class="bg-white px-4 py-4 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4"
+    <div class="bg-white px-4 py-4 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4 z-10"
         :class="showInfos ? 'border-blue-400 border shadow-lg  rounded-t' : 'border-gray-300 border   rounded shadow '"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
