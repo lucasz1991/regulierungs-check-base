@@ -61,6 +61,11 @@
                         </div>
                     </x-slot>
                     <x-slot name="listContent">
+                        @if($isFiltered)
+                            <div class="mb-4 text-sm text-gray-600">
+                                {{ $claimRatings->total() }} Bewertungen gefunden.
+                            </div>
+                        @endif
                             <div  class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 @if($claimRatings && $claimRatings->count())
                                     @foreach ($claimRatings as $rating)

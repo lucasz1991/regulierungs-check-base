@@ -28,9 +28,15 @@ class Reviews extends Component
 
 
 
+
     public function loadMore()
     {
         $this->pages++;
+    }
+
+    public function getIsFilteredProperty()
+    {
+        return !empty($this->selectedInsuranceSubTypefilter) || !empty($this->selectedInsurancesfilter) || !empty($this->search) || isset($this->minAvgScore);
     }
 
     public function updatingSearch()
