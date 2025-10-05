@@ -76,8 +76,16 @@ class Reviews extends Component
 
     public function render()
     {
-        $this->insuranceSubTypes = InsuranceSubtype::with(['claimRatings'])->has('claimRatings')->where('is_public', true)->get();
-        $this->insurances = Insurance::with(['claimRatings'])->has('claimRatings')->where('is_public', true)->get();
+        $this->insuranceSubTypes = InsuranceSubtype::whereHas('claimRatings', function ($q) {
+            $q->where('status', 'rated')
+              ->where('is_public', true)
+              ->whereNotNull('rating_score');
+        })->get();
+        $this->insurances = Insurance::whereHas('claimRatings', function ($q) {
+            $q->where('status', 'rated')
+              ->where('is_public', true)
+              ->whereNotNull('rating_score');
+        })->get();
 
         $query = ClaimRating::with(['insurance', 'insuranceSubtype', 'user'])
             ->whereNotNull('rating_score')->where('status', 'rated')->where('is_public', true);
