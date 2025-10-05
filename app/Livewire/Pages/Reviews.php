@@ -8,6 +8,7 @@ use App\Models\ClaimRating; // Beispielmodell für Bewertungen
 use App\Models\Insurance;   // Beispielmodell für Versicherungen
 use App\Models\InsuranceSubtype; // Beispielmodell für Versicherungstypen
 
+
 class Reviews extends Component
 {
     use WithPagination;

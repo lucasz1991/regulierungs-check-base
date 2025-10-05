@@ -61,7 +61,7 @@
                         </div>
                     </x-slot>
                     <x-slot name="listContent">
-                        @if($isFiltered)
+                        @if($this->isFiltered)
                             <div class="mb-4 text-sm text-gray-600">
                                 {{ $claimRatings->total() }} Bewertungen gefunden.
                             </div>
