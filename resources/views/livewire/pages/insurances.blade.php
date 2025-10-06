@@ -84,6 +84,11 @@
             </x-slot>
             <x-slot name="listContent">
 
+                @if($this->isFiltered)
+                    <div class="mb-4 text-sm text-gray-600">
+                        {{ $insurances->total() }} Anbieter gefunden.
+                    </div>
+                @endif
                 @php
                     $leftColumn = [];
                     $rightColumn = [];

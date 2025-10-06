@@ -109,6 +109,11 @@ class Insurances extends Component
         ]);
     }
 
+    public function getIsFilteredProperty()
+    {
+        return !empty($this->selectedInsuranceSubTypefilter) || !empty($this->selectedInsurancesfilter) || !empty($this->search) || isset($this->minAvgScore);
+    }
+
     public function render()
     {
         $insurances = Insurance::query()

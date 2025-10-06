@@ -108,22 +108,28 @@ class ShowInsurance extends Component
             'onlyActive',
         ]);
     }
+
+    public function getIsFilteredProperty()
+    {
+        return !empty($this->selectedInsuranceSubTypefilter) || !empty($this->minRatingCount) || !empty($this->search) || isset($this->minAvgScore);
+    }
+
     public function render()
     {
-$claimRatings = $this->insurance->claimRatings()
-    ->where('status', 'rated')
-    ->when($this->search, function ($query) {
-        $query->where('name', 'like', '%' . $this->search . '%');
-    })
-    ->when(!empty($this->selectedInsuranceSubTypefilter), function ($query) {
-        $query->whereIn('insurance_subtype_id', $this->selectedInsuranceSubTypefilter);
-    })
-    ->when($this->sort === 'score_desc', fn ($q) => $q->orderByDesc('rating_score'))
-    ->when($this->sort === 'score_asc', fn ($q) => $q->orderBy('rating_score'))
-    ->when($this->sort === 'date_desc', fn ($q) => $q->orderByDesc('created_at'))
-    ->when($this->sort === 'date_asc', fn ($q) => $q->orderBy('created_at'))
-    ->when($this->minAvgScore, fn ($q) => $q->where('rating_score', '>=', $this->minAvgScore))
-    ->paginate($this->perPage * $this->pages);
+        $claimRatings = $this->insurance->claimRatings()
+            ->where('status', 'rated')
+            ->when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->when(!empty($this->selectedInsuranceSubTypefilter), function ($query) {
+                $query->whereIn('insurance_subtype_id', $this->selectedInsuranceSubTypefilter);
+            })
+            ->when($this->sort === 'score_desc', fn ($q) => $q->orderByDesc('rating_score'))
+            ->when($this->sort === 'score_asc', fn ($q) => $q->orderBy('rating_score'))
+            ->when($this->sort === 'date_desc', fn ($q) => $q->orderByDesc('created_at'))
+            ->when($this->sort === 'date_asc', fn ($q) => $q->orderBy('created_at'))
+            ->when($this->minAvgScore, fn ($q) => $q->where('rating_score', '>=', $this->minAvgScore))
+            ->paginate($this->perPage * $this->pages);
 
 
         return view('livewire.insurance.show-insurance', [

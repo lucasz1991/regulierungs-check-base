@@ -107,6 +107,11 @@
                         </div>
                     </x-slot>
                     <x-slot name="listContent">
+                        @if($this->isFiltered)
+                            <div class="mb-4 text-sm text-gray-600">
+                                {{ $claimRatings->total() }} Bewertungen gefunden.
+                            </div>
+                        @endif
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             @foreach($claimRatings as $claim_rating)
                                 <x-claim-rating.claim-rating-card :rating="$claim_rating" />
