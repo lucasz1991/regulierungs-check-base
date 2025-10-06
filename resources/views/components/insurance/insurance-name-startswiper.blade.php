@@ -7,7 +7,7 @@
             <img src="{{ asset('storage/' . $insurance->logo) }}"
                 class="w-[90%] h-8  object-contain object-left rounded">
             <!-- Info-Icon -->
-            <x-insurance.insurance-logo-disclaim />
+            <x-insurance.top-insurance-banner.insurance-logo-disclaim-button />
         </div>
         @else
             <div class="h-8 w-min rounded flex items-center justify-center text-sm border px-1 font-medium shadow-sm" style="background-color: {{ $insurance->style['bg_color'] ?? '#eee' }}; color: {{ $insurance->style['font_color'] ?? '#333' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
