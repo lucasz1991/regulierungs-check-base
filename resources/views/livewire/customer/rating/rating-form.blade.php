@@ -568,7 +568,7 @@
                                     @endif
                                 </div>
                                 <div x-data="{ charCount: 0 }" >
-                                    <h3 class="text-lg text-left font-semibold mb-2">Weitere Angaben zum Vertrag </h3>
+                                    <h3 class="text-lg text-left font-semibold mb-2">Weitere Angaben zum @if (!$thirdPartyInsurance) Vertrag @else Fall @endif </h3>
                                     <textarea wire:model.live.debounce.500ms="contractDetails.textarea_value"
                                             class="focus:shadow-blue-300 min-h-unset  text-base leading-5.6 ease-soft block h-auto w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-300 focus:outline-none" rows="6"
                                             x-on:input="charCount = $event.target.value.length"
