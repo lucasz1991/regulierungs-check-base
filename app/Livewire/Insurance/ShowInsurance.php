@@ -111,7 +111,7 @@ class ShowInsurance extends Component
 
     public function getIsFilteredProperty()
     {
-        return !empty($this->selectedInsuranceSubTypefilter) || !empty($this->minRatingCount) || !empty($this->search) || isset($this->minAvgScore);
+        return !empty($this->selectedInsuranceSubTypefilter) || !empty($this->search) || isset($this->minAvgScore);
     }
 
     public function render()
