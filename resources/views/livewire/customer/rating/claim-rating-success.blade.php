@@ -10,9 +10,9 @@
     <p class="text-gray-700 mb-6">
         @if (!$claimRating->user_id)
             <br><br>
-            <div class="flex items-start gap-3 rounded-lg bg-yellow-100 border border-yellow-300 p-4 text-yellow-800">
+            <div class="flex items-start gap-3 rounded-lg bg-red-100 border border-red-300 p-4 text-red-800">
                 <!-- Icon -->
-                <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 9v2m0 4h.01M12 5.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15z" />
