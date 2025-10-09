@@ -121,13 +121,35 @@ class Insurance extends Model
     {
         return $this->hasMany(ClaimRating::class);
     }
+
     public function ratings_avg_score()
     {
         return $this->hasMany(ClaimRating::class)->avg('rating_score');
     }
+
     public function ratings_count()
     {
-        return $this->hasMany(ClaimRating::class)->count();
+        return $this->hasMany(ClaimRating::class)
+                ->count();
+    }
+
+    public function published_ratings_count()
+    {
+        return $this->hasMany(ClaimRating::class)
+                ->where('status', 'rated')
+                ->where('is_public')
+                ->count();
+    }
+
+    public function published_claimRatingsCountBySubtype(?int $subtypeId = null)
+    {
+        return $this->claimRatings()
+            ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
+                $query->where('insurance_subtype_id', $subtypeId);
+            })
+            ->where('status', 'rated')
+            ->where('is_public')
+            ->count();
     }
 
     public function getRouteKeyName()
