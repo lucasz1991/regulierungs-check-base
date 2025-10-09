@@ -39,8 +39,6 @@ class TopInsurancesBanner extends Component
                 },
             ], 'rating_score')
             ->having('published_count', '>=', $this->minPublishedCount)
-            // Sortierung: erst Ø, dann Anzahl
-            ->orderByDesc('published_avg')
             ->orderByDesc('published_count')
             ->take($this->limit)
             ->get();
