@@ -37,7 +37,7 @@ class ShowInsurance extends Component
     public function mount(Insurance $insurance)
     {
         $this->insurance = $insurance;
-        $this->insuranceSubTypes = InsuranceSubtype::whereHas('claimRatings')->get();
+        $this->insuranceSubTypes = InsuranceSubtype::whereHas('publishedClaimRatings')->get();
         $this->search = '';
         $this->pages = 1;
         $this->sort = 'score_desc';
