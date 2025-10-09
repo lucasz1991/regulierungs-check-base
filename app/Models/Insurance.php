@@ -137,7 +137,7 @@ class Insurance extends Model
     {
         return $this->hasMany(ClaimRating::class)
                 ->where('status', 'rated')
-                ->where('is_public')
+                ->where('is_public', true)
                 ->count();
     }
 
@@ -148,7 +148,7 @@ class Insurance extends Model
                 $query->where('insurance_subtype_id', $subtypeId);
             })
             ->where('status', 'rated')
-            ->where('is_public')
+            ->where('is_public', true)
             ->count();
     }
 
