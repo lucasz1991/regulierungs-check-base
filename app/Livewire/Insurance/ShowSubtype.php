@@ -13,7 +13,7 @@ class ShowSubtype extends Component
     public function mount(InsuranceSubtype $insuranceSubtype)
     {
         $this->insuranceSubtype = $insuranceSubtype;
-        $this->claimRatings = $insuranceSubtype->claimRatings()
+        $this->claimRatings = $insuranceSubtype->publishedClaimRatings()
         ->latest()         // sortiert nach created_at DESC
         ->take(10)          // nur 3 Bewertungen
         ->get();

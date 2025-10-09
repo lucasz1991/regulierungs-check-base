@@ -116,7 +116,7 @@ class ShowInsurance extends Component
 
     public function render()
     {
-        $claimRatings = $this->insurance->claimRatings()
+        $claimRatings = $this->insurance->publishedClaimRatings()
             ->where('status', 'rated')
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
