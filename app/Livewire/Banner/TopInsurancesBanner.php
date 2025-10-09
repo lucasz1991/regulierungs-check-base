@@ -14,7 +14,7 @@ class TopInsurancesBanner extends Component
     public function mount()
     {
         // Top 5 Versicherungen nach Bewertungsdurchschnitt
-        $this->insurances = Insurance::withCount('claimRatings')
+        $this->insurances = Insurance::withCount('published_claimRatings')
             ->withAvg('claimRatings', 'rating_score')
             ->orderByDesc('published_ratings_count')
             ->take(20)

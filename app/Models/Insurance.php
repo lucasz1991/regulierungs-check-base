@@ -122,6 +122,13 @@ class Insurance extends Model
         return $this->hasMany(ClaimRating::class);
     }
 
+    public function published_claimRatings()
+    {
+        return $this->hasMany(ClaimRating::class)
+                ->where('status', 'rated')
+                ->where('is_public', true);
+    }
+
     public function ratings_avg_score()
     {
         return $this->hasMany(ClaimRating::class)->avg('rating_score');
