@@ -18,11 +18,11 @@
     </div>
     <div class="mt-12 bg-gray-50">
         <div class="container mx-auto px-4 pt-12 py-6 ">
-            @if($insuranceSubtype->ratings_count() > 0)
+            @if($insuranceSubtype->published_ratings_count() > 0)
                 <h2 class="flex items-center justify-center text-lg px-2 py-1 w-max mb-5">
                     <span class="w-max">Bewertungen</span>
                     <span class="ml-2 bg-white text-sky-600 text-xs shadow border border-sky-200 font-bold aspect-square px-2 py-1 flex items-center justify-center rounded-full h-7 leading-none">
-                        {{ $insuranceSubtype->ratings_count() }}
+                        {{ $insuranceSubtype->published_ratings_count() }}
                     </span>
                 </h2>
                 <x-filter.filter-container>

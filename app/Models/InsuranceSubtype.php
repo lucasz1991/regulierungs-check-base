@@ -73,6 +73,14 @@ class InsuranceSubtype extends Model
         return $this->hasMany(ClaimRating::class)->count();
     }
 
+    public function published_ratings_count()
+    {
+        return $this->hasMany(ClaimRating::class)
+                ->where('status', 'rated')
+                ->where('is_public', true)
+                ->count();
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
