@@ -23,7 +23,7 @@
             </div>
             <div class=" w-full">
                 <div class="flex items-center justify-center text-[10px] text-white font-medium">
-                    Bewertungen {{ $insurance->claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}
+                    Bewertungen {{ $insurance->published_claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}
                 </div>
             </div>
         </div>
