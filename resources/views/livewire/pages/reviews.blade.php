@@ -1,4 +1,4 @@
-<div wire:ignore.self>
+<div>
 
     <div class=" bg-gray-100 pt-8">
         <div class="container mx-auto ">
@@ -66,7 +66,7 @@
                                 {{ $claimRatings->total() }} Bewertungen gefunden.
                             </div>
                         @endif
-                            <div  class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                            <div  class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"  wire:ignore x:ignore>
                                 @if($claimRatings && $claimRatings->count())
                                     @foreach ($claimRatings as $rating)
                                         <div class="swiper-slide h-full"  wire:key="rating-{{ $rating->id }}">
