@@ -25,6 +25,7 @@ class RatingForm extends Component
     public $insuranceSubType;
     public $thirdPartyInsuranceAllowed = false; 
     public $thirdPartyInsurance = false; 
+    public $thirdPartyInsuranceHasContact = false; 
     public $insuranceSubTypes = [];
     public $insurances = [];
     public $insuranceId = null;
@@ -239,6 +240,7 @@ class RatingForm extends Component
             $this->thirdPartyInsuranceAllowed = $this->insuranceSubType?->allow_third_party ?? false;
             $this->thirdPartyInsurance = false;
             $this->answers['thirdPartyInsurance'] = false;
+            $this->answers['thirdPartyInsuranceHasContact'] = false;
             $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
             $this->insurances = $this->insuranceSubType?->insurances()->get() ?? [];
         }
@@ -247,6 +249,12 @@ class RatingForm extends Component
     public function updatedThirdPartyInsurance()
     {   
         $this->answers['thirdPartyInsurance'] = $this->thirdPartyInsurance;
+        $this->thirdPartyInsuranceHasContact = false; 
+    }
+
+    public function updatedThirdPartyInsuranceHasContact()
+    {   
+        $this->answers['thirdPartyInsuranceHasContact'] = $this->thirdPartyInsuranceHasContact;
     }
 
     public function updatedInsuranceId()
@@ -293,32 +301,50 @@ class RatingForm extends Component
 
     public function loadQuestions()
     {
-        // Fragen laden (aus Pivot-Tabelle geordnet)
+
         $this->variableQuestions = $this->insuranceSubType
             ->ratingQuestions()
             ->orderBy('insurance_subtype_rating_question.order_column')
             ->get()
             ->filter(function ($question) {
-                $visibility_condition = $question->visibility_condition ?? [];
+                $vc = $question->visibility_condition ?? [];
 
-                if (!is_array($visibility_condition)) {
-                    $visibility_condition = json_decode($visibility_condition, true);
+                if (!is_array($vc)) {
+                    $vc = json_decode($vc, true) ?: [];
                 }
 
-                if (isset($visibility_condition['thirdPartyInsurance'])) {
-                    return $this->thirdPartyInsurance === $visibility_condition['thirdPartyInsurance'];
-                }
+                // Standardmäßig sichtbar
+                $isVisible = true;
 
-                if (isset($visibility_condition['regulationType']) && is_array($visibility_condition['regulationType']) && $this->regulationType != null) {
-                    $map = $visibility_condition['regulationType'];
-                    $current = $this->regulationType;
-                    if (array_key_exists($current, $map)) {
-                        return (bool) $map[$current];
+                // 1) Fremdversicherung prüfen
+                if (isset($vc['thirdPartyInsurance'])) {
+                    if ((bool)$this->thirdPartyInsurance !== (bool)$vc['thirdPartyInsurance']) {
+                        $isVisible = false;
                     }
                 }
 
-                return true; // keine Einschränkung
+                // 2) Regulierungstyp prüfen
+                if (isset($vc['regulationType']) && is_array($vc['regulationType']) && $this->regulationType != null) {
+                    $map = $vc['regulationType'];
+                    $current = $this->regulationType;
+                    if (array_key_exists($current, $map)) {
+                        if ((bool)$map[$current] === false) {
+                            $isVisible = false;
+                        }
+                    }
+                }
+
+                // 3) Kontaktpflicht prüfen
+                if (isset($vc['thirdPartyInsuranceHasContactIsRequired'])) {
+                    if ($this->thirdPartyInsurance === true && $this->thirdPartyInsuranceHasContact === false) {
+                        $isVisible = false;
+                    }
+                }
+
+                // Am Ende den kumulativen Wert zurückgeben
+                return $isVisible;
             })->values();
+
 
         $this->questions = $this->standardQuestions;
         $this->questions = collect($this->questions)->merge($this->variableQuestions);

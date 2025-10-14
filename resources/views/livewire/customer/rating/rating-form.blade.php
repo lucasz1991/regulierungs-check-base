@@ -165,17 +165,58 @@
                                     @endforeach
                                 </select>
                                 <div id="spacerInsuranceSubTypeId" class="" ></div>
-                                {{-- Falls dieser Versicherungstyp eine Fremd-Versicherung-Regelung erlaubt --}}
-                                    @if ($thirdPartyInsuranceAllowed && $insuranceSubTypeId)
-                                        <div class="">
-                                            <label class="inline-flex items-center mt-2">
-                                                <input type="checkbox" wire:model.live="thirdPartyInsurance" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
-                                                <span class="ml-2 text-sm text-gray-700">Fremdversicherung</span>
-                                            </label>
-                                            <p class="text-xs text-gray-500 mt-1">Falls du eine Fremdversicherung bewerten möchtest, aktiviere diese Option.</p>
-                                        </div>
-                                    @endif
+                                        {{-- Falls dieser Versicherungstyp eine Fremd-Versicherung-Regelung erlaubt --}}
+                                        @if ($thirdPartyInsuranceAllowed && $insuranceSubTypeId)
+                                            <div class="mt-4 space-y-3">
+                                                {{-- Toggle für Fremdversicherung --}}
+                                                <label for="thirdPartyInsurance" class="flex items-center justify-center  cursor-pointer">
+                                                    <input 
+                                                        id="thirdPartyInsurance" 
+                                                        name="thirdPartyInsurance" 
+                                                        type="checkbox" 
+                                                        wire:model.live="thirdPartyInsurance" 
+                                                        class="sr-only peer"
+                                                    />
+                                                    <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 
+                                                                peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer 
+                                                                dark:bg-gray-700 peer-checked:after:translate-x-full 
+                                                                rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white 
+                                                                after:content-[''] after:absolute after:top-[2px] after:start-[2px] 
+                                                                after:bg-white after:border-gray-300 after:border after:rounded-full 
+                                                                after:h-4 after:w-4 after:transition-all dark:border-gray-600 
+                                                                peer-checked:bg-blue-600">
+                                                    </div>
+                                                    <span class="ms-3 text-sm font-medium text-gray-700">Fremdversicherung</span>
+                                                </label>
+                                                <p class="text-xs text-gray-500">Falls du eine Fremdversicherung bewerten möchtest, aktiviere diese Option.</p>
 
+                                                {{-- Toggle für Kontakt zur gegnerischen Versicherung --}}
+                                                @if ($thirdPartyInsurance)
+                                                    <div class="mt-2">
+                                                        <label for="thirdPartyInsuranceHasContact" class="flex items-center justify-center cursor-pointer">
+                                                            <input 
+                                                                id="thirdPartyInsuranceHasContact" 
+                                                                name="thirdPartyInsuranceHasContact" 
+                                                                type="checkbox" 
+                                                                wire:model.live="thirdPartyInsuranceHasContact" 
+                                                                class="sr-only peer"
+                                                            />
+                                                            <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 
+                                                                        peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer 
+                                                                        dark:bg-gray-700 peer-checked:after:translate-x-full 
+                                                                        rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white 
+                                                                        after:content-[''] after:absolute after:top-[2px] after:start-[2px] 
+                                                                        after:bg-white after:border-gray-300 after:border after:rounded-full 
+                                                                        after:h-4 after:w-4 after:transition-all dark:border-gray-600 
+                                                                        peer-checked:bg-blue-600">
+                                                            </div>
+                                                            <span class="ms-3 text-sm font-medium text-gray-700">Kontakt</span>
+                                                        </label>
+                                                        <p class="text-xs text-gray-500 mt-1">Bitte gib an, ob du Kontakt mit der gegnerischen Versicherung hattest.</p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endif
                             </div>
                             @error('insuranceSubTypeId')
                                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
