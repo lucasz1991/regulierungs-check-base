@@ -1,4 +1,4 @@
-<div>
+<div wire:ignore.self>
 
     <div class=" bg-gray-100 pt-8">
         <div class="container mx-auto ">
@@ -81,7 +81,7 @@
                             </div>
                             @if($claimRatings && $claimRatings->count() >= $perPage * $pages)
                                 <div class="mt-6 text-center">
-                                    <x-buttons.button-basic wire:click.prevent="loadMore">
+                                    <x-buttons.button-basic type="button" wire:click.prevent="loadMore">
                                         Mehr laden
                                     </x-buttons.button-basic>
                                 </div>
