@@ -15,15 +15,14 @@
                                 </svg>                                
                                 <span>Arten:</span>
                             </label>
-                            <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsuranceSubTypefilter"  :options="$insuranceSubTypes" />
+                            <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsuranceSubTypefilter" :options="$insuranceSubTypes" />
                         </div>
                         <div class="p-2 mb-2">
                             <label class="text-sm text-gray-400 mb-1 flex justify-left space-x-2 align-middle content-center px-2">
-                                
                                 <svg class="w-4 " viewBox="0 0 24 24"  stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>                             
                                 <span>Versicherungen:</span>
                             </label>
-                            <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsurancesfilter"  :options="$insurances" />
+                            <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsurancesfilter" :options="$insurances" />
                         </div>
                         <div class="p-2">
                             <label class=" text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
@@ -66,7 +65,7 @@
                                 {{ $claimRatings->total() }} Bewertungen gefunden.
                             </div>
                         @endif
-                            <div  class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"  wire:ignore x:ignore>
+                            <div  class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"   wire:ignore.self>
                                 @if($claimRatings && $claimRatings->count())
                                     @foreach ($claimRatings as $rating)
                                         <div class="swiper-slide h-full"  wire:key="rating-{{ $rating->id }}">

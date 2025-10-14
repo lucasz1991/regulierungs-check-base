@@ -19,7 +19,7 @@ class Reviews extends Component
     public $insurances = [];
     public $selectedInsurancesfilter = [];
 
-    public $perPage = 20;
+    public $perPage = 3;
     public $pages = 1;
     public $sort = 'score_desc';
     public $search = '';

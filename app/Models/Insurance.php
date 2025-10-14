@@ -16,6 +16,7 @@ class Insurance extends Model
         'name',
         'slug',
         'description',
+        'helptext',
         'style',
         'initials',
         'color',

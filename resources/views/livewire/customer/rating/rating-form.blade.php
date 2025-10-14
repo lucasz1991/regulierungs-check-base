@@ -236,6 +236,12 @@
                                 <span>
                                     Wähle die Gesellschaft, bei der du den Schaden gemeldet hast, damit wir den Fall zuordnen können.
                                 </span>
+                                @if($this->insurance)
+                                <br>
+                                <span>
+                                    {{$this->insurance->helptext}}
+                                </span>
+                                @endif
                             </x-alert>
                         <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
                             <select wire:model.live="insuranceId" 

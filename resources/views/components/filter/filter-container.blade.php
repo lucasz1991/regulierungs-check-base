@@ -1,22 +1,15 @@
 <div 
     x-data="{
-        showFilters: false,
-        init() {
-            this.$watch('showFilters', value => {
-                if (value && this.$refs.filterPanel) {
-                    this.$nextTick(() => {
-                        this.$refs.filterPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    });
-                }
-            });
-        }
+    showFilters: $persist(false),
+
+    __openedByUser: false
     }"
-    x-init="init()"
+
     {{ $attributes->merge(['class' => '']) }}
 >
     <div class="container mx-auto p-4 pb-8">
         <div x-show="!$store.nav.isScreenXl"  class="mb-4 max-xl:flex max-xl:justify-end">
-            <button @click="showFilters = !showFilters" class="text-sm text-blue-600 hover:underline p-2 rounded-full bg-gray-200 mr-3 flex items-center justify-center shadow-xl shadow-gray-900/5 border border-gray-300">
+            <button @click="__openedByUser = true; showFilters = !showFilters" class="text-sm text-blue-600 hover:underline p-2 rounded-full bg-gray-200 mr-3 flex items-center justify-center shadow-xl shadow-gray-900/5 border border-gray-300">
                 <svg :class="{ 'xl:rotate-180 max-xl:rotate-0': !showFilters, 'max-xl:rotate-180 xl:rotate-0': showFilters }"
                     xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 transform transition-all  mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
