@@ -242,7 +242,12 @@ class RatingForm extends Component
             $this->answers['thirdPartyInsurance'] = false;
             $this->answers['thirdPartyInsuranceHasContact'] = false;
             $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
-            $this->insurances = $this->insuranceSubType?->insurances()->get() ?? [];
+            $this->insurances = $this->insuranceSubType
+                ? $this->insuranceSubType->insurances()
+                    ->where('is_active', 1)      // nur aktive Versicherungen
+                    ->orderBy('order_column')     // optional: nach Reihenfolge sortieren
+                    ->get()
+                : collect();
         }
     }
 

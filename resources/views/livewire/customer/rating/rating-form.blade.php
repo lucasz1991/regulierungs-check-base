@@ -233,14 +233,14 @@
                     <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak>
                         <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
                         <x-alert class="mx-auto mb-6" role="alert">
-                                <span>
-                                    Wähle die Gesellschaft, bei der du den Schaden gemeldet hast, damit wir den Fall zuordnen können.
-                                </span>
-                                @if($this->insurance)
-                                <br>
-                                <span>
-                                    {{$this->insurance->helptext}}
-                                </span>
+                                @if($this->insurance && ($this->insurance->helptext != null || $this->insurance->helptext != ''))
+                                    <span>
+                                        {{$this->insurance->helptext}}
+                                    </span>
+                                @else
+                                    <span>
+                                        Wähle die Gesellschaft, bei der du den Schaden gemeldet hast, damit wir den Fall zuordnen können.
+                                    </span>
                                 @endif
                             </x-alert>
                         <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
