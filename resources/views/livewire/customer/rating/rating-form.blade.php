@@ -212,7 +212,10 @@
                                                             </div>
                                                             <span class="ms-3 text-sm font-medium text-gray-700">Kontakt</span>
                                                         </label>
-                                                        <p class="text-xs text-gray-500 mt-1">Bitte gib an, ob du Kontakt mit der gegnerischen Versicherung hattest.</p>
+<p class="text-xs text-gray-500 mt-1 leading-snug">
+    Bitte gib an, ob du <span class="font-medium text-gray-700">persönlichen Kontakt</span> mit der gegnerischen Versicherung hattest.
+</p>
+
                                                     </div>
                                                 @endif
                                             </div>
