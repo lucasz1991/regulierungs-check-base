@@ -244,8 +244,7 @@ class RatingForm extends Component
             $this->answers['insuranceSubTypeId'] = $this->insuranceSubTypeId;
             $this->insurances = $this->insuranceSubType
                 ? $this->insuranceSubType->insurances()
-                    ->where('is_active', 1)      // nur aktive Versicherungen
-                    ->orderBy('order_column')     // optional: nach Reihenfolge sortieren
+                    ->where('is_active', 1)
                     ->get()
                 : collect();
         }
