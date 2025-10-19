@@ -235,17 +235,17 @@
                     {{-- Step 2: Konkrete Versicherung auswählen --}}
                     <div x-show="step == 2"  x-data="{ insuranceId: @entangle('insuranceId') }" x-cloak>
                         <h2 class="text-lg font-bold mb-6">Welche Versicherungsgesellschaft?</h2>
-                        <x-alert class="mx-auto mb-6" role="alert">
-                                @if($this->insurance && ($this->insurance->helptext != null || $this->insurance->helptext != ''))
-                                    <span>
-                                        {{$this->insurance->helptext}}
-                                    </span>
-                                @else
-                                    <span>
-                                        Wähle die Gesellschaft, bei der du den Schaden gemeldet hast, damit wir den Fall zuordnen können.
-                                    </span>
-                                @endif
-                            </x-alert>
+                        <x-alert class="mx-auto mb-6" role="alert" :mode="$this->insurance && !empty($this->insurance->helptext) ? 'warning' : 'info'">
+                            @if($this->insurance && ($this->insurance->helptext != null || $this->insurance->helptext != ''))
+                                <span>
+                                    {{$this->insurance->helptext}}
+                                </span>
+                            @else
+                                <span>
+                                    Wähle die Gesellschaft, bei der du den Schaden gemeldet hast, damit wir den Fall zuordnen können.
+                                </span>
+                            @endif
+                        </x-alert>
                         <div class="max-w-md mx-auto " :class="{ 'selected': insuranceId != null }">
                             <select wire:model.live="insuranceId" 
                                     class="border rounded px-4 py-2"
