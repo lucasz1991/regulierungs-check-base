@@ -99,7 +99,7 @@ class EvaluateDetailInsuranceRatingWithAI implements ShouldQueue
                 'communication' => $evaluation['average_customer_service'],
                 'transparency' => $evaluation['average_transparency'],
                 'total_score' => $totalScore,
-                'ai_comment' => $evaluation['aiResultComment'],
+                'ai_comment' => $evaluation['comment'],
                 'admin_comment' => null,
             ]
         );

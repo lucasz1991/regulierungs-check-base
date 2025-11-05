@@ -9,9 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-
 use App\Http\Controllers\Customer\ClaimRating\AIEvalController;
-
 
 use App\Models\ClaimRating;
 use App\Models\Insurance;
@@ -20,10 +18,7 @@ use App\Models\InsuranceSubtype;
 use App\Models\RatingQuestionnaireVersion;
 use App\Models\Setting;
 use App\Models\RatingQuestion;
-use App\Models\RatingQuestionnaire; 
-
-
-
+use App\Models\RatingQuestionnaire;
 
 class ClaimRatingAIEval implements ShouldQueue
 {
@@ -117,9 +112,12 @@ class ClaimRatingAIEval implements ShouldQueue
                 $variableQuestionCount++;
             }
         }
-        $variableQuestionScore = $variableQuestionScore / $variableQuestionCount;
+        $variableQuestionScore = $variableQuestionCount > 0
+            ? $variableQuestionScore / $variableQuestionCount
+            : 0;
 
         $attachments['scorings']['variable_questions'] = round($variableQuestionScore, 2);
+
 
         
         // Kombinieren der Scores mit den entsprechenden Gewichtungen

@@ -94,7 +94,7 @@ class AiConnectionController extends Controller
                     'average_customer_service' => floatval($decoded['average_customer_service']),
                     'average_transparency' => floatval($decoded['average_transparency']),
                     'tags' => $decoded['tags'],
-                    'aiResultComment' => preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $decoded['comment']),
+                    'comment' => preg_replace('/[\p{Han}\p{Hiragana}\p{Katakana}\p{Thai}]/u', '', $decoded['comment']),
                 ];
             } catch (\Exception $e) {
                 Log::error("Attempt $attempt failed: " . $e->getMessage(), [

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\InsuranceSubType;
 
 class DetailInsuranceRating extends Model
 {
@@ -23,6 +22,15 @@ class DetailInsuranceRating extends Model
         'admin_comment',
     ];
 
+    protected $casts = [
+        'fairness'      => 'float',
+        'speed'         => 'float',
+        'communication' => 'float',
+        'transparency'  => 'float',
+        'total_score'   => 'float',
+        'ai_tags'       => 'array', // wichtig für JSON
+    ];
+
     public function insurance(): BelongsTo
     {
         return $this->belongsTo(Insurance::class);
@@ -30,6 +38,6 @@ class DetailInsuranceRating extends Model
 
     public function insuranceSubtype(): BelongsTo
     {
-        return $this->belongsTo(InsuranceSubtype::class);
+        return $this->belongsTo(InsuranceSubtype::class); // Import stimmt so
     }
 }
