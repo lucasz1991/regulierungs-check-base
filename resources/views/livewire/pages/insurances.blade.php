@@ -1,4 +1,5 @@
 <div  wire:loading.class="cursor-wait">
+    @persist('scrollbar')
     <section  class="bg-gray-100 pt-8">
         <x-filter.filter-container>
             <x-slot name="filters">
@@ -143,4 +144,6 @@
             </x-slot>
         </x-filter.filter-container>
     </section>
+
+    @endpersist
 </div>
