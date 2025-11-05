@@ -578,7 +578,6 @@
                                 <x-buttons.furtherbutton wire:click="nextStep" />
                             @endif
                         </div>
-
                     </div>
                     {{-- Step 5: Versicherungs Vertragsdaten --}}
                     <div x-show="step == 5"  x-cloak  >
@@ -708,13 +707,20 @@
                                 <p class="text-sm text-red-500 mt-2">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="flex justify-center space-x-4 mt-12">
-                            <x-buttons.backbutton wire:click="previousStep" />
+                            @php
+                                $hasVariableQuestions = !empty($variableQuestions) && count($variableQuestions) > 0;
+                            @endphp
 
-                            @if ($started_at && (!$is_closed || $ended_at))
-                                <x-buttons.furtherbutton wire:click="nextStep" />
-                            @endif
-                        </div>
+                            <div class="flex justify-center space-x-4 mt-12">
+                                <x-buttons.backbutton wire:click="previousStep" />
+
+                                @if ($started_at && (!$is_closed || $ended_at))
+                                    <x-buttons.furtherbutton
+                                        wire:click="{{ $hasVariableQuestions ? 'nextStep' : 'submit' }}"
+                                    />
+                                @endif
+                            </div>
+
                     </div>
                     {{-- Step 6: Fragen durchgehen --}}
                         @foreach ($variableQuestions as $index => $q)

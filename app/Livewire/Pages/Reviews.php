@@ -28,8 +28,6 @@ class Reviews extends Component
     public $preserveScroll = true;
 
 
-
-
     public function loadMore()
     {
         $this->pages++;
