@@ -1,5 +1,5 @@
 @props([
-    'mode' => 'info', // Standard: info (blau)
+    'mode' => 'info',
 ])
 
 @php

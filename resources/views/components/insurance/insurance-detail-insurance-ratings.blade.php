@@ -2,7 +2,7 @@
     <div class="bg-primary-50 p-4 rounded w-full lg:w-2/3">
         <div class="text-sm text-gray-600 mb-4">
             <strong class="my-4">Gesammt Scoring:</strong> 
-            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->total_score" />
+            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->total_score"  :size="'lg'"/>
         </div>
         <div class="prose max-w-full">
             <h2 class="text-lg font-semibold mb-2">Kommentar</h2>
@@ -13,25 +13,25 @@
         <div label="Regulations Dauer">
             <div class="flex items-center justify-between space-x-2">
                 <span class="mr-4">Dauer:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'lg'" />
             </div>
         </div>
         <div label="Kundenservice">
             <div class="flex items-center justify-between space-x-2">
             <span class="mr-4">Kundenservice:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'lg'" />
             </div>
         </div>
         <div label="Fairness">
             <div class="flex items-center justify-between space-x-2">
             <span class="mr-4">Fairness:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'lg'" />
             </div>
         </div>
         <div label="Transparency">
             <div class="flex items-center justify-between space-x-2">
             <span class="mr-4">Transparenz:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'lg'" />
             </div>
         </div>
     </div>

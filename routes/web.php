@@ -9,7 +9,6 @@ use App\Livewire\Dashboard;
 use App\Livewire\MessageBox;
 use App\Livewire\Profile\ClaimRating\ShowClaimRating;
 
-
 use App\Livewire\Pages\TermsAndConditions;
 use App\Livewire\Pages\PrivacyPolicy;
 use App\Livewire\Pages\Imprint;
@@ -21,7 +20,6 @@ use App\Livewire\Pages\Sitemap;
 
 use App\Livewire\Customer\Rating\ClaimRatingSuccess;
 
-
 use App\Livewire\Auth\RequestPasswordResetLink;
 use App\Livewire\Auth\ResetPassword;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +28,6 @@ use App\Livewire\Pages\Insurances;
 use App\Livewire\Pages\Reviews;
 use App\Livewire\Pages\Ranking;
 use App\Livewire\Pages\Premium;
-//use App\Livewire\Pages\RewardQuest;
 
 use App\Livewire\Insurance\ShowInsurance;  
 use App\Livewire\Insurance\ShowSubtype;  
@@ -41,11 +38,7 @@ use App\Livewire\Articles\Blog\BlogShow;
 use App\Livewire\Pages\Guidance;
 use App\Http\Controllers\PublicFormController;
 
-
 use App\Livewire\Admin\Tools\Tests\StreamChatTest;
-
-
-
 
 
 // Routen für alle
@@ -68,7 +61,6 @@ Route::get('/insurancetype/{insuranceSubtype}', ShowSubtype::class)->name('insur
 Route::get('/review/{claimRating}', ClaimRatingShow::class)->name('review.show');
 Route::get('/guidance', Guidance::class)->name('guidance');
 
-//Route::get('/gewinnspiel', RewardQuest::class)->name('reward-quest');
 
 Route::get('/blog', BlogList::class)->name('blog.index');
 Route::get('/posts/{post}', BlogShow::class)->name('post.show');
