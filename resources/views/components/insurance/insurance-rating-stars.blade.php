@@ -11,8 +11,8 @@
     $fontSizeClasses = [
         'xs' => 'text-xs',
         'sm' => 'text-sm',
-        'md' => 'text-sm',
-        'lg' => 'text-base',
+        'md' => 'text-sm min-w-12',
+        'lg' => 'text-base  min-w-12',
         'xl' => 'text-lg',
     ];
 @endphp
@@ -35,7 +35,7 @@
             </svg>
         </div>
     @endfor
-    <div class="{{ $fontSizeClasses[$size] ?? '' }} ml-2 @if($size != 'xs') min-w-12 text-gray-400 @else text-white @endif font-medium">{{ number_format($scoreZeroToFive, 1) }} @if($size != 'xs') / 5 @endif</div>
+    <div class="{{ $fontSizeClasses[$size] ?? '' }} ml-2 @if($size != 'xs') text-gray-400 @else text-white @endif font-medium">{{ number_format($scoreZeroToFive, 1) }} @if($size != 'xs') / 5 @endif</div>
 </div>
 
 
