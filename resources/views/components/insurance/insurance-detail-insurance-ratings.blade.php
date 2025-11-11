@@ -13,25 +13,25 @@
         <div label="Regulations Dauer">
             <div class="flex items-center justify-between space-x-2">
                 <span class="mr-4">Dauer:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'lg'" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'md'" />
             </div>
         </div>
         <div label="Kundenservice">
             <div class="flex items-center justify-between space-x-2">
             <span class="mr-4">Kundenservice:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'lg'" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'md'" />
             </div>
         </div>
         <div label="Fairness">
             <div class="flex items-center justify-between space-x-2">
             <span class="mr-4">Fairness:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'lg'" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'md'" />
             </div>
         </div>
         <div label="Transparency">
             <div class="flex items-center justify-between space-x-2">
             <span class="mr-4">Transparenz:</span>
-                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'lg'" />
+                <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'md'" />
             </div>
         </div>
     </div>
