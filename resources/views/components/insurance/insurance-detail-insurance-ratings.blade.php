@@ -13,7 +13,6 @@
         <div>
             <div class="shrink-0 transition-all relative self-auto" >
                 <div  class="">
-                    </div>
                     <div class="mt-5">
                         <div class="text-sm text-gray-500 font-medium text-center mb-3">
                             <div class="w-16 mx-auto text-xs text-white p-2 aspect-square bg-[#223d65]  rounded-full flex justify-center items-center"><span>Ø: {{ round($insurance->avgRatingDurationBySubtype()) }}<br> Tage</span></div>
