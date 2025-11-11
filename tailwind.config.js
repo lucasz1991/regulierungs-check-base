@@ -73,6 +73,7 @@ export default {
         'fill-red-500', 
         'fill-blue-500', 
         'fill-white',
+        'min-w-12',
       ],
 };
 function getAllCacheFiles(dir, fileList = []) {
