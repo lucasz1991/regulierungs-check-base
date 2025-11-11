@@ -28,7 +28,7 @@
             </div>
             <p class="text-gray-600 mb-4">{{ $insurance->description }}</p>
             @if($insurance->detailInsuranceRatings()->count() > 0)
-                <x-insurance.insurance-detail-insurance-ratings :detailInsuranceRating="$insurance->latestDetailInsuranceRating" />
+                <x-insurance.insurance-detail-insurance-ratings :detailInsuranceRating="$insurance->latestDetailInsuranceRating"  :insurance="$insurance" />
             @else
                 <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg flex items-start gap-3">
                     <svg class="w-6 h-6 mt-1 flex-none text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
