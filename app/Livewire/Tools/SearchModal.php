@@ -47,7 +47,7 @@ class SearchModal extends Component
                 $this->resultsTypes = InsuranceType::where(function ($query) {
                     $query->where('name', 'like', '%' . $this->query . '%')
                           ->orWhere('description', 'like', '%' . $this->query . '%');
-                })->limit(10)->get();
+                })->limit(20)->get();
                 $this->resultsInsurances = [];
                 $this->resultsInfos = [];
                 break;
@@ -61,7 +61,7 @@ class SearchModal extends Component
                             });
                     })
                     ->with('project')
-                    ->limit(10)
+                    ->limit(20)
                     ->get();
 
                 $this->resultsInsurances = [];
@@ -72,7 +72,7 @@ class SearchModal extends Component
                 $this->resultsInsurances = Insurance::where(function ($query) {
                     $query->where('name', 'like', '%' . $this->query . '%')
                           ->orWhere('description', 'like', '%' . $this->query . '%');
-                })->limit(10)->get();
+                })->limit(20)->get();
                 $this->resultsTypes = [];
                 $this->resultsInfos = [];
                 break;
@@ -81,7 +81,7 @@ class SearchModal extends Component
                 $this->resultsInsurances = Insurance::where(function ($query) {
                     $query->where('name', 'like', '%' . $this->query . '%')
                           ->orWhere('description', 'like', '%' . $this->query . '%');
-                })->limit(5)->get();
+                })->limit(20)->get();
     
                 //$this->resultsTypes = InsuranceType::where(function ($query) {
                 //    $query->where('name', 'like', '%' . $this->query . '%')
@@ -95,7 +95,7 @@ class SearchModal extends Component
                             $q->where('html', 'like', '%' . $this->query . '%');
                         });
                 })
-                ->limit(5)
+                ->limit(20)
                 ->get();
                 break;
         }
