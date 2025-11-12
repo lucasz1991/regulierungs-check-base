@@ -44,7 +44,8 @@ class SearchModal extends Component
     
         switch ($this->searchType) {
             case 'types':
-                $this->resultsTypes = InsuranceType::where(function ($query) {
+                $this->resultsTypes = InsuranceType::where('is_active', true)
+                    ->where(function ($query) {
                     $query->where('name', 'like', '%' . $this->query . '%')
                           ->orWhere('description', 'like', '%' . $this->query . '%');
                 })->limit(20)->get();
@@ -69,16 +70,18 @@ class SearchModal extends Component
                 break;
     
             case 'insurances':
-                $this->resultsInsurances = Insurance::where(function ($query) {
+                $this->resultsInsurances = Insurance::where('is_active', true)
+                    ->where(function ($query) {
                     $query->where('name', 'like', '%' . $this->query . '%')
-                          ->orWhere('description', 'like', '%' . $this->query . '%');
+                        ->orWhere('description', 'like', '%' . $this->query . '%');
                 })->limit(20)->get();
                 $this->resultsTypes = [];
                 $this->resultsInfos = [];
                 break;
     
             default:
-                $this->resultsInsurances = Insurance::where(function ($query) {
+                $this->resultsInsurances = Insurance::where('is_active', true)
+                    ->where(function ($query) {
                     $query->where('name', 'like', '%' . $this->query . '%')
                           ->orWhere('description', 'like', '%' . $this->query . '%');
                 })->limit(20)->get();
