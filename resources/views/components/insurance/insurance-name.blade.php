@@ -16,12 +16,5 @@
             </div>
         @endif
     </div>
-    <div class="grow  min-w-0  transition-all duration-200"
-        >
-        <div >
-            <h2 class="text-base break-words  truncate text-ellipsis pr-2">
-                {{  $insurance->name }}
-            </h2>
-        </div>
-    </div>
+
 </div>
