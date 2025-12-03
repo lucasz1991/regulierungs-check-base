@@ -1,13 +1,35 @@
+@php
+    $v = $claimRating->verification;
+    $isPending   = $v['state'] === 'pending';
+    $isApproved  = $v['state'] === 'approved';
+    $isRejected  = $v['state'] === 'rejected';
+    $locked      = $isPending && $v['casefileUploaded']; // solange pending + file(s) => gesperrt
+
+    // Prozent für den Kreis
+    $percentage = 5; // default: keine Verifikation
+    if ($v['casefileUploaded'] && $v['state'] === 'none') {
+        $percentage = 25;   // Daten hinterlegt, noch kein Status
+    }
+    if ($isPending) {
+        $percentage = 60;   // in Prüfung
+    }
+    if ($isApproved) {
+        $percentage = 100;  // verifiziert
+    }
+    if ($isRejected) {
+        $percentage = 40;   // z.B. orange/rot – abgelehnt
+    }
+@endphp
+
 <div class="flex mr-3">
-    {{-- Icon + Kreis + Tooltip (wie bisher, aber Klick öffnet Modal) --}}
+    {{-- Icon + Kreis + Tooltip (Klick öffnet Modal) --}}
     <div
         x-data="{
-            percentage: 50,
+            percentage: {{ $percentage }},
             strokeLength: 565.5,
             get offset() {
                 return this.strokeLength - (this.percentage / 100) * this.strokeLength;
-            },
-            showTooltip: false,
+            }
         }"
         class="flex"
     >
@@ -76,7 +98,36 @@
         <x-slot name="content">
             @php $v = $claimRating->verification; @endphp
 
-            {{-- Statusanzeige --}}
+            {{-- Status-Alert oben je nach State --}}
+            @if($v['state'] === 'pending')
+                <x-alert class="mb-4" :mode="'warning'">
+                    <p class="text-sm" >
+                        Deine Falldaten wurden eingereicht und befinden sich aktuell in der Prüfung.
+                        Solange die Prüfung läuft, sind Fallnummer und Dateien gesperrt.
+                    </p>
+                </x-alert>
+            @elseif($v['state'] === 'approved')
+                <x-alert class="mb-4" :mode="'success'">
+                    <p class="text-sm ">
+                        Die Verifikation wurde erfolgreich abgeschlossen. Deine Angaben wurden bestätigt.
+                    </p>
+                </x-alert>
+            @elseif($v['state'] === 'rejected')
+                <x-alert class="mb-4"  :mode="'danger'">
+                    <p class="text-sm ">
+                        Die Verifikation wurde abgelehnt. Bitte überprüfe deine Fallnummer und Dokumente und reiche sie ggf. erneut ein.
+                    </p>
+                </x-alert>
+            @else
+                <x-alert class="mb-4"  :mode="'info'">
+                    <p class="text-sm ">
+                        Für diese Bewertung liegt noch keine Verifikation vor. Bitte trage deine Fallnummer ein
+                        und lade mindestens ein Falldokument hoch, damit wir deine Angaben prüfen können.
+                    </p>
+                </x-alert>
+            @endif
+
+            {{-- Statusanzeige (Badges) --}}
             <div class="mb-4">
                 <p class="text-sm text-gray-600 mb-1">
                     Aktueller Verifikationsstatus:
@@ -109,30 +160,43 @@
                     id="caseNumber"
                     type="text"
                     wire:model.defer="caseNumber"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm"
+                    class="mt-1 block w-full rounded-md shadow-sm text-sm
+                        @if($locked)
+                            bg-gray-100 border-amber-400 text-gray-500 cursor-not-allowed
+                        @else
+                            border-gray-300
+                        @endif"
                     placeholder="z. B. Schaden-Nr. 12345678"
+                    @if($locked) disabled @endif
                 >
                 @error('caseNumber')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
+                @if($locked)
+                    <p class="mt-1 text-xs text-amber-700">
+                        Die Fallnummer ist während der laufenden Prüfung gesperrt.
+                    </p>
+                @endif
             </div>
 
             {{-- bereits hochgeladene Falldokumente --}}
             @if($verificationFiles->count() > 0)
                 <div class="mb-4 border border-gray-200 rounded-md p-3 bg-gray-50">
-                    <p class="text-xs font-medium text-gray-600 mb-2">Bereits hochgeladene Falldokumente:</p>
+                    <p class="text-xs font-medium text-gray-600 mb-2">
+                        Bereits hochgeladene Falldokumente:
+                    </p>
                     <ul class="space-y-1 text-sm text-gray-700">
                         @foreach($verificationFiles as $file)
                             <li class="flex items-center justify-between">
                                 <span>{{ $file->name_with_extension }}</span>
-                                <span>{{ $file->size_formatted }}</span>
-
+                                <span class="text-xs text-gray-500">{{ $file->size_formatted }}</span>
+                                
                             </li>
                         @endforeach
                     </ul>
                 </div>
             @endif
-
+        @if(!$locked)
             {{-- neue Datei(en) hochladen --}}
             <div class="mb-2">
                 <label for="newFiles" class="block text-sm font-medium text-gray-700">
@@ -140,10 +204,16 @@
                 </label>
                 <input
                     id="newFiles"
-                    type="file" 
+                    type="file"
                     multiple
                     wire:model="newFiles"
-                    class="mt-1 block w-full text-sm text-gray-700"
+                    class="mt-1 block w-full text-sm
+                        @if($locked)
+                            bg-gray-100 text-gray-500 cursor-not-allowed
+                        @else
+                            text-gray-700
+                        @endif"
+                    @if($locked) disabled @endif
                 >
                 <p class="mt-1 text-xs text-gray-500">
                     Erlaubte Formate: PDF, Bilddateien · max. 10&nbsp;MB pro Datei
@@ -155,29 +225,44 @@
                 <div wire:loading wire:target="newFiles" class="mt-2 text-xs text-gray-500">
                     Dateien werden hochgeladen …
                 </div>
+
             </div>
+        @endif
         </x-slot>
 
-        <x-slot name="footer">
-            <div class="flex justify-end gap-2">
-                <x-button
-                    type="button"
-                    wire:click="closeModal"
-                    class="text-sm"
-                >
-                    Schließen
-                </x-button>
+<x-slot name="footer">
+    <div class="flex justify-end gap-2">
+        <x-button
+            type="button"
+            wire:click="closeModal"
+            class="text-sm"
+        >
+            Schließen
+        </x-button>
 
-                <x-button
-                    type="button"
-                    wire:click="submit"
-                    wire:loading.attr="disabled"
-                    wire:target="submit,newFiles"
-                    class="text-sm"
-                >
-                    Falldaten speichern
-                </x-button>
-            </div>
-        </x-slot>
+                @if($locked)
+                    {{-- Gesperrt: disabled Button --}}
+                    <x-button
+                        type="button"
+                        class="text-sm opacity-60 cursor-not-allowed"
+                        disabled
+                    >
+                        Falldaten speichern
+                    </x-button>
+                @else
+                    {{-- Normal klickbar --}}
+                    <x-button
+                        type="button"
+                        wire:click="submit"
+                        wire:loading.attr="disabled"
+                        wire:target="submit,newFiles"
+                        class="text-sm"
+                    >
+                        Falldaten speichern
+                    </x-button>
+                @endif
+    </div>
+</x-slot>
+
     </x-dialog-modal>
 </div>

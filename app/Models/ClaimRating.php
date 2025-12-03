@@ -302,4 +302,36 @@ public function markVerificationPending(string $caseNumber): void
     {
         return $this->files()->where('type', 'claim_verification');
     }
+
+    /**
+ * Gibt zurück, ob diese Bewertung veröffentlicht werden darf.
+ */
+public function canBePublished(): bool
+{
+    // 1. Wenn keine Verifikation nötig ist → sofort publishbar
+    if (! $this->requiresVerification()) {
+        return true;
+    }
+
+    // 2. Verifikation nötig → prüfen, ob alles erfüllt ist
+
+    $v = $this->verification;
+
+    // Muss genehmigt sein
+    if ($v['state'] !== 'approved') {
+        return false;
+    }
+
+    // Fallnummer muss vorhanden sein
+    if (empty($v['caseNumber'])) {
+        return false;
+    }
+
+    // Mindestens eine Datei muss vorhanden sein
+    if (! $this->hasVerificationFiles()) {
+        return false;
+    }
+
+    return true;
+}
 }

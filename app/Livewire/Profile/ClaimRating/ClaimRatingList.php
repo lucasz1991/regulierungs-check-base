@@ -50,10 +50,21 @@ class ClaimRatingList extends Component
             ->orderBy('created_at', 'desc')
             ->paginate(6);
         $this->hasActiveRating = $claimRatings->contains('status', 'pending');
-        if ($this->privateClaimRating && !$this->privateClaimRating->is_public && $this->userData->email_verified_at != null) {
-            $this->dispatch('claimRatingConfirm', $this->privateClaimRating->id);
-            $this->privateClaimRating = null; // wichtig: nur einmal senden
-        }
+if ($this->privateClaimRating && !$this->privateClaimRating->is_public && $this->userData->email_verified_at != null) {
+
+    // FALL 1: Veröffentlichung möglich → Publish-Dialog öffnen
+    if ($this->privateClaimRating->canBePublished()) {
+        $this->dispatch('claimRatingConfirm', $this->privateClaimRating->id);
+    }
+
+    // FALL 2: Veröffentlichung NICHT möglich → Verifikation nötig → Verification-Modal öffnen
+    elseif ($this->privateClaimRating->requiresVerification()) {
+        $this->dispatch('openVerificationModal', $this->privateClaimRating->id);
+    }
+
+    $this->privateClaimRating = null; // immer nur einmal triggern
+}
+
         return view('livewire.profile.claim-rating.claim-rating-list', [
             'claimRatings' => $claimRatings,
         ]);
