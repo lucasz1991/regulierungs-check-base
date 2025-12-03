@@ -74,7 +74,13 @@ class ClaimRating extends Model
         });
 
         static::updated(function (ClaimRating $claimRating) {
-            ClaimRatingController::evaluateScore($claimRating);
+            if ($claimRating->wasChanged('attachments') || $claimRating->wasChanged('answers')) {
+                ClaimRatingController::evaluateScore($claimRating);
+            }
+            if ($claimRating->wasChanged('data')) {
+                // Admin Task erstellen
+                
+            }
         });
     }
 
