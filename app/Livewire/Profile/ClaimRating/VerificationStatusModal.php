@@ -21,6 +21,9 @@ class VerificationStatusModal extends Component
     /** @var array */
     public array $newFiles = [];
 
+    /** Score für den Kreis */
+    public int $verificationScore = 0;
+
     protected function rules(): array
     {
         return [
@@ -35,10 +38,11 @@ class VerificationStatusModal extends Component
 
         $this->claimRating = $claimRating;
 
-        // bereits vorhandene Fallnummer aus data['verification']
-        $this->caseNumber = $this->claimRating->verification['caseNumber'] ?? null;
+        // Fallnummer aus data['verification']
+        $this->caseNumber        = $this->claimRating->verification['caseNumber'] ?? null;
+        $this->verificationScore = $this->claimRating->verification_score;
     }
- 
+
     public function openModal(): void
     {
         $this->showModal = true;
@@ -55,7 +59,6 @@ class VerificationStatusModal extends Component
 
         $this->validate();
 
-        // neue Dateien speichern und anhängen (mehrere möglich)
         foreach ($this->newFiles as $upload) {
             $storedPath = $upload->store('claim-verification', 'private');
 
@@ -75,18 +78,15 @@ class VerificationStatusModal extends Component
         // ClaimRating in Verifikations-Status setzen
         $this->claimRating->markVerificationPending($this->caseNumber);
 
-        // neu laden (inkl. Verification + Files)
+        // neu laden (inkl. Verification + Files + Score)
         $this->claimRating->refresh();
+        $this->verificationScore = $this->claimRating->verification_score;
 
-        // Uploads zurücksetzen
         $this->newFiles = [];
 
         session()->flash('message', 'Falldaten gespeichert und zur Verifikation eingereicht.');
     }
 
-    /**
-     * Für Tooltip / Anzeige: Label abhängig vom Verification-State.
-     */
     public function getStatusLabelProperty(): string
     {
         $v = $this->claimRating->verification;
@@ -106,6 +106,8 @@ class VerificationStatusModal extends Component
         return view('livewire.profile.claim-rating.verification-status-modal', [
             'verificationFiles' => $verificationFiles,
             'statusLabel'       => $this->statusLabel,
+            'verificationScore' => $this->verificationScore,
         ]);
     }
 }
+

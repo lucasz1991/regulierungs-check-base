@@ -4,28 +4,11 @@
     $isApproved  = $v['state'] === 'approved';
     $isRejected  = $v['state'] === 'rejected';
     $locked      = $isPending && $v['casefileUploaded']; // solange pending + file(s) => gesperrt
-
-    // Prozent für den Kreis
-    $percentage = 5; // default: keine Verifikation
-    if ($v['casefileUploaded'] && $v['state'] === 'none') {
-        $percentage = 25;   // Daten hinterlegt, noch kein Status
-    }
-    if ($isPending) {
-        $percentage = 60;   // in Prüfung
-    }
-    if ($isApproved) {
-        $percentage = 100;  // verifiziert
-    }
-    if ($isRejected) {
-        $percentage = 40;   // z.B. orange/rot – abgelehnt
-    }
 @endphp
-
 <div class="flex mr-3">
-    {{-- Icon + Kreis + Tooltip (Klick öffnet Modal) --}}
     <div
         x-data="{
-            percentage: {{ $percentage }},
+            percentage: {{ $verificationScore }}, // 0 / 20 / 60
             strokeLength: 565.5,
             get offset() {
                 return this.strokeLength - (this.percentage / 100) * this.strokeLength;
@@ -43,7 +26,6 @@
             </g>
         </svg>
 
-        {{-- Kreis + Tooltip + Click → Modal --}}
         <div class="w-6 relative" x-data="{ show: false }">
             <div
                 @mouseover="show = true"
@@ -84,7 +66,8 @@
                 class="z-50 text-sm text-white bg-gray-800 rounded-md shadow-lg p-3"
             >
                 Verifizierungsstatus:<br>
-                <span class="font-semibold">{{ $statusLabel }}</span>
+                <span class="font-semibold">{{ $statusLabel }}</span><br>
+                <span class="text-xs opacity-75">{{ $verificationScore }} %</span>
             </div>
         </div>
     </div>

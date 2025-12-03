@@ -53,6 +53,10 @@ class ClaimRating extends Model
         'data'          => 'array',
     ];
 
+    protected $appends = [
+        'verification_score',
+    ];
+
     // --------------------------------------
     // Boot-Callbacks
     // --------------------------------------
@@ -420,4 +424,31 @@ class ClaimRating extends Model
             ]
         );
     }
+
+        /**
+     * Verifikations-Score für den Kreis-Indikator.
+     *
+     * - 0   = keine Verifikation / nicht verifizierte E-Mail
+     * - 20  = User-E-Mail verifiziert
+     * - 60  = E-Mail verifiziert + Claim-Verifikation approved
+     */
+    public function getVerificationScoreAttribute(): int
+    {
+        $score = 0;
+
+        // 1) Verifizierte E-Mail des Users → +20
+        if ($this->user && $this->user->email_verified_at) {
+            $score += 20;
+        }
+
+        // 2) Claim-spezifische Verifikation approved → +40
+        $v = $this->verification; // kommt aus getVerificationAttribute()
+
+        if (($v['state'] ?? null) === 'approved') {
+            $score += 40;
+        }
+
+        return $score;
+    }
+
 }
