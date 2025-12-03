@@ -39,27 +39,52 @@
                 </x-dropdown>
             </div>
         </div>   
+        @if($requiresVerification && ! $canBePublished)
+            @if($verification['state'] === 'pending')
+                <x-alert class="mb-2" :mode="'warning'">
+                    <p class="text-sm">
+                        Diese Bewertung ist eine Mehrfachbewertung. Deine Falldaten wurden eingereicht und befinden sich aktuell in der Prüfung.
+                        Solange die Verifikation läuft, kann die Bewertung nicht veröffentlicht werden.
+                    </p>
+                </x-alert>
+            @elseif($verification['state'] === 'rejected')
+                <x-alert class="mb-2" :mode="'danger'">
+                    <p class="text-sm">
+                        Die Verifikation dieser Bewertung wurde abgelehnt. Bitte überprüfe deine Fallnummer und Falldokumente
+                        und reiche sie über den Verifikationsbereich (Kreis-Symbol neben dem Status) erneut ein.
+                    </p>
+                </x-alert>
+            @else
+                <x-alert class="mb-2"  :mode="'success'">
+                    <p class="text-sm">
+                        Für diese Mehrfachbewertung ist eine Fall-Verifikation erforderlich. 
+                        Bitte hinterlege eine gültige Fallnummer und lade mindestens ein Falldokument über den Verifikationsbereich 
+                        (Kreis-Symbol neben dem Status) hoch, damit die Bewertung veröffentlicht werden kann.
+                    </p>
+                </x-alert>
+            @endif
+        @endif
         <div class="bg-white rounded shadow p-6">
-                    <div class="flex justify-between ">
-            <div class="">
-                <div class="text-sm text-gray-500">
-                    Erstellt am  - {{ \Carbon\Carbon::parse($claimRating->created_at)->format('d.m.Y') }}
+            <div class="flex justify-between ">
+                <div class="">
+                    <div class="text-sm text-gray-500">
+                        Erstellt am  - {{ \Carbon\Carbon::parse($claimRating->created_at)->format('d.m.Y') }}
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <livewire:profile.claim-rating.verification-status-modal
+                        :claim-rating="$claimRating"
+                        wire:key="verification-status-{{ $claimRating->id }}"
+                    />                
+                    <div class="mr-3">
+                        @if($claimRating->is_public)
+                            <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-semibold">Öffentlich</span>
+                        @else
+                            <span class="ml-2 bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded font-semibold">Privat</span>
+                        @endif
+                    </div>
                 </div>
             </div>
-
-            <div class="flex justify-between items-start">
-<livewire:profile.claim-rating.verification-status-modal
-    :claim-rating="$claimRating"
-    wire:key="verification-status-{{ $claimRating->id }}"
-/>                <div class="mr-3">
-                    @if($claimRating->is_public)
-                        <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-semibold">Öffentlich</span>
-                    @else
-                        <span class="ml-2 bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded font-semibold">Privat</span>
-                    @endif
-                </div>
-            </div>
-        </div>
         </div>
         <div class="grid md:grid-cols-2 gap-4">
             <div class="bg-white  rounded shadow p-6 w-full">
@@ -74,7 +99,7 @@
                     Versicherungs-typ: <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
                 </p>
             </div>
-                        <div class="bg-white rounded shadow p-6 w-full space-y-4">
+            <div class="bg-white rounded shadow p-6 w-full space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-4 text-sm text-gray-700">
                     <div class="flex justify-between">
                         <span class="font-medium text-gray-500">Regulierungsart:</span>
@@ -95,7 +120,6 @@
                         </div>
                     @endif
                 </div>
-
                 <div class="border-t border-gray-200 pt-4">
                    <div class="flex justify-between text-sm text-gray-700">
                         <span class="font-medium text-gray-500">Details:</span>

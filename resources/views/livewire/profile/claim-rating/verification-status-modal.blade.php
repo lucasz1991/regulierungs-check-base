@@ -90,7 +90,7 @@
     </div>
 
     {{-- Modal für Verifikationsdetails + Formular --}}
-    <x-dialog-modal wire:model="showModal" :maxWidth="'lg'">
+    <x-dialog-modal wire:model="showModal" :maxWidth="'2xl'">
         <x-slot name="title">
             <h2 class="text-lg font-semibold">Fall-Verifikation</h2>
         </x-slot>
@@ -190,7 +190,7 @@
                             <li class="flex items-center justify-between">
                                 <span>{{ $file->name_with_extension }}</span>
                                 <span class="text-xs text-gray-500">{{ $file->size_formatted }}</span>
-                                
+
                             </li>
                         @endforeach
                     </ul>

@@ -9,12 +9,36 @@ use Illuminate\Support\Facades\Auth;
 class ShowClaimRating extends Component
 {
     public ClaimRating $claimRating;
-    public $hasActiveRating;
+
+    public bool $hasActiveRating = false;
+
+    /** Verifikationsdaten aus data['verification'] */
+    public array $verification = [];
+
+    /** Ob diese Bewertung eine Verifikation benötigt (Mehrfachbewertung) */
+    public bool $requiresVerification = false;
+
+    /** Ob diese Bewertung aktuell veröffentlicht werden darf */
+    public bool $canBePublished = false;
 
     public function mount(ClaimRating $claimRating)
     {
         abort_if($claimRating->user_id !== Auth::id(), 403);
+
         $this->claimRating = $claimRating;
+
+        $this->refreshVerificationState();
+    }
+
+    protected function refreshVerificationState(): void
+    {
+        // falls das Model zwischendurch verändert/neu geladen wurde
+        $this->claimRating->refresh();
+
+        $this->verification          = $this->claimRating->verification;
+        $this->requiresVerification  = $this->claimRating->requiresVerification();
+        $this->canBePublished        = $this->claimRating->canBePublished();
+        $this->hasActiveRating       = $this->claimRating->status === ClaimRating::STATUS_PENDING;
     }
 
     public function reanalyze()
@@ -22,6 +46,8 @@ class ShowClaimRating extends Component
         abort_if($this->claimRating->user_id !== Auth::id(), 403);
 
         $this->claimRating->reanalyze();
+
+        $this->refreshVerificationState();
 
         session()->flash('message', 'Die Bewertung wurde zur erneuten Analyse eingereicht.');
     }
@@ -31,8 +57,10 @@ class ShowClaimRating extends Component
         abort_if($this->claimRating->user_id !== Auth::id(), 403);
 
         $this->claimRating->is_public = false;
-        $this->claimRating->status    = ClaimRating::STATUS_APPROVED; // oder was dein Flow hier vorsieht
+        $this->claimRating->status    = ClaimRating::STATUS_APPROVED; // oder dein gewünschter Zwischenstatus
         $this->claimRating->save();
+
+        $this->refreshVerificationState();
 
         session()->flash('message', 'Die Bewertung wurde auf privat gesetzt.');
     }
@@ -41,10 +69,8 @@ class ShowClaimRating extends Component
     {
         abort_if($this->claimRating->user_id !== Auth::id(), 403);
 
-        // HIER: zentrale Prüfung über das Model
         if (! $this->claimRating->canBePublished()) {
 
-            // Optional: etwas differenziertere Meldung
             if ($this->claimRating->requiresVerification()) {
                 session()->flash(
                     'message',
@@ -57,13 +83,16 @@ class ShowClaimRating extends Component
                 );
             }
 
+            $this->refreshVerificationState();
+
             return;
         }
 
-        // Alles erfüllt → freigeben
         $this->claimRating->is_public = true;
         $this->claimRating->status    = ClaimRating::STATUS_PUBLISHED;
         $this->claimRating->save();
+
+        $this->refreshVerificationState();
 
         session()->flash('message', 'Bewertung veröffentlicht.');
     }
@@ -81,7 +110,8 @@ class ShowClaimRating extends Component
 
     public function render()
     {
-        $this->hasActiveRating = $this->claimRating->status === ClaimRating::STATUS_PENDING;
+        // falls sich zwischendurch etwas am Model geändert hat (Queue etc.)
+        $this->refreshVerificationState();
 
         return view('livewire.profile.claim-rating.show-claim-rating')
             ->layout('layouts.app');
