@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('name');                // Anzeigename
             $table->string('path');                // Speicherpfad (z. B. in storage/app)
             $table->string('mime_type')->nullable();
+            $table->string('type', 50)->default('default')->index();
             $table->unsignedBigInteger('size')->nullable(); // in Bytes
 
             $table->dateTime('expires_at')->nullable();     // Ablaufdatum

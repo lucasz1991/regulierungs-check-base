@@ -48,8 +48,10 @@
             </div>
 
             <div class="flex justify-between items-start">
-                <x-profile.claim-rating.claim-rating-circleprogress/>
-                <div class="mr-3">
+<livewire:profile.claim-rating.verification-status-modal
+    :claim-rating="$claimRating"
+    wire:key="verification-status-{{ $claimRating->id }}"
+/>                <div class="mr-3">
                     @if($claimRating->is_public)
                         <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-semibold">Öffentlich</span>
                     @else
@@ -95,9 +97,13 @@
                 </div>
 
                 <div class="border-t border-gray-200 pt-4">
-                    <div class="flex justify-between text-sm text-gray-700">
+                   <div class="flex justify-between text-sm text-gray-700">
                         <span class="font-medium text-gray-500">Details:</span>
-                        <span class="text-right">{{ $claimRating->answers['regulationDetail']['selected_values'] ?? '' }}</span>
+                        <div class="text-right space-y-1">
+                            @foreach((array) data_get($claimRating->answers, 'regulationDetail.selected_values', []) as $value)
+                                <div>{{ $value }}</div>
+                            @endforeach
+                        </div>
                     </div>
                     @if($claimRating->answers['regulationDetail']['textarea_value'])
                         <p class="text-sm text-gray-600 mt-2">

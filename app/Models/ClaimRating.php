@@ -148,20 +148,22 @@ class ClaimRating extends Model
     /**
      * Bewertung in den Verifikationsstatus setzen.
      */
-    public function markVerificationPending(string $caseNumber): void
-    {
-        $this->setVerification([
-            'state'            => 'pending',
-            'caseNumber'       => $caseNumber,
-            'casefileUploaded' => true,
-        ]);
+public function markVerificationPending(string $caseNumber): void
+{
+    // mindestens eine Verifikationsdatei vorhanden?
+    $hasFiles = $this->hasVerificationFiles();
 
-        $this->status    = self::STATUS_PENDING_VALIDATION;
-        $this->is_public = false;
+    $this->setVerification([
+        'state'            => 'pending',
+        'caseNumber'       => $caseNumber,
+        'casefileUploaded' => $hasFiles,
+    ]);
 
-        $this->save();
-    }
+    $this->status    = self::STATUS_PENDING_VALIDATION;
+    $this->is_public = false;
 
+    $this->save();
+}
     /**
      * Optional für Admin-Workflow: Verifikation genehmigen.
      */
