@@ -5,70 +5,80 @@
     $isRejected  = $v['state'] === 'rejected';
     $locked      = $isPending && $v['casefileUploaded']; // solange pending + file(s) => gesperrt
 @endphp
-<div class="flex mr-3">
+
+<div
+    class="flex mr-3"
+    x-data="{
+        show: false,
+        percentage: {{ $verificationScore }}, // 0 / 20 / 60
+        strokeLength: 565.5,
+        get offset() {
+            return this.strokeLength - (this.percentage / 100) * this.strokeLength;
+        }
+    }"
+>
+    {{-- Klick-/Hover-Bereich: Schild + Kreis --}}
     <div
-        x-data="{
-            percentage: {{ $verificationScore }}, // 0 / 20 / 60
-            strokeLength: 565.5,
-            get offset() {
-                return this.strokeLength - (this.percentage / 100) * this.strokeLength;
-            }
-        }"
-        class="flex"
+        class="relative flex items-center cursor-pointer"
+        @mouseover="show = true"
+        @mouseleave="show = false"
+        @click="show = true; $wire.openModal()"
+        @click.away="show = false"
+        x-ref="anchor"
     >
-        {{-- Shield-Icon --}}
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        {{-- Shield-Icon (Teil des klickbaren Bereichs) --}}
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1 opacity-40 {{$isPending ? ' text-yellow-800 ' : ($isApproved ? ' text-green-600 ' :($isRejected ? ' text-red-600 ' :''))}}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
             <g>
-                <path stroke="currentColor" stroke-width="1.5" fill="#f3f4f6" d="M12 3l7 3v5c0 5.25-3.5 9.75-7 11-3.5-1.25-7-5.75-7-11V6l7-3z"/>
+                <path stroke="currentColor" stroke-width="1.5" fill="#f3f4f6"
+                      d="M12 3l7 3v5c0 5.25-3.5 9.75-7 11-3.5-1.25-7-5.75-7-11V6l7-3z"/>
                 <ellipse cx="12" cy="11" rx="3" ry="2" fill="#fff" stroke="currentColor" stroke-width="1"/>
                 <circle cx="12" cy="11" r="0.8" fill="#1f2937"/>
-                <path d="M9.5 11c.5-.7 1.5-1.2 2.5-1.2s2 .5 2.5 1.2" stroke="#6b7280" stroke-width="0.7" fill="none"/>
+                <path d="M9.5 11c.5-.7 1.5-1.2 2.5-1.2s2 .5 2.5 1.2"
+                      stroke="#6b7280"
+                      stroke-width="0.7"
+                      fill="none"/>
             </g>
         </svg>
 
-        <div class="w-6 relative" x-data="{ show: false }">
-            <div
-                @mouseover="show = true"
-                @mouseleave="show = false"
-                @click="show = true; $wire.openModal()"
-                @click.away="show = false"
-                x-ref="anchor"
-                style="width: 100%; max-width: 300px; cursor: pointer;"
-            >
-                <svg viewBox="0 0 200 200" style="width: 100%; height: auto;" preserveAspectRatio="xMidYMid meet">
-                    <circle
-                        cx="100"
-                        cy="100"
-                        r="80"
-                        stroke="#ddd"
-                        stroke-width="30"
-                        fill="none"
-                    />
-                    <circle
-                        cx="100"
-                        cy="100"
-                        r="80"
-                        stroke="#4CAF50"
-                        stroke-width="30"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-dasharray="565.5"
-                        :stroke-dashoffset="offset"
-                        transform="rotate(-90 100 100)"
-                    />
-                </svg>
-            </div>
+        {{-- Kreis-Indikator (auch Teil des klickbaren Bereichs) --}}
+        <div class="w-6">
+            <svg viewBox="0 0 200 200"
+                 style="width: 100%; height: auto;"
+                 preserveAspectRatio="xMidYMid meet">
+                <circle
+                    cx="100"
+                    cy="100"
+                    r="80"
+                    stroke="#ddd"
+                    stroke-width="30"
+                    fill="none"
+                />
+                <circle
+                    cx="100"
+                    cy="100"
+                    r="80"
+                    stroke="#4CAF50"
+                    stroke-width="30"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="565.5"
+                    :stroke-dashoffset="offset"
+                    transform="rotate(-90 100 100)"
+                />
+            </svg>
+        </div>
 
-            <div
-                x-show="show"
-                x-cloak
-                x-anchor.offset.10="$refs.anchor"
-                class="z-50 text-sm text-white bg-gray-800 rounded-md shadow-lg p-3"
-            >
-                Verifizierungsstatus:<br>
-                <span class="font-semibold">{{ $statusLabel }}</span><br>
-                <span class="text-xs opacity-75">{{ $verificationScore }} %</span>
-            </div>
+        {{-- Tooltip für Schild + Kreis --}}
+        <div
+            x-show="show"
+            x-cloak
+            x-anchor.offset.10="$refs.anchor"
+            class="z-50 text-sm text-white bg-gray-800 rounded-md shadow-lg p-3"
+        >
+            Verifizierungsstatus:<br>
+            <span class="font-semibold">{{ $statusLabel }}</span><br>
+            <span class="text-xs opacity-75">{{ $verificationScore }} %</span>
         </div>
     </div>
 
