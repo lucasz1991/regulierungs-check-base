@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\AdminTask;
 
 class ClaimRating extends Model
 {
@@ -24,16 +25,6 @@ class ClaimRating extends Model
     public const STATUS_REJECTED           = 'rejected';
     public const STATUS_PUBLISHED          = 'published';
     public const STATUS_PENDING_VALIDATION = 'pending_validation';
-
-    /**
-     * Mögliche Felder:
-     * - pending:             Bewertung wurde erstellt, AI-Auswertung / Prüfung ausstehend
-     * - rated:               AI-Auswertung liegt vor
-     * - approved:            von Admin/Moderation freigegeben
-     * - rejected:            von Admin/Moderation abgelehnt
-     * - published:           öffentlich sichtbar
-     * - pending_validation:  zusätzliche Fall-Verifikation (Mehrfachbewertung) ausstehend
-     */
 
     protected $fillable = [
         'user_id',
@@ -74,12 +65,14 @@ class ClaimRating extends Model
         });
 
         static::updated(function (ClaimRating $claimRating) {
+            // AI-Re-Score nur, wenn Antworten/Attachments geändert wurden
             if ($claimRating->wasChanged('attachments') || $claimRating->wasChanged('answers')) {
                 ClaimRatingController::evaluateScore($claimRating);
             }
+
+            // AdminTask nur, wenn sich data geändert hat (inkl. verification)
             if ($claimRating->wasChanged('data')) {
-                // Admin Task erstellen
-                
+                $claimRating->handleDataChangedAdminTasks();
             }
         });
     }
@@ -91,7 +84,6 @@ class ClaimRating extends Model
     /**
      * Zugriff auf data['verification'] mit Defaults.
      *
-     * Struktur:
      * [
      *   'state'            => 'none|pending|approved|rejected',
      *   'caseNumber'       => string|null,
@@ -126,9 +118,11 @@ class ClaimRating extends Model
      */
     public function requiresVerification(): bool
     {
-        if($this->is_public){
+        // Bereits öffentlich → keine zusätzliche Verifikation mehr nötig
+        if ($this->is_public) {
             return false;
         }
+
         $publishedCount = static::where('user_id', $this->user_id)
             ->where('is_public', true)
             ->count();
@@ -142,7 +136,7 @@ class ClaimRating extends Model
     public function hasVerification(): bool
     {
         return $this->verification['state'] !== 'none'
-            || !empty($this->verification['caseNumber'])
+            || ! empty($this->verification['caseNumber'])
             || $this->verification['casefileUploaded'] === true;
     }
 
@@ -314,6 +308,14 @@ class ClaimRating extends Model
     }
 
     /**
+     * AdminTasks, die sich auf diese ClaimRating beziehen.
+     */
+    public function adminTasks(): MorphMany
+    {
+        return $this->morphMany(AdminTask::class, 'related');
+    }
+
+    /**
      * Gibt zurück, ob diese Bewertung veröffentlicht werden darf.
      */
     public function canBePublished(): bool
@@ -324,7 +326,6 @@ class ClaimRating extends Model
         }
 
         // 2. Verifikation nötig → prüfen, ob alles erfüllt ist
-
         $v = $this->verification;
 
         // Muss genehmigt sein
@@ -343,5 +344,80 @@ class ClaimRating extends Model
         }
 
         return true;
+    }
+
+    // --------------------------------------
+    // AdminTask-Logik bei Datenänderung
+    // --------------------------------------
+
+    /**
+     * Wird aus dem updated-Callback aufgerufen, wenn sich data geändert hat.
+     * Prüft, ob sich speziell der Verification-Status geändert hat und
+     * legt ggf. einen AdminTask an.
+     */
+    protected function handleDataChangedAdminTasks(): void
+    {
+        // ursprüngliche data (vor dem Update)
+        $before = $this->getOriginal('data');
+        if (is_string($before)) {
+            $before = json_decode($before, true) ?? [];
+        } elseif (! is_array($before)) {
+            $before = [];
+        }
+
+        // aktuelle data (nach dem Update, dank Cast bereits Array)
+        $after = $this->data ?? [];
+
+        $beforeVerification = $before['verification'] ?? [];
+        $afterVerification  = $after['verification'] ?? [];
+
+        $beforeState = $beforeVerification['state'] ?? 'none';
+        $afterState  = $afterVerification['state'] ?? 'none';
+
+        // Nur wenn der Status von etwas anderem auf 'pending' gewechselt ist
+        if ($beforeState !== 'pending' && $afterState === 'pending') {
+            $this->createVerificationAdminTask();
+        }
+    }
+
+    /**
+     * Legt (falls noch nicht vorhanden) eine AdminTask für diese ClaimRating-Verifikation an.
+     */
+    protected function createVerificationAdminTask(): AdminTask
+    {
+        $caseNumber = $this->verification['caseNumber'] ?? null;
+
+        $title = 'Fall-Verifikation prüfen';
+        $descriptionLines = [
+            'Bitte die Fall-Verifikation für die Schadenbewertung prüfen.',
+            '',
+            'Bewertungs-ID: ' . $this->id,
+            'User-ID: ' . $this->user_id,
+        ];
+
+        if ($this->insurance) {
+            $descriptionLines[] = 'Versicherung: ' . $this->insurance->name;
+        }
+
+        if ($caseNumber) {
+            $descriptionLines[] = 'Fallnummer: ' . $caseNumber;
+        }
+
+        $description = implode("\n", $descriptionLines);
+
+        // firstOrCreate → verhindert Dubletten für dieselbe ClaimRating
+        return AdminTask::firstOrCreate(
+            [
+                'type'              => 'claim_verification',
+                'related_model_type'=> self::class,
+                'related_model_id'  => $this->id,
+            ],
+            [
+                'title'       => $title,
+                'description' => $description,
+                'status'      => AdminTask::STATUS_OPEN,
+                'priority'    => AdminTask::PRIORITY_HIGH,
+            ]
+        );
     }
 }
