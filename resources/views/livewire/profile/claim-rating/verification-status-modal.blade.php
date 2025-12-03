@@ -90,7 +90,7 @@
                 <x-alert class="mb-4" :mode="'warning'">
                     <p class="text-sm" >
                         Deine Falldaten wurden eingereicht und befinden sich aktuell in der Prüfung.
-                        Solange die Prüfung läuft, sind Fallnummer und Dateien gesperrt.
+                        Solange die Prüfung läuft, sind Fallnummer und Dateien gesperrt. Sobald die Prüfung abgeschlossen ist, informieren wir dich automatisch und die Bewertung wird, falls alles korrekt ist, direkt veröffentlicht.
                     </p>
                 </x-alert>
             @elseif($v['state'] === 'approved')
