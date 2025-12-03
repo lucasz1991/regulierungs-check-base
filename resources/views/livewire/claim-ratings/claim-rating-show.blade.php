@@ -45,14 +45,26 @@
                         <span class="font-medium text-gray-500">Abgeschlossen:</span>
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['is_closed'] ? 'Ja' : 'Nein' }}</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span class="font-medium text-gray-500">Beginn:</span>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['selectedDates']['started_at'] ?? '–' }}</span>
-                    </div>
-                    @if($claimRating->answers['is_closed'])
+                    @php
+                        $start = $claimRating->answers['selectedDates']['started_at'] ?? null;
+                        $end   = $claimRating->answers['selectedDates']['ended_at'] ?? null;
+
+                        $startYear = $start ? \Carbon\Carbon::parse($start)->format('Y') : '–';
+                        $endYear   = $end   ? \Carbon\Carbon::parse($end)->format('Y') : '–';
+                    @endphp
+                    @if(!$claimRating->answers['is_closed'])
                         <div class="flex justify-between">
-                            <span class="font-medium text-gray-500">Beendet:</span>
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">{{ $claimRating->answers['selectedDates']['ended_at'] ?? '–' }}</span>
+                            <span class="font-medium text-gray-500">Jahr Beginn:</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">
+                                {{ $startYear }}
+                            </span>
+                        </div>
+                    @else
+                        <div class="flex justify-between">
+                            <span class="font-medium text-gray-500">Jahr Ende:</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">
+                                {{ $endYear }}
+                            </span>
                         </div>
                     @endif
                 </div>
