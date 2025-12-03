@@ -2,25 +2,39 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Customer\ClaimRatingController;
+use App\Jobs\ClaimRatingAIEval;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Controllers\Customer\ClaimRatingController;
-use Carbon\Carbon;
-use App\Models\RatingTag;
-use App\Jobs\ClaimRatingAIEval;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ClaimRating extends Model
 {
     use HasFactory, SoftDeletes;
-    // Possible statuses for the ClaimRating model:
-    // - pending: The claim rating is awaiting review.
-    // - rated: The claim rating is awaiting review.
-    // - approved: The claim rating has been approved.
-    // - rejected: The claim rating has been rejected.
-    // - published: The claim rating has been published.
-    
+
+    // --------------------------------------
+    // Status-Konstanten
+    // --------------------------------------
+    public const STATUS_PENDING            = 'pending';
+    public const STATUS_RATED              = 'rated';
+    public const STATUS_APPROVED           = 'approved';
+    public const STATUS_REJECTED           = 'rejected';
+    public const STATUS_PUBLISHED          = 'published';
+    public const STATUS_PENDING_VALIDATION = 'pending_validation';
+
+    /**
+     * Mögliche Felder:
+     * - pending:             Bewertung wurde erstellt, AI-Auswertung / Prüfung ausstehend
+     * - rated:               AI-Auswertung liegt vor
+     * - approved:            von Admin/Moderation freigegeben
+     * - rejected:            von Admin/Moderation abgelehnt
+     * - published:           öffentlich sichtbar
+     * - pending_validation:  zusätzliche Fall-Verifikation (Mehrfachbewertung) ausstehend
+     */
+
     protected $fillable = [
         'user_id',
         'insurance_subtype_id',
@@ -40,35 +54,164 @@ class ClaimRating extends Model
     ];
 
     protected $casts = [
-        'answers' => 'array',
-        'attachments' => 'array',
-        'is_public' => 'boolean',
-        'tag_ids' => 'array',
-        'admin_review' => 'array',
-        'data' => 'array',
+        'answers'       => 'array',
+        'attachments'   => 'array',
+        'is_public'     => 'boolean',
+        'tag_ids'       => 'array',
+        'admin_review'  => 'array',
+        'data'          => 'array',
     ];
 
+    // --------------------------------------
+    // Boot-Callbacks
+    // --------------------------------------
     protected static function boot()
     {
         parent::boot();
 
-        static::created(function ($claimRating) {
+        static::created(function (ClaimRating $claimRating) {
             ClaimRatingController::evaluateScore($claimRating);
         });
-        static::updated(function ($claimRating) {
+
+        static::updated(function (ClaimRating $claimRating) {
             ClaimRatingController::evaluateScore($claimRating);
         });
     }
 
-    public function reanalyze()
+    // --------------------------------------
+    // Verifikations-Logik (data['verification'])
+    // --------------------------------------
+
+    /**
+     * Zugriff auf data['verification'] mit Defaults.
+     *
+     * Struktur:
+     * [
+     *   'state'            => 'none|pending|approved|rejected',
+     *   'caseNumber'       => string|null,
+     *   'casefileUploaded' => bool,
+     * ]
+     */
+    public function getVerificationAttribute(): array
+    {
+        $data = $this->data ?? [];
+
+        return array_merge([
+            'state'            => 'none',
+            'caseNumber'       => null,
+            'casefileUploaded' => false,
+        ], $data['verification'] ?? []);
+    }
+
+    /**
+     * Teil-Update der Verification-Struktur in data.
+     */
+    public function setVerification(array $payload): void
+    {
+        $data = $this->data ?? [];
+
+        $data['verification'] = array_merge($this->verification, $payload);
+
+        $this->data = $data;
+    }
+
+    /**
+     * Ab der zweiten veröffentlichten Bewertung eines Users ist eine Verifikation nötig.
+     */
+    public function requiresVerification(): bool
+    {
+        $publishedCount = static::where('user_id', $this->user_id)
+            ->where('is_public', true)
+            ->count();
+
+        return $publishedCount >= 1;
+    }
+
+    /**
+     * Hat diese Bewertung überhaupt schon einen Verifikationszustand != 'none'?
+     */
+    public function hasVerification(): bool
+    {
+        return $this->verification['state'] !== 'none'
+            || !empty($this->verification['caseNumber'])
+            || $this->verification['casefileUploaded'] === true;
+    }
+
+    /**
+     * Gibt es Verifikationsdateien (Typ: claim_verification)?
+     */
+    public function hasVerificationFiles(): bool
+    {
+        return $this->verificationFiles()->exists();
+    }
+
+    /**
+     * Bewertung in den Verifikationsstatus setzen.
+     */
+    public function markVerificationPending(string $caseNumber): void
+    {
+        $this->setVerification([
+            'state'            => 'pending',
+            'caseNumber'       => $caseNumber,
+            'casefileUploaded' => true,
+        ]);
+
+        $this->status    = self::STATUS_PENDING_VALIDATION;
+        $this->is_public = false;
+
+        $this->save();
+    }
+
+    /**
+     * Optional für Admin-Workflow: Verifikation genehmigen.
+     */
+    public function markVerificationApproved(): void
+    {
+        $this->setVerification([
+            'state' => 'approved',
+        ]);
+
+        $this->status    = self::STATUS_PUBLISHED;
+        $this->is_public = true;
+
+        $this->save();
+    }
+
+    /**
+     * Optional für Admin-Workflow: Verifikation ablehnen.
+     */
+    public function markVerificationRejected(string $reason = null): void
+    {
+        $this->setVerification([
+            'state' => 'rejected',
+        ]);
+
+        $this->status    = self::STATUS_REJECTED;
+        $this->is_public = false;
+
+        if ($reason) {
+            $adminReview = $this->admin_review ?? [];
+            $adminReview['verification_reject_reason'] = $reason;
+            $this->admin_review = $adminReview;
+        }
+
+        $this->save();
+    }
+
+    // --------------------------------------
+    // AI-Analyse / Scorings
+    // --------------------------------------
+
+    public function reanalyze(): void
     {
         $this->is_public = false;
-        $this->status = 'pending';
+        $this->status    = self::STATUS_PENDING;
         $this->saveQuietly();
+
         ClaimRatingAIEval::dispatch($this);
     }
 
-    public function comment()
+    public function comment(): string
     {
         return $this->attachments['scorings']['ai_overall_comment'] ?? '';
     }
@@ -78,56 +221,83 @@ class ClaimRating extends Model
         return $this->rating_score ?? '';
     }
 
-    public function ratingDuration()
+    /**
+     * Dauer der Regulierung in Tagen (aus answers['selectedDates']).
+     */
+    public function ratingDuration(): ?int
     {
         $start = isset($this->answers['selectedDates']['started_at'])
             ? Carbon::parse($this->answers['selectedDates']['started_at'])
             : null;
-    
-        if (!$start) {
-            return null; // oder 0 oder "unbekannt", je nach Bedarf
+
+        if (! $start) {
+            return null;
         }
-    
+
         $end = isset($this->answers['is_closed']) && $this->answers['is_closed']
             ? Carbon::parse($this->answers['selectedDates']['ended_at'] ?? now())
             : now();
-    
+
         return $start->diffInDays($end);
     }
 
-    public function user()
+    // --------------------------------------
+    // Beziehungen
+    // --------------------------------------
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function insurance()
+    public function insurance(): BelongsTo
     {
         return $this->belongsTo(Insurance::class);
     }
 
-    public function insuranceType()
+    public function insuranceType(): BelongsTo
     {
         return $this->belongsTo(InsuranceType::class);
     }
-    
-    public function insuranceSubtype()
+
+    public function insuranceSubtype(): BelongsTo
     {
         return $this->belongsTo(InsuranceSubtype::class);
     }
 
-    public function questionnaireVersion()
+    public function questionnaireVersion(): BelongsTo
     {
-        return $this->belongsTo(RatingQuestionnaireVersion::class, 'rating_questionnaire_versions_id');
+        return $this->belongsTo(
+            RatingQuestionnaireVersion::class,
+            'rating_questionnaire_versions_id'
+        );
     }
 
-
-
+    /**
+     * Alle Tags (RatingTag) passend zu tag_ids.
+     */
     public function tags()
     {
-        if (!$this->tag_ids || !is_array($this->tag_ids)) {
+        if (! $this->tag_ids || ! is_array($this->tag_ids)) {
             return collect();
         }
-    
+
         return RatingTag::whereIn('id', $this->tag_ids)->get();
+    }
+
+    /**
+     * Alle Files, die an diese ClaimRating hängen (morphMany).
+     */
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
+    /**
+     * Nur Verifikationsdateien (Mehrzahl!) – mehrere Files möglich.
+     */
+    public function verificationFiles(): MorphMany
+    {
+        return $this->files()->where('type', 'claim_verification');
     }
 }
