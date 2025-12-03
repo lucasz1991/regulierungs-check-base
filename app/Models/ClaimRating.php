@@ -120,6 +120,9 @@ class ClaimRating extends Model
      */
     public function requiresVerification(): bool
     {
+        if($this->is_public){
+            return false;
+        }
         $publishedCount = static::where('user_id', $this->user_id)
             ->where('is_public', true)
             ->count();
@@ -148,22 +151,23 @@ class ClaimRating extends Model
     /**
      * Bewertung in den Verifikationsstatus setzen.
      */
-public function markVerificationPending(string $caseNumber): void
-{
-    // mindestens eine Verifikationsdatei vorhanden?
-    $hasFiles = $this->hasVerificationFiles();
+    public function markVerificationPending(string $caseNumber): void
+    {
+        // mindestens eine Verifikationsdatei vorhanden?
+        $hasFiles = $this->hasVerificationFiles();
 
-    $this->setVerification([
-        'state'            => 'pending',
-        'caseNumber'       => $caseNumber,
-        'casefileUploaded' => $hasFiles,
-    ]);
+        $this->setVerification([
+            'state'            => 'pending',
+            'caseNumber'       => $caseNumber,
+            'casefileUploaded' => $hasFiles,
+        ]);
 
-    $this->status    = self::STATUS_PENDING_VALIDATION;
-    $this->is_public = false;
+        $this->status    = self::STATUS_PENDING_VALIDATION;
+        $this->is_public = false;
 
-    $this->save();
-}
+        $this->save();
+    }
+
     /**
      * Optional für Admin-Workflow: Verifikation genehmigen.
      */
@@ -304,34 +308,34 @@ public function markVerificationPending(string $caseNumber): void
     }
 
     /**
- * Gibt zurück, ob diese Bewertung veröffentlicht werden darf.
- */
-public function canBePublished(): bool
-{
-    // 1. Wenn keine Verifikation nötig ist → sofort publishbar
-    if (! $this->requiresVerification()) {
+     * Gibt zurück, ob diese Bewertung veröffentlicht werden darf.
+     */
+    public function canBePublished(): bool
+    {
+        // 1. Wenn keine Verifikation nötig ist → sofort publishbar
+        if (! $this->requiresVerification()) {
+            return true;
+        }
+
+        // 2. Verifikation nötig → prüfen, ob alles erfüllt ist
+
+        $v = $this->verification;
+
+        // Muss genehmigt sein
+        if ($v['state'] !== 'approved') {
+            return false;
+        }
+
+        // Fallnummer muss vorhanden sein
+        if (empty($v['caseNumber'])) {
+            return false;
+        }
+
+        // Mindestens eine Datei muss vorhanden sein
+        if (! $this->hasVerificationFiles()) {
+            return false;
+        }
+
         return true;
     }
-
-    // 2. Verifikation nötig → prüfen, ob alles erfüllt ist
-
-    $v = $this->verification;
-
-    // Muss genehmigt sein
-    if ($v['state'] !== 'approved') {
-        return false;
-    }
-
-    // Fallnummer muss vorhanden sein
-    if (empty($v['caseNumber'])) {
-        return false;
-    }
-
-    // Mindestens eine Datei muss vorhanden sein
-    if (! $this->hasVerificationFiles()) {
-        return false;
-    }
-
-    return true;
-}
 }

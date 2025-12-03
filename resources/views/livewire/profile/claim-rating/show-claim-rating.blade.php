@@ -13,40 +13,37 @@
                     </x-slot>
                     <x-slot name="content">
                         @if($claimRating->status != 'pending')
-@if(!$claimRating->is_public)
-    @if(auth()->user()->email_verified_at)
-        @if($canBePublished)
-            {{-- ✅ Darf veröffentlicht werden --}}
-            <x-dropdown-link wire:click="publish">
-                Veröffentlichen
-            </x-dropdown-link>
-        @else
-            {{-- 🚫 Noch nicht veröffentlichbar --}}
-            <x-dropdown-link
-                disabled
-                class="opacity-50 cursor-not-allowed"
-                title="Diese Bewertung kann aktuell nicht veröffentlicht werden. Bitte prüfe den Verifikationsstatus."
-                onclick="return false;"
-            >
-                Veröffentlichen (nicht möglich)
-            </x-dropdown-link>
-        @endif
-    @else
-        <x-dropdown-link
-            disabled
-            class="opacity-50 cursor-not-allowed"
-            title="Bitte bestätigen Sie Ihre E-Mail, um zu veröffentlichen."
-            onclick="return alert('Bitte bestätigen Sie Ihre E-Mail, um zu veröffentlichen.')"
-        >
-            Veröffentlichen
-        </x-dropdown-link>
-    @endif
-@else
-    <x-dropdown-link wire:click="unpublish">
-        Privat schalten
-    </x-dropdown-link>
-@endif
-
+                            @if(!$claimRating->is_public)
+                                @if(auth()->user()->email_verified_at)
+                                    @if($canBePublished)
+                                        <x-dropdown-link wire:click="publish">
+                                            Veröffentlichen
+                                        </x-dropdown-link>
+                                    @else
+                                        <x-dropdown-link
+                                            disabled
+                                            class="opacity-50 cursor-not-allowed"
+                                            title="Diese Bewertung kann aktuell nicht veröffentlicht werden. Bitte prüfe den Verifikationsstatus."
+                                            onclick="return false;"
+                                        >
+                                            Veröffentlichen (nicht möglich)
+                                        </x-dropdown-link>
+                                    @endif
+                                @else
+                                    <x-dropdown-link
+                                        disabled
+                                        class="opacity-50 cursor-not-allowed"
+                                        title="Bitte bestätigen Sie Ihre E-Mail, um zu veröffentlichen."
+                                        onclick="return alert('Bitte bestätigen Sie Ihre E-Mail, um zu veröffentlichen.')"
+                                    >
+                                        Veröffentlichen
+                                    </x-dropdown-link>
+                                @endif
+                            @else
+                                <x-dropdown-link wire:click="unpublish">
+                                    Privat schalten
+                                </x-dropdown-link>
+                            @endif
                             <x-dropdown-link wire:click="reanalyze">
                                Neu analysieren
                             </x-dropdown-link>
@@ -60,24 +57,24 @@
         </div>   
         @if($requiresVerification && ! $canBePublished)
             @if($verification['state'] === 'pending')
-                <x-alert class="mb-2" :mode="'warning'">
+                <x-alert class="mb-2 md:w-full" :mode="'info'">
                     <p class="text-sm">
                         Diese Bewertung ist eine Mehrfachbewertung. Deine Falldaten wurden eingereicht und befinden sich aktuell in der Prüfung.
                         Solange die Verifikation läuft, kann die Bewertung nicht veröffentlicht werden.
                     </p>
                 </x-alert>
             @elseif($verification['state'] === 'rejected')
-                <x-alert class="mb-2" :mode="'danger'">
+                <x-alert class="mb-2 md:w-full" :mode="'danger'">
                     <p class="text-sm">
                         Die Verifikation dieser Bewertung wurde abgelehnt. Bitte überprüfe deine Fallnummer und Falldokumente
                         und reiche sie über den Verifikationsbereich (Kreis-Symbol neben dem Status) erneut ein.
                     </p>
                 </x-alert>
             @else
-                <x-alert class="mb-2"  :mode="'success'">
+                <x-alert class="mb-2 md:w-full"  :mode="'warning'">
                     <p class="text-sm">
                         Für diese Mehrfachbewertung ist eine Fall-Verifikation erforderlich. 
-                        Bitte hinterlege eine gültige Fallnummer und lade mindestens ein Falldokument über den Verifikationsbereich 
+                        Bitte hinterlege eine gültige Fallnummer und lade mindestens ein Falldokument über den Verifikationsbereich <br>
                         (Kreis-Symbol neben dem Status) hoch, damit die Bewertung veröffentlicht werden kann.
                     </p>
                 </x-alert>
