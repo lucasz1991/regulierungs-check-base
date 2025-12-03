@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
     {
         
         $schedule->command('ratings:analyze')->dailyAt('02:00');
+        $schedule->command('claimratings:send-reminders')->dailyAt('12:00');
+
         // Schedule the rental reminders command to run daily at 12:00 PM
         // $schedule->command('rental:send-reminders')->dailyAt('12:00');
 
