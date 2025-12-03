@@ -91,6 +91,7 @@
                     <livewire:profile.claim-rating.verification-status-modal
                         :claim-rating="$claimRating"
                         wire:key="verification-status-{{ $claimRating->id }}"
+                        lazy
                     />                
                     <div class="mr-3">
                         @if($claimRating->is_public)

@@ -17,7 +17,6 @@
         }
     }"
 >
-    {{-- Klick-/Hover-Bereich: Schild + Kreis --}}
     <div
         class="relative flex items-center cursor-pointer"
         @mouseover="show = true"
@@ -26,7 +25,6 @@
         @click.away="show = false"
         x-ref="anchor"
     >
-        {{-- Shield-Icon (Teil des klickbaren Bereichs) --}}
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1 opacity-40 {{$isPending ? ' text-yellow-800 ' : ($isApproved ? ' text-green-600 ' :($isRejected ? ' text-red-600 ' :''))}}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 
             <g>
@@ -40,8 +38,6 @@
                       fill="none"/>
             </g>
         </svg>
-
-        {{-- Kreis-Indikator (auch Teil des klickbaren Bereichs) --}}
         <div class="w-6">
             <svg viewBox="0 0 200 200"
                  style="width: 100%; height: auto;"
@@ -68,8 +64,6 @@
                 />
             </svg>
         </div>
-
-        {{-- Tooltip für Schild + Kreis --}}
         <div
             x-show="show"
             x-cloak
