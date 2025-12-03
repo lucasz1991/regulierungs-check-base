@@ -57,13 +57,13 @@
         </div>   
         @if($requiresVerification && ! $canBePublished)
             @if($verification['state'] === 'pending')
-<x-alert class="mb-2 md:w-full" :mode="'info'">
-    <p class="text-sm">
-        Diese Bewertung ist eine Mehrfachbewertung. Deine Falldaten wurden eingereicht und befinden sich aktuell in der Prüfung.
-        Solange die Verifikation läuft, kann die Bewertung nicht veröffentlicht werden.
-        Sobald die Prüfung abgeschlossen ist, informieren wir dich automatisch und die Bewertung wird, falls alles korrekt ist, direkt veröffentlicht.
-    </p>
-</x-alert>
+            <x-alert class="mb-2 md:w-full" :mode="'info'">
+                <p class="text-sm">
+                    Diese Bewertung ist eine Mehrfachbewertung. Deine Falldaten wurden eingereicht und befinden sich aktuell in der Prüfung.
+                    Solange die Verifikation läuft, kann die Bewertung nicht veröffentlicht werden.
+                    Sobald die Prüfung abgeschlossen ist, informieren wir dich automatisch und die Bewertung wird, falls alles korrekt ist, direkt veröffentlicht.
+                </p>
+            </x-alert>
             @elseif($verification['state'] === 'rejected')
                 <x-alert class="mb-2 md:w-full" :mode="'danger'">
                     <p class="text-sm">
