@@ -8,8 +8,10 @@
             </div>
 
             <div class="flex justify-between items-start">
-                <x-profile.claim-rating.claim-rating-circleprogress/>
-                <div class="mr-3">
+                    <livewire:profile.claim-rating.verification-status-modal
+                        :claim-rating="$rating"
+                        wire:key="verification-status-{{ $rating->id }}"
+                    />                    <div class="mr-3">
                     @if($rating->is_public)
                         <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-semibold">Öffentlich</span>
                     @else
