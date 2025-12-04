@@ -54,14 +54,14 @@
                     @endphp
                     @if(!$claimRating->answers['is_closed'])
                         <div class="flex justify-between">
-                            <span class="font-medium text-gray-500">Jahr Beginn:</span>
+                            <span class="font-medium text-gray-500">Jahr:</span>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">
                                 {{ $startYear }}
                             </span>
                         </div>
                     @else
                         <div class="flex justify-between">
-                            <span class="font-medium text-gray-500">Jahr Ende:</span>
+                            <span class="font-medium text-gray-500">Jahr:</span>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">
                                 {{ $endYear }}
                             </span>
