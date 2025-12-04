@@ -67,6 +67,12 @@
                             </span>
                         </div>
                     @endif
+                        <div class="flex justify-between">
+                            <span class="font-medium text-gray-500">Dauer:</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-blue-700 bg-blue-200">
+{{ $claimRating->ratingDuration() }} {{ $claimRating->ratingDuration() === 1 ? 'Tag' : 'Tage' }}
+                            </span>
+                        </div>
                 </div>
 
                 <div class="border-t border-gray-200 pt-4">
