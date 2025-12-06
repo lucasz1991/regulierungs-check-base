@@ -24,6 +24,9 @@ export default {
                 sans: ['Quicksand', ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                bluebg: {
+                    DEFAULT: '#05515e',
+                },
                 primary: {
                     DEFAULT: '#084058',
                     light: '#0b5879',

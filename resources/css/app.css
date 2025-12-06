@@ -46,6 +46,8 @@ select:focus {
 body{
   font-family: 'Montserrat';
   color: var(--primary-font-color);
+  background: #005868;
+background: linear-gradient(180deg, rgba(0, 88, 104, 1) 0%, rgba(1, 103, 118, 1) 50%, rgba(2, 132, 148, 1) 100%);
 }
 
 

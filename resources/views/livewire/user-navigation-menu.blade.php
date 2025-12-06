@@ -43,11 +43,11 @@
     @click.away="$store.nav.isMobileMenuOpen = false"
     >
     <div>
-        <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed  w-screen bg-white   z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">
-            <div class="w-full border-b border-gray-300 px-3 md:px-4 xl:px-8">
-                <div class="container mx-auto flex flex-wrap justify-between items-center  ">
+        <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed w-full z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">
+            <div class="w-full">
+                <div class="container px-3 mx-auto flex flex-wrap justify-between items-center bg-white rounded-xl border border-gray-300 mt-4 mb-8">
                         <div class="max-xl:order-1  xl:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
-                            <livewire:tools.search-modal />
+                            <!--livewire:tools.search-modal -->
                             <div class="xl:hidden flex  items-center ">
              
                                  @auth

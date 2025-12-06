@@ -28,7 +28,7 @@
             class="relative"
             wire:ignore
         >
-            <div class="swiper overflow-y-visible  h-full" x-ref="topSwiper">
+            <div class="swiper   h-full" x-ref="topSwiper">
                 <div class="swiper-wrapper  h-full">
                     @foreach ($insurances as $insurance)
                         <div class="swiper-slide w-36 pr-4  h-full" wire:key="top-insurance-{{ $insurance->id }}">
