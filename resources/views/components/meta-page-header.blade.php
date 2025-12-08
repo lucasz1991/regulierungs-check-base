@@ -1,6 +1,8 @@
 @once
     @if($robotsMeta)
         <meta name="robots" content="{{ $robotsMeta }}">
+    @else 
+        <meta name="robots" content="noindex, nofollow, noarchive">
     @endif
     @if($metaTitle)
         <title>{{ $metaTitle }} | {{ config('app.name') }}</title>
