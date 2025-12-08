@@ -492,7 +492,6 @@
             <div class="flex items-stretch justify-between text-xs text-gray-600">
                 <!-- Bewertungen -->
                 <a href="/reviews"
-                   wire:navigate
                    class="flex-1 flex flex-col items-center justify-center py-2 gap-1"
                    :class="{'text-primary-600' : '{{ request()->is('reviews') ? 'true' : 'false' }}' === 'true'}"
                 >
@@ -502,7 +501,6 @@
 
                 <!-- Versicherungen -->
                 <a href="/insurances"
-                   wire:navigate
                    class="flex-1 flex flex-col items-center justify-center py-2 gap-1"
                    :class="{'text-primary-600' : '{{ request()->is('insurances') ? 'true' : 'false' }}' === 'true'}"
                 >
@@ -517,7 +515,6 @@
 
                 <!-- Blog -->
                 <a href="/blog"
-                   wire:navigate
                    class="flex-1 flex flex-col items-center justify-center py-2 gap-1"
                    :class="{'text-primary-600' : '{{ request()->is('blog') ? 'true' : 'false' }}' === 'true'}"
                 >
@@ -531,7 +528,6 @@
 
                 <!-- Über uns -->
                 <a href="/aboutus"
-                   wire:navigate
                    class="flex-1 flex flex-col items-center justify-center py-2 gap-1"
                    :class="{'text-primary-600' : '{{ request()->is('aboutus') ? 'true' : 'false' }}' === 'true'}"
                 >
