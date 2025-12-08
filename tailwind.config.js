@@ -49,7 +49,7 @@ export default {
                 },
                 secondary: {
                     DEFAULT: '#0c968e',
-                    light: '#10b3aa',
+                    light: '#0a798d',
                     dark: '#0c968e',
                     50: '#b3fffb',
                     100: '#b3fffb',

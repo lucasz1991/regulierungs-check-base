@@ -40,16 +40,16 @@
                         class="block h-full hover:shadow-lg cursor-pointer overflow-hidden rounded shadow"
                         x-data="{ hover: false }"
                         x-cloak>
-                            <div class="bg-white px-2 pt-8 pb-2 relative transition-shadow duration-300 flex flex-col justify-center items-center h-full"
+                            <div class="bg-white px-2 pt-9 pb-3 relative transition-shadow duration-300 flex flex-col justify-center items-center h-full"
                                 x-on:mouseenter="hover = true"
                                 x-on:mouseleave="hover = false">
-                                <div class="w-16 h-16 rounded-full bg-[#223d65] transition-all duration-200 flex items-center justify-center  mt-6">
+                                <div class="w-16 h-16 rounded-full bg-secondary-light ring-2 ring-offset-2 ring-secondary-light transition-all duration-200 flex items-center justify-center  mt-6">
                                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" >
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
                                 </div>
-                                <div class="transition-all duration-200 text-center h-full flex items-end justify-center" style="margin-top: 2px;">
-                                    <div class="h-16  flex items-end justify-center text-xs   font-medium  text-gray-600 ">
+                                <div class="transition-all duration-200 text-center h-full flex items-end justify-center" style="margin-top:3px">
+                                    <div class="h-12  flex items-end justify-center text-xs   font-medium  text-gray-600 ">
                                         weitere Anbieter vergleichen
                                     </div>
                                 </div>
