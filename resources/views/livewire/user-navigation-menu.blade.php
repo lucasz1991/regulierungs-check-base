@@ -1,10 +1,11 @@
 <div
-    x-data="{ 
-        screenWidth: window.innerWidth,
-        isScrolled: false,
-        scrollTop: 0,
-        lastScrollTop: 0
-    }"
+x-data="{ 
+    screenWidth: window.innerWidth,
+    isScrolled: false,
+    scrollTop: 0,
+    lastScrollTop: 0,
+    scrollDirection: 'up'
+}"
     x-init="$nextTick(() => {
         $store.nav.height = $refs.nav.offsetHeight;
         $store.nav.isScreenXl = window.innerWidth >= 1280;
@@ -12,27 +13,34 @@
     })"
 x-on:scroll.window="
     const current = window.scrollY || 0;
-    const delta   = current - lastScrollTop;
+    const diff    = current - lastScrollTop;
 
-    scrollTop = current;
+    // Kleine Jitter komplett ignorieren
+    if (Math.abs(diff) < 2) return;
+
+    scrollTop  = current;
     isScrolled = current > 0;
 
-    // Immer sichtbar im oberen Bereich
-    if (current <= 120) {
-        if (!$store.nav.showNav) {
-            $store.nav.showNav = true;
+    if (diff > 0) {
+        // Wir bewegen uns nach unten
+        scrollDirection = 'down';
+
+        // Nur ausblenden, wenn wir wirklich unten sind und etwas 'richtig' runterscrollen
+        if (current > 120 && diff > 5 && $store.nav.showNav) {
+            $dispatch('navhide');
+            $store.nav.showNav = false;
         }
     } else {
-        // Nach unten scrollen (mit kleiner Schwelle)
-        if (delta > 5 && current > 120) {
-            if ($store.nav.showNav) {
-                $dispatch('navhide');
-                $store.nav.showNav = false;
-            }
-        }
+        // Wir bewegen uns nach oben
+        scrollDirection = 'up';
 
-        // Deutlich nach oben scrollen -> wieder einblenden
-        if (delta < -30) {
+        // Immer sichtbar im oberen Bereich
+        if (current <= 120) {
+            if (!$store.nav.showNav) {
+                $store.nav.showNav = true;
+            }
+        } else if (diff < -10) {
+            // Deutlich nach oben -> einblenden
             if (!$store.nav.showNav) {
                 $store.nav.showNav = true;
             }
@@ -41,6 +49,7 @@ x-on:scroll.window="
 
     lastScrollTop = current < 0 ? 0 : current;
 "
+
 
     x-resize="
         $nextTick(() => {
