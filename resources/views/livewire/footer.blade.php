@@ -1,5 +1,5 @@
-<footer x-data="{ screenWidth: window.innerWidth }" x-resize="screenWidth = $width" style="background-image:url({{ asset('/site-images/bg_footer.jpg') }});"; class="footer bg-cover bg-center border-t border-gray-300  bg-white  ">
-    <div class="bg-white/30 backdrop-brightness-130 tracking-wide px-8 py-12 ">
+<footer x-data="{ screenWidth: window.innerWidth }" x-resize="screenWidth = $width"  class="footer  ">
+    <div class=" tracking-wide px-8 py-12 ">
 
         <div class="container mx-auto">
             <div class="   grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-6 gap-y-10">
