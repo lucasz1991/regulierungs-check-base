@@ -1,4 +1,4 @@
-<div>
+<div class="container mx-auto">
     {{-- TOP 5 SWIPER --}}
     <div class="my-4">
         <div x-data="{
