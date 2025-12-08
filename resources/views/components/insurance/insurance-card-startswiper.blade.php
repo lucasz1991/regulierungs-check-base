@@ -7,9 +7,9 @@
         <div class=" transition-all duration-200">
             <x-insurance.insurance-name-startswiper :insurance="$insurance" />
             <div class="shrink-0 transition-all relative self-auto" >
-                <div class="mt-5">
-                    <div class="text-sm text-gray-500 font-medium text-center mb-3">
-                        <div class="w-16 mx-auto text-xs text-white p-2 aspect-square bg-secondary-light ring-2 ring-offset-2 ring-secondary-light  rounded-full flex justify-center items-center">
+                <div class="mt-2">
+                    <div class="text-sm text-gray-500 font-medium text-center mb-2">
+                        <div class="w-12 mx-auto  text-[12px] leading-tight text-white p-2 aspect-square bg-secondary-light ring-2 ring-offset-2 ring-secondary-light  rounded-full flex justify-center items-center">
                             <span>Ø: {{ round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id)) }}<br> Tage</span>
                         </div>
                     </div>
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="" style="">
-            <div class=" w-full mb-2">
+            <div class=" w-full mb-1">
                 <x-insurance.top-insurance-banner.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'" />
             </div>
             <div class=" w-full">
