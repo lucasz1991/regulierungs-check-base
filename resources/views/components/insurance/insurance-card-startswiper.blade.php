@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="" style="">
-            <div class=" w-full ">
+            <div class=" w-full mb-2">
                 <x-insurance.top-insurance-banner.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'" />
             </div>
             <div class=" w-full">
