@@ -6,7 +6,7 @@
         @click.away="show = false"
         @click.prevent="show = true"
         x-ref="anchor"
-        class="text-gray-400 hover:text-gray-600 focus:outline-none  bg-white rounded-full" 
+        class="text-gray-400 hover:text-gray-600 focus:outline-none p-0.5 bg-white rounded-full" 
         aria-label="Hinweis zur Logo-Nutzung"
         type="button"
     >
