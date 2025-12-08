@@ -2,6 +2,7 @@
     <div class=" tracking-wide px-8 py-12 ">
 
         <div class="container mx-auto">
+            <x-ui.basic.content-container class="px-4 py-4">
             <div class="   grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-6 gap-y-10">
                 <div>
                     <a href='/' class="block h-auto w-28 sm:w-32 md:w-48 lg:w-60 pr-4">
@@ -117,6 +118,7 @@
 
                 <p class='text-gray-700 text-sm md:ml-auto'>&copy; {{ date("Y") }} Regulierungs-CHECK. Alle Rechte vorbehalten.</p>
             </div>
+            </x-ui.basic.content-container>
         </div>
     </div>
 </footer>
