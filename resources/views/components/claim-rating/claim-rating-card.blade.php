@@ -29,23 +29,7 @@
             </div>
         @endif
     </div>
-    @php
-        use Illuminate\Support\Str;
-        use App\Support\Text;
-
-        // Robust aus JSON holen + UTF-8 normalisieren
-        $comment = (string) data_get($rating->attachments, 'scorings.ai_overall_comment', '');
-        $comment = Text::utf8($comment);
-
-        // Multibyte-sicher kürzen
-        $commentShort = Str::limit($comment, 100, '…');
-    @endphp
-
-    <div class="p-4">
-        <div class="mt-2 text-gray-800 h-16">
-            {{ $commentShort }}
-        </div>
-    </div>
+ 
     <div class=" p-4 flex justify-end">
         <a  href="{{ route('review.show', $rating->id) }}" class="text-blue-800 bg-gray-100 hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center ">
             ansehen&nbsp;
