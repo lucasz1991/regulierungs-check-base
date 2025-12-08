@@ -1,5 +1,5 @@
 <footer x-data="{ screenWidth: window.innerWidth }" x-resize="screenWidth = $width"  class="footer  ">
-    <div class=" tracking-wide px-8 py-12 ">
+    <div class=" tracking-wide  py-12 mb-4 md:mb-6">
 
         <div class="container mx-auto">
             <x-ui.basic.content-container class="px-4 py-4">
