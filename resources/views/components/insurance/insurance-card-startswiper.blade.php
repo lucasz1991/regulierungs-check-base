@@ -7,24 +7,24 @@
         <div class=" transition-all duration-200">
             <x-insurance.insurance-name-startswiper :insurance="$insurance" />
             <div class="shrink-0 transition-all relative self-auto" >
-                <div  class="">
-                    </div>
-                    <div class="mt-5">
-                        <div class="text-sm text-gray-500 font-medium text-center mb-3">
-                            <div class="w-16 mx-auto text-xs text-white p-2 aspect-square bg-[#223d65]  rounded-full flex justify-center items-center"><span>Ø: {{ round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id)) }}<br> Tage</span></div>
+                <div class="mt-5">
+                    <div class="text-sm text-gray-500 font-medium text-center mb-3">
+                        <div class="w-16 mx-auto text-xs text-white p-2 aspect-square bg-[#223d65]  rounded-full flex justify-center items-center">
+                            <span>Ø: {{ round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id)) }}<br> Tage</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-[#223d65] p-2" style="">
+        <div class="" style="">
             <div class=" w-full ">
-                <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'"  class="text-white"/>
+                <x-insurance.top-insurance-banner.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'xs'" />
             </div>
             <div class=" w-full">
-                <div class="flex items-center justify-center text-[10px] text-white font-medium">
-                    Bewertungen {{ $insurance->published_claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}
+                <div class="text-gray-500 flex items-center justify-center text-[10px] font-medium">
+                        Bewertungen {{ $insurance->published_claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}
                 </div>
             </div>
         </div>
+    </div>
 </a>
