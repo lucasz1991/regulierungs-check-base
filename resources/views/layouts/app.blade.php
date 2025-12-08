@@ -20,7 +20,7 @@
         <script src="{{ URL::asset('adminresources/flatpickr/l10n/de.js') }}"></script>
         <link href="{{ URL::asset('adminresources/aos/aos.css') }}" rel="stylesheet">
         <script src="{{ URL::asset('adminresources/aos/aos.js') }}"></script>
-    <script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="XFHuZsqPDNpcWX" async></script>
+    <!--<script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="XFHuZsqPDNpcWX" async></script>-->
         
         <!-- Styles -->
         @vite(['resources/css/app.css'])
@@ -57,6 +57,7 @@
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
         @livewireScripts
+        <div id="bottom-nav"  wire:ignore></div>
         <script>
             document.addEventListener('alpine:init', () => {
                 Alpine.store('nav', {

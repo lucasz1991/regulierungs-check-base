@@ -10,22 +10,38 @@
         $store.nav.isScreenXl = window.innerWidth >= 1280;
         $store.nav.isMobile = window.innerWidth <= 1280;
     })"
-    x-on:scroll.window="
-        scrollTop = window.scrollY;
-        isScrolled = scrollTop > 0;
+x-on:scroll.window="
+    const current = window.scrollY || 0;
+    const delta   = current - lastScrollTop;
 
-        const scrollingDown = scrollTop > lastScrollTop;
-        const scrollingUp = scrollTop < lastScrollTop;
+    scrollTop = current;
+    isScrolled = current > 0;
 
-        if (scrollingDown && scrollTop > 120) {
-            $dispatch('navhide');
-            $store.nav.showNav = false;
-        } else if (scrollingUp && (lastScrollTop - scrollTop) >= 30 || scrollTop < 120) {
+    // Immer sichtbar im oberen Bereich
+    if (current <= 120) {
+        if (!$store.nav.showNav) {
             $store.nav.showNav = true;
         }
+    } else {
+        // Nach unten scrollen (mit kleiner Schwelle)
+        if (delta > 5 && current > 120) {
+            if ($store.nav.showNav) {
+                $dispatch('navhide');
+                $store.nav.showNav = false;
+            }
+        }
 
-        lastScrollTop = scrollTop;
-    "
+        // Deutlich nach oben scrollen -> wieder einblenden
+        if (delta < -30) {
+            if (!$store.nav.showNav) {
+                $store.nav.showNav = true;
+            }
+        }
+    }
+
+    lastScrollTop = current < 0 ? 0 : current;
+"
+
     x-resize="
         $nextTick(() => {
             screenWidth = window.innerWidth;
@@ -42,9 +58,9 @@
         })"
     @click.away="$store.nav.isMobileMenuOpen = false"
     >
-    <div>
+    <div class="">
         <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed w-full z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">
-            <div class="w-full  mt-2 mb-8">
+            <div class="w-full  mt-2 mb-2">
                 <x-ui.basic.content-container class="px-3">
                     <div class="flex flex-wrap justify-between items-center">
                         <div class="max-xl:order-1  xl:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
@@ -342,7 +358,7 @@
                             <div @click.prevent="$store.nav.isMobileMenuOpen = true" 
                                     :class="$store.nav.isMobileMenuOpen ? 'max-xl:translate-x-0' : 'max-xl:translate-x-full'"    
                                     :style="$store.nav.isMobile ? 'height: calc(100dvh - ' + $store.nav.height + 'px);' : ''"   
-                                    x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-xl:bg-white  max-xl:right-0 max-xl:h-full max-xl:fixed max-xl:overflow-y-auto max-xl:py-5 max-xl:px-3  max-xl:border-r max-xl:border-gray-200">
+                                    x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-xl:bg-white  max-xl:right-2 max-xl:h-full max-xl:fixed max-xl:overflow-y-auto max-xl:py-5 max-xl:px-3  max-xl:border-r max-xl:border-gray-200">
                                 <div  class="md:space-x-4 xl:space-x-8 max-xl:block   max-xl:space-y-4 xl:-my-px md:mx-4 max-xl:gap-3 xl:flex  items-center   w-max  mx-auto  " >
                                     <!-- Gäste-Spezifische Navigation -->
                                     <x-nav.nav-link href="/" wire:navigate  :active="request()->is('/')">
@@ -480,7 +496,7 @@
             </div>
         </nav>
     </div>
-    <div :style="'height: ' + $store.nav.height + 'px'" class="min-h-12 md:min-h-[4rem] duration-300 ease-in-out transition-all" > </div>
+    <div :style="'height: ' + $store.nav.height + 'px'" class="min-h-12 md:min-h-[5rem] duration-300 ease-in-out transition-all" wire:ignore> </div>
     <div id="megamenu"   class="transition-all duration-200 ease-in-out " wire:ignore></div>
 
 
@@ -541,5 +557,6 @@
     </nav>
 
     <!-- Spacer für Bottom-Navigation auf Mobile -->
-    <div class="h-14 md:hidden"></div></div>
+    <div class="h-14 md:hidden"></div>
+</div>
  
