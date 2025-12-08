@@ -15,7 +15,7 @@
 <div
     x-show="hover"
     x-transition.opacity.duration.150ms
-    class="absolute right-0 top-0 bg-white rounded-full"
+    class="absolute right-0 top-0"
     x-cloak
 >
     <x-insurance.top-insurance-banner.insurance-logo-disclaim-button />
