@@ -554,9 +554,9 @@ x-on:scroll.window="
             </div>
         </div>
     </nav>
-    </template>
-
     <!-- Spacer für Bottom-Navigation auf Mobile -->
     <div class="h-14 md:hidden"></div>
+    </template>
+
 </div>
  
