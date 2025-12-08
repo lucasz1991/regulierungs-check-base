@@ -35,7 +35,6 @@
             </svg>
         </div>
     @endfor
-    <div class="text-[10px] ml-1  text-gray-400  font-medium">{{ number_format($scoreZeroToFive, 1) }}&nbsp;/&nbsp;5</div>
 </div>
 
 
