@@ -18,7 +18,7 @@
             <div data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4  relative h-max z-10 py-2 md:py-6">
               <div>
                 <div  class="flex space-x-2 md:space-x-4 items-center md:mb-4 w-full max-md:justify-center">
-                  <x-buttons.button-basic class="font-bold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
+                  <x-buttons.button-basic class="font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
                     Jetzt bewerten
                   </x-buttons.button-basic>
                   <x-buttons.button-basic class="font-semibold" :mode="'layoutprimary'" href="/insurances" x-data="{ isClicked: false }" x-on:click="isClicked = true; setTimeout(() => isClicked = false, 100)" x-bind:style="isClicked ? 'transform:scale(0.9);' : ''">
