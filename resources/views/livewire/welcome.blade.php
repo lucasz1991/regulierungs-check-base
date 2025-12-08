@@ -1,6 +1,6 @@
 <div  wire:loading.class="cursor-wait">
       <div class="container mx-auto px-4 py-2 md:py-6">
-        <div id="ix1xm-2" class="relative overflow-hidden rounded-xl home-banner px-4 md:py-4">
+        <div id="ix1xm-2" class="relative overflow-hidden rounded-xl home-banner md:py-4">
           <div>
             <div id="ib4xx-2" data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4 md:py-6  relative h-max z-10 md:py-4">
               <div id="ijooq">
