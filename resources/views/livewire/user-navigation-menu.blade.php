@@ -353,12 +353,11 @@ x-on:scroll.window="
                                  x-transition:leave-start="opacity-100 "
                                  x-transition:leave-end="opacity-0"
                                  :style="$store.nav.isMobile ? ' padding-top: ' + $store.nav.height + 'px;' : ''"
-                                 :class="$store.nav.isMobileMenuOpen ? 'max-xl:inset-0  max-xl:bg-black max-xl:bg-opacity-50 max-xl:z-30' : ''"   
+                                 :class="$store.nav.isMobileMenuOpen ? 'max-xl:inset-0  max-xl:bg-black max-xl:bg-opacity-50 max-xl:z-40' : ''"   
                                  x-cloak   class="max-xl:order-3 xl:order-1 max-xl:fixed max-xl:h-[100vh]  xl:grow" >
                             <div @click.prevent="$store.nav.isMobileMenuOpen = true" 
                                     :class="$store.nav.isMobileMenuOpen ? 'max-xl:translate-x-0' : 'max-xl:translate-x-full'"    
-                                    :style="$store.nav.isMobile ? 'height: calc(100dvh - ' + $store.nav.height + 'px);' : ''"   
-                                    x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-xl:bg-white  max-xl:right-2 max-xl:h-full max-xl:fixed max-xl:overflow-y-auto max-xl:py-5 max-xl:px-3  max-xl:border-r max-xl:border-gray-200">
+                                    x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-xl:bg-white max-xl:rounded-xl max-xl:right-2 max-xl:h-full max-xl:fixed max-xl:overflow-y-auto max-xl:py-5 max-xl:px-3  max-xl:border-r max-xl:border-gray-200">
                                 <div  class="md:space-x-4 xl:space-x-8 max-xl:block   max-xl:space-y-4 xl:-my-px md:mx-4 max-xl:gap-3 xl:flex  items-center   w-max  mx-auto  " >
                                     <!-- Gäste-Spezifische Navigation -->
                                     <x-nav.nav-link href="/" wire:navigate  :active="request()->is('/')">
@@ -499,10 +498,10 @@ x-on:scroll.window="
     <div :style="'height: ' + $store.nav.height + 'px'" class="min-h-12 md:min-h-[5rem] duration-300 ease-in-out transition-all" wire:ignore> </div>
     <div id="megamenu"   class="transition-all duration-200 ease-in-out " wire:ignore></div>
 
-
+<template x-teleport="#bottom-nav">
     <!-- Mobile Bottom Navigation (nur unter md sichtbar) -->
     <nav
-        class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 border-t border-gray-200 backdrop-blur"
+        class="fixed bottom-0 inset-x-0 z-10 md:hidden bg-white/95 border-t border-gray-200 backdrop-blur"
     >
         <div class="max-w-6xl mx-auto px-3">
             <div class="flex items-stretch justify-between text-xs text-gray-600">
@@ -555,6 +554,7 @@ x-on:scroll.window="
             </div>
         </div>
     </nav>
+    </template>
 
     <!-- Spacer für Bottom-Navigation auf Mobile -->
     <div class="h-14 md:hidden"></div>
