@@ -12,8 +12,9 @@ $modeClasses = match ($mode) {
     'dark' => ' text-white bg-gray-800 hover:bg-gray-900 focus:ring-gray-700 border-gray-800',
     'link' => ' text-blue-600 bg-transparent hover:bg-blue-100 focus:ring-blue-200 border-transparent',
     'basic' => ' text-gray-900 bg-white hover:bg-gray-200 focus:ring-gray-100 border-gray-300',
-    'layoutprimary' => ' text-white bg-primary hover:bg-primary-700 focus:ring-primary-300 border-primary-600',
+    'layoutprimary' => ' text-white bg-primary hover:bg-primary-700 focus:ring-primary-300 border-primary-700',
     'layoutsecondary' => ' text-white bg-secondary hover:bg-secondary-700 focus:ring-secondary-300 border-secondary-600',
+    'layoutgold' => ' text-primary bg-rcgold hover:bg-rcgold focus:ring-rcgold border-rcgold',
 };
 
 $sizeClasses = match ($size) {

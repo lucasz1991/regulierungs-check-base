@@ -44,8 +44,9 @@
     >
     <div>
         <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed w-full z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">
-            <div class="w-full">
-                <div class="container px-3 mx-auto flex flex-wrap justify-between items-center bg-white rounded-xl border border-gray-300 mt-4 mb-8">
+            <div class="w-full  mt-4 mb-8">
+                <x-ui.basic.content-container class="px-3">
+                    <div class="flex flex-wrap justify-between items-center">
                         <div class="max-xl:order-1  xl:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
                             <!--livewire:tools.search-modal -->
                             <div class="xl:hidden flex  items-center ">
@@ -474,7 +475,8 @@
                                     </div>
                                 </div>
                             </div>
-                 </div>
+                    </div>
+                </x-ui.basic.content-container>
             </div>
         </nav>
     </div>

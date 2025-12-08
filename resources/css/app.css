@@ -47,7 +47,7 @@ body{
   font-family: 'Montserrat';
   color: var(--primary-font-color);
   background: #005868;
-background: linear-gradient(180deg, rgba(0, 88, 104, 1) 0%, rgba(1, 103, 118, 1) 50%, rgba(2, 132, 148, 1) 100%);
+background: linear-gradient(180deg, #014552 0%, #006474 50%, #097788 100%);
 }
 
 
@@ -1563,15 +1563,15 @@ svg .zoom-in-out.duration-8{
 }
 
 div.home-banner{
-  min-height: 50vh;
+  /* min-height: 50vh; */
   background-position: center center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
 }
 @media (max-width: 500px) {
-  div.home-banner{
-    min-height: 70vh;
-  }
+  /* div.home-banner{
+     min-height: 70vh; 
+  } */
 }
 div.unterseiten-banner{
   background-position: center center !important;

@@ -27,6 +27,11 @@ export default {
                 bluebg: {
                     DEFAULT: '#05515e',
                 },
+                rcgold: {
+                    DEFAULT: 'rgb(249, 176, 41)',
+                    light: 'rgb(251, 189, 73)',
+                    dark: 'rgb(255, 166, 0)',
+                },
                 primary: {
                     DEFAULT: '#084058',
                     light: '#0b5879',
