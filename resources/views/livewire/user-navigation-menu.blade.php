@@ -357,7 +357,7 @@ x-on:scroll.window="
                                  x-cloak   class="max-xl:order-3 xl:order-1 max-xl:fixed max-xl:h-[100vh]  xl:grow" >
                             <div @click.prevent="$store.nav.isMobileMenuOpen = true" 
                                     :class="$store.nav.isMobileMenuOpen ? 'max-xl:translate-x-0' : 'max-xl:translate-x-full'"    
-                                    x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-xl:bg-white max-xl:rounded-xl max-xl:right-2 max-xl:h-full max-xl:fixed max-xl:overflow-y-auto max-xl:py-5 max-xl:px-3  max-xl:border-r max-xl:border-gray-200">
+                                    x-cloak  class="top-navigation grid  justify-center content-between transition-transform  ease-out duration-400  max-xl:bg-white max-xl:rounded-xl max-xl:right-2  max-xl:fixed max-xl:overflow-y-auto max-xl:py-5 max-xl:px-3  ">
                                 <div  class="md:space-x-4 xl:space-x-8 max-xl:block   max-xl:space-y-4 xl:-my-px md:mx-4 max-xl:gap-3 xl:flex  items-center   w-max  mx-auto  " >
                                     <!-- Gäste-Spezifische Navigation -->
                                     <x-nav.nav-link href="/" wire:navigate  :active="request()->is('/')">
