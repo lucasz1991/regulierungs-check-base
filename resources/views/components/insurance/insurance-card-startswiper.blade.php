@@ -9,8 +9,8 @@
             <div class="shrink-0 transition-all relative self-auto" >
                 <div class="mt-2">
                     <div class="text-sm text-gray-500 font-medium text-center mb-2">
-                        <div class="w-12 mx-auto  text-[12px] leading-tight text-white p-2 aspect-square bg-secondary-light ring-2 ring-offset-2 ring-secondary-light  rounded-full flex justify-center items-center">
-                            <span>Ø: {{ round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id)) }}<br> Tage</span>
+                        <div class="w-12 mx-auto  text-[11px] leading-tight text-white p-2 aspect-square bg-secondary-light ring-2 ring-offset-2 ring-secondary-light  rounded-full flex justify-center items-center">
+                            <span>Ø:&nbsp;{{ round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id)) }}<br>Tage</span>
                         </div>
                     </div>
                 </div>
