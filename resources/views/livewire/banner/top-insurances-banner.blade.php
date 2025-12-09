@@ -37,7 +37,7 @@
                     @endforeach
                     <div class="swiper-slide w-36 pr-4 h-full">
                         <a href="/insurances"
-                        class="block h-full hover:shadow-lg cursor-pointer overflow-hidden rounded shadow"
+                        class="block h-full hover:shadow-lg cursor-pointer overflow-hidden rounded-xl shadow"
                         x-data="{ hover: false }"
                         x-cloak>
                             <div class="bg-white px-2 pt-9 pb-2 relative transition-shadow duration-300 flex flex-col justify-center items-center h-full"
