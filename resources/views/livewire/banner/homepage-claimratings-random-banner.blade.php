@@ -27,7 +27,7 @@
                         loop: true,
                         loopAllowDuplicateSlides: true,
                         loopAddBlankSlides: true,
-                        centeredSlides: true,
+                        centeredSlides: false,
                         slidesPerView: '1',
                         spaceBetween: 20,
                         breakpoints: {

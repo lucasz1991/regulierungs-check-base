@@ -1658,3 +1658,9 @@ div.unterseiten-banner{
     font-size: 0.9rem;
   }
 }
+
+
+.footer-dark-gradient{
+  background: #005470;
+  background: linear-gradient(180deg,rgba(0, 84, 112, 1) 0%, rgba(0, 84, 112, 0.205) 100%);
+}

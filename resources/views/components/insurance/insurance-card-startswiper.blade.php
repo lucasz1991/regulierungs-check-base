@@ -1,5 +1,5 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
-<a href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="block  hover:shadow-lg  cursor-pointer overflow-hidden   rounded shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
+<a href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="block  hover:shadow-lg  cursor-pointer overflow-hidden   rounded-xl shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
     <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
