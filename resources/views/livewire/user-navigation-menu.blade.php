@@ -513,7 +513,7 @@ x-on:scroll.window="
         class="fixed bottom-0 inset-x-0 z-10 md:hidden bg-white/95 border-t border-gray-200 backdrop-blur"
     >
         <div class="max-w-6xl mx-auto px-3">
-            <div class="flex items-stretch justify-between text-xs text-gray-600">
+            <div class="flex items-stretch justify-between text-[11px] sm:text-xs text-gray-600">
                 <!-- Bewertungen -->
                 <a href="/reviews"
                    class="flex-1 flex flex-col items-center justify-center py-2 gap-1"
