@@ -10,17 +10,15 @@
             <img src="{{ asset('storage/' . $insurance->logo) }}"
                  class="w-full h-8 object-contain object-center rounded"
                  loading="lazy">
-
             <!-- Info-Icon nur bei Hover sichtbar -->
-<div
-    x-show="hover"
-    x-transition.opacity.duration.150ms
-    class="absolute right-0 top-0"
-    x-cloak
->
-    <x-insurance.top-insurance-banner.insurance-logo-disclaim-button />
-</div>
-
+            <div
+                x-show="hover"
+                x-transition.opacity.duration.150ms
+                class="absolute right-0 top-0"
+                x-cloak
+            >
+                <x-insurance.top-insurance-banner.insurance-logo-disclaim-button />
+            </div>
         </div>
     @else
         <div class="h-8 w-min rounded flex items-center justify-center text-sm border px-1 font-medium shadow-sm"

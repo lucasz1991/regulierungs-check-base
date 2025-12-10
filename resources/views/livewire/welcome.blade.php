@@ -30,11 +30,8 @@
             </div>
           </div>
         </div>
-        <livewire:banner.top-insurances-banner  />
-
+      <livewire:banner.top-insurances-banner  />
       <x-pagebuilder-module :position="'content_between_1'"/>
-      <section>
-      </section>
       <x-pagebuilder-module :position="'content_between_2'"/>
       <section>
         <livewire:banner.homepage-claimratings-random-banner  />
