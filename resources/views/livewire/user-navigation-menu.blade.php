@@ -66,6 +66,7 @@ x-on:scroll.window="
             $store.nav.height = $refs.nav.offsetHeight; 
         })"
     @click.away="$store.nav.isMobileMenuOpen = false"
+    wire:ignore
     >
     <div class="">
         <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed w-full z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">

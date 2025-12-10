@@ -8,7 +8,7 @@
         >
             <!-- Logo -->
             <img src="{{ asset('storage/' . $insurance->logo) }}"
-                 class="w-full h-8 object-contain object-left rounded"
+                 class="w-full h-8 object-contain object-center rounded"
                  loading="lazy">
 
             <!-- Info-Icon nur bei Hover sichtbar -->
