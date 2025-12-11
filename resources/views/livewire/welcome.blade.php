@@ -1,8 +1,8 @@
 <div  wire:loading.class="cursor-wait">
-      <div class="container mx-auto px-4 py-2 md:py-6">
+      <div class="container mx-auto px-4 py-2 md:py-6 mb-4">
         <div id="ix1xm-2" class="relative overflow-hidden rounded-xl home-banner md:py-4">
           <div>
-            <div id="ib4xx-2" data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4 md:py-6  relative h-max z-10 md:py-4">
+            <div id="ib4xx-2" data-aos="fade-right" class="max-w-full md:max-w-3xl text-left space-y-4 md:py-6  relative h-max z-10 md:py-4">
               <div id="ijooq">
                 <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
                   Versicherungen im Bonitäts-CHECK.
@@ -17,7 +17,7 @@
           <div class="">
             <div data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4  relative h-max z-10 py-2 md:py-6">
               <div>
-                <div  class="flex space-x-2 md:space-x-4 items-center md:mb-4 w-full max-md:justify-center">
+                <div  class="flex space-x-2 md:space-x-4 items-center md:mb-4 w-full ">
                   <x-buttons.button-basic class="font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
                     Jetzt bewerten
                   </x-buttons.button-basic>
@@ -30,6 +30,76 @@
             </div>
           </div>
         </div>
+      <div class="container mx-auto px-4 py-2 md:py-6">
+        <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase">
+          <span>So funktioniert's</span>
+        </div>
+      </div>
+
+      <div class="container mx-auto px-4 py-2 md:py-6 mb-4">
+        <div class="grid grid-cols-3 gap-4 md:gap-6">
+          {{-- Schritt 1: Versicherung auswählen --}}
+          <div class="flex flex-col items-center text-center bg-white/95 rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
+            <div class="mb-2 flex items-center justify-center rounded-full bg-primary-100 text-primary-700">
+              {{-- Icon Placeholder, z.B. Shield --}}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 3.75l7.5 3v5.25A9.75 9.75 0 0112 21 9.75 9.75 0 014.5 12V6.75l7.5-3z" />
+              </svg>
+            </div>
+            <h3 class="text-xs md:text-base font-semibold text-gray-900">
+              Versicherung auswählen
+            </h3>
+            <p class="mt-1 hidden md:block text-xs md:text-sm text-gray-600">
+              Finde deinen Versicherer und sieh, wie andere reguliert wurden.
+            </p>
+          </div>
+
+          {{-- Schritt 2: Regulierung bewerten --}}
+          <div class="flex flex-col items-center text-center bg-white/95 rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
+            <div class="mb-2 flex  items-center justify-center rounded-full bg-primary-100 text-primary-700">
+              {{-- Icon Placeholder, z.B. Checkliste --}}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M4.5 6.75h6.75M4.5 12h6.75M4.5 17.25h6.75M14.25 7.5l2.25 2.25L20.25 6" />
+              </svg>
+            </div>
+            <h3 class="text-xs md:text-base font-semibold text-gray-900">
+              Regulierung bewerten
+            </h3>
+            <p class="mt-1 hidden md:block text-xs md:text-sm text-gray-600">
+              Teile deine Erfahrungen zur Schadenregulierung Schritt für Schritt.
+            </p>
+          </div>
+
+          {{-- Schritt 3: Erfahrungen teilen --}}
+          <div class="flex flex-col items-center text-center bg-white/95 rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
+            <div class="mb-2 flex  items-center justify-center rounded-full bg-primary-100 text-primary-700">
+              {{-- Icon Placeholder, z.B. Sprechblasen --}}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M8.25 9h7.5M8.25 12h3.75M4.5 19.5l2.25-2.25H9A6.75 6.75 0 009 4.5h6A4.5 4.5 0 0119.5 9v3a6.75 6.75 0 01-6.75 6.75H9.75L4.5 19.5z" />
+              </svg>
+            </div>
+            <h3 class="text-xs md:text-base font-semibold text-gray-900">
+              Erfahrungen teilen
+            </h3>
+            <p class="mt-1 hidden md:block text-xs md:text-sm text-gray-600">
+              Hilf anderen, bessere Entscheidungen zu treffen – anonym & unabhängig.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="container mx-auto px-4 py-2 md:py-6">
+        <div class="max-md:bg-secondary text-white max-md:px-2 max-md:py-2  text-base  md:text-xl md:w-max uppercase">
+          <span>Meistbeurteilte Versicherungen</span>
+        </div>
+      </div>
       <livewire:banner.top-insurances-banner  />
       <x-pagebuilder-module :position="'content_between_1'"/>
       <x-pagebuilder-module :position="'content_between_2'"/>
