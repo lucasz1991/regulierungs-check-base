@@ -44,7 +44,6 @@
                 }
             }
         }
-
         lastScrollTop = current < 0 ? 0 : current;
     "
     x-resize="

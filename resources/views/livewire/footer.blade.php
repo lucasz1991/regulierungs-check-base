@@ -5,10 +5,10 @@
             <div class="px-4 py-4 container mx-auto rounded-xl  md:schadow footer-dark-gradient">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-6 gap-y-10">
                 <div>
-                    <a href='/' class="block h-auto w-28 sm:w-32 md:w-48 lg:w-60 pr-4">
+                    <a href='/' class="block h-auto w-32  md:w-48 lg:w-52 pr-4">
                         <img 
                             class="w-full" 
-                            src="{{ asset('/site-images/logo/logo-white.png') }}" 
+                            src="{{ asset('/site-images/logo/logo-white-yelllow.png') }}" 
                             alt="Logo">
                     </a>
                 </div>
@@ -25,14 +25,12 @@
                     </h4>
                     <div x-show="open || screenWidth >= 768" x-collapse.duration.1000ms @click.away="open = false" >
                         <ul class="mt-6 space-y-5">
-                            
                             <li>
                                 <a  href="/insurances" wire:navigate  class='hover:text-white text-white text-sm'>Versicherungen</a>
                             </li>
                             <li>
                                 <a  href="/reviews" wire:navigate  class='hover:text-white text-white text-sm'>Bewertungen</a>
                             </li>
-                            
                         </ul>
                     </div>
                 </div>
@@ -118,7 +116,6 @@
                         </li> 
                     </ul>
                 </div>
-
                 <p class='text-white text-sm md:ml-auto'>&copy; {{ date("Y") }} Regulierungs-CHECK. Alle Rechte vorbehalten.</p>
             </div>
             </div>
