@@ -31,7 +31,7 @@
           </div>
         </div>
       <div class="container mx-auto px-4 py-2 md:py-6">
-        <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase">
+        <div class="bg-rcgold text-white px-2 py-2 text-base  md:text-xl md:w-max uppercase">
           <span>So funktioniert's</span>
         </div>
       </div>
@@ -96,8 +96,8 @@
 
 
       <div class="container mx-auto px-4 py-2 md:py-6">
-        <div class="max-md:bg-secondary text-white max-md:px-2 max-md:py-2  text-base  md:text-xl md:w-max uppercase">
-          <span>Meistbeurteilte Versicherungen</span>
+        <div class="bg-secondary text-white px-2 py-2  text-base  md:text-xl md:w-max uppercase">
+          <span>Meistbewertete Versicherungen</span>
         </div>
       </div>
       <livewire:banner.top-insurances-banner  />
