@@ -1,4 +1,4 @@
-<div class="container mx-auto">
+<div class="container mx-auto  px-2 md:px-4 ">
     {{-- TOP 5 SWIPER --}}
     <div class="my-4">
         <div x-data="{
@@ -7,11 +7,11 @@
                     this.swiper = new Swiper(this.$refs.topSwiper, {
                         slidesPerView: 'auto',
                         spaceBetween: 0,
-                        slidesOffsetBefore: 20,
-                        slidesOffsetAfter: 20,
+                        slidesOffsetBefore: 0,
+                        slidesOffsetAfter: 0,
                         speed: 500,
                         loop: false,
-                        freeMode: true,
+                        freeMode: false,
                         autoHeight: false,
                         pagination: {
                             el: '.swiper-pagination-top',

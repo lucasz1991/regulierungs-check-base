@@ -1,42 +1,48 @@
 <div  wire:loading.class="cursor-wait">
-      <div class="container mx-auto px-4 py-2 md:py-6 mb-4">
+      <div class="container mx-auto px-4 py-2 md:py-6 mb-8">
         <div id="ix1xm-2" class="relative overflow-hidden rounded-xl home-banner md:py-4">
-          <div>
-            <div id="ib4xx-2" data-aos="fade-right" class="max-w-full md:max-w-3xl text-left space-y-4 md:py-6  relative h-max z-10 md:py-4">
-              <div id="ijooq">
-                <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
-                  Versicherungen im Bonitäts-CHECK.
-                </h1>
-                <h1 id="ilifi-2-2" class="title-font text-3xl max-md:text-xl mb-4 text-white" style="text-shadow: 0px 0px 15px rgba(0,0,0,0.8);">
-                  Weil du vorher wissen solltest, wie nachher
-                  geregelt wird.
-                </h1>
+          <div class=" flex items-center justify-between">
+            <div class=" md:w-1/2">
+              <div id="ib4xx-2" data-aos="fade-up" class="max-w-full md:max-w-3xl text-left space-y-4 md:py-6  relative h-max z-10 md:py-4">
+                <div id="ijooq">
+                  <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
+                    Versicherungen im Bonitäts-CHECK.
+                  </h1>
+                  <h1 id="ilifi-2-2" class="title-font text-3xl max-md:text-xl mb-4 text-white" style="text-shadow: 0px 0px 15px rgba(0,0,0,0.8);">
+                    Weil du vorher wissen solltest, wie nachher
+                    geregelt wird.
+                  </h1>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="">
-            <div data-aos="fade-right" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4  relative h-max z-10 py-2 md:py-6">
-              <div>
-                <div  class="flex space-x-2 md:space-x-4 items-center md:mb-4 w-full ">
-                  <x-buttons.button-basic class="font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
-                    Jetzt bewerten
-                  </x-buttons.button-basic>
-                  <x-buttons.button-basic class="font-semibold" :mode="'layoutprimary'" href="/insurances" x-data="{ isClicked: false }" x-on:click="isClicked = true; setTimeout(() => isClicked = false, 100)" x-bind:style="isClicked ? 'transform:scale(0.9);' : ''">
-                    Vergleichen
-                  </x-buttons.button-basic>
+              <div class="" >
+                <div data-aos="fade-up" class="max-w-full md:max-w-3xl text-center md:text-left space-y-4  relative h-max z-10 py-2 md:py-6">
+                  <div>
+                    <div  class="flex space-x-2 md:space-x-4 items-center md:mb-4 w-full ">
+                      <x-buttons.button-basic class="font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
+                        Jetzt bewerten
+                      </x-buttons.button-basic>
+                      <x-buttons.button-basic class="font-semibold" :mode="'layoutprimary'" href="/insurances" x-data="{ isClicked: false }" x-on:click="isClicked = true; setTimeout(() => isClicked = false, 100)" x-bind:style="isClicked ? 'transform:scale(0.9);' : ''">
+                        Vergleichen
+                      </x-buttons.button-basic>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="hidden md:flex md:w-1/2 md:p-4 justify-center "   data-aos="fade-up">
+              <img class="w-full max-w-xl" src="{{ asset('/site-images/start-illu-1-01.png') }}" alt="">
+            </div>
           </div>
         </div>
-      <div class="container mx-auto px-4 py-2 md:py-6">
-        <div class="bg-rcgold text-white px-2 py-2 text-base  md:text-xl md:w-max uppercase">
+      </div>
+
+      <div class="container mx-auto  px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up">
+        <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase">
           <span>So funktioniert's</span>
         </div>
       </div>
 
-      <div class="container mx-auto px-4 py-2 md:py-6 mb-4">
+      <div class="container mx-auto px-4 py-2 md:py-6 mb-4"  data-aos="fade-up">
         <div class="grid grid-cols-3 gap-4 md:gap-6">
           {{-- Schritt 1: Versicherung auswählen --}}
           <div class="flex flex-col items-center text-center bg-white/95 rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
@@ -95,15 +101,17 @@
       </div>
 
 
-      <div class="container mx-auto px-4 py-2 md:py-6">
-        <div class="bg-secondary text-white px-2 py-2  text-base  md:text-xl md:w-max uppercase">
+      <div class="container mx-auto px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up">
+        <div class="max-md:bg-secondary text-white max-md:px-2 max-md:py-2  text-base  md:text-xl md:w-max uppercase">
           <span>Meistbewertete Versicherungen</span>
         </div>
       </div>
-      <livewire:banner.top-insurances-banner  />
+      <div data-aos="fade-up">
+        <livewire:banner.top-insurances-banner  />
+      </div>
       <x-pagebuilder-module :position="'content_between_1'"/>
       <x-pagebuilder-module :position="'content_between_2'"/>
-      <section>
+      <section data-aos="fade-up">
         <livewire:banner.homepage-claimratings-random-banner  />
       </section>
       <livewire:customer.rating.rating-form   />
