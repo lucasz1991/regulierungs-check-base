@@ -1,6 +1,6 @@
-<div  wire:loading.class="cursor-wait">
+<div wire:loading.class="cursor-wait">
       <div class="container mx-auto px-4 py-2 md:py-6 max-md:pt-6  mb-8">
-        <div id="ix1xm-2" class="relative overflow-hidden rounded-xl home-banner md:py-4">
+        <div id="ix1xm-2" class="relative overflow-hidden rounded-xl home-banner md:py-4 md:pt-20">
           <div class=" flex items-center justify-between">
             <div class=" md:w-1/2"  data-aos="fade-up">
               <div id="ib4xx-2" class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
@@ -29,89 +29,79 @@
                 </div>
               </div>
             </div>
-            <div class="hidden md:flex md:w-1/2 md:p-4 justify-center "   data-aos="fade-up" data-aos-delay="50">
+            <div class="hidden md:flex md:w-1/2 justify-center" data-aos="fade-up" data-aos-delay="150">
               <img class="w-full max-w-xl" src="{{ asset('/site-images/start-illu-1-01.png') }}" alt="">
             </div>
           </div>
         </div>
       </div>
 
-      <div class="container mx-auto  px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up" data-aos-delay="100">
+      <div class="container mx-auto  px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up" data-aos-delay="200">
         <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase md:border-b-2  md:border-secondary md:pb-1">
           <span>So funktioniert's</span>
         </div>
       </div>
 
-      <div class="container mx-auto px-4 py-2 md:py-6 mb-4"  data-aos="fade-up"  data-aos-delay="200">
+      <div class="container mx-auto px-2 py-2 md:py-6 mb-4"  data-aos="fade-up"  data-aos-delay="300">
         <div class="grid grid-cols-3 gap-4">
           {{-- Schritt 1: Versicherung auswählen --}}
           <div class="flex flex-col items-center text-center bg-white/95 rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
-            <div class="mb-2 flex items-center justify-center rounded-full bg-primary-100 text-primary-700">
-              {{-- Icon Placeholder, z.B. Shield --}}
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                   stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M12 3.75l7.5 3v5.25A9.75 9.75 0 0112 21 9.75 9.75 0 014.5 12V6.75l7.5-3z" />
-              </svg>
+            <div class="mb-2 flex items-center justify-center rounded-full bg-secondary-light text-white p-3">
+              <svg  class="h-6 w-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" id="iu3mvh" class="w-5 h-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
             </div>
             <h3 class="text-xs md:text-base font-semibold text-gray-900">
               Versicherung auswählen
             </h3>
             <p class="mt-1 hidden md:block text-xs md:text-sm text-gray-600">
-              Finde deinen Versicherer und sieh, wie andere reguliert wurden.
+              Wähle die Versicherungsgesellschaft aus, über die du deine Erfahrungen teilen möchtest.
             </p>
           </div>
 
           {{-- Schritt 2: Regulierung bewerten --}}
           <div class="flex flex-col items-center text-center bg-white/95 rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
-            <div class="mb-2 flex  items-center justify-center rounded-full bg-primary-100 text-primary-700">
+            <div class="mb-2 flex  items-center justify-center rounded-full bg-secondary-light text-white p-3">
               {{-- Icon Placeholder, z.B. Checkliste --}}
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                   stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M4.5 6.75h6.75M4.5 12h6.75M4.5 17.25h6.75M14.25 7.5l2.25 2.25L20.25 6" />
-              </svg>
+<svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" id="ifhv0i" class="w-5 h-5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
             </div>
             <h3 class="text-xs md:text-base font-semibold text-gray-900">
               Regulierung bewerten
             </h3>
             <p class="mt-1 hidden md:block text-xs md:text-sm text-gray-600">
-              Teile deine Erfahrungen zur Schadenregulierung Schritt für Schritt.
+              Bewerte, wie dein Schadenfall abgewickelt wurde – zum Beispiel Bearbeitungsdauer, Kommunikation oder Fairness.
             </p>
           </div>
 
           {{-- Schritt 3: Erfahrungen teilen --}}
           <div class="flex flex-col items-center text-center bg-white/95 rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
-            <div class="mb-2 flex  items-center justify-center rounded-full bg-primary-100 text-primary-700">
-              {{-- Icon Placeholder, z.B. Sprechblasen --}}
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                   stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M8.25 9h7.5M8.25 12h3.75M4.5 19.5l2.25-2.25H9A6.75 6.75 0 009 4.5h6A4.5 4.5 0 0119.5 9v3a6.75 6.75 0 01-6.75 6.75H9.75L4.5 19.5z" />
-              </svg>
+            <div class="mb-2 flex  items-center justify-center rounded-full bg-rcgold text-white p-3">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-5 h-5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path><path d="M22 4L12 14.01l-3-3"></path></svg>
             </div>
             <h3 class="text-xs md:text-base font-semibold text-gray-900">
               Erfahrungen teilen
             </h3>
             <p class="mt-1 hidden md:block text-xs md:text-sm text-gray-600">
-              Hilf anderen, bessere Entscheidungen zu treffen – anonym & unabhängig.
+              Deine Bewertung ist jetzt online und hilft anderen dabei, eine faire Versicherung zu finden.            
             </p>
           </div>
         </div>
       </div>
 
 
-      <div class="container mx-auto px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up"  data-aos-delay="300">
+      <div class="container mx-auto px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up"  data-aos-delay="400">
         <div class="max-md:bg-secondary text-white max-md:px-2 max-md:py-2  text-base  md:text-xl md:w-max uppercase md:border-b-2  md:border-secondary md:pb-1">
           <span>Meistbewertete Versicherungen</span>
         </div>
       </div>
-      <div data-aos="fade-up" data-aos-delay="400">
+      <div class="mb-20" data-aos="fade-up" data-aos-delay="500">
         <livewire:banner.top-insurances-banner  />
       </div>
-      <x-pagebuilder-module :position="'content_between_1'"/>
-      <x-pagebuilder-module :position="'content_between_2'"/>
-      <section data-aos="fade-up">
+      <div >
+        <x-pagebuilder-module :position="'content_between_1'"/>
+      </div>
+      <div >
+        <x-pagebuilder-module :position="'content_between_2'"/>
+      </div>
+      <section  class="mb-6" data-aos="fade-up" data-aos-delay="500">
         <livewire:banner.homepage-claimratings-random-banner  />
       </section>
       <livewire:customer.rating.rating-form   />

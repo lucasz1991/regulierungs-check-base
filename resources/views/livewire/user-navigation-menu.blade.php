@@ -69,7 +69,7 @@
                 <x-ui.basic.content-container class="px-3">
                     <div class="flex flex-wrap justify-between items-center">
                         <div class="max-xl:order-1  xl:order-2  flex-none self-stretch flex " @click="$store.nav.isMobileMenuOpen = false">
-                            <!--livewire:tools.search-modal -->
+                            <livewire:tools.search-modal />
                             <div class="xl:hidden flex  items-center ">
              
                                  @auth
