@@ -1,6 +1,6 @@
 <div  wire:loading.class="cursor-wait">
     @persist('scrollbar')
-    <section  class="bg-gray-100 pt-8">
+    <section  class=" pt-8">
         <x-filter.filter-container>
             <x-slot name="filters">
                 <div class="p-2 mb-2">
