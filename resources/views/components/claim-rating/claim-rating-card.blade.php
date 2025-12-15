@@ -33,22 +33,22 @@
                 <x-insurance.insurance-name-button :insurance="$rating->insurance" />
             </div>
         @endif
-@if(!str_contains(request()->path(), 'insurancetype/'))
-  @php
-    $bgColor     = $rating->insuranceSubType->style['bg_color'] ?? '#f3f4f6';
-    $fontColor   = $rating->insuranceSubType->style['font_color'] ?? '#4d4d4d';
-    $borderColor = $rating->insuranceSubType->style['border_color'] ?? '#4d4d4d';
-  @endphp
+    @if(!str_contains(request()->path(), 'insurancetype/'))
+    @php
+        $bgColor     = $rating->insuranceSubType->style['bg_color'] ?? '#f3f4f6';
+        $fontColor   = $rating->insuranceSubType->style['font_color'] ?? '#4d4d4d';
+        $borderColor = $rating->insuranceSubType->style['border_color'] ?? '#4d4d4d';
+    @endphp
 
-  <a
-    href="/insurancetype/{{ $rating->insuranceSubType->slug }}"
-    class="block w-full text-center text-xs font-medium px-2.5 py-0.5 rounded border opacity-80 hover:opacity-100 transition-opacity duration-200 truncate"
-    style="background-color: {{ $bgColor }}; color: {{ $fontColor }}; border-color: {{ $borderColor }};"
-    title="{{ $rating->insuranceSubType->name }}"
-  >
-    {{ $rating->insuranceSubType->name }}
-  </a>
-@endif
+    <a
+        href="/insurancetype/{{ $rating->insuranceSubType->slug }}"
+        class="block w-full text-center text-xs font-medium px-2.5 py-0.5 rounded border opacity-80 hover:opacity-100 transition-opacity duration-200 truncate"
+        style="background-color: {{ $bgColor }}; color: {{ $fontColor }}; border-color: {{ $borderColor }};"
+        title="{{ $rating->insuranceSubType->name }}"
+    >
+        {{ $rating->insuranceSubType->name }}
+    </a>
+    @endif
     </div>
     <div class="px-2 pb-1 flex justify-end">
         <a  href="{{ route('review.show', $rating->id) }}" class="text-blue-800 bg-gray-100 hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center ">

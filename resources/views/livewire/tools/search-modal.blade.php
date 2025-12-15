@@ -160,10 +160,10 @@
             </div>
             
         </div>
-    </template>
-        <template x-teleport="#megamenu" >
-        <div :class="$store.nav.showNav && openSearchMenu ? 'h-20' : 'h-0'" class="transition-all duration-300 ease-in-out">
-
-        </div>
+        <div
+                x-show="$store.nav.showNav && openSearchMenu"
+                class="h-20"
+                x-cloak
+        ></div>
     </template>
 </div>
