@@ -6,10 +6,23 @@
         x-on:mouseleave="hover = false"
         @click="showInfos = !showInfos">
         <div class=" transition-all duration-200">
-            <x-insurance.insurance-name :insurance="$insurance" />
+            <div class="flex justify-between ">
+                <x-insurance.insurance-name :insurance="$insurance" />
+                <div class="">
+                    <div class="shrink-0 transition-all relative self-auto" >
+                        <div  class="">
+                            <div class="">
+                                <div class="text-sm text-gray-500 font-medium text-center">
+                                    <div class="w-16 mx-auto text-xs text-white p-2 aspect-square bg-[#223d65]  rounded-full flex justify-center items-center"><span>Ø: {{ round($insurance->avgRatingDurationBySubtype()) }}<br> Tage</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="shrink-0 transition-all relative self-auto" 
                 x-show="!showInfos" x-collapse.duration.600ms>
-                <div  class="flex items-center justify-between gap-2 mb-2" >
+                <div  class="flex items-center justify-left gap-2 mb-2" >
                     <div class="" style="">
                         <div class="">
                             <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'lg'" />
