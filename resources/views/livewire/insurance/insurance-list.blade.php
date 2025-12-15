@@ -142,7 +142,7 @@
                             </div>
                         @endif
 
-                        <div wire:key="insurances-list" class="grid grid-cols-2 gap-4">
+                        <div wire:key="insurances-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             @foreach($insurances as $insurance)
                                 <div wire:key="insurance-{{ $insurance->id }}">
 
