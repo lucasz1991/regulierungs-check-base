@@ -1,28 +1,27 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
-<div class="block" x-data="{ showInfos: false, hover: false }" @click.away="showInfos = false" x-cloak>
-    <div class="bg-white  px-4 py-4 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4"
-        :class="showInfos ? 'border-blue-400 border shadow-lg  rounded-t' : 'border-gray-300 border   rounded-xl shadow '"
+<div class="block" x-data="{  hover: false }"  x-cloak>
+    <div class="bg-white  px-4 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer border-gray-300 border   rounded-xl shadow"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
-        @click="showInfos = !showInfos">
+          onclick="window.location.href='{{ route('insurance.show-insurance', $insurance->slug) }}'"
+        >
         <div class=" transition-all duration-200">
             <div class="flex justify-between ">
                 <x-insurance.insurance-name :insurance="$insurance" />
                 <div class="">
                     <div class="shrink-0 transition-all relative self-auto" >
                         <div  class="">
-                            <div class="">
+                            <div class="mt-1">
                                 <div class="text-sm text-gray-500 font-medium text-center">
-                                    <div class="w-16 mx-auto text-xs text-white p-2 aspect-square bg-[#223d65]  rounded-full flex justify-center items-center"><span>Ø: {{ round($insurance->avgRatingDurationBySubtype()) }}<br> Tage</span></div>
+                                    <div class="w-12 mx-auto text-xs text-white p-1 aspect-square  bg-secondary-light ring-2 ring-offset-2 ring-secondary-light  rounded-full flex justify-center items-center"><span>Ø: {{ round($insurance->avgRatingDurationBySubtype()) }}<br> Tage</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="shrink-0 transition-all relative self-auto" 
-                x-show="!showInfos" x-collapse.duration.600ms>
-                <div  class="flex items-center justify-left gap-2 mb-2" >
+            <div class="shrink-0 transition-all relative self-auto" >
+                <div  class="flex items-center justify-left gap-2" >
                     <div class="" style="">
                         <div class="">
                             <x-insurance.insurance-rating-stars :score="$insurance->ratings_avg_score()" :size="'lg'" />
