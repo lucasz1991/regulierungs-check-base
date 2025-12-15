@@ -25,7 +25,7 @@
             </svg>
         </div>
     </div>
-    <div wire:ignore>
+    <div>
         <template x-teleport="#megamenu">
             <!-- Such-Modal -->
             <div id="Search-menü" class="relative z-20">
