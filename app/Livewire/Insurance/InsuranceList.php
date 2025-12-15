@@ -20,7 +20,7 @@ class InsuranceList extends Component
     #[Session(key: 'selectedInsuranceSubTypefilter')]
     public array $selectedInsuranceSubTypefilter = [];
 
-    public int $perPage = 10;
+    public int $perPage = 20;
     public int $pages   = 1;
 
     public string $sort = 'count_desc';
