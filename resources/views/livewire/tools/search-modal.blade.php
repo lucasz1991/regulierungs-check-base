@@ -1,5 +1,4 @@
 <div x-data="{ openSearchMenu: false }" @keydown.window.escape="openSearchMenu = false"  class="h-full">
-    <!-- Such-Icon -->
     <div
         @click.prevent="openSearchMenu = !openSearchMenu"
         class="flex h-full w-12 items-center"
@@ -26,7 +25,6 @@
             </svg>
         </div>
     </div>
-
     <template x-teleport="#megamenu" >
         <!-- Such-Modal -->
         <div id="Search-menü" class="relative z-20">
@@ -158,7 +156,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
         <div
                 x-show="$store.nav.showNav && openSearchMenu"
