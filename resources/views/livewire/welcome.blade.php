@@ -1,9 +1,9 @@
 <div wire:loading.class="cursor-wait">
       <div class="container mx-auto px-4 py-2 md:py-6 max-md:pt-6  mb-8">
-        <div id="ix1xm-2" class="relative overflow-hidden rounded-xl home-banner md:py-4 md:pt-20">
+        <div  class="relative overflow-hidden rounded-xl home-banner md:py-4 md:pt-20">
           <div class=" flex items-center justify-between">
             <div class=" md:w-1/2"  data-aos="fade-up">
-              <div id="ib4xx-2" class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
+              <div   class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
                 <div id="ijooq">
                   <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
                     Versicherungen im Bonitäts-CHECK.
@@ -14,7 +14,7 @@
                   </h1>
                 </div>
               </div>
-              <div class="" >
+              <div class="">
                 <div class="max-w-full md:max-w-3xl text-center md:text-left space-y-4  relative h-max z-10 py-2 md:py-6">
                   <div>
                     <div  class="flex space-x-2 md:space-x-4 items-center md:mb-4 w-full ">

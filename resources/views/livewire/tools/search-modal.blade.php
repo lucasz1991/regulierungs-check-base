@@ -1,29 +1,45 @@
 <div x-data="{ openSearchMenu: false }" @keydown.window.escape="openSearchMenu = false"  class="h-full">
     <!-- Such-Icon -->
-    <div @click.prevent="() => { openSearchMenu = !openSearchMenu; }"  class="flex h-full w-12 transition-all duration-300 ease-in-out" >
-        <div x-cloak class="flex  pt-2 px-2 mr-2 rounded-t-full transition-all duration-300 absolute h-min bottom-2.5 md:bottom-3.5 bg-gray-100 pb-1.5"  :class="openSearchMenu ? 'text-secondary bg-gray-200 border-t border-x  border-gray-300 translate-y-[1px] rounded-b-0 !bottom-0 !pb-0' : 'text-gray-500 translate-y-0 rounded-b-full'">
-            <svg 
+    <div
+        @click.prevent="openSearchMenu = !openSearchMenu"
+        class="flex h-full w-12 items-center"
+    >
+        <div
+            x-cloak
+            class="flex  p-2 mr-2 rounded-full absolute h-min 
+                   bg-gray-100 text-gray-500
+                   transition-colors duration-200 ease-in-out
+                   border border-transparent"
+            :class="openSearchMenu
+                ? 'text-secondary bg-gray-200 border-gray-300'
+                : 'hover:text-gray-700 hover:bg-gray-150'"
+        >
+            <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6  hover:text-gray-700 cursor-pointer transition-all duration-300 " 
-                
+                class="h-6 w-6 cursor-pointer"
                 fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+            >
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 18a8 8 0 100-16 8 8 0 000 16zm8-2l4 4"/>
             </svg>
         </div>
     </div>
+
     <template x-teleport="#megamenu" >
         <!-- Such-Modal -->
         <div id="Search-menü" class="relative z-20">
             <div 
-                x-show="openSearchMenu"
+                x-show="$store.nav.showNav && openSearchMenu"
                 @click="() => { openSearchMenu = !openSearchMenu; }"
                 x-transition.opacity
+                x-trap.inert.noscroll="$store.nav.showNav && openSearchMenu"
                 class="fixed h-full w-full "
                 x-cloak
             ></div>
             <div 
-                :class="openSearchMenu ? '!translate-y-0' : ''"
+                :class="$store.nav.showNav && openSearchMenu ? '!translate-y-0' : ''"
                 class="fixed translate-y-[-200%]  w-full  px-3 py-3 md:py-6 md:px-8  transition-all duration-300 ease-in-out">
                 <div class="container mx-auto">
                     <div class=""> 
@@ -32,7 +48,7 @@
                             <button 
                                 type="button" 
                                 @click.prevent="openSelectSearchTypeDropdown = !openSelectSearchTypeDropdown" 
-                                class="shrink-0 z-20 inline-flex items-center py-2.5 px-4 text-sm font-medium text-white bg-primary-800 border border-primary-700 rounded-s-lg hover:bg-primary-700 focus:outline-none"
+                                class="shrink-0 z-20 inline-flex items-center py-2.5 px-4 text-sm font-medium text-primary bg-rcgold border border-rcgold rounded-s-lg hover:bg-rcgold focus:outline-none"
                             >
                                 @if($searchType == 'insurances')
                                     Versicher.
@@ -93,6 +109,7 @@
                         </div>
                     </div>
                     @if(count($resultsInsurances) || count($resultsTypes) || count($resultsInfos))
+                    <div class="bg-white rounded-xl ">
                         <ul class=" max-h-[60vh] overflow-y-auto divide-y transition-all duration-300 ease-in-out divide-gray-200 p-2 mt-4 ">
                             @if(count($resultsInsurances))
                                 <li class="py-2  mt-4 rounded">
@@ -138,9 +155,15 @@
                             <span class="text-gray-400 text-sm">Keine Ergebnisse gefunden</span>
                         </div>
                     @endif    
+                    </div>
                 </div>
             </div>
             
+        </div>
+    </template>
+        <template x-teleport="#megamenu" >
+        <div :class="$store.nav.showNav && openSearchMenu ? 'h-20' : 'h-0'" class="transition-all duration-300 ease-in-out">
+
         </div>
     </template>
 </div>
