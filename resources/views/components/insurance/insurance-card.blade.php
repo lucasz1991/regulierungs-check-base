@@ -1,7 +1,7 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
 <div class="block" x-data="{ showInfos: false, hover: false }" @click.away="showInfos = false" x-cloak>
-    <div class="bg-white px-4 py-4 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4"
-        :class="showInfos ? 'border-blue-400 border shadow-lg  rounded-t' : 'border-gray-300 border   rounded shadow '"
+    <div class="bg-white  px-4 py-4 relative transition-shadow duration-300 flex flex-col justify-between h-full  hover:shadow-lg  cursor-pointer pb-4"
+        :class="showInfos ? 'border-blue-400 border shadow-lg  rounded-t' : 'border-gray-300 border   rounded-xl shadow '"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
         @click="showInfos = !showInfos">
@@ -21,18 +21,8 @@
                     </span>
                 </div>
             </div>
-             <div class="absolute left-1/2 bottom-1 transform -translate-x-1/2  mr-0 mb-0 ">
-                <svg :class="showInfos ? 'rotate-180 transition-transform duration-300' : 'rotate-0 transition-transform duration-300'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </div>
+
         </div>
     </div>
-    <div class="relative">
-        <div x-show="showInfos" x-collapse.duration.600ms
-            class="relative  w-full bg-primary-50 border border-t-0  border-blue-400 rounded-b shadow-lg"
-            @click.away="showInfos = false">
-            <x-insurance.insurance-card-dropdown-infos :insurance="$insurance"  :isSubTypeFilter="$isSubTypeFilter" :subTypeFilterSubType="$subTypeFilterSubType"   lazy />
-        </div>
-    </div>
+
 </div>

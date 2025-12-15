@@ -29,9 +29,9 @@
         @livewireStyles
     </head>
     <body class=" antialiased ">
-        <div id="main" class="snap-y">
+        <div id="main" >
             @livewire('user-alert')
-            <header class="snap-start">
+            <header  wire:ignore>
                 @livewire('user-navigation-menu')
             </header>
             <!-- Page Heading -->
@@ -40,7 +40,7 @@
             <x-pagebuilder-module :position="'banner'"/>
             <x-pagebuilder-module :position="'bottom_banner'"/>
             <!-- Page Content -->
-            <main  class="snap-start z-0">
+            <main  class="">
                 <x-pagebuilder-module/>
                 <x-pagebuilder-module :position="'above_content'"/>
                 {{ $slot }}
@@ -54,10 +54,10 @@
         @stack('modals')
         
         
+        <div id="bottom-nav"  wire:ignore></div>
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
         @livewireScripts
-        <div id="bottom-nav"  wire:ignore></div>
         <script>
             document.addEventListener('alpine:init', () => {
                 Alpine.store('nav', {

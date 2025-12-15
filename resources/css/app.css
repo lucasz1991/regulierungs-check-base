@@ -60,6 +60,7 @@ body::after {
   z-index: -1;
 }
 
+html { scroll-behavior: auto !important; }
 
 
 /* Webkit (Chrome, Safari) - Scrollbar sichtbar machen, wenn gescrollt wird */

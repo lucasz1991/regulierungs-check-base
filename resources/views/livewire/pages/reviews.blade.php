@@ -1,5 +1,20 @@
-<div>
-    <div class=" bg-gray-100 pt-8">
+<div
+    x-data="{
+        loading: false,
+        async loadMore() {
+            if (this.loading) return;
+            const y = window.scrollY;
+            this.loading = true;
+            document.activeElement?.blur();
+            await $wire.loadMore();
+            requestAnimationFrame(() => {
+                window.scrollTo({ top: y, left: 0, behavior: 'auto' });
+                this.loading = false;
+            });
+        }
+    }"
+>
+    <div class=" pt-8">
         <div class="container mx-auto ">
             {{-- Einzelbewertungen --}}
                 <x-filter.filter-container>
@@ -78,11 +93,18 @@
                                 @endif
                             </div>
                             @if($claimRatings && $claimRatings->count() >= $perPage * $pages)
-                                <div class="mt-6 text-center">
-                                    <x-buttons.button-basic type="button" wire:click.prevent="loadMore">
-                                        Mehr laden
-                                    </x-buttons.button-basic>
-                                </div>
+                            <div class="mt-6 text-center" wire:ignore>
+                                <button
+                                    type="button"
+                                    class="px-4 py-2 rounded-lg border bg-white"
+                                    tabindex="-1"
+                                    onmousedown="event.preventDefault()"
+                                    x-on:click.prevent="loadMore()"
+                                    :disabled="loading"
+                                >
+                                    Mehr laden
+                                </button>
+                            </div>
 
                             @endif
                         </x-slot>

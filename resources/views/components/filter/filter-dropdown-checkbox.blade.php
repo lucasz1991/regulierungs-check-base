@@ -4,6 +4,7 @@
     $model = $attributes->wire('model')->value();
 @endphp
 
+
 <div x-data="dropdownFilter(@json($options->pluck('id')), @entangle($model).live)" class="relative inline-block w-full max-w-md text-left">
 <!-- Trigger -->
     <div @click="toggle" class="cursor-pointer rounded-md bg-white border border-blue-200 px-4 py-2.5 text-sm text-gray-700 flex items-center justify-between">
