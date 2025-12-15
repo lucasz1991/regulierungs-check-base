@@ -29,7 +29,7 @@
     </div>
     <div class=" px-2 py-2 border-t border-gray-300 ">
         @if(!str_contains(request()->path(), 'insurance/'))
-            <div class=" cursor-pointer ">
+            <div class="flex justify-center cursor-pointer ">
                 <x-insurance.insurance-name-button :insurance="$rating->insurance" />
             </div>
         @endif
