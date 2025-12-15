@@ -160,7 +160,7 @@
         <div
                 x-show="$store.nav.showNav && openSearchMenu"
                 class="h-20"
-                x-cloak
+                x-cloak 
         ></div>
     </template>
 </div>
