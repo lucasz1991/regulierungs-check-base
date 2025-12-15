@@ -34,7 +34,7 @@
                     @click="() => { openSearchMenu = !openSearchMenu; }"
                     x-transition.opacity
                     x-trap.inert.noscroll="$store.nav.showNav && openSearchMenu"
-                    class="fixed h-full w-full "
+                    class="fixed h-full w-full backdrop-blur"
                     x-cloak
                 ></div>
                 <div 
