@@ -96,6 +96,30 @@ html { scroll-behavior: auto !important; }
   transition: opacity 1s ease;
 }
 
+
+/* Scroll-Fade oben/unten (funktioniert auch mit calc) */
+.scroll-mask {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    #000 40px,
+    #000 calc(100% - 60px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    #000 40px,
+    #000 calc(100% - 60px),
+    transparent 100%
+  );
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+
+
 .dropdown-panel {
   width: max-content;
   position: absolute;

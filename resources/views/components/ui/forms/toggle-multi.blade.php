@@ -7,7 +7,7 @@
     'icon'  => 'fa-check-circle', // FontAwesome 5 (solid)
 ])
 
-<label for="{{ $id }}" class="flex items-center justify-between gap-4 rounded-2xl border border-white/20 bg-white/90 px-2 py-2 shadow-sm backdrop-blur cursor-pointer select-none">
+<label for="{{ $id }}" class="flex items-center justify-between gap-4 rounded-2xl border border-white bg-white px-2 py-2 shadow-sm cursor-pointer select-none">
     <div class="flex items-center gap-3 min-w-0">
         <div class="mt-0.5 w-12 h-12  flex items-center justify-center shrink-0">
             <i class="fal {{ $icon }} fa-2x text-primary"></i>

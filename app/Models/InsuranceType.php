@@ -16,6 +16,7 @@ class InsuranceType extends Model
         'slug',
         'description',
         'icon_svg',
+        'icon_type',
         'weight',
         'is_active',
         'order_id',
@@ -27,6 +28,7 @@ class InsuranceType extends Model
                     ->withPivot('order_column')
                     ->orderBy('insurance_insurance_type.order_column');
     }
+    
     public function subtypes()
     {
         return $this->belongsToMany(InsuranceSubtype::class, 'insurance_type_insurance_subtype')
