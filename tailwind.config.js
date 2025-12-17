@@ -29,8 +29,8 @@ export default {
                 },
                 rcgold: {
                     DEFAULT: 'rgb(249, 176, 41)',
-                    light: 'rgb(251, 189, 73)',
-                    dark: 'rgb(255, 166, 0)',
+                    light: 'rgb(255, 228, 177)',
+                    dark: 'rgb(164, 106, 0)',
                 },
                 primary: {
                     DEFAULT: '#084058',

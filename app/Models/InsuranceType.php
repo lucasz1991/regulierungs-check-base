@@ -15,6 +15,7 @@ class InsuranceType extends Model
         'name',
         'slug',
         'description',
+        'icon_svg',
         'weight',
         'is_active',
         'order_id',

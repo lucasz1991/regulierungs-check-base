@@ -147,7 +147,7 @@ class RatingForm extends Component
             ],
             (object)[
                 'id' => 5,
-                'title' => 'regulationDetail',
+                'title' => 'regulationDetails',
                 'question_text' => 'Bitte geben Sie Details zur Regulierung an.',
                 'type' => 'radio-textarea',
                 'is_required' => false,
@@ -198,6 +198,8 @@ class RatingForm extends Component
             ],
         ]);
         $this->questions = $this->questions->merge($this->standardQuestions);
+        $this->totalSteps = $this->questions->count();
+
         $this->answers = array_fill_keys($this->questions->pluck('title')->toArray(), null);
     }
 
@@ -280,8 +282,10 @@ class RatingForm extends Component
             $this->is_closed = true;
         }
         $this->answers['is_closed'] = $this->is_closed;
-        $this->regulationDetail = null;
-        $this->answers['regulationDetail'] = null;
+        $this->regulationDetails = [];            
+        $this->regulationComment = null;           
+        $this->answers['regulationDetails'] = [];      
+        $this->answers['regulationComment'] = null; 
     }
 
     public function updatedSelectedDates()
@@ -443,10 +447,12 @@ class RatingForm extends Component
                     break;
                 case 'radio-textarea':
                     // Textarea: String oder null
-                    if ($key == 'regulationDetail') {
+                    if ($key === 'regulationDetails') {
                         $this->answers[$key] = [
-                            'selected_values' => isset($this->regulationDetail) ? $this->regulationDetail : null,
-                            'textarea_value' => isset($this->regulationComment) ? trim($this->regulationComment) : null,
+                            'selected_values' => $this->regulationDetails,
+                            'textarea_value'  => $this->regulationComment
+                                ? trim($this->regulationComment)
+                                : null,
                         ];
                     }elseif ($key == 'contractDetails') {
                         $this->answers[$key] = [
@@ -511,6 +517,48 @@ class RatingForm extends Component
         }
     }
 
+    // Livewire Component
+
+public function getIsLastStepProperty(): bool
+{
+    $total = max(1, (int) $this->totalSteps);
+    return (int) $this->step >= ($total - 1);
+}
+public function getCanNextProperty(): bool
+{
+    // Passe die Regeln an deine Steps an
+    return match ((int) $this->step) {
+        0 => (int) $this->insuranceTypeId > 0,
+        1 => (int) $this->insuranceSubTypeId > 0,
+        2 => (int) $this->insuranceId > 0,
+        3 => !is_null($this->regulationType),
+        4 => !empty($this->regulationDetails), // ggf. count() > 0
+        5 => !empty(data_get($this->contractDetails, 'claim_amount'))
+              && (
+                    !in_array($this->regulationType, ['teilzahlung','vollzahlung'], true)
+                    || !empty(data_get($this->contractDetails, 'claim_settlement_amount'))
+                 ),
+        6 => !empty($this->started_at) && (!$this->is_closed || !empty($this->ended_at)),
+
+        // Variable Questions (ab standardSteps):
+        default => $this->canAnswerCurrentVariableQuestion(),
+    };
+}
+
+protected function canAnswerCurrentVariableQuestion(): bool
+{
+    $index = (int) $this->step - (int) $this->standardSteps;
+    $q = $this->variableQuestions[$index] ?? null;
+
+    if (!$q) return false;
+
+    $value = data_get($this->answers, $q->title);
+
+    // Minimal: nicht leer / nicht null
+    return !is_null($value) && $value !== '' && $value !== [];
+}
+
+
     public function rules()
     {
         $rules = [];
@@ -527,9 +575,10 @@ class RatingForm extends Component
             $rules['regulationType'] = 'required';
         }
         if ($this->step >= 4) {
-            $rules['regulationDetails'] = 'required';
-            if ($this->regulationDetails == 'Andere Gründe') {
-                $rules['regulationComment'] = 'required';
+            $rules['regulationDetails'] = 'required|array|min:1';
+
+            if (in_array('Andere Gründe', (array) $this->regulationDetails, true)) {
+                $rules['regulationComment'] = 'required|string|min:3';
             }
         }
         if ($this->step >= 5) {
@@ -602,7 +651,7 @@ class RatingForm extends Component
             'insuranceSubTypeId.required' => 'Bitte wähle die Versicherungsart aus.',
             'insuranceId.required' => 'Bitte wähle die Versicherung aus.',
             'regulationType.required' => 'Bitte gib an, wie der Schaden reguliert wurde.',
-            'regulationDetail.required' => 'Bitte gib Details zur Regulierung an.',
+            'regulationDetails.required' => 'Bitte gib Details zur Regulierung an.',
             'regulationComment.required' => 'Bitte gib einen Kommentar an, wenn du "Andere Gründe" ausgewählt hast.',
             'contractDetails.contract_deductible_amount.required' => 'Bitte gib deine Selbstbeteiligung an.',
             'contractDetails.claim_amount.required' => 'Bitte gib die Schadenshöhe an.',
