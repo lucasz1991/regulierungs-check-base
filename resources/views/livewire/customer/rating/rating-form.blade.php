@@ -64,7 +64,7 @@
                             <div class="max-w-lg mx-auto h-full relative">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-10
+                                        h-full overflow-y-auto form-select-scroll-container py-6
                                         [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                         [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                     "
@@ -239,7 +239,7 @@
                             <div class="relative flex-1 min-h-0">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-10
+                                        h-full overflow-y-auto form-select-scroll-container py-6
                                         [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                         [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                     "
@@ -344,7 +344,7 @@
                             <div class="relative flex-1 min-h-0">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-10
+                                        h-full overflow-y-auto form-select-scroll-container py-6
                                         [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                         [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                     "
@@ -665,7 +665,7 @@
 
     {{-- CONTENT: nur Alert + Inhalt scrollt --}}
     <div class="flex-1 min-h-0 overflow-hidden">
-        <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-10">
+        <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
             <div class="w-full max-w-3xl mx-auto">
 
                 {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
@@ -804,7 +804,7 @@
 
     {{-- CONTENT: scrollt komplett + mask --}}
     <div class="flex-1 min-h-0 overflow-hidden">
-        <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-10">
+        <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
             <div class="w-full max-w-4xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
 
