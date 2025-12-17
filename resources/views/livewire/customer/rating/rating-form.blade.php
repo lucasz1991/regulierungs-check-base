@@ -88,7 +88,7 @@
                                                             @if($type->icon_type === 'svg' && $type->icon_svg)
                                                                 {!! $type->icon_svg !!}
                                                             @elseif($type->icon_type === 'fontawesome')
-                                                                <i class="{!! $type->icon_svg !!}"></i>
+                                                                <i class="{!! $type->icon_svg !!} fa-lg"></i>
                                                             @endif
                                                         </div>
                                                     @endif
