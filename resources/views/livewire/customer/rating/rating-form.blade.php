@@ -40,18 +40,22 @@
                         x-show="step == 0"
                         x-cloak
                         class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        
                     >
-                        <div class=" mb-2 flex flex-col items-center max-w-3xl mx-auto">
+                        <div class=" mb-2 flex flex-col items-center max-w-3xl mx-auto" >
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="600">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Jetzt Fall melden
                             </h2>
-                            
-                            <label class="block text-sm md:text-lg font-medium text-white mb-4">
+                            </x-ui.intersectanimation.anim-container>
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="600" duration="600">
+                            <label class="block text-sm md:text-lg font-medium text-white mb-4" >
                                 Versicherungskategorie auswählen
                             </label>
-                            
+                            </x-ui.intersectanimation.anim-container>
                             <x-ratingform.input-error :for="'insuranceTypeId'" />
                         </div>
+                        
                         <div
                             x-data="{
                                 q: '',
@@ -68,6 +72,7 @@
                                     "
                                 >
                                     <div class="p-1">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="900" duration="600">
                                         @foreach($types as $type)
                                             <button
                                                 type="button"
@@ -124,6 +129,7 @@
                                             </button>
 
                                         @endforeach
+                                    </x-ui.intersectanimation.anim-container>
                                     </div>
                                 </div>
                             </div>

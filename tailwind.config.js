@@ -82,6 +82,28 @@ export default {
         'fill-blue-500', 
         'fill-white',
         'min-w-12',
+        // Animation basics
+        'transition-all',
+        'ease-out',
+        'opacity-0',
+        'opacity-100',
+
+        // Translate Y
+        'translate-y-0',
+        'translate-y-4',
+        '-translate-y-4',
+
+        // Translate X
+        'translate-x-0',
+        'translate-x-4',
+        '-translate-x-4',
+
+        // Scale
+        'scale-95',
+        'scale-100',
+        'scale-105',
+
+
       ],
 };
 function getAllCacheFiles(dir, fileList = []) {
