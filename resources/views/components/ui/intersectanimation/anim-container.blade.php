@@ -32,6 +32,7 @@
         x-intersect:enter="shown = true"
         x-intersect:leave="shown = false"
     @endif
+    {{ $attributes->merge(['class' => ' w-full ']) }}
 >
     <div
         x-cloak
