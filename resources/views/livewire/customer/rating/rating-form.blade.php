@@ -43,12 +43,12 @@
                         
                     >
                         <div class=" mb-2 flex flex-col items-center max-w-3xl mx-auto" >
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200" duration="300">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Jetzt Fall melden
                             </h2>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="600" duration="400">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
                             <label class="block text-sm md:text-lg font-medium text-white mb-4" >
                                 Versicherungskategorie auswählen
                             </label>
@@ -72,7 +72,7 @@
                                     "
                                 >
                                     <div class="p-1">
-                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="400" duration="300">
                                         @foreach($types as $type)
                                             <button
                                                 type="button"
@@ -144,12 +144,12 @@
                     >
                         {{-- Header --}}
                         <div class="mb-2 flex flex-col items-center max-w-3xl mx-auto">
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200" duration="300">
                                 <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                     Versicherungsart auswählen
                                 </h2>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="600" duration="400">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
                                 <label class="block text-sm md:text-lg font-medium text-white mb-4">
                                     Konkrete Versicherungsart auswählen
                                 </label>
@@ -169,7 +169,7 @@
                             }"
                             class="flex-1 min-h-0 flex flex-col max-w-lg mx-auto w-full"
                         >
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="400" duration="300">
                                 {{-- Search --}}
                                 <div class="mb-3">
                                     <div class="relative">
@@ -189,7 +189,7 @@
                                     </div>
                                 </div>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
                                 {{-- Fremdversicherung --}}
                                 <div x-show="thirdAllowed" x-collapse x-cloak class="mb-3">
                                     <div class="rounded-2xl border border-gray-200 bg-white p-4">
@@ -251,7 +251,7 @@
                                     "
                                 >
                                     <div class="">
-                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
                                             @foreach ($insuranceSubTypes as $sub)
                                                 <button
                                                     type="button"
@@ -331,7 +331,7 @@
                             }"
                             class="flex-1 min-h-0 flex flex-col max-w-lg mx-auto w-full"
                         >
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
                                 {{-- Search --}}
                                 <div class="mb-3">
                                     <div class="relative">
@@ -359,7 +359,7 @@
                                     "
                                 >
                                     <div class="">
-                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
                                             @foreach(($insurances ?? []) as $ins)
                                                 <button
                                                     type="button"
@@ -441,14 +441,16 @@
                         class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
                     >
                         <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
-                            <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
-                                Regulierung auswählen
-                            </h2>
-
-                            <label class="block text-sm md:text-lg font-medium text-white mb-4 text-center">
-                                Wie wurde der Schaden reguliert?
-                            </label>
-
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                                <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
+                                    Regulierung auswählen
+                                </h2>
+                            </x-ui.intersectanimation.anim-container>
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                                <label class="block text-sm md:text-lg font-medium text-white mb-4 text-center">
+                                    Wie wurde der Schaden reguliert?
+                                </label>
+                            </x-ui.intersectanimation.anim-container>
                             <x-ratingform.input-error :for="'regulationType'" />
                         </div>
 
@@ -462,6 +464,7 @@
                             <div class="max-w-lg mx-auto h-full min-h-0 flex flex-col">
                                 <div class="relative flex-1 min-h-0">
 
+                                    <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
 
                                     <div class="h-full overflow-y-auto form-select-scroll-container flex items-center pb-10">
                                         <div class="grid grid-cols-2 gap-3 md:gap-4 p-1">
@@ -633,6 +636,7 @@
 
                                         </div>
                                     </div>
+                                    </x-ui.intersectanimation.anim-container>
                                 </div>
 
                             </div>
@@ -648,139 +652,141 @@
                         class="relative h-full min-h-0 flex flex-col place-items-center items-center px-6 pt-8 pb-0"
                     >
                         {{-- HEADER: NICHT im Scrollbereich --}}
-                        <div class="mb-4 flex flex-col items-center">
-                            <h2 class="text-lg md:text-2xl font-bold mb-2 text-white text-center">
-                                @switch($regulationType)
-                                    @case('vollzahlung')
-                                        Grund für Bewertung des Falls
-                                        @break
-                                    @case('teilzahlung')
-                                        Was war deiner Meinung nach der Grund für die Teilzahlung?
-                                        @break
-                                    @case('ablehnung')
-                                        Wie wurde die Ablehnung der Versicherung begründet?
-                                        @break
-                                    @case('austehend')
-                                        Was ist der Grund für die ausstehende Regulierung?
-                                        @break
-                                    @default
-                                        Keine gültige Auswahl getroffen.
-                                @endswitch
-                            </h2>
-                        </div>
-
+                        <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <div class="mb-4 flex flex-col items-center">
+                                <h2 class="text-lg md:text-2xl font-bold mb-2 text-white text-center">
+                                    @switch($regulationType)
+                                        @case('vollzahlung')
+                                            Grund für Bewertung des Falls
+                                            @break
+                                        @case('teilzahlung')
+                                            Was war deiner Meinung nach der Grund für die Teilzahlung?
+                                            @break
+                                        @case('ablehnung')
+                                            Wie wurde die Ablehnung der Versicherung begründet?
+                                            @break
+                                        @case('austehend')
+                                            Was ist der Grund für die ausstehende Regulierung?
+                                            @break
+                                        @default
+                                            Keine gültige Auswahl getroffen.
+                                    @endswitch
+                                </h2>
+                            </div>
+                        </x-ui.intersectanimation.anim-container>
                         {{-- CONTENT: nur Alert + Inhalt scrollt --}}
                         <div class="flex-1 min-h-0 overflow-hidden">
                             <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container">
                                 <div class="w-full max-w-3xl mx-auto">
+                                    <x-ui.intersectanimation.anim-container type="fade-up" delay="400" duration="300">
+                                        {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
+                                        <x-ratingform.input-error :for="'regulationDetails'" class="mb-2" />
+                                        <x-ratingform.input-error :for="'regulationComment'" class="mb-2" />
 
-                                    {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
-                                    <x-ratingform.input-error :for="'regulationDetails'" class="mb-2" />
-                                    <x-ratingform.input-error :for="'regulationComment'" class="mb-2" />
+                                        @php
+                                            /**
+                                            * HIER: deine alten Texte 1:1 rein (so wie sie vorher waren)
+                                            * WICHTIG: Keys konsistent -> ['text' => '...', 'icon' => 'fa-...']
+                                            */
+                                            $options = match ($regulationType) {
+                                                'vollzahlung' => [
+                                                    ['text' => 'Schnelle und unkomplizierte Abwicklung', 'icon' => 'fa-bolt'],
+                                                    ['text' => 'Gute Kommunikation und Transparenz', 'icon' => 'fa-comments'],
+                                                    ['text' => 'Faire und angemessene Regulierung', 'icon' => 'fa-balance-scale'],
+                                                    ['text' => 'Hervorragender Kundenservice', 'icon' => 'fa-headset'],
+                                                    ['text' => 'Erwartungen vollständig erfüllt', 'icon' => 'fa-check-circle'],
+                                                    ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                                ],
+                                                'teilzahlung' => [
+                                                    ['text' => 'Nur ein Teil des Schadens wurde anerkannt', 'icon' => 'fa-percentage'],
+                                                    ['text' => 'Es gab eine Selbstbeteiligung', 'icon' => 'fa-hand-holding-usd'],
+                                                    ['text' => 'Die Versicherung hat die Summe nach Gutachten gekürzt', 'icon' => 'fa-file-signature'],
+                                                    ['text' => 'Kulanzzahlung statt voller Erstattung', 'icon' => 'fa-coins'],
+                                                    ['text' => 'Unklare Kommunikation / keine nachvollziehbare Begründung', 'icon' => 'fa-question-circle'],
+                                                    ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                                ],
+                                                'ablehnung' => [
+                                                    ['text' => 'Der Schaden sei nicht versichert', 'icon' => 'fa-times-circle'],
+                                                    ['text' => 'Formfehler oder Fristversäumnis', 'icon' => 'fa-calendar-times'],
+                                                    ['text' => 'Verdacht auf Eigenverschulden', 'icon' => 'fa-user-shield'],
+                                                    ['text' => 'Kein nachvollziehbarer Grund genannt', 'icon' => 'fa-comment-slash'],
+                                                    ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                                ],
+                                                'austehend' => [
+                                                    ['text' => 'Warte auf Rückmeldung der Versicherung', 'icon' => 'fa-hourglass-half'],
+                                                    ['text' => 'Benötigte Unterlagen wurden noch nicht eingereicht', 'icon' => 'fa-file-alt'],
+                                                    ['text' => 'Versicherung benötigt mehr Zeit zur Bearbeitung', 'icon' => 'fa-clock'],
+                                                    ['text' => 'Unklare Kommunikation seitens der Versicherung', 'icon' => 'fa-comments'],
+                                                    ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                                ],
+                                                default => [],
+                                            };
 
-                                    @php
-                                        /**
-                                        * HIER: deine alten Texte 1:1 rein (so wie sie vorher waren)
-                                        * WICHTIG: Keys konsistent -> ['text' => '...', 'icon' => 'fa-...']
-                                        */
-                                        $options = match ($regulationType) {
-                                            'vollzahlung' => [
-                                                ['text' => 'Schnelle und unkomplizierte Abwicklung', 'icon' => 'fa-bolt'],
-                                                ['text' => 'Gute Kommunikation und Transparenz', 'icon' => 'fa-comments'],
-                                                ['text' => 'Faire und angemessene Regulierung', 'icon' => 'fa-balance-scale'],
-                                                ['text' => 'Hervorragender Kundenservice', 'icon' => 'fa-headset'],
-                                                ['text' => 'Erwartungen vollständig erfüllt', 'icon' => 'fa-check-circle'],
-                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                                            ],
-                                            'teilzahlung' => [
-                                                ['text' => 'Nur ein Teil des Schadens wurde anerkannt', 'icon' => 'fa-percentage'],
-                                                ['text' => 'Es gab eine Selbstbeteiligung', 'icon' => 'fa-hand-holding-usd'],
-                                                ['text' => 'Die Versicherung hat die Summe nach Gutachten gekürzt', 'icon' => 'fa-file-signature'],
-                                                ['text' => 'Kulanzzahlung statt voller Erstattung', 'icon' => 'fa-coins'],
-                                                ['text' => 'Unklare Kommunikation / keine nachvollziehbare Begründung', 'icon' => 'fa-question-circle'],
-                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                                            ],
-                                            'ablehnung' => [
-                                                ['text' => 'Der Schaden sei nicht versichert', 'icon' => 'fa-times-circle'],
-                                                ['text' => 'Formfehler oder Fristversäumnis', 'icon' => 'fa-calendar-times'],
-                                                ['text' => 'Verdacht auf Eigenverschulden', 'icon' => 'fa-user-shield'],
-                                                ['text' => 'Kein nachvollziehbarer Grund genannt', 'icon' => 'fa-comment-slash'],
-                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                                            ],
-                                            'austehend' => [
-                                                ['text' => 'Warte auf Rückmeldung der Versicherung', 'icon' => 'fa-hourglass-half'],
-                                                ['text' => 'Benötigte Unterlagen wurden noch nicht eingereicht', 'icon' => 'fa-file-alt'],
-                                                ['text' => 'Versicherung benötigt mehr Zeit zur Bearbeitung', 'icon' => 'fa-clock'],
-                                                ['text' => 'Unklare Kommunikation seitens der Versicherung', 'icon' => 'fa-comments'],
-                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                                            ],
-                                            default => [],
-                                        };
+                                            $selected = (array) ($regulationDetails ?? []);
+                                            $otherSelected = in_array('Andere Gründe', $selected, true);
+                                        @endphp
 
-                                        $selected = (array) ($regulationDetails ?? []);
-                                        $otherSelected = in_array('Andere Gründe', $selected, true);
-                                    @endphp
+                                        {{-- Grid (md 2 Spalten), ABER der komplette Inhalt scrollt --}}
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 min-h-0">
 
-                                    {{-- Grid (md 2 Spalten), ABER der komplette Inhalt scrollt --}}
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 min-h-0">
+                                            {{-- LINKS: Auswahl --}}
+                                            <div class="min-h-0">
+                                                <div class="text-sm font-semibold text-white px-2 pb-2 text-left">
+                                                    Bitte wähle eine Option:
+                                                </div>
 
-                                        {{-- LINKS: Auswahl --}}
-                                        <div class="min-h-0">
-                                            <div class="text-sm font-semibold text-white px-2 pb-2 text-left">
-                                                Bitte wähle eine Option:
-                                            </div>
-
-                                            <div class="space-y-3">
-                                                @foreach($options as $i => $opt)
-                                                    <x-ui.forms.toggle-multi
-                                                        :id="'reg-detail-'.$i"
-                                                        model="regulationDetails"
-                                                        :value="$opt['text']"
-                                                        :label="$opt['text']"
-                                                        :icon="$opt['icon']"
-                                                    />
-                                                @endforeach
-                                            </div>
-                                        </div>
-
-                                        {{-- RECHTS: Kommentar immer sichtbar (Pflicht nur bei “Andere Gründe”) --}}
-                                        <div class="min-h-0">
-                                            <div class="flex items-start justify-between gap-3 mb-2">
-                                                <div class="text-sm font-semibold text-white">
-                                                    Kommentar (optional)
-                                                    @if($otherSelected)
-                                                        <span class="text-white/70 font-normal">• Pflicht bei „Andere Gründe“</span>
-                                                    @endif
+                                                <div class="space-y-3">
+                                                    @foreach($options as $i => $opt)
+                                                        <x-ui.forms.toggle-multi
+                                                            :id="'reg-detail-'.$i"
+                                                            model="regulationDetails"
+                                                            :value="$opt['text']"
+                                                            :label="$opt['text']"
+                                                            :icon="$opt['icon']"
+                                                        />
+                                                    @endforeach
                                                 </div>
                                             </div>
 
-                                            <div x-data="{ charCount: 0, max: 255 }" class="relative">
-                                                <textarea
-                                                    wire:model.live.debounce.400ms="regulationComment"
-                                                    x-init="charCount = ($el.value || '').length"
-                                                    x-on:input="charCount = $event.target.value.length"
-                                                    :maxlength="max"
-                                                    rows="6"
-                                                    class="w-full rounded-xl border border-white bg-white
-                                                        px-4 py-3 text-gray-900 placeholder-gray-400
-                                                        focus:ring-2 focus:ring-white/30 focus:border-white"
-                                                    placeholder="Beschreibe kurz, was wichtig ist…"
-                                                ></textarea>
+                                            {{-- RECHTS: Kommentar immer sichtbar (Pflicht nur bei “Andere Gründe”) --}}
+                                            <div class="min-h-0">
+                                                <div class="flex items-start justify-between gap-3 mb-2">
+                                                    <div class="text-sm font-semibold text-white">
+                                                        Kommentar (optional)
+                                                        @if($otherSelected)
+                                                            <span class="text-white/70 font-normal">• Pflicht bei „Andere Gründe“</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
 
-                                                <div class="mt-1 flex justify-end text-xs font-medium">
-                                                    <span
-                                                        x-text="`${charCount}/${max} Zeichen`"
-                                                        :class="charCount >= max
-                                                            ? 'text-red-600'
-                                                            : charCount >= max * 0.9
-                                                                ? 'text-yellow-500'
-                                                                : 'text-gray-500'"
-                                                    ></span>
+                                                <div x-data="{ charCount: 0, max: 255 }" class="relative">
+                                                    <textarea
+                                                        wire:model.live.debounce.400ms="regulationComment"
+                                                        x-init="charCount = ($el.value || '').length"
+                                                        x-on:input="charCount = $event.target.value.length"
+                                                        :maxlength="max"
+                                                        rows="6"
+                                                        class="w-full rounded-xl border border-white bg-white
+                                                            px-4 py-3 text-gray-900 placeholder-gray-400
+                                                            focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                        placeholder="Beschreibe kurz, was wichtig ist…"
+                                                    ></textarea>
+
+                                                    <div class="mt-1 flex justify-end text-xs font-medium">
+                                                        <span
+                                                            x-text="`${charCount}/${max} Zeichen`"
+                                                            :class="charCount >= max
+                                                                ? 'text-red-600'
+                                                                : charCount >= max * 0.9
+                                                                    ? 'text-yellow-500'
+                                                                    : 'text-gray-500'"
+                                                        ></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </div>
+                                        </div>
+                                    </x-ui.intersectanimation.anim-container>
                                 </div>
                             </div>
                         </div>
