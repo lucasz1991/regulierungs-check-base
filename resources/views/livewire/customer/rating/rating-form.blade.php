@@ -32,7 +32,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                <div class="ratingform h-[100vh] max-h-[100vh] grid grid-cols-1 items-stretch" >
+                <div class="ratingform h-[100dvh] max-h-[100dvh] grid grid-cols-1 items-stretch" >
 
 
                     {{-- Step 0: Versicherungs typ --}}
@@ -1153,7 +1153,7 @@
 
 
 
-                    <div class=" z-50 control-buttons px-2 flex items-end w-full">
+                    <div class="absolute bottom-0 left-0 right-0 z-50 control-buttons px-2 flex items-end w-full">
                         <div class="bg-white/95 backdrop-blur border-t px-4 py-4 rounded-t-3xl flex justify-center gap-4 w-full" wire:loading.class="pointer-events-none">
                             <div x-show="step > 0" x-cloak>
                                 <x-buttons.backbutton wire:click="previousStep" />
