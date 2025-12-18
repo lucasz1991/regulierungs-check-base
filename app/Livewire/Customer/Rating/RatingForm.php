@@ -214,13 +214,13 @@ class RatingForm extends Component
             $this->insuranceTypeId = $this->insuranceTypeId['value'];
         }
         $this->insuranceType = InsuranceType::find($this->insuranceTypeId);
+        $this->insuranceSubTypeId = null;
+        $this->insuranceSubTypes = [];
+        $this->insurances = [];
+        $this->insuranceId = null;
+        $this->insurance = null;
+        $this->resetDates();
         if ($this->insuranceType == null) {
-            $this->insuranceSubTypeId = null;
-            $this->insuranceSubTypes = [];
-            $this->insurances = [];
-            $this->insuranceId = null;
-            $this->insurance = null;
-            $this->resetDates();
             return;
         }else {
             $this->insuranceSubTypes = $this->insuranceType->subtypes()->get();
