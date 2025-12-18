@@ -1,55 +1,50 @@
-<div>
-      <div class="lg:grid lg:min-h-[70vh] lg:grid-cols-12">
+<div class="min-h-[80vh] container px-4 mx-auto flex items-center">
+    <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
 
-        {{-- Linke Seite mit Bild und Text --}}
-        <section class="relative flex h-32 items-center justify-end lg:col-span-5 lg:h-full xl:col-span-6">
-          <img
-            alt=""
-            src="{{ asset('site-images/startbanner-img.jpg') }}"
-            class="absolute inset-0 h-full w-full object-cover"
-          />
-          <div class="absolute inset-0 bg-blue-50 opacity-80"></div>
+        {{-- Linke Seite: Bild + Text --}}
+        <section class="relative lg:col-span-5  hidden lg:flex items-center">
 
-          <div class="hidden lg:relative lg:block lg:p-12">
-            <a class="block text-white" href="#">
-              <span class="sr-only">Home</span>
-              <div class="w-[300px]">
-                  <x-authentication-card-logo  />
+
+            <div class="relative z-10 p-12 max-w-xl md:mb-24">
+                <div class="w-56 mb-10">
+                    <x-authentication-card-logo />
                 </div>
-            </a>
-            <h2 class="mt-6 text-2xl font-bold  sm:text-3xl md:text-4xl color-primary">
-            {{ $title }}
-            </h2>
-            <p class="mt-4 text-xl font-bold leading-relaxed color-primary">
-                {{ $description }}
-            </p>
-          </div>
-        </section>
 
-        {{-- Rechte Seite mit Formular --}}
-        <main class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-          <div class="max-w-xl lg:max-w-3xl">
-            <div class="relative -mt-16 block lg:hidden">
-                <a
-                    class="inline-flex p-2 items-center justify-center rounded-full bg-white text-blue-600 sm:size-20"
-                    href="#"
-                >
-                    <span class="sr-only">Home</span>
-                    <div class="w-20">
-                    <x-authentication-card-logo  />
-                    </div>
-                </a>
-                <h1 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                {{ $title }}
-                </h1>
-    
-                <p class="mt-4 text-xl font-bold leading-relaxed color-primary">
-                {{ $description }}                
+                <h2 class="text-3xl xl:text-4xl font-semibold text-white leading-tight">
+                    {{ $title }}
+                </h2>
+
+                <p class="mt-5 text-lg text-blue-100/80 leading-relaxed">
+                    {{ $description }}
                 </p>
             </div>
+        </section>
 
-            {{ $form }}
-          </div>
+        {{-- Rechte Seite: Formular --}}
+        <main class="lg:col-span-7  flex items-center justify-center px-2 md:px-6 sm:px-10 md:py-12">
+            <div class="w-full ">
+
+                {{-- Mobile Header --}}
+                <div class="lg:hidden mb-8 text-center">
+                    <div class="mx-auto w-20 mb-4">
+                        <x-authentication-card-logo />
+                    </div>
+
+                    <h1 class="text-2xl font-semibold text-white">
+                        {{ $title }}
+                    </h1>
+
+                    <p class="mt-3 text-sm text-blue-100/80 leading-relaxed">
+                        {{ $description }}
+                    </p>
+                </div>
+
+                {{-- Formular-Card --}}
+                <div class="rounded-3xl bg-white/95 backdrop-blur border border-white/10 shadow-2xl py-4 md:py-8 px-4 md:px-6">
+                    {{ $form }}
+                </div>
+            </div>
         </main>
-      </div>
+
+    </div>
 </div>

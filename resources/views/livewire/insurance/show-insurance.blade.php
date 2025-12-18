@@ -5,8 +5,8 @@
         <div class="">
 
             {{-- Top row: Logo + Name --}}
-            <div class="flex items-start gap-4">
-                <div class="shrink-0">
+            <div class="md:flex items-start gap-4">
+                <div class="shrink-0 max-md:mb-6">
                     @if ($insurance->logo)
                         <div class="flex items-center space-x-2 relative">
                             <div class="bg-white p-2  rounded-2xl">
@@ -167,8 +167,8 @@
     </div>
 
 
- <div class="mt-12">
-        <div class="container mx-auto px-4 pt-12 py-6 ">
+ <div class="mt-6">
+        <div class="container mx-auto px-4 pt-6 py-6 ">
             @if($insurance->published_ratings_count() > 0)
                 <h2 class="flex items-center justify-center text-lg px-2 py-1 w-max mb-5">
                     <span class="w-max text-white">Bewertungen</span>
@@ -233,7 +233,7 @@
                     </x-slot>
                     <x-slot name="listContent">
                         @if($this->isFiltered)
-                            <div class="mb-4 text-sm text-gray-600">
+                            <div class="mb-4 text-sm text-white">
                                 {{ $claimRatings->total() }} Bewertungen gefunden.
                             </div>
                         @endif

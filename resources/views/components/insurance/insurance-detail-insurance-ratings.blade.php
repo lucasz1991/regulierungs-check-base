@@ -1,5 +1,5 @@
-<div class="lg:flex gap-4">
-    <div class="relative w-full lg:w-2/3">
+<div class="max-lg:flex-col flex  gap-4">
+    <div class="relative w-full lg:w-2/3 order-2 lg:order-1 lg:pr-8">
 
         <div class="prose max-w-full">
             <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
@@ -14,7 +14,7 @@
 
     </div>
 
-    <div class="bg-white/95 border border-white/10 shadow rounded-2xl w-full lg:w-1/3 p-5">
+    <div class="bg-white/95 border border-white/10 shadow rounded-2xl w-full lg:w-1/3 p-5 lg:mt-4  order-1 lg:order-2">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                 <i class="fal fa-chart-bar text-blue-600"></i>
@@ -27,17 +27,17 @@
 
         <div class="space-y-3">
             <div label="Regulations Dauer">
-                <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center flex-wrap justify-between gap-3">
                     <span class="text-sm text-gray-700 inline-flex items-center gap-2">
                         <i class="fal fa-clock text-gray-400"></i>
-                        <span>Dauer</span>
+                        <span>Dauer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </span>
                     <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'md'" />
                 </div>
             </div>
 
             <div label="Kundenservice">
-                <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center flex-wrap justify-between gap-3">
                     <span class="text-sm text-gray-700 inline-flex items-center gap-2">
                         <i class="fal fa-headset text-gray-400"></i>
                         <span>Kundenservice</span>
@@ -47,20 +47,20 @@
             </div>
 
             <div label="Fairness">
-                <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center flex-wrap justify-between gap-3">
                     <span class="text-sm text-gray-700 inline-flex items-center gap-2">
                         <i class="fal fa-balance-scale text-gray-400"></i>
-                        <span>Fairness</span>
+                        <span>Fairness&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </span>
                     <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'md'" />
                 </div>
             </div>
 
             <div label="Transparency">
-                <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center flex-wrap justify-between gap-3">
                     <span class="text-sm text-gray-700 inline-flex items-center gap-2">
                         <i class="fal fa-eye text-gray-400"></i>
-                        <span>Transparenz</span>
+                        <span>Transparenz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </span>
                     <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'md'" />
                 </div>
