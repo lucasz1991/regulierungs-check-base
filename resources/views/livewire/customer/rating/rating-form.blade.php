@@ -802,98 +802,101 @@
                         class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
                     >
                         {{-- HEADER (nicht im Scrollbereich) --}}
-                        <div class="mb-4 flex flex-col items-center max-w-3xl mx-auto text-center">
-                            <h2 class="text-lg md:text-2xl font-bold mb-2 text-white">
-                                Zusatzinfos zur Regulierung
-                            </h2>
+                        <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
+                            <div class="mb-4 flex flex-col items-center max-w-3xl mx-auto text-center">
+                                <h2 class="text-lg md:text-2xl font-bold mb-2 text-white">
+                                    Zusatzinfos zur Regulierung
+                                </h2>
 
-                            {{-- Errors ruhig hier lassen ODER im Scrollbereich – je nachdem was du willst --}}
-                            <x-ratingform.input-error :for="'contractDetails.claim_amount'" class="mb-1"/>
-                            <x-ratingform.input-error :for="'contractDetails.claim_settlement_amount'" class="mb-1"/>
-                            <x-ratingform.input-error :for="'contractDetails.contract_deductible_amount'" class="mb-1"/>
-                            <x-ratingform.input-error :for="'contractDetails.textarea_value'" class="mb-1"/>
-                        </div>
-
+                                {{-- Errors ruhig hier lassen ODER im Scrollbereich – je nachdem was du willst --}}
+                                <x-ratingform.input-error :for="'contractDetails.claim_amount'" class="mb-1"/>
+                                <x-ratingform.input-error :for="'contractDetails.claim_settlement_amount'" class="mb-1"/>
+                                <x-ratingform.input-error :for="'contractDetails.contract_deductible_amount'" class="mb-1"/>
+                                <x-ratingform.input-error :for="'contractDetails.textarea_value'" class="mb-1"/>
+                            </div>
+                        </x-ui.intersectanimation.anim-container>
                         {{-- CONTENT: scrollt komplett + mask --}}
                         <div class="flex-1 min-h-0 overflow-hidden">
                             <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
                                 <div class="w-full max-w-4xl mx-auto">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                                    <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
 
-                                        {{-- Links: Beträge --}}
-                                        <div class="space-y-6">
-                                            @if (!$thirdPartyInsurance)
+                                            {{-- Links: Beträge --}}
+                                            <div class="space-y-6">
+                                                @if (!$thirdPartyInsurance)
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
+                                                            Selbstbeteiligung €
+                                                        </label>
+                                                        <input
+                                                            x-mask:dynamic="$money($input, '.', '')"
+                                                            wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount"
+                                                            class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
+                                                                focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                            placeholder="z. B. 100"
+                                                        />
+                                                    </div>
+                                                @endif
+
                                                 <div>
                                                     <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
-                                                        Selbstbeteiligung €
+                                                        Schadenshöhe €
                                                     </label>
                                                     <input
                                                         x-mask:dynamic="$money($input, '.', '')"
-                                                        wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount"
+                                                        wire:model.live.debounce.250ms="contractDetails.claim_amount"
                                                         class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
                                                             focus:ring-2 focus:ring-white/30 focus:border-white"
-                                                        placeholder="z. B. 100"
+                                                        placeholder="z. B. 10.000"
                                                     />
                                                 </div>
-                                            @endif
 
-                                            <div>
-                                                <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
-                                                    Schadenshöhe €
-                                                </label>
-                                                <input
-                                                    x-mask:dynamic="$money($input, '.', '')"
-                                                    wire:model.live.debounce.250ms="contractDetails.claim_amount"
-                                                    class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
-                                                        focus:ring-2 focus:ring-white/30 focus:border-white"
-                                                    placeholder="z. B. 10.000"
-                                                />
+                                                @if (in_array($regulationType, ['teilzahlung','vollzahlung'], true))
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
+                                                            Regulierungshöhe €
+                                                        </label>
+                                                        <input
+                                                            x-mask:dynamic="$money($input, '.', '')"
+                                                            wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount"
+                                                            class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
+                                                                focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                            placeholder="z. B. 8.000"
+                                                        />
+                                                    </div>
+                                                @endif
                                             </div>
 
-                                            @if (in_array($regulationType, ['teilzahlung','vollzahlung'], true))
-                                                <div>
-                                                    <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
-                                                        Regulierungshöhe €
-                                                    </label>
-                                                    <input
-                                                        x-mask:dynamic="$money($input, '.', '')"
-                                                        wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount"
+                                            {{-- Rechts: Erklärung / Zusatztext --}}
+                                            <div class="space-y-3">
+                                                <div class="text-sm font-semibold text-white text-center md:text-left">
+                                                    Zusatzinfos (optional / ggf. Pflicht)
+                                                </div>
+
+                                                <div x-data="{ charCount: 0, max: 255 }">
+                                                    <textarea
+                                                        wire:model.live.debounce.500ms="contractDetails.textarea_value"
+                                                        x-init="charCount = ($el.value || '').length"
+                                                        x-on:input="charCount = $event.target.value.length"
+                                                        :maxlength="max"
+                                                        rows="8"
                                                         class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
                                                             focus:ring-2 focus:ring-white/30 focus:border-white"
-                                                        placeholder="z. B. 8.000"
-                                                    />
-                                                </div>
-                                            @endif
-                                        </div>
+                                                        placeholder="Optional: zusätzliche Informationen zum Fall…"
+                                                    ></textarea>
 
-                                        {{-- Rechts: Erklärung / Zusatztext --}}
-                                        <div class="space-y-3">
-                                            <div class="text-sm font-semibold text-white text-center md:text-left">
-                                                Zusatzinfos (optional / ggf. Pflicht)
-                                            </div>
-
-                                            <div x-data="{ charCount: 0, max: 255 }">
-                                                <textarea
-                                                    wire:model.live.debounce.500ms="contractDetails.textarea_value"
-                                                    x-init="charCount = ($el.value || '').length"
-                                                    x-on:input="charCount = $event.target.value.length"
-                                                    :maxlength="max"
-                                                    rows="8"
-                                                    class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
-                                                        focus:ring-2 focus:ring-white/30 focus:border-white"
-                                                    placeholder="Optional: zusätzliche Informationen zum Fall…"
-                                                ></textarea>
-
-                                                <div class="mt-1 flex justify-end text-xs font-medium">
-                                                    <span
-                                                        x-text="`${charCount}/${max} Zeichen`"
-                                                        :class="charCount >= max ? 'text-red-300' : (charCount >= max * 0.9 ? 'text-yellow-200' : 'text-white/70')"
-                                                    ></span>
+                                                    <div class="mt-1 flex justify-end text-xs font-medium">
+                                                        <span
+                                                            x-text="`${charCount}/${max} Zeichen`"
+                                                            :class="charCount >= max ? 'text-red-300' : (charCount >= max * 0.9 ? 'text-yellow-200' : 'text-white/70')"
+                                                        ></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </div>
+                                        </div>
+                                    </x-ui.intersectanimation.anim-container>
                                 </div>
                             </div>
                         </div>
@@ -911,31 +914,22 @@
                         class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
                     >
                         {{-- Header --}}
-                        <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
-                            <h2 class="text-lg md:text-2xl font-bold mb-4 text-white text-center">
-                                @if ($is_closed)
-                                    In welchem Zeitraum wurde der Fall bearbeitet?
-                                @else
-                                    Wann hast du den Fall gemeldet?
-                                @endif
-                            </h2>
-
-                            <x-alert class="mx-auto mb-6" role="alert">
-                                <span>
+                        <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
+                            <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
+                                <h2 class="text-lg md:text-2xl font-bold mb-4 text-white text-center">
                                     @if ($is_closed)
-                                        Wähle Start- und Enddatum der Bearbeitung.
+                                        In welchem Zeitraum wurde der Fall bearbeitet?
                                     @else
-                                        Wähle das Datum, an dem du den Fall gemeldet hast.
+                                        Wann hast du den Fall gemeldet?
                                     @endif
-                                </span>
-                            </x-alert>
-                            
-                            <x-ratingform.input-error :for="'started_at'" class="mb-1" />
-                            <x-ratingform.input-error :for="'ended_at'" />
-
-                        </div>
-
+                                </h2>
+                                <x-ratingform.input-error :for="'started_at'" class="mb-1" />
+                                <x-ratingform.input-error :for="'ended_at'" />
+                            </div>
+                        </x-ui.intersectanimation.anim-container>
                         {{-- Content --}}
+                        <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
+
                         <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
                             <div
                                 x-data="{
@@ -1029,6 +1023,7 @@
                                 </div>
                             </div>
                         </div>
+                        </x-ui.intersectanimation.anim-container>
                     </div>
 
 
@@ -1048,21 +1043,23 @@
                             class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
                         >
                             {{-- Header --}}
-                            <div class="mb-8 flex flex-col items-center max-w-3xl mx-auto text-center">
-                                <div class="text-xs md:text-sm text-white/70 mb-2">
-                                    Frage {{ $currentStep + 1 }} von {{ $totalSteps }}
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
+                                <div class="mb-8 flex flex-col items-center max-w-3xl mx-auto text-center">
+                                    <div class="text-xs md:text-sm text-white/70 mb-2">
+                                        Frage {{ $currentStep + 1 }} von {{ $totalSteps }}
+                                    </div>
+
+                                    <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
+                                        {{ $q->question_text }}
+                                    </h2>
+
+                                    @error($fieldName)
+                                        <p class="text-sm text-red-300 mt-2">{{ $message }}</p>
+                                    @enderror
                                 </div>
-
-                                <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
-                                    {{ $q->question_text }}
-                                </h2>
-
-                                @error($fieldName)
-                                    <p class="text-sm text-red-300 mt-2">{{ $message }}</p>
-                                @enderror
-                            </div>
-
+                            </x-ui.intersectanimation.anim-container>
                             {{-- Content --}}
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                             <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
 
                                 @switch($q->type)
@@ -1186,6 +1183,7 @@
                                         </p>
                                 @endswitch
                             </div>
+                            </x-ui.intersectanimation.anim-container>
                         </div>
                     @endforeach
 
