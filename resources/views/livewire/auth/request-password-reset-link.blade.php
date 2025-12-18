@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="pt-2 space-y-3">
-                    <x-buttons.button-basic mode="layoutprimary" size="lg" class="w-full justify-center">
+                    <x-buttons.button-basic mode="layoutprimary" size="lg" class="w-full justify-center" wire:click.prevent="sendResetLink">
                         Link anfordern
                     </x-buttons.button-basic>
 

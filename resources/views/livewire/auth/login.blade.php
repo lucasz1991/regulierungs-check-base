@@ -106,6 +106,7 @@
                 mode="layoutprimary"
                 size="lg"
                 class="w-full justify-center"
+                wire:click.prevent="login"
             >
                 Einloggen
             </x-buttons.button-basic>
