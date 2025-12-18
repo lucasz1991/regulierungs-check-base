@@ -64,9 +64,7 @@
                             <div class="max-w-lg mx-auto h-full relative">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-[40px]
-                                        [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
-                                        [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
+                                        h-full overflow-y-auto form-select-scroll-container  scroll-mask
                                     "
                                 >
                                     <div class="p-1">
@@ -239,9 +237,7 @@
                             <div class="relative flex-1 min-h-0">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-[40px]
-                                        [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
-                                        [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
+                                        h-full overflow-y-auto form-select-scroll-container  scroll-mask
                                     "
                                 >
                                     <div class="">
@@ -344,9 +340,7 @@
                             <div class="relative flex-1 min-h-0">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-[40px]
-                                        [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
-                                        [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
+                                        h-full overflow-y-auto form-select-scroll-container scroll-mask
                                     "
                                 >
                                     <div class="">
@@ -635,7 +629,7 @@
                     <div
                         x-show="step == 4"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        class="relative h-full min-h-0 flex flex-col place-items-center items-center px-6 pt-8 pb-0"
                     >
                         {{-- HEADER: NICHT im Scrollbereich --}}
                         <div class="mb-4 flex flex-col items-center">
@@ -661,7 +655,7 @@
 
                         {{-- CONTENT: nur Alert + Inhalt scrollt --}}
                         <div class="flex-1 min-h-0 overflow-hidden">
-                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
+                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container">
                                 <div class="w-full max-w-3xl mx-auto">
 
                                     {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
@@ -958,23 +952,50 @@
                                 class="relative"
                             >
                                 {{-- Start/End Anzeige (kleine Pills, kein Kasten) --}}
-                                <div class="flex justify-center mb-5">
-                                    <div class="inline-flex rounded-xl overflow-hidden border border-white bg-white backdrop-blur">
-                                        <button type="button" class="px-3 py-2 text-sm font-medium text-primary border-r border-gray-400" disabled>
-                                            {{ $started_at ?? 'Start' }}
-                                        </button>
-
-                                        @if ($is_closed)
-                                            <button type="button" class="px-3 py-2 text-sm font-medium text-primary" disabled>
-                                                {{ $ended_at ?? 'Ende' }}
+                                    <div 
+                                        class="flex justify-center mb-5"
+                                        x-data="{
+                                            started: @entangle('started_at').live,
+                                            ended: @entangle('ended_at').live
+                                        }"
+                                    >
+                                        <div class="inline-flex rounded-xl overflow-hidden  bg-white backdrop-blur">
+                                            <!-- Start -->
+                                            <button
+                                                type="button"
+                                                disabled
+                                                class="px-3 py-2 text-sm font-medium border-r 
+                                                    transition-colors duration-300 ease-out"
+                                                :class="started ? 'bg-rcgold text-white border-rcgold-dark' : 'bg-white text-primary border-gray-400'"
+                                            >
+                                                {{ $started_at ?? 'Start' }}
                                             </button>
-                                        @endif
+
+                                            <!-- Ende -->
+                                            @if ($is_closed)
+                                                <button
+                                                    type="button"
+                                                    disabled
+                                                    class="px-3 py-2 text-sm font-medium
+                                                        transition-colors duration-300 ease-out"
+                                                    :class="ended ? 'bg-rcgold text-white border-rcgold-dark' : 'bg-white text-primary border-gray-400'"
+                                                >
+                                                    {{ $ended_at ?? 'Ende' }}
+                                                </button>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
+
 
                                 {{-- Flatpickr --}}
                                 <div class="flex justify-center">
                                     <label class="block" wire:ignore>
+                                        <style>
+                                            .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover, .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay, .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
+                                                background: rgb(249, 176, 41);
+                                                border-color: rgb(164, 106, 0);
+                                            }
+                                        </style>
                                         <input
                                             type="text"
                                             readonly
