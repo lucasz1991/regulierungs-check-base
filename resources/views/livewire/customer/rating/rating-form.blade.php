@@ -169,25 +169,26 @@
                             }"
                             class="flex-1 min-h-0 flex flex-col max-w-lg mx-auto w-full"
                         >
-                            {{-- Search --}}
-                            <div class="mb-3">
-                                <div class="relative">
-                                    <input
-                                        type="text"
-                                        x-model="q"
-                                        placeholder="Versicherungsart suchen…"
-                                        class="w-full rounded-xl border border-white/50 bg-white/50 text-white placeholder-white/90
-                                            px-4 py-3 pr-11 outline-none focus:ring-2 focus:ring-white/30"
-                                    />
-                                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-white">
-                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                            <path d="M21 21l-4.3-4.3m1.3-5.2a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                        </svg>
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                {{-- Search --}}
+                                <div class="mb-3">
+                                    <div class="relative">
+                                        <input
+                                            type="text"
+                                            x-model="q"
+                                            placeholder="Versicherungsart suchen…"
+                                            class="w-full rounded-xl border border-white/50 bg-white/50 text-white placeholder-white/90
+                                                px-4 py-3 pr-11 outline-none focus:ring-2 focus:ring-white/30"
+                                        />
+                                        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-white">
+                                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                                                <path d="M21 21l-4.3-4.3m1.3-5.2a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            </x-ui.intersectanimation.anim-container>
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
                                 {{-- Fremdversicherung --}}
                                 <div x-show="thirdAllowed" x-collapse x-cloak class="mb-3">
