@@ -43,12 +43,12 @@
                         
                     >
                         <div class=" mb-2 flex flex-col items-center max-w-3xl mx-auto" >
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Jetzt Fall melden
                             </h2>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                             <label class="block text-sm md:text-lg font-medium text-white mb-4" >
                                 Versicherungskategorie auswählen
                             </label>
@@ -72,7 +72,7 @@
                                     "
                                 >
                                     <div class="p-1">
-                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="400" duration="300">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="300" >
                                         @foreach($types as $type)
                                             <button
                                                 type="button"
@@ -144,12 +144,12 @@
                     >
                         {{-- Header --}}
                         <div class="mb-2 flex flex-col items-center max-w-3xl mx-auto">
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="100" >
                                 <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                     Versicherungsart auswählen
                                 </h2>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200" >
                                 <label class="block text-sm md:text-lg font-medium text-white mb-4">
                                     Konkrete Versicherungsart auswählen
                                 </label>
@@ -169,7 +169,7 @@
                             }"
                             class="flex-1 min-h-0 flex flex-col max-w-lg mx-auto w-full"
                         >
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="400" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300">
                                 {{-- Search --}}
                                 <div class="mb-3">
                                     <div class="relative">
@@ -189,7 +189,7 @@
                                     </div>
                                 </div>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="400">
                                 {{-- Fremdversicherung --}}
                                 <div x-show="thirdAllowed" x-collapse x-cloak class="mb-3">
                                     <div class="rounded-2xl border border-gray-200 bg-white p-4">
@@ -251,7 +251,7 @@
                                     "
                                 >
                                     <div class="">
-                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="400" >
                                             @foreach ($insuranceSubTypes as $sub)
                                                 <button
                                                     type="button"
@@ -309,12 +309,12 @@
                     >
                         {{-- Header --}}
                         <div class="mb-2 flex flex-col items-center max-w-3xl mx-auto">
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Welche Versicherungsgesellschaft?
                             </h2>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                             <label class="block text-sm md:text-lg font-medium text-white mb-4">
                                 Gesellschaft auswählen
                             </label>
@@ -331,7 +331,7 @@
                             }"
                             class="flex-1 min-h-0 flex flex-col max-w-lg mx-auto w-full"
                         >
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300">
                                 {{-- Search --}}
                                 <div class="mb-3">
                                     <div class="relative">
@@ -359,7 +359,7 @@
                                     "
                                 >
                                     <div class="">
-                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="400">
                                             @foreach(($insurances ?? []) as $ins)
                                                 <button
                                                     type="button"
@@ -441,12 +441,12 @@
                         class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
                     >
                         <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
                                 <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                     Regulierung auswählen
                                 </h2>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                                 <label class="block text-sm md:text-lg font-medium text-white mb-4 text-center">
                                     Wie wurde der Schaden reguliert?
                                 </label>
@@ -464,7 +464,7 @@
                             <div class="max-w-lg mx-auto h-full min-h-0 flex flex-col">
                                 <div class="relative flex-1 min-h-0">
 
-                                    <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="300">
+                                    <x-ui.intersectanimation.anim-container type="fade-up" delay="300">
 
                                     <div class="h-full overflow-y-auto form-select-scroll-container flex items-center pb-10">
                                         <div class="grid grid-cols-2 gap-3 md:gap-4 p-1">
@@ -652,7 +652,7 @@
                         class="relative h-full min-h-0 flex flex-col place-items-center items-center px-6 pt-8 pb-0"
                     >
                         {{-- HEADER: NICHT im Scrollbereich --}}
-                        <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                        <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
                             <div class="mb-4 flex flex-col items-center">
                                 <h2 class="text-lg md:text-2xl font-bold mb-2 text-white text-center">
                                     @switch($regulationType)
@@ -678,7 +678,7 @@
                         <div class="flex-1 min-h-0 overflow-hidden">
                             <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container">
                                 <div class="w-full max-w-3xl mx-auto">
-                                    <x-ui.intersectanimation.anim-container type="fade-up" delay="400" duration="300">
+                                    <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                                         {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
                                         <x-ratingform.input-error :for="'regulationDetails'" class="mb-2" />
                                         <x-ratingform.input-error :for="'regulationComment'" class="mb-2" />
