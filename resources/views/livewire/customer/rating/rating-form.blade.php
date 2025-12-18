@@ -817,7 +817,7 @@
                         </x-ui.intersectanimation.anim-container>
                         {{-- CONTENT: scrollt komplett + mask --}}
                         <div class="flex-1 min-h-0 overflow-hidden">
-                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container  flex items-center">
+                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container ">
                                 <div class="w-full max-w-4xl mx-auto">
                                     <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
