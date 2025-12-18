@@ -43,12 +43,12 @@
                         
                     >
                         <div class=" mb-2 flex flex-col items-center max-w-3xl mx-auto" >
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="600">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Jetzt Fall melden
                             </h2>
                             </x-ui.intersectanimation.anim-container>
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="600" duration="600">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="600" duration="400">
                             <label class="block text-sm md:text-lg font-medium text-white mb-4" >
                                 Versicherungskategorie auswählen
                             </label>
@@ -72,7 +72,7 @@
                                     "
                                 >
                                     <div class="p-1">
-                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="900" duration="600">
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
                                         @foreach($types as $type)
                                             <button
                                                 type="button"
