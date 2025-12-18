@@ -144,14 +144,16 @@
                     >
                         {{-- Header --}}
                         <div class="mb-2 flex flex-col items-center max-w-3xl mx-auto">
-                            <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
-                                Versicherungsart auswählen
-                            </h2>
-
-                            <label class="block text-sm md:text-lg font-medium text-white mb-4">
-                                Konkrete Versicherungsart auswählen
-                            </label>
-
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
+                                <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
+                                    Versicherungsart auswählen
+                                </h2>
+                            </x-ui.intersectanimation.anim-container>
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="600" duration="400">
+                                <label class="block text-sm md:text-lg font-medium text-white mb-4">
+                                    Konkrete Versicherungsart auswählen
+                                </label>
+                            </x-ui.intersectanimation.anim-container>
                             <x-ratingform.input-error :for="'insuranceSubTypeId'" />
                         </div>
 
@@ -167,78 +169,79 @@
                             }"
                             class="flex-1 min-h-0 flex flex-col max-w-lg mx-auto w-full"
                         >
-        {{-- Search --}}
-        <div class="mb-3">
-            <div class="relative">
-                <input
-                    type="text"
-                    x-model="q"
-                    placeholder="Versicherungsart suchen…"
-                    class="w-full rounded-xl border border-white/50 bg-white/50 text-white placeholder-white/90
-                           px-4 py-3 pr-11 outline-none focus:ring-2 focus:ring-white/30"
-                />
-                <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-white">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                        <path d="M21 21l-4.3-4.3m1.3-5.2a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-                            {{-- Fremdversicherung --}}
-                            <div x-show="thirdAllowed" x-collapse x-cloak class="mb-3">
-                                <div class="rounded-2xl border border-gray-200 bg-white p-4">
-                                    <div class="flex items-center justify-between">
-                                        <div class="pr-3">
-                                            <div class="font-semibold text-sm text-gray-900">Fremdversicherung?</div>
-                                            <div class="text-xs text-gray-500">
-                                                War es ein Schaden mit Fremdversicherung?
-                                            </div>
-                                        </div>
-
-                                        <button
-                                            type="button"
-                                            class="relative inline-flex h-6 w-11 items-center rounded-full transition"
-                                            :class="thirdParty ? 'bg-rcgold' : 'bg-gray-300'"
-                                            @click="thirdParty = !thirdParty; if(!thirdParty){ hasContact = false }"
-                                        >
-                                            <span
-                                                class="inline-block h-5 w-5 transform rounded-full bg-white transition"
-                                                :class="thirdParty ? 'translate-x-5' : 'translate-x-1'"
-                                            ></span>
-                                        </button>
-                                    </div>
-
-                                    <div x-show="thirdParty" x-collapse class="mt-4">
-                                        <div class="border-t border-gray-300 pt-4">
-                                            <div class="flex items-center justify-between">
-                                                <div class="pr-3">
-                                                    <div class="font-medium text-sm text-gray-800">
-                                                        Kontakt zur Fremdversicherung vorhanden?
-                                                    </div>
-                                                    <div class="text-xs text-gray-500">
-                                                        Falls nein, werden einige Fragen ausgeblendet.
-                                                    </div>
-                                                </div>
-
-                                                <button
-                                                    type="button"
-                                                    class="relative inline-flex h-6 w-11 items-center rounded-full transition"
-                                                    :class="hasContact ? 'bg-rcgold' : 'bg-gray-300'"
-                                                    @click="hasContact = !hasContact"
-                                                >
-                                                    <span
-                                                        class="inline-block h-5 w-5 transform rounded-full bg-white transition"
-                                                        :class="hasContact ? 'translate-x-5' : 'translate-x-1'"
-                                                    ></span>
-                                                </button>
-                                            </div>
-                                        </div>
+                            {{-- Search --}}
+                            <div class="mb-3">
+                                <div class="relative">
+                                    <input
+                                        type="text"
+                                        x-model="q"
+                                        placeholder="Versicherungsart suchen…"
+                                        class="w-full rounded-xl border border-white/50 bg-white/50 text-white placeholder-white/90
+                                            px-4 py-3 pr-11 outline-none focus:ring-2 focus:ring-white/30"
+                                    />
+                                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-white">
+                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                                            <path d="M21 21l-4.3-4.3m1.3-5.2a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
                                     </div>
                                 </div>
                             </div>
 
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                {{-- Fremdversicherung --}}
+                                <div x-show="thirdAllowed" x-collapse x-cloak class="mb-3">
+                                    <div class="rounded-2xl border border-gray-200 bg-white p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="pr-3">
+                                                <div class="font-semibold text-sm text-gray-900">Fremdversicherung?</div>
+                                                <div class="text-xs text-gray-500">
+                                                    War es ein Schaden mit Fremdversicherung?
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                type="button"
+                                                class="relative inline-flex h-6 w-11 items-center rounded-full transition"
+                                                :class="thirdParty ? 'bg-rcgold' : 'bg-gray-300'"
+                                                @click="thirdParty = !thirdParty; if(!thirdParty){ hasContact = false }"
+                                            >
+                                                <span
+                                                    class="inline-block h-5 w-5 transform rounded-full bg-white transition"
+                                                    :class="thirdParty ? 'translate-x-5' : 'translate-x-1'"
+                                                ></span>
+                                            </button>
+                                        </div>
+
+                                        <div x-show="thirdParty" x-collapse class="mt-4">
+                                            <div class="border-t border-gray-300 pt-4">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="pr-3">
+                                                        <div class="font-medium text-sm text-gray-800">
+                                                            Kontakt zur Fremdversicherung vorhanden?
+                                                        </div>
+                                                        <div class="text-xs text-gray-500">
+                                                            Falls nein, werden einige Fragen ausgeblendet.
+                                                        </div>
+                                                    </div>
+
+                                                    <button
+                                                        type="button"
+                                                        class="relative inline-flex h-6 w-11 items-center rounded-full transition"
+                                                        :class="hasContact ? 'bg-rcgold' : 'bg-gray-300'"
+                                                        @click="hasContact = !hasContact"
+                                                    >
+                                                        <span
+                                                            class="inline-block h-5 w-5 transform rounded-full bg-white transition"
+                                                            :class="hasContact ? 'translate-x-5' : 'translate-x-1'"
+                                                        ></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </x-ui.intersectanimation.anim-container>
                             {{-- Scroll Liste --}}
                             <div class="relative flex-1 min-h-0">
                                 <div
@@ -247,47 +250,49 @@
                                     "
                                 >
                                     <div class="">
-                                        @foreach ($insuranceSubTypes as $sub)
-                                            <button
-                                                type="button"
-                                                @click="pick({{ $sub->id }})"
-                                                x-show="!q || '{{ \Illuminate\Support\Str::lower($sub->name) }}'.includes(q.toLowerCase().trim())"
-                                                x-cloak
-                                                class="relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
-                                                    flex items-center transition duration-200
-                                                    hover:bg-blue-200"
-                                                :class="selected == {{ $sub->id }}
-                                                    ? 'bg-rcgold-light ring-1 ring-rcgold-light'
-                                                    : 'bg-blue-100'"
-                                            >
-                                                <span class="truncate text-primary font-semibold">
-                                                    {{ $sub->name }}
-                                                </span>
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                            @foreach ($insuranceSubTypes as $sub)
+                                                <button
+                                                    type="button"
+                                                    @click="pick({{ $sub->id }})"
+                                                    x-show="!q || '{{ \Illuminate\Support\Str::lower($sub->name) }}'.includes(q.toLowerCase().trim())"
+                                                    x-cloak
+                                                    class="relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
+                                                        flex items-center transition duration-200
+                                                        hover:bg-blue-200"
+                                                    :class="selected == {{ $sub->id }}
+                                                        ? 'bg-rcgold-light ring-1 ring-rcgold-light'
+                                                        : 'bg-blue-100'"
+                                                >
+                                                    <span class="truncate text-primary font-semibold">
+                                                        {{ $sub->name }}
+                                                    </span>
 
-                                                {{-- Animated Check --}}
-                                                <div class="absolute right-4 top-1/2 -translate-y-1/2">
-                                                    <div
-                                                        x-show="selected == {{ $sub->id }}"
-                                                        x-transition:enter="transition ease-out duration-200"
-                                                        x-transition:enter-start="opacity-0 scale-75 translate-x-2"
-                                                        x-transition:enter-end="opacity-100 scale-100 translate-x-0"
-                                                        x-transition:leave="transition ease-in duration-150"
-                                                        x-transition:leave-start="opacity-100 scale-100"
-                                                        x-transition:leave-end="opacity-0 scale-75"
-                                                        class="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shadow-lg"
-                                                    >
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="h-4 w-4 text-white"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor">
-                                                            <path fill-rule="evenodd"
-                                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                                clip-rule="evenodd"/>
-                                                        </svg>
+                                                    {{-- Animated Check --}}
+                                                    <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                                                        <div
+                                                            x-show="selected == {{ $sub->id }}"
+                                                            x-transition:enter="transition ease-out duration-200"
+                                                            x-transition:enter-start="opacity-0 scale-75 translate-x-2"
+                                                            x-transition:enter-end="opacity-100 scale-100 translate-x-0"
+                                                            x-transition:leave="transition ease-in duration-150"
+                                                            x-transition:leave-start="opacity-100 scale-100"
+                                                            x-transition:leave-end="opacity-0 scale-75"
+                                                            class="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shadow-lg"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-4 w-4 text-white"
+                                                                viewBox="0 0 20 20"
+                                                                fill="currentColor">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                                    clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </button>
-                                        @endforeach
+                                                </button>
+                                            @endforeach
+                                        </x-ui.intersectanimation.anim-container>
                                     </div>
                                 </div>
                             </div>
@@ -303,14 +308,16 @@
                     >
                         {{-- Header --}}
                         <div class="mb-2 flex flex-col items-center max-w-3xl mx-auto">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Welche Versicherungsgesellschaft?
                             </h2>
-
+                            </x-ui.intersectanimation.anim-container>
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="300" duration="300">
                             <label class="block text-sm md:text-lg font-medium text-white mb-4">
                                 Gesellschaft auswählen
                             </label>
-
+                            </x-ui.intersectanimation.anim-container>
                             <x-ratingform.input-error :for="'insuranceId'" />
                         </div>
 
@@ -323,25 +330,26 @@
                             }"
                             class="flex-1 min-h-0 flex flex-col max-w-lg mx-auto w-full"
                         >
-                            {{-- Search --}}
-                            <div class="mb-3">
-                                <div class="relative">
-                                    <input
-                                        type="text"
-                                        x-model="q"
-                                        placeholder="Versicherung suchen…"
-                                        class="w-full rounded-xl border border-white/50 bg-white/50 text-white placeholder-white/90
-                                            px-4 py-3 pr-11 outline-none focus:ring-2 focus:ring-white/30"
-                                    />
-                                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-white">
-                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                            <path d="M21 21l-4.3-4.3m1.3-5.2a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                        </svg>
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                {{-- Search --}}
+                                <div class="mb-3">
+                                    <div class="relative">
+                                        <input
+                                            type="text"
+                                            x-model="q"
+                                            placeholder="Versicherung suchen…"
+                                            class="w-full rounded-xl border border-white/50 bg-white/50 text-white placeholder-white/90
+                                                px-4 py-3 pr-11 outline-none focus:ring-2 focus:ring-white/30"
+                                        />
+                                        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-white">
+                                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                                                <path d="M21 21l-4.3-4.3m1.3-5.2a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            </x-ui.intersectanimation.anim-container>
                             {{-- Scroll Liste mit Mask (blendet Cards in BG-Verlauf aus) --}}
                             <div class="relative flex-1 min-h-0">
                                 <div
@@ -350,66 +358,67 @@
                                     "
                                 >
                                     <div class="">
-                                        @foreach(($insurances ?? []) as $ins)
-                                            <button
-                                                type="button"
-                                                @click="pick({{ $ins->id }})"
-                                                x-show="!q || '{{ \Illuminate\Support\Str::lower($ins->name) }}'.includes(q.toLowerCase().trim())"
-                                                x-cloak
-                                                class="relative w-full text-left px-2 md:px-3 py-2 md:py-4 rounded-xl mb-2 md:mb-4
-                                                    flex items-center gap-3 transition duration-200 hover:bg-blue-200"
-                                                :class="selected == {{ $ins->id }}
-                                                    ? 'bg-rcgold-light ring-1 ring-rcgold-light'
-                                                    : 'bg-blue-100'"
-                                            >
-                                                {{-- Logo --}}
-                                                <div class="w-16 h-10 shrink-0 flex items-center bg-white rounded px-2 py-0.5 justify-center  overflow-hidden">
-                                                    @if(!empty($ins->logo))
-                                                        <img
-                                                            src="{{ asset('storage/' . $ins->logo) }}"
-                                                            class="w-full h-full object-contain object-center"
-                                                            loading="lazy"
-                                                            alt="{{ $ins->name }}"
-                                                        >
-                                                    @else
-                                                        <div class="text-xs font-semibold text-primary px-2">
-                                                            {{ strtoupper(substr($ins->initials ?? $ins->name, 0, 3)) }}
+                                        <x-ui.intersectanimation.anim-container type="fade-up" delay="500" duration="600">
+                                            @foreach(($insurances ?? []) as $ins)
+                                                <button
+                                                    type="button"
+                                                    @click="pick({{ $ins->id }})"
+                                                    x-show="!q || '{{ \Illuminate\Support\Str::lower($ins->name) }}'.includes(q.toLowerCase().trim())"
+                                                    x-cloak
+                                                    class="relative w-full text-left px-2 md:px-3 py-2 md:py-4 rounded-xl mb-2 md:mb-4
+                                                        flex items-center gap-3 transition duration-200 hover:bg-blue-200"
+                                                    :class="selected == {{ $ins->id }}
+                                                        ? 'bg-rcgold-light ring-1 ring-rcgold-light'
+                                                        : 'bg-blue-100'"
+                                                >
+                                                    {{-- Logo --}}
+                                                    <div class="w-16 h-10 shrink-0 flex items-center bg-white rounded px-2 py-0.5 justify-center  overflow-hidden">
+                                                        @if(!empty($ins->logo))
+                                                            <img
+                                                                src="{{ asset('storage/' . $ins->logo) }}"
+                                                                class="w-full h-full object-contain object-center"
+                                                                loading="lazy"
+                                                                alt="{{ $ins->name }}"
+                                                            >
+                                                        @else
+                                                            <div class="text-xs font-semibold text-primary px-2">
+                                                                {{ strtoupper(substr($ins->initials ?? $ins->name, 0, 3)) }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    {{-- Name --}}
+                                                    <div class="min-w-0 flex-1">
+                                                        <div class="truncate text-primary font-semibold">
+                                                            {{ $ins->name }}
                                                         </div>
-                                                    @endif
-                                                </div>
-
-                                                {{-- Name --}}
-                                                <div class="min-w-0 flex-1">
-                                                    <div class="truncate text-primary font-semibold">
-                                                        {{ $ins->name }}
                                                     </div>
-                                                </div>
 
-                                                {{-- Animated Check (identisch zu Step 1) --}}
-                                                <div class="absolute right-4 top-1/2 -translate-y-1/2">
-                                                    <div
-                                                        x-show="selected == {{ $ins->id }}"
-                                                        x-transition:enter="transition ease-out duration-200"
-                                                        x-transition:enter-start="opacity-0 scale-75 translate-x-2"
-                                                        x-transition:enter-end="opacity-100 scale-100 translate-x-0"
-                                                        x-transition:leave="transition ease-in duration-150"
-                                                        x-transition:leave-start="opacity-100 scale-100"
-                                                        x-transition:leave-end="opacity-0 scale-75"
-                                                        class="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shadow-lg"
-                                                    >
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="h-4 w-4 text-white"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor">
-                                                            <path fill-rule="evenodd"
-                                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                                clip-rule="evenodd"/>
-                                                        </svg>
+                                                    {{-- Animated Check (identisch zu Step 1) --}}
+                                                    <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                                                        <div
+                                                            x-show="selected == {{ $ins->id }}"
+                                                            x-transition:enter="transition ease-out duration-200"
+                                                            x-transition:enter-start="opacity-0 scale-75 translate-x-2"
+                                                            x-transition:enter-end="opacity-100 scale-100 translate-x-0"
+                                                            x-transition:leave="transition ease-in duration-150"
+                                                            x-transition:leave-start="opacity-100 scale-100"
+                                                            x-transition:leave-end="opacity-0 scale-75"
+                                                            class="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shadow-lg"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-4 w-4 text-white"
+                                                                viewBox="0 0 20 20"
+                                                                fill="currentColor">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                                    clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </button>
-                                        @endforeach
-
+                                                </button>
+                                            @endforeach
+                                        </x-ui.intersectanimation.anim-container>
                                         {{-- Optional: Keine Treffer --}}
                                         <div
                                             x-show="q && $el.querySelectorAll('button').length === 0"
