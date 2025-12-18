@@ -1,45 +1,177 @@
-<div>
-    <div class="container mx-auto px-4 pt-12 py-6">
+<div class="min-h-screen ">
+
+    {{-- HERO / ÜBERBLICK --}}
+    <div class="container mx-auto px-4 pb-8">
         <div class="">
-            <div class="flex items-center mb-4">
-                <div class="shrink-0 py-2 transition-all duration-200 flex ">
+
+            {{-- Top row: Logo + Name --}}
+            <div class="flex items-start gap-4">
+                <div class="shrink-0">
                     @if ($insurance->logo)
-                    <div class="flex items-center space-x-1 relative">
-                        <!-- Logo -->
-                        <img src="{{ asset('storage/' . $insurance->logo) }}"
-                            alt="Logo Versicherungs Anbieter"
-                            class=" h-8 mx-auto object-contain rounded">
-                        <!-- Info-Icon -->
-                        <x-insurance.insurance-logo-disclaim />
-                    </div>
+                        <div class="flex items-center space-x-2 relative">
+                            <div class="bg-white p-2  rounded-2xl">
+                                <img src="{{ asset('storage/' . $insurance->logo) }}"
+                                     alt="Logo Versicherungs Anbieter"
+                                     class="h-10 md:h-12 object-contain" loading="lazy">
+                            </div>
+                            <x-insurance.insurance-logo-disclaim />
+                        </div>
                     @else
-                        <div class=" w-min rounded flex items-center justify-center text-sm border px-1 font-medium shadow-sm" style="background-color: {{ $insurance->style['bg_color'] ?? '#eee' }}; color: {{ $insurance->style['font_color'] ?? '#333' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
-                            {{ strtoupper(substr( $insurance->initials, 0 ,8)) }}
+                        <div class="w-min rounded-lg flex items-center justify-center text-sm border px-2 py-1 font-semibold shadow-sm"
+                             style="background-color: {{ $insurance->style['bg_color'] ?? '#eee' }}; color: {{ $insurance->style['font_color'] ?? '#333' }}; border-color: {{ $insurance->style['border_color'] ?? '#ccc' }};">
+                            {{ strtoupper(substr($insurance->initials, 0, 8)) }}
                         </div>
                     @endif
                 </div>
-            </div>
-            <p class="text-gray-600 mb-4">{{ $insurance->description }}</p>
-            @if($insurance->detailInsuranceRatings()->count() > 0)
-                <x-insurance.insurance-detail-insurance-ratings :detailInsuranceRating="$insurance->latestDetailInsuranceRating"  :insurance="$insurance" />
-            @else
-                <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg flex items-start gap-3">
-                    <svg class="w-6 h-6 mt-1 flex-none text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
-                    </svg>
-                    <div>
-                        <h3 class="font-semibold text-base mb-1">Noch keine detaillierte Auswertung</h3>
-                        <p class="text-sm">Für diese Versicherung liegen aktuell noch keine ausreichend bewerteten Fälle vor. Sobald erste Bewertungen eingegangen sind, wird hier eine Auswertung angezeigt.</p>
-                    </div>
+
+                <div class="min-w-0">
+                    <h1 class="text-2xl md:text-4xl font-semibold text-white leading-tight">
+                        {{ $insurance->name ?? 'Versicherung' }}
+                    </h1>
+                    <p class="mt-2 text-sm md:text-base text-white">
+                        {{ $insurance->description }}
+                    </p>
                 </div>
-            @endif
+            </div>
+
+@php
+    // Werte vorbereiten (robust)
+    $days = (int) round($insurance->avgRatingDurationBySubtype());
+    $scoreRaw = $insurance->latestDetailInsuranceRating->total_score ?? null;
+    $score5 = $scoreRaw !== null ? round($scoreRaw * 5, 1) : null;
+
+    $count = (int) ($insurance->published_ratings_count() ?? 0);
+
+    // Kreis-Füllstände (0..100)
+    // 1) Dauer: je weniger Tage, desto besser (hier grob: 0 Tage => 100%, 120+ Tage => 0%)
+    $daysCap = 120;
+    $daysPct = max(0, min(100, (int) round((1 - min($days, $daysCap) / $daysCap) * 100)));
+
+    // 2) Score: 0..5 => 0..100
+    $scorePct = $score5 !== null ? (int) round(($score5 / 5) * 100) : 0;
+
+    // 3) Bewertungen: Sättigung (z.B. 200 Bewertungen => 100%)
+    $countCap = 200;
+    $countPct = max(0, min(100, (int) round(min($count, $countCap) / $countCap * 100)));
+@endphp
+
+<div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+    {{-- KPI 1: Ø Bearbeitungsdauer --}}
+    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-5">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <p class="text-sm text-gray-700 white flex items-center gap-2">
+                    <i class="fal fa-clock  text-primary fa-2x"></i>
+                    <span>Ø Bearbeitungsdauer</span>
+                </p>
+            </div>
+
+            {{-- Kreis --}}
+            <div class="relative w-20 h-20 shrink-0">
+                <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                <div
+                    class="absolute inset-0 rounded-full"
+                    style="background: conic-gradient(#2563eb {{ $daysPct }}%, #e5e7eb 0);"
+                ></div>
+                <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center text-center">
+                    <div class="text-lg font-semibold text-gray-900 leading-none">{{ $days }}</div>
+                    <div class="text-[10px] text-gray-500 leading-none mt-1">Tage</div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="mt-12 bg-gray-50">
+
+    {{-- KPI 2: Gesamtbewertung --}}
+    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-5">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <p class="text-sm text-gray-700 flex items-center gap-2">
+                    <i class="fal fa-star text-primary fa-2x"></i>
+                    <span>Gesamtbewertung</span>
+                </p>
+            </div>
+
+            {{-- Kreis --}}
+            <div class="relative w-20 h-20 shrink-0">
+                <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                <div
+                    class="absolute inset-0 rounded-full"
+                    style="background: conic-gradient(#f59e0b {{ $scorePct }}%, #e5e7eb 0);"
+                ></div>
+                <div class="absolute inset-[6px] rounded-full bg-white flex  items-center justify-center text-center">
+                    <div class="text-lg font-semibold text-gray-900 leading-none">
+                        {{ $score5 !== null ? number_format($score5, 1, ',', '.') : '–' }}
+                    </div>
+                    <div class="text-[10px] text-gray-500 leading-none mt-1">/ 5</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- KPI 3: Bewertungen --}}
+    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-5">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <p class="text-sm text-gray-700 flex items-center gap-2">
+                    <i class="fal fa-comments  text-primary fa-2x"></i>
+                    <span>Bewertungen</span>
+                </p>
+            </div>
+
+            {{-- Kreis --}}
+            <div class="relative w-20 h-20 shrink-0">
+                <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                <div
+                    class="absolute inset-0 rounded-full"
+                    style="background: conic-gradient(#10b981 {{ $countPct }}%, #e5e7eb 0);"
+                ></div>
+                <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center text-center">
+                    <div class="text-lg font-semibold text-gray-900 leading-none">{{ $count }}</div>
+                    <div class="text-[10px] text-gray-500 leading-none mt-1">gesamt</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+            {{-- DASHBOARD: Auswertung in Cards (hell) --}}
+            <div class="mt-6">
+                @if($insurance->detailInsuranceRatings()->count() > 0)
+                    <div class="">
+                        {{-- große Card links (2/3) --}}
+                        <div class="lg:col-span-2 rounded-2xl bg-white/80 border border-white/30 shadow p-5">
+                            <x-insurance.insurance-detail-insurance-ratings
+                                :detailInsuranceRating="$insurance->latestDetailInsuranceRating"
+                                :insurance="$insurance"
+                            />
+                        </div>
+                    </div>
+                @else
+                    <div class="rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-100 p-5 flex items-start gap-3">
+                        <i class="fal fa-exclamation-triangle text-amber-300 mt-0.5"></i>
+                        <div>
+                            <h3 class="font-semibold text-base mb-1">Noch keine detaillierte Auswertung</h3>
+                            <p class="text-sm text-blue-100/80">
+                                Für diese Versicherung liegen aktuell noch keine ausreichend bewerteten Fälle vor.
+                                Sobald erste Bewertungen eingegangen sind, wird hier eine Auswertung angezeigt.
+                            </p>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+        </div>
+    </div>
+
+
+ <div class="mt-12">
         <div class="container mx-auto px-4 pt-12 py-6 ">
             @if($insurance->published_ratings_count() > 0)
                 <h2 class="flex items-center justify-center text-lg px-2 py-1 w-max mb-5">
-                    <span class="w-max">Bewertungen</span>
+                    <span class="w-max text-white">Bewertungen</span>
                     <span class="ml-2 bg-white text-sky-600 text-xs shadow border border-sky-200 font-bold aspect-square px-2 py-1 flex items-center justify-center rounded-full h-7 leading-none">
                         {{ $insurance->published_ratings_count() }}
                     </span>
@@ -122,4 +254,5 @@
             @endif
         </div>
     </div>
+
 </div>
