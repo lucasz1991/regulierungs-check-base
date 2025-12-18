@@ -462,7 +462,7 @@
                             class="flex-1 min-h-0"
                         >
                             <div class="max-w-lg mx-auto h-full min-h-0 flex flex-col">
-                                <div class="relative flex-1 min-h-0">
+                                <div class="relative flex-1 min-h-0  flex items-end">
 
                                     <x-ui.intersectanimation.anim-container type="fade-up" delay="300">
 
@@ -675,8 +675,8 @@
                             </div>
                         </x-ui.intersectanimation.anim-container>
                         {{-- CONTENT: nur Alert + Inhalt scrollt --}}
-                        <div class="flex-1 min-h-0 overflow-hidden">
-                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container">
+                        <div class="flex-1 min-h-0 overflow-hidden ">
+                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container flex items-center">
                                 <div class="w-full max-w-3xl mx-auto">
                                     <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                                         {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
@@ -817,7 +817,7 @@
                         </x-ui.intersectanimation.anim-container>
                         {{-- CONTENT: scrollt komplett + mask --}}
                         <div class="flex-1 min-h-0 overflow-hidden">
-                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
+                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container  flex items-center">
                                 <div class="w-full max-w-4xl mx-auto">
                                     <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
@@ -906,125 +906,123 @@
 
 
 
+{{-- Step 6: Zeitraum (zentriert wie Step 0) --}}
+<div
+    x-show="step == 6"
+    x-cloak
+    class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+>
+    {{-- Header --}}
+    <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
+        <div class="mb-6 flex flex-col items-center max-w-3xl mx-auto">
+            <h2 class="text-lg md:text-2xl font-bold mb-4 text-white text-center">
+                @if ($is_closed)
+                    In welchem Zeitraum wurde der Fall bearbeitet?
+                @else
+                    Wann hast du den Fall gemeldet?
+                @endif
+            </h2>
+            <x-ratingform.input-error :for="'started_at'" class="mb-1" />
+            <x-ratingform.input-error :for="'ended_at'" />
+        </div>
+    </x-ui.intersectanimation.anim-container>
 
-                    {{-- Step 6: Zeitraum (ohne Hintergrundkasten) --}}
-                    <div
-                        x-show="step == 6"
-                        x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
-                    >
-                        {{-- Header --}}
-                        <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
-                            <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
-                                <h2 class="text-lg md:text-2xl font-bold mb-4 text-white text-center">
-                                    @if ($is_closed)
-                                        In welchem Zeitraum wurde der Fall bearbeitet?
-                                    @else
-                                        Wann hast du den Fall gemeldet?
-                                    @endif
-                                </h2>
-                                <x-ratingform.input-error :for="'started_at'" class="mb-1" />
-                                <x-ratingform.input-error :for="'ended_at'" />
-                            </div>
-                        </x-ui.intersectanimation.anim-container>
-                        {{-- Content --}}
-                        <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
+    {{-- Content (nimmt restliche Höhe ein) --}}
+    <div class="flex-1 min-h-0 flex items-center justify-center">
+        <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
 
-                        <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
-                            <div
-                                x-data="{
-                                    selectedDates: @entangle('selectedDates').live,
-                                    isClosed: @entangle('is_closed').live,
-                                    fp: null,
+            <div
+                class="h-full flex items-center justify-center"
+            >
+                <div
+                    x-data="{
+                        selectedDates: @entangle('selectedDates').live,
+                        isClosed: @entangle('is_closed').live,
+                        fp: null,
 
-                                    initPicker() {
-                                        const mode = this.isClosed ? 'range' : 'single';
+                        initPicker() {
+                            const mode = this.isClosed ? 'range' : 'single';
+                            if (this.fp) this.fp.destroy();
 
-                                        if (this.fp) { this.fp.destroy(); this.fp = null; }
-
-                                        this.fp = flatpickr(this.$refs.dates, {
-                                            dateFormat: 'd.m.Y',
-                                            defaultDate: this.selectedDates || null,
-                                            locale: 'de',
-                                            inline: true,
-                                            allowInput: false,
-                                            mode: mode,
-
-                                            onChange: (dates, dateStr) => { this.selectedDates = dateStr; },
-
-                                            onReady: (dates, dateStr, instance) => {
-                                                if (!this.selectedDates) {
-                                                    const targetDate = new Date();
-                                                    targetDate.setMonth(targetDate.getMonth() - 6);
-                                                    instance.changeMonth(targetDate.getMonth(), false);
-                                                    instance.changeYear(targetDate.getFullYear());
-                                                }
-                                            }
-                                        });
+                            this.fp = flatpickr(this.$refs.dates, {
+                                dateFormat: 'd.m.Y',
+                                defaultDate: this.selectedDates || null,
+                                locale: 'de',
+                                inline: true,
+                                allowInput: false,
+                                mode,
+                                onChange: (dates, dateStr) => this.selectedDates = dateStr,
+                                onReady: (dates, dateStr, instance) => {
+                                    if (!this.selectedDates) {
+                                        const d = new Date();
+                                        d.setMonth(d.getMonth() - 6);
+                                        instance.changeMonth(d.getMonth(), false);
+                                        instance.changeYear(d.getFullYear());
                                     }
-                                }"
-                                x-init="$nextTick(() => initPicker())"
-                                x-effect="initPicker()"
-                                class="relative"
+                                }
+                            });
+                        }
+                    }"
+                    x-init="$nextTick(() => initPicker())"
+                    x-effect="initPicker()"
+                    class="w-full max-w-3xl"
+                >
+
+                    {{-- Start / Ende Pills --}}
+                    <div
+                        class="flex justify-center mb-5"
+                        x-data="{
+                            started: @entangle('started_at').live,
+                            ended: @entangle('ended_at').live
+                        }"
+                    >
+                        <div class="inline-flex rounded-xl overflow-hidden bg-white">
+                            <button
+                                type="button"
+                                disabled
+                                class="px-3 py-2 text-sm font-medium border-r transition-colors duration-300"
+                                :class="started
+                                    ? 'bg-rcgold text-white border-rcgold-dark'
+                                    : 'bg-white text-primary border-gray-300'"
                             >
-                                {{-- Start/End Anzeige (kleine Pills, kein Kasten) --}}
-                                    <div 
-                                        class="flex justify-center mb-5"
-                                        x-data="{
-                                            started: @entangle('started_at').live,
-                                            ended: @entangle('ended_at').live
-                                        }"
-                                    >
-                                        <div class="inline-flex rounded-xl overflow-hidden  bg-white backdrop-blur">
-                                            <!-- Start -->
-                                            <button
-                                                type="button"
-                                                disabled
-                                                class="px-3 py-2 text-sm font-medium border-r 
-                                                    transition-colors duration-300 ease-out"
-                                                :class="started ? 'bg-rcgold text-white border-rcgold-dark' : 'bg-white text-primary border-gray-400'"
-                                            >
-                                                {{ $started_at ?? 'Start' }}
-                                            </button>
+                                {{ $started_at ?? 'Start' }}
+                            </button>
 
-                                            <!-- Ende -->
-                                            @if ($is_closed)
-                                                <button
-                                                    type="button"
-                                                    disabled
-                                                    class="px-3 py-2 text-sm font-medium
-                                                        transition-colors duration-300 ease-out"
-                                                    :class="ended ? 'bg-rcgold text-white border-rcgold-dark' : 'bg-white text-primary border-gray-400'"
-                                                >
-                                                    {{ $ended_at ?? 'Ende' }}
-                                                </button>
-                                            @endif
-                                        </div>
-                                    </div>
-
-
-                                {{-- Flatpickr --}}
-                                <div class="flex justify-center">
-                                    <label class="block" wire:ignore>
-                                        <style>
-                                            .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover, .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay, .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
-                                                background: rgb(249, 176, 41);
-                                                border-color: rgb(164, 106, 0);
-                                            }
-                                        </style>
-                                        <input
-                                            type="text"
-                                            readonly
-                                            x-ref="dates"
-                                            wire:model.live="selectedDates"
-                                            class="hidden"
-                                        />
-                                    </label>
-                                </div>
-                            </div>
+                            @if ($is_closed)
+                                <button
+                                    type="button"
+                                    disabled
+                                    class="px-3 py-2 text-sm font-medium transition-colors duration-300"
+                                    :class="ended
+                                        ? 'bg-rcgold text-white border-rcgold-dark'
+                                        : 'bg-white text-primary border-gray-300'"
+                                >
+                                    {{ $ended_at ?? 'Ende' }}
+                                </button>
+                            @endif
                         </div>
-                        </x-ui.intersectanimation.anim-container>
                     </div>
+
+                    {{-- Flatpickr --}}
+                    <div class="flex justify-center">
+                        <label wire:ignore>
+                            <input
+                                type="text"
+                                readonly
+                                x-ref="dates"
+                                wire:model.live="selectedDates"
+                                class="hidden"
+                            />
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+        </x-ui.intersectanimation.anim-container>
+    </div>
+</div>
+
 
 
 
@@ -1060,7 +1058,7 @@
                             </x-ui.intersectanimation.anim-container>
                             {{-- Content --}}
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
-                            <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
+                            <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto flex items-center">
 
                                 @switch($q->type)
 
@@ -1101,7 +1099,7 @@
 
                                     {{-- BOOLEAN --}}
                                     @case('boolean')
-                                        <div class="flex justify-center">
+                                        <div class="flex items-center justify-center">
                                             <div class="inline-flex rounded-2xl overflow-hidden border border-white/20 bg-white">
                                                 <div>
                                                     <input
@@ -1142,7 +1140,7 @@
 
                                     {{-- RATING --}}
                                     @case('rating')
-                                        <div class="flex justify-center">
+                                        <div class="flex items-center justify-center">
                                             <div
                                                 class="flex space-x-1 rating-group"
                                                 x-data="{ hovered: 0 }"
@@ -1190,7 +1188,7 @@
 
 
 
-                    <div class=" z-50 control-buttons px-2 flex items-end w-full">
+                    <div class="sticky bottom-0 z-50 flex-none shrink-0 grow-0 px-2 min-h-0 flex items-end">
                         <div class="bg-white/95 backdrop-blur border-t px-4 py-4 rounded-t-3xl flex justify-center gap-4 w-full" wire:loading.class="pointer-events-none">
                             <div x-show="step > 0" x-cloak>
                                 <x-buttons.backbutton wire:click="previousStep" />
