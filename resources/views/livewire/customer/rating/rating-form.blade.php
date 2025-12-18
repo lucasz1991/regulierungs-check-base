@@ -635,525 +635,525 @@
 
 
 
-{{-- Step 4: Regulierung Details + Kommentar (Header fix, Inhalt scroll + mask) --}}
-<div
-    x-show="step == 4"
-    x-cloak
-    class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
->
-    {{-- HEADER: NICHT im Scrollbereich --}}
-    <div class="mb-4 flex flex-col items-center">
-        <h2 class="text-lg md:text-2xl font-bold mb-2 text-white text-center">
-            @switch($regulationType)
-                @case('vollzahlung')
-                    Grund für Bewertung des Falls
-                    @break
-                @case('teilzahlung')
-                    Was war deiner Meinung nach der Grund für die Teilzahlung?
-                    @break
-                @case('ablehnung')
-                    Wie wurde die Ablehnung der Versicherung begründet?
-                    @break
-                @case('austehend')
-                    Was ist der Grund für die ausstehende Regulierung?
-                    @break
-                @default
-                    Keine gültige Auswahl getroffen.
-            @endswitch
-        </h2>
-    </div>
-
-    {{-- CONTENT: nur Alert + Inhalt scrollt --}}
-    <div class="flex-1 min-h-0 overflow-hidden">
-        <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
-            <div class="w-full max-w-3xl mx-auto">
-
-                {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
-                <x-ratingform.input-error :for="'regulationDetails'" class="mb-2" />
-                <x-ratingform.input-error :for="'regulationComment'" class="mb-2" />
-
-                @php
-                    /**
-                     * HIER: deine alten Texte 1:1 rein (so wie sie vorher waren)
-                     * WICHTIG: Keys konsistent -> ['text' => '...', 'icon' => 'fa-...']
-                     */
-                    $options = match ($regulationType) {
-                        'vollzahlung' => [
-                            ['text' => 'Schnelle und unkomplizierte Abwicklung', 'icon' => 'fa-bolt'],
-                            ['text' => 'Gute Kommunikation und Transparenz', 'icon' => 'fa-comments'],
-                            ['text' => 'Faire und angemessene Regulierung', 'icon' => 'fa-balance-scale'],
-                            ['text' => 'Hervorragender Kundenservice', 'icon' => 'fa-headset'],
-                            ['text' => 'Erwartungen vollständig erfüllt', 'icon' => 'fa-check-circle'],
-                            ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                        ],
-                        'teilzahlung' => [
-                            ['text' => 'Nur ein Teil des Schadens wurde anerkannt', 'icon' => 'fa-percentage'],
-                            ['text' => 'Es gab eine Selbstbeteiligung', 'icon' => 'fa-hand-holding-usd'],
-                            ['text' => 'Die Versicherung hat die Summe nach Gutachten gekürzt', 'icon' => 'fa-file-signature'],
-                            ['text' => 'Kulanzzahlung statt voller Erstattung', 'icon' => 'fa-coins'],
-                            ['text' => 'Unklare Kommunikation / keine nachvollziehbare Begründung', 'icon' => 'fa-question-circle'],
-                            ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                        ],
-                        'ablehnung' => [
-                            ['text' => 'Der Schaden sei nicht versichert', 'icon' => 'fa-times-circle'],
-                            ['text' => 'Formfehler oder Fristversäumnis', 'icon' => 'fa-calendar-times'],
-                            ['text' => 'Verdacht auf Eigenverschulden', 'icon' => 'fa-user-shield'],
-                            ['text' => 'Kein nachvollziehbarer Grund genannt', 'icon' => 'fa-comment-slash'],
-                            ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                        ],
-                        'austehend' => [
-                            ['text' => 'Warte auf Rückmeldung der Versicherung', 'icon' => 'fa-hourglass-half'],
-                            ['text' => 'Benötigte Unterlagen wurden noch nicht eingereicht', 'icon' => 'fa-file-alt'],
-                            ['text' => 'Versicherung benötigt mehr Zeit zur Bearbeitung', 'icon' => 'fa-clock'],
-                            ['text' => 'Unklare Kommunikation seitens der Versicherung', 'icon' => 'fa-comments'],
-                            ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
-                        ],
-                        default => [],
-                    };
-
-                    $selected = (array) ($regulationDetails ?? []);
-                    $otherSelected = in_array('Andere Gründe', $selected, true);
-                @endphp
-
-                {{-- Grid (md 2 Spalten), ABER der komplette Inhalt scrollt --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 min-h-0">
-
-                    {{-- LINKS: Auswahl --}}
-                    <div class="min-h-0">
-                        <div class="text-sm font-semibold text-white px-2 pb-2 text-left">
-                            Bitte wähle eine Option:
+                    {{-- Step 4: Regulierung Details + Kommentar (Header fix, Inhalt scroll + mask) --}}
+                    <div
+                        x-show="step == 4"
+                        x-cloak
+                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                    >
+                        {{-- HEADER: NICHT im Scrollbereich --}}
+                        <div class="mb-4 flex flex-col items-center">
+                            <h2 class="text-lg md:text-2xl font-bold mb-2 text-white text-center">
+                                @switch($regulationType)
+                                    @case('vollzahlung')
+                                        Grund für Bewertung des Falls
+                                        @break
+                                    @case('teilzahlung')
+                                        Was war deiner Meinung nach der Grund für die Teilzahlung?
+                                        @break
+                                    @case('ablehnung')
+                                        Wie wurde die Ablehnung der Versicherung begründet?
+                                        @break
+                                    @case('austehend')
+                                        Was ist der Grund für die ausstehende Regulierung?
+                                        @break
+                                    @default
+                                        Keine gültige Auswahl getroffen.
+                                @endswitch
+                            </h2>
                         </div>
 
-                        <div class="space-y-3">
-                            @foreach($options as $i => $opt)
-                                <x-ui.forms.toggle-multi
-                                    :id="'reg-detail-'.$i"
-                                    model="regulationDetails"
-                                    :value="$opt['text']"
-                                    :label="$opt['text']"
-                                    :icon="$opt['icon']"
-                                />
-                            @endforeach
+                        {{-- CONTENT: nur Alert + Inhalt scrollt --}}
+                        <div class="flex-1 min-h-0 overflow-hidden">
+                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
+                                <div class="w-full max-w-3xl mx-auto">
+
+                                    {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
+                                    <x-ratingform.input-error :for="'regulationDetails'" class="mb-2" />
+                                    <x-ratingform.input-error :for="'regulationComment'" class="mb-2" />
+
+                                    @php
+                                        /**
+                                        * HIER: deine alten Texte 1:1 rein (so wie sie vorher waren)
+                                        * WICHTIG: Keys konsistent -> ['text' => '...', 'icon' => 'fa-...']
+                                        */
+                                        $options = match ($regulationType) {
+                                            'vollzahlung' => [
+                                                ['text' => 'Schnelle und unkomplizierte Abwicklung', 'icon' => 'fa-bolt'],
+                                                ['text' => 'Gute Kommunikation und Transparenz', 'icon' => 'fa-comments'],
+                                                ['text' => 'Faire und angemessene Regulierung', 'icon' => 'fa-balance-scale'],
+                                                ['text' => 'Hervorragender Kundenservice', 'icon' => 'fa-headset'],
+                                                ['text' => 'Erwartungen vollständig erfüllt', 'icon' => 'fa-check-circle'],
+                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                            ],
+                                            'teilzahlung' => [
+                                                ['text' => 'Nur ein Teil des Schadens wurde anerkannt', 'icon' => 'fa-percentage'],
+                                                ['text' => 'Es gab eine Selbstbeteiligung', 'icon' => 'fa-hand-holding-usd'],
+                                                ['text' => 'Die Versicherung hat die Summe nach Gutachten gekürzt', 'icon' => 'fa-file-signature'],
+                                                ['text' => 'Kulanzzahlung statt voller Erstattung', 'icon' => 'fa-coins'],
+                                                ['text' => 'Unklare Kommunikation / keine nachvollziehbare Begründung', 'icon' => 'fa-question-circle'],
+                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                            ],
+                                            'ablehnung' => [
+                                                ['text' => 'Der Schaden sei nicht versichert', 'icon' => 'fa-times-circle'],
+                                                ['text' => 'Formfehler oder Fristversäumnis', 'icon' => 'fa-calendar-times'],
+                                                ['text' => 'Verdacht auf Eigenverschulden', 'icon' => 'fa-user-shield'],
+                                                ['text' => 'Kein nachvollziehbarer Grund genannt', 'icon' => 'fa-comment-slash'],
+                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                            ],
+                                            'austehend' => [
+                                                ['text' => 'Warte auf Rückmeldung der Versicherung', 'icon' => 'fa-hourglass-half'],
+                                                ['text' => 'Benötigte Unterlagen wurden noch nicht eingereicht', 'icon' => 'fa-file-alt'],
+                                                ['text' => 'Versicherung benötigt mehr Zeit zur Bearbeitung', 'icon' => 'fa-clock'],
+                                                ['text' => 'Unklare Kommunikation seitens der Versicherung', 'icon' => 'fa-comments'],
+                                                ['text' => 'Andere Gründe', 'icon' => 'fa-ellipsis-h'],
+                                            ],
+                                            default => [],
+                                        };
+
+                                        $selected = (array) ($regulationDetails ?? []);
+                                        $otherSelected = in_array('Andere Gründe', $selected, true);
+                                    @endphp
+
+                                    {{-- Grid (md 2 Spalten), ABER der komplette Inhalt scrollt --}}
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 min-h-0">
+
+                                        {{-- LINKS: Auswahl --}}
+                                        <div class="min-h-0">
+                                            <div class="text-sm font-semibold text-white px-2 pb-2 text-left">
+                                                Bitte wähle eine Option:
+                                            </div>
+
+                                            <div class="space-y-3">
+                                                @foreach($options as $i => $opt)
+                                                    <x-ui.forms.toggle-multi
+                                                        :id="'reg-detail-'.$i"
+                                                        model="regulationDetails"
+                                                        :value="$opt['text']"
+                                                        :label="$opt['text']"
+                                                        :icon="$opt['icon']"
+                                                    />
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+                                        {{-- RECHTS: Kommentar immer sichtbar (Pflicht nur bei “Andere Gründe”) --}}
+                                        <div class="min-h-0">
+                                            <div class="flex items-start justify-between gap-3 mb-2">
+                                                <div class="text-sm font-semibold text-white">
+                                                    Kommentar (optional)
+                                                    @if($otherSelected)
+                                                        <span class="text-white/70 font-normal">• Pflicht bei „Andere Gründe“</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div x-data="{ charCount: 0, max: 255 }" class="relative">
+                                                <textarea
+                                                    wire:model.live.debounce.400ms="regulationComment"
+                                                    x-init="charCount = ($el.value || '').length"
+                                                    x-on:input="charCount = $event.target.value.length"
+                                                    :maxlength="max"
+                                                    rows="6"
+                                                    class="w-full rounded-xl border border-white bg-white
+                                                        px-4 py-3 text-gray-900 placeholder-gray-400
+                                                        focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                    placeholder="Beschreibe kurz, was wichtig ist…"
+                                                ></textarea>
+
+                                                <div class="mt-1 flex justify-end text-xs font-medium">
+                                                    <span
+                                                        x-text="`${charCount}/${max} Zeichen`"
+                                                        :class="charCount >= max
+                                                            ? 'text-red-600'
+                                                            : charCount >= max * 0.9
+                                                                ? 'text-yellow-500'
+                                                                : 'text-gray-500'"
+                                                    ></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {{-- RECHTS: Kommentar immer sichtbar (Pflicht nur bei “Andere Gründe”) --}}
-                    <div class="min-h-0">
-                        <div class="flex items-start justify-between gap-3 mb-2">
-                            <div class="text-sm font-semibold text-white">
-                                Kommentar (optional)
-                                @if($otherSelected)
-                                    <span class="text-white/70 font-normal">• Pflicht bei „Andere Gründe“</span>
+
+
+
+                    {{-- Step 5: Zusatzinfos zur Regulierung (Header fix, Inhalt scroll + mask) --}}
+                    <div
+                        x-show="step == 5"
+                        x-cloak
+                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                    >
+                        {{-- HEADER (nicht im Scrollbereich) --}}
+                        <div class="mb-4 flex flex-col items-center max-w-3xl mx-auto text-center">
+                            <h2 class="text-lg md:text-2xl font-bold mb-2 text-white">
+                                Zusatzinfos zur Regulierung
+                            </h2>
+
+                            {{-- Errors ruhig hier lassen ODER im Scrollbereich – je nachdem was du willst --}}
+                            <x-ratingform.input-error :for="'contractDetails.claim_amount'" class="mb-1"/>
+                            <x-ratingform.input-error :for="'contractDetails.claim_settlement_amount'" class="mb-1"/>
+                            <x-ratingform.input-error :for="'contractDetails.contract_deductible_amount'" class="mb-1"/>
+                            <x-ratingform.input-error :for="'contractDetails.textarea_value'" class="mb-1"/>
+                        </div>
+
+                        {{-- CONTENT: scrollt komplett + mask --}}
+                        <div class="flex-1 min-h-0 overflow-hidden">
+                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
+                                <div class="w-full max-w-4xl mx-auto">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+
+                                        {{-- Links: Beträge --}}
+                                        <div class="space-y-6">
+                                            @if (!$thirdPartyInsurance)
+                                                <div>
+                                                    <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
+                                                        Selbstbeteiligung €
+                                                    </label>
+                                                    <input
+                                                        x-mask:dynamic="$money($input, '.', '')"
+                                                        wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount"
+                                                        class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
+                                                            focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                        placeholder="z. B. 100"
+                                                    />
+                                                </div>
+                                            @endif
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
+                                                    Schadenshöhe €
+                                                </label>
+                                                <input
+                                                    x-mask:dynamic="$money($input, '.', '')"
+                                                    wire:model.live.debounce.250ms="contractDetails.claim_amount"
+                                                    class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
+                                                        focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                    placeholder="z. B. 10.000"
+                                                />
+                                            </div>
+
+                                            @if (in_array($regulationType, ['teilzahlung','vollzahlung'], true))
+                                                <div>
+                                                    <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
+                                                        Regulierungshöhe €
+                                                    </label>
+                                                    <input
+                                                        x-mask:dynamic="$money($input, '.', '')"
+                                                        wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount"
+                                                        class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
+                                                            focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                        placeholder="z. B. 8.000"
+                                                    />
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        {{-- Rechts: Erklärung / Zusatztext --}}
+                                        <div class="space-y-3">
+                                            <div class="text-sm font-semibold text-white text-center md:text-left">
+                                                Zusatzinfos (optional / ggf. Pflicht)
+                                            </div>
+
+                                            <div x-data="{ charCount: 0, max: 255 }">
+                                                <textarea
+                                                    wire:model.live.debounce.500ms="contractDetails.textarea_value"
+                                                    x-init="charCount = ($el.value || '').length"
+                                                    x-on:input="charCount = $event.target.value.length"
+                                                    :maxlength="max"
+                                                    rows="8"
+                                                    class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
+                                                        focus:ring-2 focus:ring-white/30 focus:border-white"
+                                                    placeholder="Optional: zusätzliche Informationen zum Fall…"
+                                                ></textarea>
+
+                                                <div class="mt-1 flex justify-end text-xs font-medium">
+                                                    <span
+                                                        x-text="`${charCount}/${max} Zeichen`"
+                                                        :class="charCount >= max ? 'text-red-300' : (charCount >= max * 0.9 ? 'text-yellow-200' : 'text-white/70')"
+                                                    ></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    {{-- Step 6: Zeitraum (ohne Hintergrundkasten) --}}
+                    <div
+                        x-show="step == 6"
+                        x-cloak
+                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                    >
+                        {{-- Header --}}
+                        <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
+                            <h2 class="text-lg md:text-2xl font-bold mb-4 text-white text-center">
+                                @if ($is_closed)
+                                    In welchem Zeitraum wurde der Fall bearbeitet?
+                                @else
+                                    Wann hast du den Fall gemeldet?
                                 @endif
-                            </div>
+                            </h2>
+
+                            <x-alert class="mx-auto mb-6" role="alert">
+                                <span>
+                                    @if ($is_closed)
+                                        Wähle Start- und Enddatum der Bearbeitung.
+                                    @else
+                                        Wähle das Datum, an dem du den Fall gemeldet hast.
+                                    @endif
+                                </span>
+                            </x-alert>
+                            
+                            <x-ratingform.input-error :for="'started_at'" class="mb-1" />
+                            <x-ratingform.input-error :for="'ended_at'" />
+
                         </div>
 
-                        <div x-data="{ charCount: 0, max: 255 }" class="relative">
-                            <textarea
-                                wire:model.live.debounce.400ms="regulationComment"
-                                x-init="charCount = ($el.value || '').length"
-                                x-on:input="charCount = $event.target.value.length"
-                                :maxlength="max"
-                                rows="6"
-                                class="w-full rounded-xl border border-white bg-white
-                                       px-4 py-3 text-gray-900 placeholder-gray-400
-                                       focus:ring-2 focus:ring-white/30 focus:border-white"
-                                placeholder="Beschreibe kurz, was wichtig ist…"
-                            ></textarea>
+                        {{-- Content --}}
+                        <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
+                            <div
+                                x-data="{
+                                    selectedDates: @entangle('selectedDates').live,
+                                    isClosed: @entangle('is_closed').live,
+                                    fp: null,
 
-                            <div class="mt-1 flex justify-end text-xs font-medium">
-                                <span
-                                    x-text="`${charCount}/${max} Zeichen`"
-                                    :class="charCount >= max
-                                        ? 'text-red-600'
-                                        : charCount >= max * 0.9
-                                            ? 'text-yellow-500'
-                                            : 'text-gray-500'"
-                                ></span>
-                            </div>
-                        </div>
-                    </div>
+                                    initPicker() {
+                                        const mode = this.isClosed ? 'range' : 'single';
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                                        if (this.fp) { this.fp.destroy(); this.fp = null; }
 
+                                        this.fp = flatpickr(this.$refs.dates, {
+                                            dateFormat: 'd.m.Y',
+                                            defaultDate: this.selectedDates || null,
+                                            locale: 'de',
+                                            inline: true,
+                                            allowInput: false,
+                                            mode: mode,
 
+                                            onChange: (dates, dateStr) => { this.selectedDates = dateStr; },
 
+                                            onReady: (dates, dateStr, instance) => {
+                                                if (!this.selectedDates) {
+                                                    const targetDate = new Date();
+                                                    targetDate.setMonth(targetDate.getMonth() - 6);
+                                                    instance.changeMonth(targetDate.getMonth(), false);
+                                                    instance.changeYear(targetDate.getFullYear());
+                                                }
+                                            }
+                                        });
+                                    }
+                                }"
+                                x-init="$nextTick(() => initPicker())"
+                                x-effect="initPicker()"
+                                class="relative"
+                            >
+                                {{-- Start/End Anzeige (kleine Pills, kein Kasten) --}}
+                                <div class="flex justify-center mb-5">
+                                    <div class="inline-flex rounded-xl overflow-hidden border border-white bg-white backdrop-blur">
+                                        <button type="button" class="px-3 py-2 text-sm font-medium text-primary border-r border-gray-400" disabled>
+                                            {{ $started_at ?? 'Start' }}
+                                        </button>
 
-{{-- Step 5: Zusatzinfos zur Regulierung (Header fix, Inhalt scroll + mask) --}}
-<div
-    x-show="step == 5"
-    x-cloak
-    class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
->
-    {{-- HEADER (nicht im Scrollbereich) --}}
-    <div class="mb-4 flex flex-col items-center max-w-3xl mx-auto text-center">
-        <h2 class="text-lg md:text-2xl font-bold mb-2 text-white">
-            Zusatzinfos zur Regulierung
-        </h2>
+                                        @if ($is_closed)
+                                            <button type="button" class="px-3 py-2 text-sm font-medium text-primary" disabled>
+                                                {{ $ended_at ?? 'Ende' }}
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
 
-        {{-- Errors ruhig hier lassen ODER im Scrollbereich – je nachdem was du willst --}}
-        <x-ratingform.input-error :for="'contractDetails.claim_amount'" class="mb-1"/>
-        <x-ratingform.input-error :for="'contractDetails.claim_settlement_amount'" class="mb-1"/>
-        <x-ratingform.input-error :for="'contractDetails.contract_deductible_amount'" class="mb-1"/>
-        <x-ratingform.input-error :for="'contractDetails.textarea_value'" class="mb-1"/>
-    </div>
-
-    {{-- CONTENT: scrollt komplett + mask --}}
-    <div class="flex-1 min-h-0 overflow-hidden">
-        <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container py-6">
-            <div class="w-full max-w-4xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-
-                    {{-- Links: Beträge --}}
-                    <div class="space-y-6">
-                        @if (!$thirdPartyInsurance)
-                            <div>
-                                <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
-                                    Selbstbeteiligung €
-                                </label>
-                                <input
-                                    x-mask:dynamic="$money($input, '.', '')"
-                                    wire:model.live.debounce.250ms="contractDetails.contract_deductible_amount"
-                                    class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
-                                           focus:ring-2 focus:ring-white/30 focus:border-white"
-                                    placeholder="z. B. 100"
-                                />
-                            </div>
-                        @endif
-
-                        <div>
-                            <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
-                                Schadenshöhe €
-                            </label>
-                            <input
-                                x-mask:dynamic="$money($input, '.', '')"
-                                wire:model.live.debounce.250ms="contractDetails.claim_amount"
-                                class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
-                                       focus:ring-2 focus:ring-white/30 focus:border-white"
-                                placeholder="z. B. 10.000"
-                            />
-                        </div>
-
-                        @if (in_array($regulationType, ['teilzahlung','vollzahlung'], true))
-                            <div>
-                                <label class="block text-sm font-medium text-white/90 mb-2 text-center md:text-left">
-                                    Regulierungshöhe €
-                                </label>
-                                <input
-                                    x-mask:dynamic="$money($input, '.', '')"
-                                    wire:model.live.debounce.250ms="contractDetails.claim_settlement_amount"
-                                    class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
-                                           focus:ring-2 focus:ring-white/30 focus:border-white"
-                                    placeholder="z. B. 8.000"
-                                />
-                            </div>
-                        @endif
-                    </div>
-
-                    {{-- Rechts: Erklärung / Zusatztext --}}
-                    <div class="space-y-3">
-                        <div class="text-sm font-semibold text-white text-center md:text-left">
-                            Zusatzinfos (optional / ggf. Pflicht)
-                        </div>
-
-                        <div x-data="{ charCount: 0, max: 255 }">
-                            <textarea
-                                wire:model.live.debounce.500ms="contractDetails.textarea_value"
-                                x-init="charCount = ($el.value || '').length"
-                                x-on:input="charCount = $event.target.value.length"
-                                :maxlength="max"
-                                rows="8"
-                                class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-gray-900
-                                       focus:ring-2 focus:ring-white/30 focus:border-white"
-                                placeholder="Optional: zusätzliche Informationen zum Fall…"
-                            ></textarea>
-
-                            <div class="mt-1 flex justify-end text-xs font-medium">
-                                <span
-                                    x-text="`${charCount}/${max} Zeichen`"
-                                    :class="charCount >= max ? 'text-red-300' : (charCount >= max * 0.9 ? 'text-yellow-200' : 'text-white/70')"
-                                ></span>
+                                {{-- Flatpickr --}}
+                                <div class="flex justify-center">
+                                    <label class="block" wire:ignore>
+                                        <input
+                                            type="text"
+                                            readonly
+                                            x-ref="dates"
+                                            wire:model.live="selectedDates"
+                                            class="hidden"
+                                        />
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
+                    {{-- Step 7: Fragen (neues Layout, 1-spaltig, ohne Hinweis) --}}
+                    @foreach ($variableQuestions as $index => $q)
+                        @php
+                            $currentStep = $standardSteps + $index;
+                            $fieldName   = "answers." . $q->title;
+                            $uid = 'q-' . $currentStep . '-' . \Illuminate\Support\Str::slug($q->title);
+                        @endphp
 
-
-
-{{-- Step 6: Zeitraum (ohne Hintergrundkasten) --}}
-<div
-    x-show="step == 6"
-    x-cloak
-    class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
->
-    {{-- Header --}}
-    <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
-        <h2 class="text-lg md:text-2xl font-bold mb-4 text-white text-center">
-            @if ($is_closed)
-                In welchem Zeitraum wurde der Fall bearbeitet?
-            @else
-                Wann hast du den Fall gemeldet?
-            @endif
-        </h2>
-
-        <x-alert class="mx-auto mb-6" role="alert">
-            <span>
-                @if ($is_closed)
-                    Wähle Start- und Enddatum der Bearbeitung.
-                @else
-                    Wähle das Datum, an dem du den Fall gemeldet hast.
-                @endif
-            </span>
-        </x-alert>
-        
-        <x-ratingform.input-error :for="'started_at'" class="mb-1" />
-        <x-ratingform.input-error :for="'ended_at'" />
-
-    </div>
-
-    {{-- Content --}}
-    <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
-        <div
-            x-data="{
-                selectedDates: @entangle('selectedDates').live,
-                isClosed: @entangle('is_closed').live,
-                fp: null,
-
-                initPicker() {
-                    const mode = this.isClosed ? 'range' : 'single';
-
-                    if (this.fp) { this.fp.destroy(); this.fp = null; }
-
-                    this.fp = flatpickr(this.$refs.dates, {
-                        dateFormat: 'd.m.Y',
-                        defaultDate: this.selectedDates || null,
-                        locale: 'de',
-                        inline: true,
-                        allowInput: false,
-                        mode: mode,
-
-                        onChange: (dates, dateStr) => { this.selectedDates = dateStr; },
-
-                        onReady: (dates, dateStr, instance) => {
-                            if (!this.selectedDates) {
-                                const targetDate = new Date();
-                                targetDate.setMonth(targetDate.getMonth() - 6);
-                                instance.changeMonth(targetDate.getMonth(), false);
-                                instance.changeYear(targetDate.getFullYear());
-                            }
-                        }
-                    });
-                }
-            }"
-            x-init="$nextTick(() => initPicker())"
-            x-effect="initPicker()"
-            class="relative"
-        >
-            {{-- Start/End Anzeige (kleine Pills, kein Kasten) --}}
-            <div class="flex justify-center mb-5">
-                <div class="inline-flex rounded-xl overflow-hidden border border-white bg-white backdrop-blur">
-                    <button type="button" class="px-3 py-2 text-sm font-medium text-primary border-r border-gray-400" disabled>
-                        {{ $started_at ?? 'Start' }}
-                    </button>
-
-                    @if ($is_closed)
-                        <button type="button" class="px-3 py-2 text-sm font-medium text-primary" disabled>
-                            {{ $ended_at ?? 'Ende' }}
-                        </button>
-                    @endif
-                </div>
-            </div>
-
-            {{-- Flatpickr --}}
-            <div class="flex justify-center">
-                <label class="block" wire:ignore>
-                    <input
-                        type="text"
-                        readonly
-                        x-ref="dates"
-                        wire:model.live="selectedDates"
-                        class="hidden"
-                    />
-                </label>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-{{-- Step 7: Fragen (neues Layout, 1-spaltig, ohne Hinweis) --}}
-@foreach ($variableQuestions as $index => $q)
-    @php
-        $currentStep = $standardSteps + $index;
-        $fieldName   = "answers." . $q->title;
-        $uid = 'q-' . $currentStep . '-' . \Illuminate\Support\Str::slug($q->title);
-    @endphp
-
-    <div
-        x-show="step === {{ $currentStep }}"
-        x-cloak
-        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
-    >
-        {{-- Header --}}
-        <div class="mb-8 flex flex-col items-center max-w-3xl mx-auto text-center">
-            <div class="text-xs md:text-sm text-white/70 mb-2">
-                Frage {{ $currentStep + 1 }} von {{ $totalSteps }}
-            </div>
-
-            <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
-                {{ $q->question_text }}
-            </h2>
-
-            @error($fieldName)
-                <p class="text-sm text-red-300 mt-2">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- Content --}}
-        <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
-
-            @switch($q->type)
-
-                {{-- TEXT / NUMBER / DATE --}}
-                @case('text')
-                @case('number')
-                @case('date')
-                    <input
-                        type="{{ $q->type }}"
-                        wire:model.live.debounce.300ms="{{ $fieldName }}"
-                        class="w-full rounded-xl border border-white/40 bg-white
-                               px-4 py-3 text-gray-900 placeholder-gray-400
-                               focus:ring-2 focus:ring-white/30 focus:border-white"
-                    />
-                @break
-
-                {{-- TEXTAREA --}}
-                @case('textarea')
-                    <div x-data="{ charCount: 0, max: 255 }">
-                        <textarea
-                            wire:model.live.debounce.400ms="{{ $fieldName }}"
-                            x-on:input="charCount = $event.target.value.length"
-                            :maxlength="max"
-                            rows="7"
-                            class="w-full rounded-xl border border-white/40 bg-white
-                                   px-4 py-3 text-gray-900 placeholder-gray-400
-                                   focus:ring-2 focus:ring-white/30 focus:border-white"
-                        ></textarea>
-
-                        <div class="mt-1 flex justify-end text-xs font-medium">
-                            <span
-                                x-text="`${charCount}/${max} Zeichen`"
-                                :class="charCount >= max ? 'text-red-300' : 'text-white/70'"
-                            ></span>
-                        </div>
-                    </div>
-                @break
-
-                {{-- BOOLEAN --}}
-                @case('boolean')
-                    <div class="flex justify-center">
-                        <div class="inline-flex rounded-2xl overflow-hidden border border-white/20 bg-white">
-                            <div>
-                                <input
-                                    type="radio"
-                                    wire:model.live="{{ $fieldName }}"
-                                    id="{{ $uid }}-yes"
-                                    value="1"
-                                    class="peer hidden"
-                                >
-                                <label
-                                    for="{{ $uid }}-yes"
-                                    class="px-6 py-3 cursor-pointer text-sm font-semibold
-                                           text-gray-400 peer-checked:text-primary peer-checked:bg-rcgold"
-                                >
-                                    Ja
-                                </label>
-                            </div>
-
-                            <div class="border-l border-gray-200">
-                                <input
-                                    type="radio"
-                                    wire:model.live="{{ $fieldName }}"
-                                    id="{{ $uid }}-no"
-                                    value="0"
-                                    class="peer hidden"
-                                >
-                                <label
-                                    for="{{ $uid }}-no"
-                                    class="px-6 py-3 cursor-pointer text-sm font-semibold
-                                           text-gray-400 peer-checked:text-primary peer-checked:bg-rcgold"
-                                >
-                                    Nein
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                @break
-
-                {{-- RATING --}}
-                @case('rating')
-                    <div class="flex justify-center">
                         <div
-                            class="flex space-x-1 rating-group"
-                            x-data="{ hovered: 0 }"
+                            x-show="step === {{ $currentStep }}"
+                            x-cloak
+                            class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
                         >
-                            @for ($i = 1; $i <= 5; $i++)
-                                <label
-                                    class="cursor-pointer relative"
-                                    @mouseover="hovered = {{ $i }}"
-                                    @mouseleave="hovered = 0"
-                                >
-                                    <input
-                                        type="radio"
-                                        wire:model.live="{{ $fieldName }}"
-                                        value="{{ $i }}"
-                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                        aria-label="Bewertung {{ $i }}"
-                                    >
-                                    <svg
-                                        class="w-12 h-12 transition-colors duration-150"
-                                        :class="{
-                                            'text-yellow-400': hovered >= {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} >= {{ $i }},
-                                            'text-gray-300': hovered < {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} < {{ $i }}
-                                        }"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.204 3.698a1 1 0 00.95.69h3.894c.969 0 1.371 1.24.588 1.81l-3.15 2.286a1 1 0 00-.364 1.118l1.204 3.698c.3.921-.755 1.688-1.54 1.118l-3.15-2.286a1 1 0 00-1.176 0l-3.15 2.286c-.784.57-1.838-.197-1.539-1.118l1.203-3.698a1 1 0 00-.364-1.118L2.414 9.125c-.783-.57-.38-1.81.588-1.81h3.894a1 1 0 00.951-.69l1.202-3.698z"/>
-                                    </svg>
-                                </label>
-                            @endfor
+                            {{-- Header --}}
+                            <div class="mb-8 flex flex-col items-center max-w-3xl mx-auto text-center">
+                                <div class="text-xs md:text-sm text-white/70 mb-2">
+                                    Frage {{ $currentStep + 1 }} von {{ $totalSteps }}
+                                </div>
+
+                                <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
+                                    {{ $q->question_text }}
+                                </h2>
+
+                                @error($fieldName)
+                                    <p class="text-sm text-red-300 mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="flex-1 min-h-0 w-full max-w-3xl mx-auto">
+
+                                @switch($q->type)
+
+                                    {{-- TEXT / NUMBER / DATE --}}
+                                    @case('text')
+                                    @case('number')
+                                    @case('date')
+                                        <input
+                                            type="{{ $q->type }}"
+                                            wire:model.live.debounce.300ms="{{ $fieldName }}"
+                                            class="w-full rounded-xl border border-white/40 bg-white
+                                                px-4 py-3 text-gray-900 placeholder-gray-400
+                                                focus:ring-2 focus:ring-white/30 focus:border-white"
+                                        />
+                                    @break
+
+                                    {{-- TEXTAREA --}}
+                                    @case('textarea')
+                                        <div x-data="{ charCount: 0, max: 255 }">
+                                            <textarea
+                                                wire:model.live.debounce.400ms="{{ $fieldName }}"
+                                                x-on:input="charCount = $event.target.value.length"
+                                                :maxlength="max"
+                                                rows="7"
+                                                class="w-full rounded-xl border border-white/40 bg-white
+                                                    px-4 py-3 text-gray-900 placeholder-gray-400
+                                                    focus:ring-2 focus:ring-white/30 focus:border-white"
+                                            ></textarea>
+
+                                            <div class="mt-1 flex justify-end text-xs font-medium">
+                                                <span
+                                                    x-text="`${charCount}/${max} Zeichen`"
+                                                    :class="charCount >= max ? 'text-red-300' : 'text-white/70'"
+                                                ></span>
+                                            </div>
+                                        </div>
+                                    @break
+
+                                    {{-- BOOLEAN --}}
+                                    @case('boolean')
+                                        <div class="flex justify-center">
+                                            <div class="inline-flex rounded-2xl overflow-hidden border border-white/20 bg-white">
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        wire:model.live="{{ $fieldName }}"
+                                                        id="{{ $uid }}-yes"
+                                                        value="1"
+                                                        class="peer hidden"
+                                                    >
+                                                    <label
+                                                        for="{{ $uid }}-yes"
+                                                        class="px-6 py-3 cursor-pointer text-sm font-semibold
+                                                            text-gray-400 peer-checked:text-primary peer-checked:bg-rcgold"
+                                                    >
+                                                        Ja
+                                                    </label>
+                                                </div>
+
+                                                <div class="border-l border-gray-200">
+                                                    <input
+                                                        type="radio"
+                                                        wire:model.live="{{ $fieldName }}"
+                                                        id="{{ $uid }}-no"
+                                                        value="0"
+                                                        class="peer hidden"
+                                                    >
+                                                    <label
+                                                        for="{{ $uid }}-no"
+                                                        class="px-6 py-3 cursor-pointer text-sm font-semibold
+                                                            text-gray-400 peer-checked:text-primary peer-checked:bg-rcgold"
+                                                    >
+                                                        Nein
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @break
+
+                                    {{-- RATING --}}
+                                    @case('rating')
+                                        <div class="flex justify-center">
+                                            <div
+                                                class="flex space-x-1 rating-group"
+                                                x-data="{ hovered: 0 }"
+                                            >
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <label
+                                                        class="cursor-pointer relative"
+                                                        @mouseover="hovered = {{ $i }}"
+                                                        @mouseleave="hovered = 0"
+                                                    >
+                                                        <input
+                                                            type="radio"
+                                                            wire:model.live="{{ $fieldName }}"
+                                                            value="{{ $i }}"
+                                                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                            aria-label="Bewertung {{ $i }}"
+                                                        >
+                                                        <svg
+                                                            class="w-12 h-12 transition-colors duration-150"
+                                                            :class="{
+                                                                'text-yellow-400': hovered >= {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} >= {{ $i }},
+                                                                'text-gray-300': hovered < {{ $i }} || {{ data_get($this, $fieldName, 0) ?? 0 }} < {{ $i }}
+                                                            }"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                        >
+                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.204 3.698a1 1 0 00.95.69h3.894c.969 0 1.371 1.24.588 1.81l-3.15 2.286a1 1 0 00-.364 1.118l1.204 3.698c.3.921-.755 1.688-1.54 1.118l-3.15-2.286a1 1 0 00-1.176 0l-3.15 2.286c-.784.57-1.838-.197-1.539-1.118l1.203-3.698a1 1 0 00-.364-1.118L2.414 9.125c-.783-.57-.38-1.81.588-1.81h3.894a1 1 0 00.951-.69l1.202-3.698z"/>
+                                                        </svg>
+                                                    </label>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                    @break
+
+                                    @default
+                                        <p class="text-sm text-red-300">
+                                            Unbekannter Fragetyp: {{ $q->type }}
+                                        </p>
+                                @endswitch
+                            </div>
                         </div>
-                    </div>
-                @break
-
-                @default
-                    <p class="text-sm text-red-300">
-                        Unbekannter Fragetyp: {{ $q->type }}
-                    </p>
-            @endswitch
-        </div>
-    </div>
-@endforeach
+                    @endforeach
 
 
 
 
-                    <div class="sticky bottom-0 left-0 right-0 z-50 control-buttons px-2 flex items-end w-full">
+                    <div class=" z-50 control-buttons px-2 flex items-end w-full">
                         <div class="bg-white/95 backdrop-blur border-t px-4 py-4 rounded-t-3xl flex justify-center gap-4 w-full" wire:loading.class="pointer-events-none">
                             <div x-show="step > 0" x-cloak>
                                 <x-buttons.backbutton wire:click="previousStep" />
