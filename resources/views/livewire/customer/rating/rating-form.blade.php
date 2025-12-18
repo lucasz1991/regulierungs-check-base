@@ -64,7 +64,7 @@
                             <div class="max-w-lg mx-auto h-full relative">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-6
+                                        h-full overflow-y-auto form-select-scroll-container py-[40px]
                                         [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                         [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                     "
@@ -239,7 +239,7 @@
                             <div class="relative flex-1 min-h-0">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-6
+                                        h-full overflow-y-auto form-select-scroll-container py-[40px]
                                         [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                         [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                     "
@@ -344,7 +344,7 @@
                             <div class="relative flex-1 min-h-0">
                                 <div
                                     class="
-                                        h-full overflow-y-auto form-select-scroll-container py-6
+                                        h-full overflow-y-auto form-select-scroll-container py-[40px]
                                         [mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                         [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40px,black_calc(100%-60px),transparent)]
                                     "
@@ -451,13 +451,9 @@
                         >
                             <div class="max-w-lg mx-auto h-full min-h-0 flex flex-col">
                                 <div class="relative flex-1 min-h-0">
-                                    {{-- Fade-Mask unten (wie Step1) --}}
-                                    <div
-                                        class="pointer-events-none absolute inset-x-0 bottom-0 h-20 z-20
-                                            bg-gradient-to-t from-[var(--step-bg)] via-[var(--step-bg)]/70 to-transparent"
-                                    ></div>
 
-                                    <div class="h-full overflow-y-auto form-select-scroll-container pb-10">
+
+                                    <div class="h-full overflow-y-auto form-select-scroll-container flex items-center pb-10">
                                         <div class="grid grid-cols-2 gap-3 md:gap-4 p-1">
                                                     <style>
                                                         svg.bicolor .a{
@@ -1153,7 +1149,7 @@
 
 
 
-                    <div class="absolute bottom-0 left-0 right-0 z-50 control-buttons px-2 flex items-end w-full">
+                    <div class=" z-50 control-buttons px-2 flex items-end w-full">
                         <div class="bg-white/95 backdrop-blur border-t px-4 py-4 rounded-t-3xl flex justify-center gap-4 w-full" wire:loading.class="pointer-events-none">
                             <div x-show="step > 0" x-cloak>
                                 <x-buttons.backbutton wire:click="previousStep" />
