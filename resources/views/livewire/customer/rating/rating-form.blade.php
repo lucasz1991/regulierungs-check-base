@@ -676,7 +676,7 @@
                         </x-ui.intersectanimation.anim-container>
                         {{-- CONTENT: nur Alert + Inhalt scrollt --}}
                         <div class="flex-1 min-h-0 overflow-hidden ">
-                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container flex items-center">
+                            <div class="h-full overflow-y-auto scroll-mask form-select-scroll-container">
                                 <div class="w-full max-w-3xl mx-auto">
                                     <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
                                         {{-- Errors (im Scrollbereich, damit sie sichtbar bleiben) --}}
