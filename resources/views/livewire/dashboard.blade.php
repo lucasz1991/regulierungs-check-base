@@ -52,7 +52,7 @@
 
                                 @endif
                                 <!-- Customer Information Livewire-Komponente -->
-                                <div class="mt-10 sm:mt-0">
+                                <div class="mt-10 sm:mt-6">
                                     @livewire('profile.update-customer-information-form')
                                 </div>
                             </div>
