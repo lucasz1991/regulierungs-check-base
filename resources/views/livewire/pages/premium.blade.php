@@ -77,7 +77,7 @@
                         <a href="/insurances"
                            class="inline-flex items-center gap-2
                                   rounded-xl border border-slate-300
-                                  px-5 py-2.5 text-sm font-semibold
+                                  px-5 py-2.5 text-sm font-semibold bg-slate-50
                                   text-slate-700 hover:bg-slate-100 transition">
                             <i class="fal fa-shield-alt"></i>
                             Versicherungen ansehen
