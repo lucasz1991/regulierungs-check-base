@@ -1,4 +1,4 @@
-<div    class="w-full relative bg-cover bg-center bg-gray-100 pb-20 pt-8" wire:loading.class="cursor-wait">
+<div    class="w-full relative  pb-20 pt-8" wire:loading.class="cursor-wait">
     <div class="container mx-auto px-5">
         <div x-data="{ selectedTab: $persist('basic') }" class="w-full">
             <!-- Hauptbereich -->
