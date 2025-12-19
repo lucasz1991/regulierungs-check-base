@@ -1083,6 +1083,7 @@
                                                 x-on:input="charCount = $event.target.value.length"
                                                 :maxlength="max"
                                                 rows="7"
+                                                placeholder="{{ $q->help_text }}"
                                                 class="w-full rounded-xl border border-white/40 bg-white
                                                     px-4 py-3 text-gray-900 placeholder-gray-400
                                                     focus:ring-2 focus:ring-white/30 focus:border-white"
