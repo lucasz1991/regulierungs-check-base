@@ -65,7 +65,7 @@
 
                     {{-- Actions --}}
                     <div class="pt-4 flex flex-wrap gap-3">
-                        <a href="/claim-ratings/create"
+                        <a href="/"
                            class="inline-flex items-center gap-2
                                   rounded-xl bg-primary px-5 py-2.5
                                   text-sm font-semibold text-white shadow
