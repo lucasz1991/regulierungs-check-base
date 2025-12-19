@@ -5,7 +5,7 @@
             <div class="px-4 py-4 container mx-auto rounded-xl  md:schadow footer-dark-gradient">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-6 gap-y-10">
                 <div>
-                    <a href='/' class="block h-auto w-32  md:w-48 lg:w-52 pr-4">
+                    <a href='/' class="block h-auto w-32  md:w-48 pr-4">
                         <img 
                             class="w-full" 
                             src="{{ asset('/site-images/logo/logo-white-yelllow.png') }}" 
