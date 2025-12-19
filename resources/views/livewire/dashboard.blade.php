@@ -46,7 +46,7 @@
                 <main class="w-full lg:w-3/4 xl:w-5/6">
                     <div x-cloak x-show="selectedTab === 'profile'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="profile">
                         <div class="antialiased" wire:loading.class="cursor-wait">
-                            <div class=" sm:pl-6 lg:pl-8">
+                            <div class="">
                                 @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                                     @livewire('profile.update-profile-information-form')
 
