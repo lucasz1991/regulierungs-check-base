@@ -1098,46 +1098,122 @@
                                         </div>
                                     @break
 
-                                    {{-- BOOLEAN --}}
-                                    @case('boolean')
-                                        <div class="flex items-center justify-center">
-                                            <div class="inline-flex rounded-2xl overflow-hidden border border-white/20 bg-white">
-                                                <div>
-                                                    <input
-                                                        type="radio"
-                                                        wire:model.live="{{ $fieldName }}"
-                                                        id="{{ $uid }}-yes"
-                                                        value="1"
-                                                        class="peer hidden"
-                                                    >
-                                                    <label
-                                                        for="{{ $uid }}-yes"
-                                                        class="px-6 py-3 cursor-pointer text-sm font-semibold
-                                                            text-gray-400 peer-checked:text-primary peer-checked:bg-rcgold"
-                                                    >
-                                                        Ja
-                                                    </label>
-                                                </div>
+{{-- BOOLEAN (ButtonGroup – named peers: yes / no) --}}
+@case('boolean')
+<div class="w-full">
+    <div class="mx-auto w-full max-w-xl md:max-w-2xl">
 
-                                                <div class="border-l border-gray-200">
-                                                    <input
-                                                        type="radio"
-                                                        wire:model.live="{{ $fieldName }}"
-                                                        id="{{ $uid }}-no"
-                                                        value="0"
-                                                        class="peer hidden"
-                                                    >
-                                                    <label
-                                                        for="{{ $uid }}-no"
-                                                        class="px-6 py-3 cursor-pointer text-sm font-semibold
-                                                            text-gray-400 peer-checked:text-primary peer-checked:bg-rcgold"
-                                                    >
-                                                        Nein
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @break
+        <div
+            class="
+                relative
+                grid grid-cols-2
+                rounded-2xl md:rounded-3xl
+                bg-white/80 backdrop-blur
+                border border-white/25
+                shadow-lg shadow-black/10
+                overflow-hidden
+            "
+        >
+
+            {{-- JA --}}
+            <input
+                type="radio"
+                wire:model.live="{{ $fieldName }}"
+                id="{{ $uid }}-yes"
+                value="1"
+                class="peer/yes sr-only"
+            />
+
+            <label
+                for="{{ $uid }}-yes"
+                class="
+                    flex items-center justify-center gap-2 md:gap-3
+                    px-4 py-3 md:px-8 md:py-5 lg:px-10 lg:py-6
+                    text-base md:text-xl lg:text-2xl font-semibold
+                    text-primary
+                    cursor-pointer select-none
+                    transition
+                    hover:bg-white
+
+                    peer-checked/yes:bg-rcgold
+                    peer-checked/yes:text-white
+                "
+            >
+                <span
+                    class="
+                        inline-flex items-center justify-center
+                        h-9 w-9 md:h-11 md:w-11 lg:h-12 lg:w-12
+                        rounded-xl
+                        bg-primary/10 text-primary
+                        transition
+
+                        peer-checked/yes:bg-white/25
+                        peer-checked/yes:text-white
+                    "
+                >
+                    <i class="fal fa-check text-lg md:text-xl"></i>
+                </span>
+
+                <span>Ja</span>
+            </label>
+
+            {{-- Divider --}}
+            <div
+                class="absolute inset-y-2 left-1/2 -translate-x-1/2 w-px bg-slate-200/70 pointer-events-none">
+            </div>
+
+            {{-- NEIN --}}
+            <input
+                type="radio"
+                wire:model.live="{{ $fieldName }}"
+                id="{{ $uid }}-no"
+                value="0"
+                class="peer/no sr-only"
+            />
+
+            <label
+                for="{{ $uid }}-no"
+                class="
+                    flex items-center justify-center gap-2 md:gap-3
+                    px-4 py-3 md:px-8 md:py-5 lg:px-10 lg:py-6
+                    text-base md:text-xl lg:text-2xl font-semibold
+                    text-primary
+                    cursor-pointer select-none
+                    transition
+                    hover:bg-white
+
+                    peer-checked/no:bg-rcgold
+                    peer-checked/no:text-white
+                "
+            >
+                <span
+                    class="
+                        inline-flex items-center justify-center
+                        h-9 w-9 md:h-11 md:w-11 lg:h-12 lg:w-12
+                        rounded-xl
+                        bg-primary/10 text-primary
+                        transition
+
+                        peer-checked/no:bg-white/25
+                        peer-checked/no:text-white
+                    "
+                >
+                    <i class="fal fa-times text-lg md:text-xl"></i>
+                </span>
+
+                <span>Nein</span>
+            </label>
+
+        </div>
+
+  
+
+    </div>
+</div>
+@break
+
+
+
 
                                     {{-- RATING --}}
                                     @case('rating')
@@ -1187,7 +1263,7 @@
                     @endforeach
 
                     <div class="sticky bottom-0 z-50 flex-none shrink-0 grow-0 px-2 min-h-0 flex items-end">
-                        <div class="bg-white/95 backdrop-blur border-t px-4 py-4 rounded-t-3xl flex justify-center gap-4 w-full" wire:loading.class="pointer-events-none">
+                        <div class="bg-white/95 backdrop-blur border-t px-4 py-4 rounded-t-3xl flex justify-center gap-4 w-full transition opacity-100" wire:loading.class="pointer-events-none opacity-10">
                             <div x-show="step > 0" x-cloak>
                                 <x-buttons.backbutton wire:click="previousStep" />
                             </div>
