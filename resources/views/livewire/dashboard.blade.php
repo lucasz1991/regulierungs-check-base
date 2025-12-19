@@ -46,7 +46,7 @@
                 <main class="w-full lg:w-3/4 xl:w-5/6">
                     <div x-cloak x-show="selectedTab === 'profile'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="profile">
                         <div class="antialiased" wire:loading.class="cursor-wait">
-                            <div class="py-2 sm:px-6 lg:px-8">
+                            <div class=" sm:pl-6 lg:pl-8">
                                 @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                                     @livewire('profile.update-profile-information-form')
 
@@ -71,8 +71,8 @@
                     <div x-cloak x-show="selectedTab === 'security'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="security">
                         <div class="mt-10 sm:mt-0">
                               <div class="antialiased" wire:loading.class="cursor-wait">
-                                <div class="py-2 sm:px-6 lg:px-8">
-                                    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+                              <div class=" sm:pl-6 lg:pl-8">
+                              @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
                                         <div class="mt-10 sm:mt-0">
                                             @livewire('profile.update-password-form')
                                         </div>
