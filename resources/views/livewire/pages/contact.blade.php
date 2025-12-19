@@ -29,8 +29,8 @@
         <!-- Großes Icon -->
         <div class="shrink-0">
             <div class="inline-flex items-center justify-center rounded-2xl
-                        bg-rcgold
-                        text-white w-14 h-14 shadow-lg">
+                        bg-gray-50
+                        text-gray-300 w-14 h-14 shadow-lg">
                 <i class="fal fa-headset text-xl"></i>
             </div>
         </div>
