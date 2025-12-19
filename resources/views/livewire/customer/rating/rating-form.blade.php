@@ -993,7 +993,7 @@
                                                         :class="ended
                                                             ? 'bg-rcgold text-primary border-rcgold-dark'
                                                             : 'bg-white text-primary border-gray-300'"
-                                                    >
+                                                    > 
                                                         {{ $ended_at ?? 'Ende' }}
                                                     </button>
                                                 @endif
