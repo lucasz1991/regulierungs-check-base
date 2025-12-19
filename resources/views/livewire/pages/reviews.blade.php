@@ -14,7 +14,7 @@
         }
     }"
 >
-    <div class=" pt-8">
+    <div class="">
         <div class="container mx-auto ">
             {{-- Einzelbewertungen --}}
                 <x-filter.filter-container>

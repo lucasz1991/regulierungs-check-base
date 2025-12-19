@@ -47,7 +47,15 @@ body {
   font-family: 'Montserrat';
   color: var(--primary-font-color);
 }
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
 html { scroll-behavior: auto !important; }
 
 .bg-main{

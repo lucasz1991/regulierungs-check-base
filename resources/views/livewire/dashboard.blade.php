@@ -1,11 +1,11 @@
-<div    class="w-full relative  pb-20 " wire:loading.class="cursor-wait">
-    <div class="container mx-auto px-4">
+<div    class="w-full relative min-h-[70vh] pb-20 " wire:loading.class="cursor-wait">
+    <div class="container mx-auto px-2">
         <div x-data="{ selectedTab: $persist('basic') }" class="w-full">
             <!-- Hauptbereich -->
             <div class=" flex flex-col lg:flex-row gap-10">
                 <!-- Sidebar -->
                 <aside class="lg:w-1/4  xl:w-1/6">
-                    <div class="bg-white rounded-lg shadow-xl  border  border-gray-300 w-full  p-6 ">
+                    <div class="bg-white/80 rounded-lg shadow-xl  border  border-gray-300 w-full  p-6 ">
                         <div class=" text-center">
                             <div class="w-24 aspect-square rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-2xl font-bold mx-auto"><img class="w-full aspect-square rounded-full object-cover"
                                                          src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" /></div>
@@ -63,27 +63,25 @@
                         @livewire('profile.claim-rating.claim-rating-list')
                     </div>
                     <div x-cloak x-show="selectedTab === 'settings'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="settings">
-                        <div class="mt-10 sm:mt-0">
+                        <div class="">
                             @livewire('profile.edit-privacy-settings')
                         </div>
                     </div>
                     <div x-cloak x-show="selectedTab === 'security'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="security">
-                        <div class="mt-10 sm:mt-0">
+                        <div class="">
                               <div class="antialiased" wire:loading.class="cursor-wait">
-                              <div class=" sm:pl-6 lg:pl-8">
+                              <div class="">
                               @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-                                        <div class="mt-10 sm:mt-0">
+                                        <div class="mt-10 sm:mt-6">
                                             @livewire('profile.update-password-form')
                                         </div>
-                                        <x-section-border />
                                     @endif
                                     @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                                        <div class="mt-10 sm:mt-0">
+                                        <div class="mt-10 sm:mt-6">
                                             @livewire('profile.two-factor-authentication-form')
                                         </div>
-                                        <x-section-border />
                                     @endif
-                                    <div class="mt-10 sm:mt-0">
+                                    <div class="mt-10 sm:mt-6">
                                         @livewire('profile.logout-other-browser-sessions-form')
                                     </div>
                                 </div>

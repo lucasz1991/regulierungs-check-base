@@ -1,4 +1,4 @@
-<div class="" wire:loading.class="cursor-wait">
+<div class="min-h-[70vh]" wire:loading.class="cursor-wait">
 
     @section('title')
         {{ __('Nachrichten') }}
@@ -7,8 +7,8 @@
     <div class="container mx-auto px-4 py-10  space-y-6">
 
         {{-- Header / Glass --}}
-        <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl p-6 md:p-8">
-            <div class="flex items-center justify-between gap-4">
+        <div class="rounded-xl border border-white/20 bg-white/20 backdrop-blur-xl shadow-2xl p-6 md:p-8">
+            <div class="flex justify-between gap-4">
                 <div class="min-w-0">
                     <h1 class="text-2xl md:text-3xl font-semibold text-white flex items-center gap-3">
                         <i class="fal fa-inbox text-blue-200/80"></i>
@@ -19,8 +19,8 @@
                     </p>
                 </div>
 
-                <div class="hidden md:flex items-center gap-2 text-blue-100/70">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/10 px-4 py-2 text-sm">
+                <div class="hidden md:flex items-center gap-2 text-primary">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white border border-white px-4 py-2 text-sm">
                         <i class="fal fa-bell"></i>
                         <span>Immer aktuell</span>
                     </span>
@@ -28,23 +28,11 @@
             </div>
         </div>
 
-        {{-- Info Box (hell) --}}
-        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-5">
-            <div class="flex items-start gap-3">
-                <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow">
-                    <i class="fal fa-info-circle"></i>
-                </div>
-                <div class="text-sm text-gray-700 leading-relaxed">
-                    <span class="text-base font-semibold text-gray-900">Hinweis:</span><br>
-                    Jede neue Nachricht, die dich betrifft, wird dir direkt angezeigt, damit du immer auf dem neuesten Stand bist.
-                    Schau regelmäßig in dein Postfach, um keine wichtigen Updates zu verpassen.
-                </div>
-            </div>
-        </div>
+
 
         {{-- Toolbar --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div class="w-full md:w-1/2">
+            <div class="w-full">
                 <div class="relative">
                     <i class="fal fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     <input
@@ -59,7 +47,7 @@
         </div>
 
         {{-- Table Card --}}
-        <div class="rounded-3xl bg-white/95 border border-white/10 shadow-xl overflow-hidden">
+        <div class="rounded-xl bg-white/95 border border-white/10 shadow-xl overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm text-left text-gray-600">
                     <thead class="text-xs uppercase bg-gray-50 text-gray-700">

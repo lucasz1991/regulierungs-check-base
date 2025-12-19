@@ -14,21 +14,21 @@
         }
     }"
 >
-    <section class="pt-2">
+    <section class="">
         <div
             x-data="{
                 showFilters: $persist(false),
                 __openedByUser: false
             }"
         >
-            <div class="container mx-auto p-4 pb-8">
+            <div class="container mx-auto px-4 pb-8">
 
                 {{-- Mobile Filter Toggle --}}
                 <div x-show="!$store.nav.isScreenXl" class="mb-4 max-xl:flex max-xl:justify-end" wire:ignore>
                     <button
                         type="button"
                         @click="__openedByUser = true; showFilters = !showFilters"
-                        class="text-sm text-blue-600 hover:underline p-2 rounded-full bg-gray-200 mr-3 flex items-center justify-center shadow-xl shadow-gray-900/5 border border-gray-300"
+                        class="text-sm text-blue-600 hover:underline p-2 rounded-full bg-gray-200  flex items-center justify-center shadow-xl shadow-gray-900/5 border border-gray-300"
                     >
                         <svg
                             :class="{ 'xl:rotate-180 max-xl:rotate-0': !showFilters, 'max-xl:rotate-180 xl:rotate-0': showFilters }"
@@ -68,7 +68,7 @@
                             class="max-xl:fixed xl:hidden inset-0 transform transition-all"
                             x-on:click="showFilters = false"
                         >
-                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                            <div class="absolute inset-0 bg-black/30"></div>
                         </div>
 
                         {{-- Panel --}}
