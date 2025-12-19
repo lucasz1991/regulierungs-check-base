@@ -8,7 +8,7 @@
                 {{ $post->published_at->format('d.m.Y') }}
             </p>
 
-            <h1 class="text-2xl md:text-4xl font-semibold text-white leading-tight hyphens-auto">
+            <h1 class="text-xl md:text-2xl font-semibold text-white leading-tight hyphens-auto">
                 {!! $post->title !!}
             </h1>
 
