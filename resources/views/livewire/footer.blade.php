@@ -93,17 +93,7 @@
                         <li class="max-sm:col-span-2">
                             <a href="/imprint" wire:navigate class='hover:text-white text-white text-sm '>Impressum</a>
                         </li>
-                        <li class="max-sm:inline-flex max-sm:place-self-end max-sm:w-max" >
-                            <a class=""  href="https://www.facebook.com/share/1CVkgcLL8C/?mibextid=wwXIfr" target="_blank">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="fill-white w-7 h-7"
-                                viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7v-7h-2v-3h2V8.5A3.5 3.5 0 0 1 15.5 5H18v3h-2a1 1 0 0 0-1 1v2h3v3h-3v7h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"
-                                    clip-rule="evenodd" />
-                                </svg>
-                                <span class="sr-only">Facebook Link</span>
-                            </a>
-                        </li>
+                        
                         <li class="max-sm:inline-flex max-sm:place-self-end max-sm:w-max" >
                             <a class="" href="https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
