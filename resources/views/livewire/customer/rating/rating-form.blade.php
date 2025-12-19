@@ -79,10 +79,10 @@
                                                 @click="pick({{ $type->id }})"
                                                 class="relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
                                                     flex items-center gap-2 transition duration-200
-                                                    hover:bg-blue-200"
+                                                    "
                                                 :class="selected == {{ $type->id }}
-                                                    ? 'bg-rcgold-light ring-1 ring-rcgold-light'
-                                                    : 'bg-blue-100'"
+                                                    ? 'bg-rcgold-light ring-1 ring-rcgold-light hover:bg-rcgold-light'
+                                                    : 'bg-blue-100 hover:bg-blue-200'"
                                             >
                                                 {{-- Left: Icon --}}
                                                 <div class="w-8 h-8 shrink-0 md:mr-4 flex items-center justify-center">
@@ -260,10 +260,10 @@
                                                     x-cloak
                                                     class="relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
                                                         flex items-center transition duration-200
-                                                        hover:bg-blue-200"
+                                                        "
                                                     :class="selected == {{ $sub->id }}
-                                                        ? 'bg-rcgold-light ring-1 ring-rcgold-light'
-                                                        : 'bg-blue-100'"
+                                                          ? 'bg-rcgold-light ring-1 ring-rcgold-light hover:bg-rcgold-light'
+                                                    : 'bg-blue-100 hover:bg-blue-200'"
                                                 >
                                                     <span class="truncate text-primary font-semibold">
                                                         {{ $sub->name }}
@@ -367,10 +367,10 @@
                                                     x-show="!q || '{{ \Illuminate\Support\Str::lower($ins->name) }}'.includes(q.toLowerCase().trim())"
                                                     x-cloak
                                                     class="relative w-full text-left px-2 md:px-3 py-2 md:py-4 rounded-xl mb-2 md:mb-4
-                                                        flex items-center gap-3 transition duration-200 hover:bg-blue-200"
+                                                        flex items-center gap-3 transition duration-200 "
                                                     :class="selected == {{ $ins->id }}
-                                                        ? 'bg-rcgold-light ring-1 ring-rcgold-light'
-                                                        : 'bg-blue-100'"
+                                                           ? 'bg-rcgold-light ring-1 ring-rcgold-light hover:bg-rcgold-light'
+                                                    : 'bg-blue-100 hover:bg-blue-200'"
                                                 >
                                                     {{-- Logo --}}
                                                     <div class="w-16 h-10 shrink-0 flex items-center bg-white rounded px-2 py-0.5 justify-center  overflow-hidden">
