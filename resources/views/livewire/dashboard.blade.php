@@ -2,7 +2,7 @@
     <div class="container mx-auto px-5">
         <div x-data="{ selectedTab: $persist('basic') }" class="w-full">
             <!-- Hauptbereich -->
-            <div class="container mx-auto px-4 py-10 flex flex-col lg:flex-row gap-10">
+            <div class=" flex flex-col lg:flex-row gap-10">
                 <!-- Sidebar -->
                 <aside class="lg:w-1/4  xl:w-1/6">
                     <div class="bg-white rounded-lg shadow-xl  border  border-gray-300 w-full  p-6 ">
