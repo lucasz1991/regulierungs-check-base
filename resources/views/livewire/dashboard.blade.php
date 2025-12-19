@@ -50,7 +50,6 @@
                                 @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                                     @livewire('profile.update-profile-information-form')
 
-                                    <x-section-border />
                                 @endif
                                 <!-- Customer Information Livewire-Komponente -->
                                 <div class="mt-10 sm:mt-0">
