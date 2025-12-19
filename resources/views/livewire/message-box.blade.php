@@ -1,172 +1,240 @@
-<div  class="w-full relative bg-cover bg-center py-20"  wire:loading.class="cursor-wait">
+<div class="min-h-screen bg-gradient-to-br from-[#081a2f] via-[#0b2442] to-[#0f2f55]" wire:loading.class="cursor-wait">
+
     @section('title')
         {{ __('Nachrichten') }}
     @endsection
-    <x-slot name="header">
-                    
-                <h1 class="font-semibold text-2xl text-gray-800 leading-tight flex items-center">
-                     Nachrichten 
-                     <svg xmlns="http://www.w3.org/2000/svg" width="80px" class="fill-[#000] ml-10 stroke-2 inline opacity-30" viewBox="0 0 512 512" stroke-width="106">
-                         <g>
-                             <g>
-                                 <g>
-                                     <g>
-                                         <path d="M479.568,412.096H33.987c-15,0-27.209-12.209-27.209-27.209V130.003c0-15,12.209-27.209,27.209-27.209h445.581      
-                                         c15,0,27.209,12.209,27.209,27.209v255C506.661,399.886,494.568,412.096,479.568,412.096z 
-                                         M33.987,114.189      
-                                         c-8.721,0-15.814,7.093-15.814,15.814v255c0,8.721,7.093,15.814,15.814,15.814h445.581c8.721,0,15.814-7.093,15.814-15.814v-255      
-                                         c0-8.721-7.093-15.814-15.814-15.814C479.568,114.189,33.987,114.189,33.987,114.189z"/>
-                                     </g>
-                                     <g>
-                                         <path d="M256.894,300.933c-5.93,0-11.86-1.977-16.744-5.93l-41.977-33.14L16.313,118.491c-2.442-1.977-2.907-5.581-0.93-8.023      
-                                         c1.977-2.442,5.581-2.907,8.023-0.93l181.86,143.372l42.093,33.14c5.698,4.535,13.721,4.535,19.535,0l41.977-33.14      
-                                         l181.628-143.372c2.442-1.977,6.047-1.512,8.023,0.93c1.977-2.442,1.512,6.047-0.93,8.023l-181.86,143.372l-41.977,33.14      
-                                         C268.755,299.072,262.708,300.933,256.894,300.933z"/>
-                                     </g>
-                                 </g>
-                             </g>
-                         </g>
-                     </svg>
-                </h1>
-        </x-slot>
-    <div class="container mx-auto px-5">
-        <div class="bg-white/80  shadow-lg rounded-lg p-6">
-            
-                    
-            
-        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
-        <p><span class="text-lg font-medium">Du wirst hier über alle wichtigen Nachrichten informiert.</span><br> Jede neue Nachricht, die dich betrifft, wird dir direkt angezeigt, damit du immer auf dem neuesten Stand bist. Schau regelmäßig in dein Postfach, um keine wichtigen Updates zu verpassen.</p>
-</div>
-            <div class="mt-10 space-y-5">
-            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 ">
-                <div class="w-full md:w-1/2">
-                    <form class="flex items-center">
-                        <label for="simple-search" class="sr-only">Suchen</label>
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2" placeholder="Suchen" required="">
-                        </div>
-                    </form>
+
+    <div class="container mx-auto px-4 py-10 max-w-6xl space-y-6">
+
+        {{-- Header / Glass --}}
+        <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl p-6 md:p-8">
+            <div class="flex items-center justify-between gap-4">
+                <div class="min-w-0">
+                    <h1 class="text-2xl md:text-3xl font-semibold text-white flex items-center gap-3">
+                        <i class="fal fa-inbox text-blue-200/80"></i>
+                        <span>Nachrichten</span>
+                    </h1>
+                    <p class="mt-2 text-sm md:text-base text-blue-100/80">
+                        Du wirst hier über alle wichtigen Nachrichten informiert.
+                    </p>
+                </div>
+
+                <div class="hidden md:flex items-center gap-2 text-blue-100/70">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/10 px-4 py-2 text-sm">
+                        <i class="fal fa-bell"></i>
+                        <span>Immer aktuell</span>
+                    </span>
                 </div>
             </div>
-            <div class="overflow-x-scroll">
-                <table class="min-w-md text-sm text-left text-gray-500 table-fixed">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+        </div>
+
+        {{-- Info Box (hell) --}}
+        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-5">
+            <div class="flex items-start gap-3">
+                <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow">
+                    <i class="fal fa-info-circle"></i>
+                </div>
+                <div class="text-sm text-gray-700 leading-relaxed">
+                    <span class="text-base font-semibold text-gray-900">Hinweis:</span><br>
+                    Jede neue Nachricht, die dich betrifft, wird dir direkt angezeigt, damit du immer auf dem neuesten Stand bist.
+                    Schau regelmäßig in dein Postfach, um keine wichtigen Updates zu verpassen.
+                </div>
+            </div>
+        </div>
+
+        {{-- Toolbar --}}
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="w-full md:w-1/2">
+                <div class="relative">
+                    <i class="fal fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input
+                        type="text"
+                        id="simple-search"
+                        class="w-full rounded-xl bg-white/95 border border-gray-200 pl-12 pr-4 py-3 text-sm
+                               focus:ring-2 focus:ring-primary focus:border-primary"
+                        placeholder="Suchen…"
+                    >
+                </div>
+            </div>
+        </div>
+
+        {{-- Table Card --}}
+        <div class="rounded-3xl bg-white/95 border border-white/10 shadow-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left text-gray-600">
+                    <thead class="text-xs uppercase bg-gray-50 text-gray-700">
                         <tr>
-                            <th scope="col" class="py-3 px-6 w-4/12">Betreff</th>
-                            <th scope="col" class="py-3 px-6 w-5/12">Nachricht</th>
-                            <th scope="col" class="py-3 px-6 w-2/12">Datum</th>
-                            <th scope="col" class="py-3 px-6 w-1/12"></th>
+                            <th class="px-5 py-4 w-4/12">Betreff</th>
+                            <th class="px-5 py-4 w-5/12">Nachricht</th>
+                            <th class="px-5 py-4 w-2/12">Datum</th>
+                            <th class="px-5 py-4 w-1/12 text-right"></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @forelse($messages as $message)
 
-                            <tr class="border-b hover:bg-blue-50 cursor-pointer @if($message->status == 1) bg-blue-200 @endif" wire:click="showMessage({{ $message->id }})"  wire:key="{{ $message->id }}">
-                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap  truncate">{{ $message->subject }}</th>
-                                    <td class="px-4 py-3"
-                                        x-data="{ 
-                                            screenWidth: window.innerWidth ,
-                                            maxLength: Math.max(40, Math.min(100, Math.floor( this.screenWidth / 10)))}"
-                                            x-resize="screenWidth = $width">
-                                        <span class="block truncate" >{{ mb_substr(strip_tags($message->message), 0, 100) }}</span>
-                                    </td>
-                                    <td class="px-4 py-3">{{ $message->created_at->diffForHumans() }}</td>
-                                    <td x-data="{ open: false }" @click.away="open = false"
-                                         class="px-3 py-3 flex items-center justify-end">
-                                        <button @click.prevent="open = !open" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" type="button">
-                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                            </svg>
-                                        </button>
-                                        <div class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow">
-                                            <ul class="py-1 text-sm text-gray-700" aria-labelledby="apple-imac-27-dropdown-button">
-                                                <li>
-                                                    <button @click.prevent="$wire.showMessage({{ $message->id }})" class="block py-2 px-4 hover:bg-gray-100">anzeigen</button>
-                                                </li>
-                                                
-                                            </ul>
-                                            <div class="py-1">
-                                                <button @click.prevent="open = false"  class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Löschen</button>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($messages as $message)
+                            <tr
+                                class="group cursor-pointer hover:bg-blue-50/60 transition
+                                       {{ $message->status == 1 ? 'bg-blue-50' : 'bg-white' }}"
+                                wire:click="showMessage({{ $message->id }})"
+                                wire:key="{{ $message->id }}"
+                            >
+                                {{-- Betreff --}}
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center gap-3 min-w-0">
+                                        <span class="shrink-0 w-9 h-9 rounded-xl
+                                            {{ $message->status == 1 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600' }}
+                                            flex items-center justify-center">
+                                            <i class="fal {{ $message->status == 1 ? 'fa-envelope-open' : 'fa-envelope' }}"></i>
+                                        </span>
+
+                                        <div class="min-w-0">
+                                            <div class="font-semibold text-gray-900 truncate">
+                                                {{ $message->subject }}
                                             </div>
+                                            @if($message->status == 1)
+                                                <div class="text-xs text-blue-700/80">
+                                                    Neu
+                                                </div>
+                                            @endif
                                         </div>
-                                    </td>
+                                    </div>
+                                </td>
+
+                                {{-- Snippet --}}
+                                <td class="px-5 py-4">
+                                    <span class="block truncate text-gray-700">
+                                        {{ mb_substr(strip_tags($message->message), 0, 110) }}
+                                    </span>
+                                </td>
+
+                                {{-- Date --}}
+                                <td class="px-5 py-4 text-gray-500">
+                                    {{ $message->created_at->diffForHumans() }}
+                                </td>
+
+                                {{-- Actions --}}
+                                <td class="px-5 py-4 text-right" wire:ignore>
+                                    <div x-data="{ open: false }" class="relative">
+                                        <button
+                                            type="button"
+                                            @click.stop="open = !open"
+                                            class="inline-flex items-center justify-center w-10 h-10 rounded-xl
+                                                   text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition"
+                                            aria-label="Aktionen"
+                                        >
+                                            <i class="fal fa-ellipsis-v"></i>
+                                        </button>
+
+                                        <div
+                                            x-cloak
+                                            x-show="open"
+                                            @click.away="open = false"
+                                            x-transition.opacity
+                                            class="absolute right-0 mt-2 w-44 rounded-xl bg-white border border-gray-200 shadow-lg overflow-hidden z-20"
+                                            @click.stop
+                                        >
+                                            <button
+                                                class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50"
+                                                @click.prevent="open=false; $wire.showMessage({{ $message->id }})"
+                                            >
+                                                <i class="fal fa-eye mr-2 text-gray-400"></i>
+                                                Anzeigen
+                                            </button>
+
+                                            <button
+                                                class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 text-red-600"
+                                                @click.prevent="open=false; /* TODO: $wire.deleteMessage({{ $message->id }}) */"
+                                            >
+                                                <i class="fal fa-trash-alt mr-2 text-red-400"></i>
+                                                Löschen
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         @empty
-                            <tr class=" " >
-                                <td class="border-b border-gray-200 px-6 py-4 truncate">Keine Nachrichten gefunden.</td>
+                            <tr>
+                                <td colspan="4" class="px-6 py-10 text-center text-gray-500">
+                                    Keine Nachrichten gefunden.
+                                </td>
                             </tr>
                         @endforelse
-
-
-                       
                     </tbody>
                 </table>
             </div>
-                @if ($messages->hasMorePages())
-                    <div class="text-center mt-10"
-                    x-data="{ isClicked: false }" 
-                    @click="isClicked = true; setTimeout(() => isClicked = false,100)">
-                        <button :style="isClicked ? 'transform:scale(0.9)' : 'transform:scale(1)'" wire:click="loadMore" class=" transition-all duration-100 transform py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                            Weitere Nachrichten laden
-                        </button>
-                    </div>
-                @endif
-            </div>
 
-
-
-
-
-
-
-
-
-            
+            {{-- Load more --}}
+            @if ($messages->hasMorePages())
+                <div class="p-6 border-t border-gray-100 text-center">
+                    <button
+                        wire:click="loadMore"
+                        class="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-medium
+                               bg-white border border-gray-200 shadow-sm
+                               hover:bg-gray-50 transition
+                               focus:outline-none focus:ring-2 focus:ring-primary"
+                    >
+                        <i class="fal fa-arrow-down"></i>
+                        Weitere Nachrichten laden
+                    </button>
+                </div>
+            @endif
         </div>
 
+        {{-- MODAL --}}
+        <div
+            x-data="{ show: @entangle('showMessageModal') }"
+            x-cloak
+            x-show="show"
+            x-transition.opacity
+            class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        >
+            {{-- overlay --}}
+            <div class="absolute inset-0 bg-black/70" @click="show = false"></div>
 
-        <!-- Modal zum ansehen der Nachricht-->
-        <div 
-            x-show="showMessageModal" x-cloak 
-            x-data="{
-                showMessageModal: @entangle('showMessageModal')
-            }"
-            x-init="() => { $watch('showMessageModal', value => { document.getElementById('main').classList.toggle('overflow-hidden', value); });}"
-            class="fixed inset-0 p-6 flex items-center justify-center z-50 modal-container ">
+            {{-- modal --}}
+            <div class="relative w-full max-w-2xl rounded-3xl border border-white/10 bg-white/10 backdrop-blur-xl shadow-2xl overflow-hidden">
+                <div class="bg-white/95 p-6 md:p-7">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="min-w-0">
+                            <div class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 mb-3">
+                                <i class="fal fa-clock text-gray-400"></i>
+                                <span>{{ $selectedMessage ? $selectedMessage->created_at->diffForHumans() : '' }}</span>
+                            </div>
 
-            <div x-show="showMessageModal" class="fixed inset-0 transform" x-on:click="showMessageModal = false">
-                <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
-            </div>
-
-            <div x-show="showMessageModal" class="bg-white rounded-lg overflow-hidden transform sm:w-full sm:mx-auto max-w-2xl ">
-                <div class="border border-gray-300 rounded-lg p-4 relative">
-                    <button type="button" @click="showMessageModal = false; $selectedMessage = null;" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                    <div>
-                        <div class="flex">
-                            <span class="inline-block  text-xs font-medium text-gray-700 mb-2 bg-green-100 px-2 py-1 rounded-full">{{ $selectedMessage ? $selectedMessage->created_at->diffForHumans() : '' }}</span>
+                            <h3 class="text-xl font-semibold text-gray-900 leading-snug">
+                                {{ $selectedMessage ? $selectedMessage->subject : '' }}
+                            </h3>
                         </div>
 
+                        <button
+                            type="button"
+                            class="w-10 h-10 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition flex items-center justify-center"
+                            @click="show=false; $wire.set('selectedMessage', null)"
+                            aria-label="Schließen"
+                        >
+                            <i class="fal fa-times"></i>
+                        </button>
                     </div>
-                    <h3 class="text-xl font-semibold mb-4 border-b pb-2">{{ $selectedMessage ? $selectedMessage->subject : '' }}</h3>
-                    <div class="my-6">
-                        <p class="text-gray-800">{!! $selectedMessage ? $selectedMessage->message  : '' !!}</p>
-                    </div>
-                </div>
 
-                <div class="flex justify-end mt-4 mb-2">
-                    <button type="button" @click="showMessageModal = false; $selectedMessage = null;" class="bg-green-300 hover:bg-green-400 text-white px-4 py-2 rounded-lg mr-2">Schließen</button>
+                    <div class="mt-6 text-gray-800 leading-relaxed">
+                        {!! $selectedMessage ? $selectedMessage->message : '' !!}
+                    </div>
+
+                    <div class="mt-8 flex justify-end">
+                        <button
+                            type="button"
+                            class="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium
+                                   bg-primary text-white shadow-lg shadow-primary/20 hover:opacity-95 transition"
+                            @click="show=false; $wire.set('selectedMessage', null)"
+                        >
+                            <i class="fal fa-check"></i>
+                            Schließen
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
