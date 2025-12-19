@@ -979,7 +979,7 @@
                                                     disabled
                                                     class="px-3 py-2 text-sm font-medium border-r transition-colors duration-300"
                                                     :class="started
-                                                        ? 'bg-rcgold-light text-primary border-rcgold-dark'
+                                                        ? 'bg-rcgold text-primary border-rcgold-dark'
                                                         : 'bg-white text-primary border-gray-300'"
                                                 >
                                                     {{ $started_at ?? 'Start' }}
@@ -991,7 +991,7 @@
                                                         disabled
                                                         class="px-3 py-2 text-sm font-medium transition-colors duration-300"
                                                         :class="ended
-                                                            ? 'bg-rcgold-light text-primary border-rcgold-dark'
+                                                            ? 'bg-rcgold text-primary border-rcgold-dark'
                                                             : 'bg-white text-primary border-gray-300'"
                                                     > 
                                                         {{ $ended_at ?? 'Ende' }}
