@@ -114,7 +114,7 @@
                     {{-- Formular --}}
                     <div class="order-2 md:order-1 md:col-span-2 bg-white/95 p-6 md:p-10">
 
-                        <div class="max-w-2xl">
+                        <div class="md:pr-12">
                             <h2 class="text-2xl font-semibold text-gray-900">
                                 Kontaktiere uns
                             </h2>
