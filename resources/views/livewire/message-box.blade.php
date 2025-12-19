@@ -1,10 +1,10 @@
-<div class="min-h-screen bg-gradient-to-br from-[#081a2f] via-[#0b2442] to-[#0f2f55]" wire:loading.class="cursor-wait">
+<div class="" wire:loading.class="cursor-wait">
 
     @section('title')
         {{ __('Nachrichten') }}
     @endsection
 
-    <div class="container mx-auto px-4 py-10 max-w-6xl space-y-6">
+    <div class="container mx-auto px-4 py-10  space-y-6">
 
         {{-- Header / Glass --}}
         <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl p-6 md:p-8">
