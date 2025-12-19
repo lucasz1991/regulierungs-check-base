@@ -298,7 +298,7 @@
                                      <!-- Settings Dropdown -->
                                      <div class="ms-3 relative">
                                         <x-ui.dropdown.anchor-dropdown
-                                            align="left"
+                                            align="right"
                                             width="auto"
                                             :matchTriggerWidth="false"
                                             dropdownClasses=" bg-white  rounded-xl shadow overflow-hidden"
