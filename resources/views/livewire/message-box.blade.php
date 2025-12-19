@@ -29,8 +29,8 @@
                      </svg>
                 </h1>
         </x-slot>
-    <div class="max-w-7xl mx-auto px-5">
-        <div class="bg-white  shadow-lg rounded-lg p-6">
+    <div class="container mx-auto px-5">
+        <div class="bg-white/80  shadow-lg rounded-lg p-6">
             
                     
             
