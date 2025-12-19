@@ -150,11 +150,13 @@
                         </div>
                     </div>
                 @else
-                    <div class="rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-100 p-5 flex items-start gap-3">
-                        <i class="fal fa-exclamation-triangle text-amber-300 mt-0.5"></i>
+                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg flex items-start gap-3">
+                <svg class="w-6 h-6 mt-1 flex-none text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                </svg>
                         <div>
-                            <h3 class="font-semibold text-base mb-1">Noch keine detaillierte Auswertung</h3>
-                            <p class="text-sm text-blue-100/80">
+                            <h3 class="font-semibold text-base mb-1 ">Noch keine detaillierte Auswertung</h3>
+                            <p class="text-sm ">
                                 Für diese Versicherung liegen aktuell noch keine ausreichend bewerteten Fälle vor.
                                 Sobald erste Bewertungen eingegangen sind, wird hier eine Auswertung angezeigt.
                             </p>
