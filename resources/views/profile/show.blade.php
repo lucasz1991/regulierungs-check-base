@@ -3,7 +3,7 @@
     @section('title')
         {{ __('Profil') }}
     @endsection
-    <div class=" py-3 md:py-12 bg-gray-100">
+    <div class=" py-3 ">
 
         <div class="container mx-auto px-5" >
                 <div x-data="{ selectedTab: 'basic' }" class="w-full">
