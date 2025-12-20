@@ -6,7 +6,7 @@
 
 
             <div class="relative z-10 p-12 max-w-xl md:mb-24">
-                <div class="w-56 mb-10">
+                <div class="w-56 mb-10 hidden md:block">
                     <x-authentication-card-logo />
                 </div>
 
