@@ -1,17 +1,18 @@
 <footer x-data="{ screenWidth: window.innerWidth }" x-resize="screenWidth = $width"  class="footer  ">
-    <div class=" tracking-wide  py-12 mb-24 sm:mb-12 md:mb-6 w-full px-1 md:px-2">
+    <div class=" tracking-wide py-12 mb-24 sm:mb-12 md:mb-6 w-full px-1 md:px-2">
 
         <div class="container mx-auto ">
-            <div class="px-4 py-4 container mx-auto rounded-xl  md:schadow footer-dark-gradient">
+            <div class="px-4 py-4 container mx-auto rounded-xl md:schadow footer-dark-gradient">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-6 gap-y-10">
                     <div>
-                        <a href='/' class="block h-auto w-32  md:w-48 pr-4">
+                        <a href='/' class="block h-auto w-32 md:w-48 pr-4">
                             <img 
                                 class="w-full" 
                                 src="{{ asset('/site-images/logo/logo-white-yelllow.png') }}" 
                                 alt="Logo">
                         </a>
-                    </div>
+                    </d
+                    iv>
                     <div x-data="{ open: false }">
                         <h4 class="text-white font-semibold text-lg relative max-sm:cursor-pointer" @click="open = !open">
                                 Funktionen 
