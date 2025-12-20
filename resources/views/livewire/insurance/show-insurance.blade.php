@@ -39,7 +39,7 @@
                 $scoreRaw = $insurance->latestDetailInsuranceRating->total_score ?? null;
                 $score5 = $scoreRaw !== null ? round($scoreRaw * 5, 1) : null;
 
-                $count = (int) ($insurance->published_ratings_count() ?? 0);
+                $count = (int) ($insurance->published_claimRatingsCountBySubtype() ?? 0);
 
                 // Kreis-Füllstände (0..100)
                 // 1) Dauer: je weniger Tage, desto besser (hier grob: 0 Tage => 100%, 120+ Tage => 0%)
@@ -192,24 +192,24 @@
                 {{-- SLIDE 1: KPIs (ALLE 3 in EINEM Slide) --}}
                 {{-- ===================================================== --}}
                 <div class="swiper-slide">
-                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-4">
-                        <div class="flex items-center justify-between mb-3">
+                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+                        <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                                 <i class="fal fa-chart-line text-blue-600"></i>
                                 <span>Übersicht</span>
                             </h3>
                         </div>
 
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="grid grid-cols-1 gap-2">
                             {{-- KPI 1 --}}
-                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-5">
+                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
                                 <div class="flex items-start justify-between gap-4">
                                     <p class="text-sm text-gray-700 flex items-center gap-2">
                                         <i class="fal fa-clock text-primary fa-lg"></i>
                                         Ø Bearbeitungsdauer
                                     </p>
 
-                                    <div class="relative w-20 h-20 shrink-0">
+                                    <div class="relative  w-16 h-16  shrink-0">
                                         <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                         <div
                                             class="absolute inset-0 rounded-full"
@@ -224,14 +224,14 @@
                             </div>
 
                             {{-- KPI 2 --}}
-                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-5">
+                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
                                 <div class="flex items-start justify-between gap-4">
                                     <p class="text-sm text-gray-700 flex items-center gap-2">
                                         <i class="fal fa-star text-amber-500 fa-lg"></i>
                                         Gesamtbewertung
                                     </p>
 
-                                    <div class="relative w-20 h-20 shrink-0">
+                                    <div class="relative  w-16 h-16  shrink-0">
                                         <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                         <div
                                             class="absolute inset-0 rounded-full"
@@ -247,14 +247,14 @@
                             </div>
 
                             {{-- KPI 3 --}}
-                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-5">
+                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
                                 <div class="flex items-start justify-between gap-4">
                                     <p class="text-sm text-gray-700 flex items-center gap-2">
                                         <i class="fal fa-comments text-emerald-500 fa-lg"></i>
                                         Bewertungen
                                     </p>
 
-                                    <div class="relative w-20 h-20 shrink-0">
+                                    <div class="relative  w-16 h-16  shrink-0">
                                         <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                         <div
                                             class="absolute inset-0 rounded-full"
@@ -275,54 +275,58 @@
                 {{-- SLIDE 2: Scorings --}}
                 {{-- ===================================================== --}}
                 <div class="swiper-slide">
-                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-4">
+                    <div class="">
 
                         @if($insurance->detailInsuranceRatings()->count() > 0)
-                            <div class="bg-white/95 border border-white/10 shadow rounded-2xl w-full p-5">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                                        <i class="fal fa-chart-bar text-blue-600"></i>
-                                        <span>Scorings</span>
-                                    </h3>
-                                    <span class="text-xs text-gray-500 rounded-full bg-gray-100 px-2 py-1">
-                                        Ø / 5
-                                    </span>
-                                </div>
+<div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3 pb-5">
+    <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
+            <i class="fal fa-chart-bar text-blue-600"></i>
+            Scorings
+        </h3>
+        <span class="text-[10px] text-gray-500 rounded-full bg-gray-100 px-2 py-0.5">
+            Ø / 5
+        </span>
+    </div>
 
-                                <div class="space-y-3">
-                                    <div class="flex items-center flex-wrap justify-between gap-3">
-                                        <span class="text-sm text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-clock text-gray-400"></i>
+    <div class="space-y-6 my-4">
+        {{-- Scoring --}}
+        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
+            <span class="text-xs text-gray-700 flex items-center gap-2">
+                <i class="fal fa-clock text-gray-400"></i>
                         <span>Dauer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                        </span>
-                                        <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'md'" />
-                                    </div>
+            </span>
+            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'md'"/>
+        </div>
 
-                                    <div class="flex items-center flex-wrap justify-between gap-3">
-                                        <span class="text-sm text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-headset text-gray-400"></i>
-                                            <span>Kundenservice</span>
-                                        </span>
-                                        <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'md'" />
-                                    </div>
+        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
+            <span class="text-xs text-gray-700 flex items-center gap-2">
+                <i class="fal fa-headset text-gray-400"></i>
+                Kundenservice
+            </span>
+            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'md'"/>
+        </div>
 
-                                    <div class="flex items-center flex-wrap justify-between gap-3">
-                                        <span class="text-sm text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-balance-scale text-gray-400"></i>
+        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
+            <span class="text-xs text-gray-700 flex items-center gap-2">
+                <i class="fal fa-balance-scale text-gray-400"></i>
                         <span>Fairness&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                        </span>
-                                        <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'md'" />
-                                    </div>
+            </span>
+            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'md'"/>
+        </div>
 
-                                    <div class="flex items-center flex-wrap justify-between gap-3">
-                                        <span class="text-sm text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-eye text-gray-400"></i>
+        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
+            <span class="text-xs text-gray-700 flex items-center gap-2">
+                <i class="fal fa-eye text-gray-400"></i>
                         <span>Transparenz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                        </span>
-                                        <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'md'" />
-                                    </div>
-                                </div>
-                            </div>
+            </span>
+            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'md'"/>
+        </div>
+    </div>
+</div>
+
+
+
                         @else
                             <div class="rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 flex gap-3">
                                 <i class="fal fa-exclamation-triangle mt-0.5"></i>
@@ -342,19 +346,25 @@
                 {{-- SLIDE 3: Kommentar --}}
                 {{-- ===================================================== --}}
                 <div class="swiper-slide">
-                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-4">
+                    <div class="">
 
                         @if($insurance->detailInsuranceRatings()->count() > 0)
-                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-5">
-                                <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-                                    <i class="fal fa-comment-alt text-blue-600"></i>
-                                    <span>Kommentar</span>
-                                </h2>
+<div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+    <div class="flex items-center gap-2 mb-3">
+        <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
+            <i class="fal fa-comment-alt text-blue-600"></i>
+            Zusammenfassung
+        </h3>
+    </div>
 
-                                <p class="text-gray-700 leading-relaxed">
-                                    {{ $detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.' }}
-                                </p>
-                            </div>
+    <div class="rounded-xl bg-white p-3 shadow-sm border border-gray-100 text-sm text-gray-700 leading-relaxed">
+        <x-ui.read-more-typewriter
+            :text="$detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.'"
+            limit="400"
+            speed="1"
+        />
+    </div>
+</div>
                         @else
                             <div class="rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 flex gap-3">
                                 <i class="fal fa-exclamation-triangle mt-0.5"></i>
@@ -387,7 +397,7 @@
      <div class="mt-6">
         <div class="container mx-auto px-4 pt-6 py-6 ">
             @if($insurance->published_ratings_count() > 0)
-                <h2 class="flex items-center justify-center text-lg px-2 py-1 w-max mb-5">
+                <h2 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                     <span class="w-max text-white">Bewertungen</span>
                     <span class="ml-2 bg-white text-sky-600 text-xs shadow border border-sky-200 font-bold aspect-square px-2 py-1 flex items-center justify-center rounded-full h-7 leading-none">
                         {{ $insurance->published_ratings_count() }}

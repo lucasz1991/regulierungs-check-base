@@ -160,6 +160,12 @@ class Insurance extends Model
             ->count();
     }
 
+    public function published_claimRatings_avgRatingDurationBySubtype(?int $subtypeId = null)
+    {
+return null;
+    }
+
+
     public function getRouteKeyName()
     {
         return 'slug';
