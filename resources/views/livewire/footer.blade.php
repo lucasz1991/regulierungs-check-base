@@ -11,8 +11,7 @@
                                 src="{{ asset('/site-images/logo/logo-white-yelllow.png') }}" 
                                 alt="Logo">
                         </a>
-                    </d
-                    iv>
+                    </div>
                     <div x-data="{ open: false }">
                         <h4 class="text-white font-semibold text-lg relative max-sm:cursor-pointer" @click="open = !open">
                                 Funktionen 
