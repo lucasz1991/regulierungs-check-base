@@ -1,12 +1,12 @@
 @props([
     'text' => '',
-    'limit' => 400,
+    'limitPx' => 120, 
     'speed' => 12,
     'showLess' => true,
     'asHtml' => false,
     'labelMore' => 'Weiterlesen',
     'labelLess' => 'Weniger anzeigen',
-    'heightAnim' => 520, // ms für das Höhen-Wachstum
+    'heightAnim' => 520,    
 ])
 
 @php
@@ -18,7 +18,7 @@
     x-data="{
         // config
         full: @js($full),
-        limit: @js((int)$limit),
+        limitPx: @js((int)$limitPx),
         speed: @js((int)$speed),
         asHtml: @js((bool)$asHtml),
         showLess: @js((bool)$showLess),
@@ -28,7 +28,7 @@
         expanded: false,
         typing: false,
 
-        // content parts
+        // derived content
         shortText: '',
         remainder: '',
         typedText: '',
@@ -38,40 +38,92 @@
         // raf
         rafId: null,
 
-        init() {
+        async init() {
             const t = (this.full || '').trim();
 
-            if (t.length <= this.limit) {
+            // 1) trivial
+            if (!t.length) {
+                this.shortText = '';
+                this.remainder = '';
+                this.hasEllipsis = false;
+                return;
+            }
+
+            // 2) initial render full in sizers, then compute cut by px-height
+            // we do it after DOM paints
+            await this.$nextTick();
+
+            // Wenn Full-Höhe <= limitPx -> kein Weiterlesen
+            const fullH = this.getFullHeightFromText(t);
+            if (fullH !== null && fullH <= this.limitPx) {
                 this.shortText = t;
                 this.remainder = '';
                 this.hasEllipsis = false;
 
-                this.$nextTick(() => this.setWrapHeight(this.getShortHeight()));
+                await this.$nextTick();
+                this.setWrapHeight(this.getShortHeight());
                 return;
             }
 
-            const cut = this.wordCut(t, this.limit);
-            this.shortText = cut.short; // ohne …
-            this.remainder = cut.rest;
+            // 3) find maximal shortText so that shortHeight <= limitPx
+            const cut = this.cutTextByPxHeight(t, this.limitPx);
+            this.shortText = cut.short.trimEnd();
+            this.remainder = cut.rest.trimStart();
             this.hasEllipsis = true;
 
-            this.$nextTick(() => this.setWrapHeight(this.getShortHeight()));
+            await this.$nextTick();
+            this.setWrapHeight(this.getShortHeight());
         },
 
-        wordCut(text, limit) {
-            const raw = text.slice(0, limit);
-            const lastSpace = raw.lastIndexOf(' ');
-            const safe = lastSpace > 120 ? raw.slice(0, lastSpace) : raw;
+        // --- Cutting by pixel height ---
+        cutTextByPxHeight(text, limitPx) {
+            // Binary search on character index
+            let lo = 0;
+            let hi = text.length;
+            let best = 0;
+
+            // ensure sizerShort exists
+            if (!this.$refs.sizerShort) {
+                return { short: text, rest: '' };
+            }
+
+            while (lo <= hi) {
+                const mid = (lo + hi) >> 1;
+                const candidate = text.slice(0, mid).trimEnd();
+
+                this.$refs.sizerShortText.textContent = candidate;
+                const h = this.$refs.sizerShort.offsetHeight;
+
+                if (h <= limitPx) {
+                    best = mid;
+                    lo = mid + 1;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+
+            // fallback: at least a bit
+            best = Math.max(0, best);
+
+            // Prefer word boundary
+            let short = text.slice(0, best);
+            const lastSpace = short.lastIndexOf(' ');
+            if (lastSpace > 40) short = short.slice(0, lastSpace);
 
             return {
-                short: safe.trimEnd(),
-                rest: text.slice(safe.length).trimStart(),
+                short,
+                rest: text.slice(short.length),
             };
         },
 
+        getFullHeightFromText(text) {
+            if (!this.$refs.sizerFull) return null;
+            this.$refs.sizerFullText.textContent = text;
+            return this.$refs.sizerFull.offsetHeight;
+        },
+
         get isLong() {
-            const t = (this.full || '').trim();
-            return t.length > this.limit;
+            return this.hasEllipsis && !!this.remainder;
         },
 
         get needsSpace() {
@@ -89,11 +141,13 @@
 
         getShortHeight() {
             if (!this.$refs.sizerShort) return null;
+            // short sizer already has shortText inside (via sizerShortText)
             return this.$refs.sizerShort.offsetHeight;
         },
 
         getFullHeight() {
             if (!this.$refs.sizerFull) return null;
+            // full sizer uses full text (via sizerFullText)
             return this.$refs.sizerFull.offsetHeight;
         },
 
@@ -106,12 +160,9 @@
             const end   = Math.ceil(target);
             const t0    = performance.now();
 
-            const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-
             const step = (now) => {
                 const p = Math.min(1, (now - t0) / duration);
-                const eased = easeOutCubic(p);
-                const h = start + (end - start) * eased;
+                const h = start + (end - start) * p; 
 
                 this.$refs.wrap.style.height = Math.ceil(h) + 'px';
 
@@ -131,41 +182,33 @@
         },
 
         async expandWithHeight() {
-            // Ellipsis verschwindet sofort durch x-show
             this.expanded = true;
-
-            // DOM updaten (Sizer gleiche Breite)
             await this.$nextTick();
 
+            // set full sizer text to full (for correct full height)
+            this.$refs.sizerFullText.textContent = (this.full || '').trim();
+
             const fullH = this.getFullHeight();
-            if (fullH) {
-                // ✅ wächst smooth, kein Jump
-                this.animateHeightTo(fullH, this.heightAnim);
-            }
+            if (fullH) this.animateHeightTo(fullH, this.heightAnim);
 
-            // minimal Vorsprung geben, damit Höhe sichtbar anläuft
             await this.sleep(60);
-
-            // tippen
             await this.typeRemainder();
-
-            // optional: nach dem Tippen Height auf auto,
-            // damit bei Resize/Fontsize-Änderung kein fester px-Wert bleibt.
-            // if (this.$refs.wrap) this.$refs.wrap.style.height = 'auto';
         },
 
         async collapseWithHeight() {
-            // tippen stoppen + reset
             this.typing = false;
             this.typedText = '';
             this.typedHtml = '';
 
             await this.$nextTick();
 
-            const shortH = this.getShortHeight();
-            if (shortH) this.animateHeightTo(shortH, 320);
+            // restore short sizer text
+            this.$refs.sizerShortText.textContent = this.shortText;
 
-            await this.sleep(260);
+            const shortH = this.getShortHeight();
+            if (shortH) this.animateHeightTo(shortH, 260);
+
+            await this.sleep(220);
             this.expanded = false;
         },
 
@@ -197,9 +240,7 @@
             }
         },
 
-        sleep(ms) {
-            return new Promise(r => setTimeout(r, ms));
-        },
+        sleep(ms) { return new Promise(r => setTimeout(r, ms)); },
 
         escapeHtml(s) {
             return s
@@ -207,18 +248,36 @@
                 .replaceAll('<', '&lt;')
                 .replaceAll('>', '&gt;');
         },
+
+        // ✅ for swiper: auto collapse when element leaves viewport
+        reset() {
+            if (!this.expanded && !this.typing) return;
+
+            cancelAnimationFrame(this.rafId);
+
+            this.typing = false;
+            this.typedText = '';
+            this.typedHtml = '';
+            this.expanded = false;
+
+            this.$nextTick(() => {
+                // restore short sizer text
+                if (this.$refs.sizerShortText) this.$refs.sizerShortText.textContent = this.shortText;
+
+                const h = this.getShortHeight();
+                if (h) this.setWrapHeight(h);
+            });
+        },
     }"
+    x-intersect:leave="reset()"
 >
-    {{-- Height wrapper (animiert, smooth) --}}
-    <div
-        x-ref="wrap"
-        class="overflow-hidden"
-    >
-        {{-- Sichtbarer Text --}}
+    {{-- Height wrapper --}}
+    <div x-ref="wrap" class="overflow-hidden">
+        {{-- Visible text --}}
         <div class="text-gray-700 leading-relaxed">
             <span x-text="shortText"></span>
 
-            {{-- … verschwindet sofort beim Expand --}}
+            {{-- … disappears on expand --}}
             <span x-show="hasEllipsis && !expanded" x-cloak class="select-none">…</span>
 
             <span x-show="expanded" x-cloak>
@@ -235,17 +294,14 @@
             </span>
         </div>
 
-        {{-- SIZER (unsichtbar, aber gleiche Breite => korrekte Höhenmessung) --}}
+        {{-- Sizers (same width, hidden) --}}
         <div class="relative h-0">
             <div class="absolute inset-x-0 top-0 -z-10 opacity-0 pointer-events-none select-none">
                 <div x-ref="sizerShort" class="text-gray-700 leading-relaxed">
-                    <span x-text="shortText"></span>
+                    <span x-ref="sizerShortText"></span>
                 </div>
-
                 <div x-ref="sizerFull" class="text-gray-700 leading-relaxed">
-                    <span x-text="shortText"></span>
-                    <span> </span>
-                    <span x-text="remainder"></span>
+                    <span x-ref="sizerFullText"></span>
                 </div>
             </div>
         </div>

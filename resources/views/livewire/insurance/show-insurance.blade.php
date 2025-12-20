@@ -168,229 +168,227 @@
             @php
                 $detailInsuranceRating =  $insurance->latestDetailInsuranceRating;
             @endphp            
-<div class="md:hidden mt-8">
-    <div
-        x-data="{ swiper: null }"
-        x-init="
-            swiper = new Swiper($refs.mobileSwiper, {
-                slidesPerView: 1,
-                spaceBetween: 20,
-                autoHeight: true,
-                pagination: {
-                    el: $refs.pagination,
-                    clickable: true,
-                },
-            });
-        "
-        class="relative"
-    >
-        {{-- SWIPER --}}
-        <div class="swiper" x-ref="mobileSwiper">
-            <div class="swiper-wrapper">
+            <div class="md:hidden mt-8">
+                <div
+                    x-data="{ swiper: null }"
+                    x-init="
+                        swiper = new Swiper($refs.mobileSwiper, {
+                            slidesPerView: 1,
+                            spaceBetween: 20,
+                            autoHeight: false,
+                            pagination: {
+                                el: $refs.pagination,
+                                clickable: true,
+                            },
+                        });
+                    "
+                    class="relative"
+                >
+                    {{-- SWIPER --}}
+                    <div class="swiper" x-ref="mobileSwiper">
+                        <div class="swiper-wrapper">
 
-                {{-- ===================================================== --}}
-                {{-- SLIDE 1: KPIs (ALLE 3 in EINEM Slide) --}}
-                {{-- ===================================================== --}}
-                <div class="swiper-slide">
-                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                                <i class="fal fa-chart-line text-blue-600"></i>
-                                <span>Übersicht</span>
-                            </h3>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-2">
-                            {{-- KPI 1 --}}
-                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
-                                <div class="flex items-start justify-between gap-4">
-                                    <p class="text-sm text-gray-700 flex items-center gap-2">
-                                        <i class="fal fa-clock text-primary fa-lg"></i>
-                                        Ø Bearbeitungsdauer
-                                    </p>
-
-                                    <div class="relative  w-16 h-16  shrink-0">
-                                        <div class="absolute inset-0 rounded-full bg-gray-100"></div>
-                                        <div
-                                            class="absolute inset-0 rounded-full"
-                                            style="background: conic-gradient(#2563eb {{ $daysPct }}%, #e5e7eb 0);"
-                                        ></div>
-                                        <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center">
-                                            <div class="text-lg font-semibold">{{ $days }}</div>
-                                            <div class="text-[10px] text-gray-500">Tage</div>
-                                        </div>
+                            {{-- ===================================================== --}}
+                            {{-- SLIDE 1: KPIs (ALLE 3 in EINEM Slide) --}}
+                            {{-- ===================================================== --}}
+                            <div class="swiper-slide">
+                                <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                                            <i class="fal fa-chart-line text-blue-600"></i>
+                                            <span>Übersicht</span>
+                                        </h3>
                                     </div>
-                                </div>
-                            </div>
 
-                            {{-- KPI 2 --}}
-                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
-                                <div class="flex items-start justify-between gap-4">
-                                    <p class="text-sm text-gray-700 flex items-center gap-2">
-                                        <i class="fal fa-star text-amber-500 fa-lg"></i>
-                                        Gesamtbewertung
-                                    </p>
+                                    <div class="grid grid-cols-1 gap-2">
+                                        {{-- KPI 1 --}}
+                                        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
+                                            <div class="flex items-start justify-between gap-4">
+                                                <p class="text-sm text-gray-700 flex items-center gap-2">
+                                                    <i class="fal fa-clock text-primary fa-lg"></i>
+                                                    Ø Bearbeitungsdauer
+                                                </p>
 
-                                    <div class="relative  w-16 h-16  shrink-0">
-                                        <div class="absolute inset-0 rounded-full bg-gray-100"></div>
-                                        <div
-                                            class="absolute inset-0 rounded-full"
-                                            style="background: conic-gradient(#f59e0b {{ $scorePct }}%, #e5e7eb 0);"
-                                        ></div>
-                                        <div class="absolute inset-[6px] rounded-full bg-white flex items-center justify-center">
-                                            <div class="text-lg font-semibold">
-                                                {{ $score5 !== null ? number_format($score5, 1, ',', '.') : '–' }}
+                                                <div class="relative  w-16 h-16  shrink-0">
+                                                    <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                                    <div
+                                                        class="absolute inset-0 rounded-full"
+                                                        style="background: conic-gradient(#2563eb {{ $daysPct }}%, #e5e7eb 0);"
+                                                    ></div>
+                                                    <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center">
+                                                        <div class="text-lg font-semibold">{{ $days }}</div>
+                                                        <div class="text-[10px] text-gray-500">Tage</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- KPI 2 --}}
+                                        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
+                                            <div class="flex items-start justify-between gap-4">
+                                                <p class="text-sm text-gray-700 flex items-center gap-2">
+                                                    <i class="fal fa-star text-amber-500 fa-lg"></i>
+                                                    Gesamtbewertung
+                                                </p>
+
+                                                <div class="relative  w-16 h-16  shrink-0">
+                                                    <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                                    <div
+                                                        class="absolute inset-0 rounded-full"
+                                                        style="background: conic-gradient(#f59e0b {{ $scorePct }}%, #e5e7eb 0);"
+                                                    ></div>
+                                                    <div class="absolute inset-[6px] rounded-full bg-white flex items-center justify-center">
+                                                        <div class="text-lg font-semibold">
+                                                            {{ $score5 !== null ? number_format($score5, 1, ',', '.') : '–' }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- KPI 3 --}}
+                                        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
+                                            <div class="flex items-start justify-between gap-4">
+                                                <p class="text-sm text-gray-700 flex items-center gap-2">
+                                                    <i class="fal fa-comments text-emerald-500 fa-lg"></i>
+                                                    Bewertungen
+                                                </p>
+
+                                                <div class="relative  w-16 h-16  shrink-0">
+                                                    <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                                    <div
+                                                        class="absolute inset-0 rounded-full"
+                                                        style="background: conic-gradient(#10b981 {{ $countPct }}%, #e5e7eb 0);"
+                                                    ></div>
+                                                    <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center">
+                                                        <div class="text-lg font-semibold">{{ $count }}</div>
+                                                        <div class="text-[10px] text-gray-500">gesamt</div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {{-- KPI 3 --}}
-                            <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-3">
-                                <div class="flex items-start justify-between gap-4">
-                                    <p class="text-sm text-gray-700 flex items-center gap-2">
-                                        <i class="fal fa-comments text-emerald-500 fa-lg"></i>
-                                        Bewertungen
-                                    </p>
+                            {{-- ===================================================== --}}
+                            {{-- SLIDE 2: Scorings --}}
+                            {{-- ===================================================== --}}
+                            <div class="swiper-slide">
+                                <div class="">
 
-                                    <div class="relative  w-16 h-16  shrink-0">
-                                        <div class="absolute inset-0 rounded-full bg-gray-100"></div>
-                                        <div
-                                            class="absolute inset-0 rounded-full"
-                                            style="background: conic-gradient(#10b981 {{ $countPct }}%, #e5e7eb 0);"
-                                        ></div>
-                                        <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center">
-                                            <div class="text-lg font-semibold">{{ $count }}</div>
-                                            <div class="text-[10px] text-gray-500">gesamt</div>
+                                    @if($insurance->detailInsuranceRatings()->count() > 0)
+                                        <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3 pb-5">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
+                                                    <i class="fal fa-chart-bar text-blue-600"></i>
+                                                    Scorings
+                                                </h3>
+                                                <span class="text-[10px] text-gray-500 rounded-full bg-gray-100 px-2 py-0.5">
+                                                    Ø / 5
+                                                </span>
+                                            </div>
+
+                                            <div class="space-y-6 my-4">
+                                                {{-- Scoring --}}
+                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                        <i class="fal fa-clock text-primary "></i>
+                                                                <span>Dauer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    </span>
+                                                    <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'md'"/>
+                                                </div>
+
+                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                        <i class="fal fa-headset text-primary "></i>
+                                                        Kundenservice
+                                                    </span>
+                                                    <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'md'"/>
+                                                </div>
+
+                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                        <i class="fal fa-balance-scale text-primary "></i>
+                                                                <span>Fairness&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    </span>
+                                                    <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'md'"/>
+                                                </div>
+
+                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                        <i class="fal fa-eye text-primary "></i>
+                                                                <span>Transparenz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    </span>
+                                                    <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'md'"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+
+
+
+                                    @else
+                                        <div class="rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 flex gap-3">
+                                            <i class="fal fa-exclamation-triangle mt-0.5"></i>
+                                            <div>
+                                                <p class="font-semibold">Noch keine Auswertung</p>
+                                                <p class="text-sm">
+                                                    Sobald erste Bewertungen eingehen, erscheint hier eine Auswertung.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                 </div>
                             </div>
+
+                            {{-- ===================================================== --}}
+                            {{-- SLIDE 3: Kommentar --}}
+                            {{-- ===================================================== --}}
+                            <div class="swiper-slide">
+                                <div class="">
+
+                                    @if($insurance->detailInsuranceRatings()->count() > 0)
+                                        <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+                                            <div class="flex items-center gap-2 mb-3">
+                                                <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
+                                                    <i class="fal fa-comment-alt text-blue-600"></i>
+                                                    Zusammenfassung
+                                                </h3>
+                                            </div>
+
+                                            <div class="rounded-xl bg-white p-3 shadow-sm border border-gray-100 text-sm text-gray-700 leading-relaxed">
+                                                <x-ui.read-more-typewriter
+                                                    :text="$detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.'"
+    limitPx="190"
+                                                    speed="1"
+                                                    heightAnim="4000"
+                                                />
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 flex gap-3">
+                                            <i class="fal fa-exclamation-triangle mt-0.5"></i>
+                                            <div>
+                                                <p class="font-semibold">Noch keine Auswertung</p>
+                                                <p class="text-sm">
+                                                    Sobald erste Bewertungen eingehen, erscheint hier eine Auswertung.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+
+                    {{-- Pagination --}}
+                    <div x-ref="pagination" class="bg-white/80 rounded-xl swiper-pagination mt-4 !relative !bottom-0 !w-[70px] mx-auto"></div>
+
                 </div>
-
-                {{-- ===================================================== --}}
-                {{-- SLIDE 2: Scorings --}}
-                {{-- ===================================================== --}}
-                <div class="swiper-slide">
-                    <div class="">
-
-                        @if($insurance->detailInsuranceRatings()->count() > 0)
-<div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3 pb-5">
-    <div class="flex items-center justify-between mb-3">
-        <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
-            <i class="fal fa-chart-bar text-blue-600"></i>
-            Scorings
-        </h3>
-        <span class="text-[10px] text-gray-500 rounded-full bg-gray-100 px-2 py-0.5">
-            Ø / 5
-        </span>
-    </div>
-
-    <div class="space-y-6 my-4">
-        {{-- Scoring --}}
-        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
-            <span class="text-xs text-gray-700 flex items-center gap-2">
-                <i class="fal fa-clock text-gray-400"></i>
-                        <span>Dauer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            </span>
-            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'md'"/>
-        </div>
-
-        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
-            <span class="text-xs text-gray-700 flex items-center gap-2">
-                <i class="fal fa-headset text-gray-400"></i>
-                Kundenservice
-            </span>
-            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'md'"/>
-        </div>
-
-        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
-            <span class="text-xs text-gray-700 flex items-center gap-2">
-                <i class="fal fa-balance-scale text-gray-400"></i>
-                        <span>Fairness&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            </span>
-            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'md'"/>
-        </div>
-
-        <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex items-center justify-between">
-            <span class="text-xs text-gray-700 flex items-center gap-2">
-                <i class="fal fa-eye text-gray-400"></i>
-                        <span>Transparenz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            </span>
-            <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->transparency" :size="'md'"/>
-        </div>
-    </div>
-</div>
-
-
-
-                        @else
-                            <div class="rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 flex gap-3">
-                                <i class="fal fa-exclamation-triangle mt-0.5"></i>
-                                <div>
-                                    <p class="font-semibold">Noch keine Auswertung</p>
-                                    <p class="text-sm">
-                                        Sobald erste Bewertungen eingehen, erscheint hier eine Auswertung.
-                                    </p>
-                                </div>
-                            </div>
-                        @endif
-
-                    </div>
-                </div>
-
-                {{-- ===================================================== --}}
-                {{-- SLIDE 3: Kommentar --}}
-                {{-- ===================================================== --}}
-                <div class="swiper-slide">
-                    <div class="">
-
-                        @if($insurance->detailInsuranceRatings()->count() > 0)
-<div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
-    <div class="flex items-center gap-2 mb-3">
-        <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
-            <i class="fal fa-comment-alt text-blue-600"></i>
-            Zusammenfassung
-        </h3>
-    </div>
-
-    <div class="rounded-xl bg-white p-3 shadow-sm border border-gray-100 text-sm text-gray-700 leading-relaxed">
-        <x-ui.read-more-typewriter
-            :text="$detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.'"
-            limit="400"
-            speed="1"
-        />
-    </div>
-</div>
-                        @else
-                            <div class="rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 flex gap-3">
-                                <i class="fal fa-exclamation-triangle mt-0.5"></i>
-                                <div>
-                                    <p class="font-semibold">Noch keine Auswertung</p>
-                                    <p class="text-sm">
-                                        Sobald erste Bewertungen eingehen, erscheint hier eine Auswertung.
-                                    </p>
-                                </div>
-                            </div>
-                        @endif
-
-                    </div>
-                </div>
-
             </div>
-        </div>
-
-        {{-- Pagination --}}
-        <div x-ref="pagination" class="bg-white/80 rounded-xl swiper-pagination mt-4 !relative !bottom-0 !w-[70px] mx-auto"></div>
-
-    </div>
-</div>
-
-
-
         </div>
     </div>
 
