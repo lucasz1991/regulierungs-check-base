@@ -95,7 +95,7 @@
                         </div>
 
                         @if(!$insurances->count())
-                            <div class="text-center py-10 text-gray-500">
+                            <div class="text-center py-10 text-white">
                                 Keine Versicherungen gefunden.
                             </div>
                         @endif

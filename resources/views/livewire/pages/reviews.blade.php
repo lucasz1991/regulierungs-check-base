@@ -75,7 +75,7 @@
                     </x-slot>
                     <x-slot name="listContent">
                         @if($this->isFiltered)
-                            <div class="mb-4 text-sm text-gray-600">
+                            <div class="mb-4 text-sm text-white">
                                 {{ $claimRatings->total() }} Bewertungen gefunden.
                             </div>
                         @endif
@@ -87,7 +87,7 @@
                                         </div>
                                     @endforeach
                                 @else
-                                    <div class="text-center py-10 text-gray-500">
+                                    <div class="text-center py-10 text-white">
                                         Keine Bewertungen gefunden.
                                     </div>
                                 @endif
