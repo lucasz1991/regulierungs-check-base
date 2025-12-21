@@ -35,11 +35,11 @@
             </div>
             @php
                 // Werte vorbereiten (robust)
-                $days = (int) round($insurance->avgRatingDurationBySubtype());
+                $days = (int) round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType->id ?? null));
                 $scoreRaw = $insurance->latestDetailInsuranceRating->total_score ?? null;
                 $score5 = $scoreRaw !== null ? round($scoreRaw * 5, 1) : null;
 
-                $count = (int) ($insurance->published_claimRatingsCountBySubtype() ?? 0);
+                $count = (int) ($insurance->published_claimRatingsCountBySubtype($subTypeFilterSubType->id ?? null) ?? 0);
 
                 // Kreis-Füllstände (0..100)
                 // 1) Dauer: je weniger Tage, desto besser (hier grob: 0 Tage => 100%, 120+ Tage => 0%)
