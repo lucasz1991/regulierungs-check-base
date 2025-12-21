@@ -320,7 +320,7 @@
                 resize-none
                 pr-28
             "
-            rows="2"
+            rows="1"
             placeholder="Frage stellen…"
         ></textarea>
 
