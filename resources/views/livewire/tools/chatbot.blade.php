@@ -290,57 +290,71 @@
                             </div>
                         </div>
 
-                        {{-- Composer --}}
-                        <div class="mt-4">
-                            <div class="relative">
-                                <textarea
-                                    x-data="{
-                                        resize() {
-                                            this.$el.style.height = 'auto';
-                                            this.$el.style.height = this.$el.scrollHeight + 'px';
-                                        }
-                                    }"
-                                    x-init="resize()"
-                                    @input="resize()"
-                                    x-model="messagefront"
-                                    @keydown.enter.prevent="sendMessage()"
-                                    class="
-                                        w-full
-                                        rounded-2xl
-                                        bg-white/70
-                                        ring-1 ring-slate-200
-                                        px-4 py-3 pr-28
-                                        text-sm md:text-base
-                                        text-slate-800
-                                        placeholder:text-slate-400
-                                        focus:outline-none focus:ring-2 focus:ring-rcgold/40
-                                        min-h-12
-                                        overflow-hidden
-                                    "
-                                    rows="2"
-                                    autofocus
-                                    placeholder="Frage stellen…"
-                                ></textarea>
+<div class="mt-4">
+    <div class="relative">
 
-                                <button
-                                    @click="sendMessage()"
-                                    class="
-                                        absolute right-2 bottom-2
-                                        inline-flex items-center gap-2
-                                        rounded-xl
-                                        bg-rcgold px-3.5 py-2
-                                        text-xs md:text-sm font-semibold text-white
-                                        shadow-lg shadow-black/10
-                                        hover:brightness-105 transition
-                                        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary
-                                    "
-                                >
-                                    <i class="fal fa-paper-plane"></i>
-                                    senden
-                                </button>
-                            </div>
+        {{-- Textarea --}}
+        <textarea
+            x-data="{
+                resize() {
+                    this.$el.style.height = 'auto';
+                    this.$el.style.height = this.$el.scrollHeight + 'px';
+                }
+            }"
+            x-init="resize()"
+            @input="resize()"
+            x-model="messagefront"
+            @keydown.enter.prevent="sendMessage()"
+            class="
+                w-full
+                rounded-2xl
+                bg-white/70
+                ring-1 ring-slate-200
+                px-4 py-3
+                text-sm md:text-base
+                text-slate-800
+                placeholder:text-slate-400
+                focus:outline-none focus:ring-2 focus:ring-rcgold/40
+                min-h-[3rem]
+                overflow-hidden
+                resize-none
+                pr-28
+            "
+            rows="2"
+            placeholder="Frage stellen…"
+        ></textarea>
 
-                        </div>
+        {{-- Actions --}}
+        <div
+            class="
+                mt-2
+                flex justify-end
+                absolute right-2 bottom-2 mt-0
+            "
+        >
+            <button
+                @click="sendMessage()"
+                class="
+                    inline-flex items-center gap-2
+                    rounded-xl
+                    bg-rcgold
+                    px-4 py-2
+                    text-xs md:text-sm
+                    font-semibold text-white
+                    shadow-lg shadow-black/10
+                    hover:brightness-105 transition
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary
+                "
+            >
+                <i class="fal fa-paper-plane"></i>
+                Senden
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
                     </div>
 
                 </div>
