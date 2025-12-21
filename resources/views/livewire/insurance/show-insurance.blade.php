@@ -183,7 +183,6 @@
                         });
                     "
                     class="relative"
-                    wire:ignore
                 >
                     {{-- SWIPER --}}
                     <div class="swiper" x-ref="mobileSwiper">
@@ -361,7 +360,7 @@
                                             <div class="rounded-xl bg-white p-3 shadow-sm border border-gray-100 text-sm text-gray-700 leading-relaxed">
                                                 <x-ui.read-more-typewriter
                                                     :text="$detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.'"
-    limitPx="190"
+                                                    limitPx="190"
                                                     speed="1"
                                                     heightAnim="4000"
                                                 />
