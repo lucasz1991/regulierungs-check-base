@@ -438,7 +438,6 @@
                                                     :text="$detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.'"
                                                     limitPx="200"
                                                     speed="0.5"
-                                                    heightAnim="1500"
                                                 />
                                             </div>
                                         </div>
