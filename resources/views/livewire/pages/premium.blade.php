@@ -14,7 +14,7 @@
                 <div class="flex items-start gap-4">
                     <div class="shrink-0">
                         <div class="h-12 w-12 rounded-xl
-                                    bg-primary/10 text-primary
+                                    bg-primary/10 text-primary  shrink-0 
                                     flex items-center justify-center">
                             <i class="fal fa-layer-group text-xl"></i>
                         </div>
@@ -43,7 +43,7 @@
                     {{-- Zielgruppen --}}
                     <div class="rounded-xl bg-slate-50 border border-slate-200 p-5">
                         <div class="flex items-start gap-3">
-                            <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                            <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                                 <i class="fal fa-briefcase"></i>
                             </div>
                             <div>
@@ -89,7 +89,7 @@
                 <div class="mt-10 pt-8 border-t border-slate-200">
 
                     <div class="flex items-start gap-4 mb-6">
-                        <div class="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                        <div class="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                             <i class="fal fa-envelope-open-text text-lg"></i>
                         </div>
 
