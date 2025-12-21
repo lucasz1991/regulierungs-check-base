@@ -311,7 +311,7 @@
                 bg-white/70
                 ring-1 ring-slate-200
                 px-4 py-3
-                text-sm md:text-base
+                text-base
                 text-slate-800
                 placeholder:text-slate-400
                 focus:outline-none focus:ring-2 focus:ring-rcgold/40
