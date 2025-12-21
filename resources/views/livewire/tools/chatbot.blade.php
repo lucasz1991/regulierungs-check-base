@@ -329,7 +329,7 @@
             class="
                 mt-2
                 flex justify-end
-                absolute right-2 bottom-0 pb-2
+                absolute right-2 bottom-2 
             "
         >
             <button
