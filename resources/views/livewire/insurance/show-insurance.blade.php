@@ -437,8 +437,8 @@
                                                 <x-ui.read-more-typewriter
                                                     :text="$detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.'"
                                                     limitPx="200"
-                                                    speed="1"
-                                                    heightAnim="3000"
+                                                    speed="0.5"
+                                                    heightAnim="1500"
                                                 />
                                             </div>
                                         </div>
