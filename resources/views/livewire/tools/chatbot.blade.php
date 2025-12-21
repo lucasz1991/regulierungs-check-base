@@ -327,7 +327,6 @@
         {{-- Actions --}}
         <div
             class="
-                mt-2
                 flex justify-end
                 absolute right-2 bottom-2 
             "
