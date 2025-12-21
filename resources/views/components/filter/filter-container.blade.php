@@ -19,13 +19,11 @@
             </button>
         </div>
         <div class="xl:grid xl:grid-cols-12 xl:gap-6">
-            
             <div x-show="showFilters || $store.nav.isScreenXl"  x-cloak class="filter-sidebar xl:col-span-2 max-xl:absolute max-xl:right-4 z-10">
                 <div x-show="showFilters && !$store.nav.isScreenXl"  x-trap.inert="showFilters && !$store.nav.isScreenXl" x-transition class="max-xl:fixed xl:hidden inset-0 transform transition-all" x-on:click="showFilters = false">
                     <div class="absolute inset-0 bg-black/20 backdrop-blur-md"></div>
                 </div>
-                <div x-show="showFilters  || $store.nav.isScreenXl" x-transition x-ref="filterPanel" class="relative flex  w-full max-w-[20rem] flex-col rounded-xl bg-white  p-2 text-gray-700 shadow-xl shadow-gray-900/5  z-20">
-                    
+                <div x-show="showFilters  || $store.nav.isScreenXl" x-transition x-ref="filterPanel" class="relative flex w-full max-w-[20rem] flex-col rounded-xl bg-white  p-2 text-gray-700 shadow-xl shadow-gray-900/5  z-20">
                     {{ $filters }}
                 </div>
             </div>
