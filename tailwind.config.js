@@ -102,6 +102,7 @@ export default {
         'scale-95',
         'scale-100',
         'scale-105',
+        'bottom-2',
 
 
       ],
