@@ -30,7 +30,7 @@
         <div class="shrink-0">
             <div class="inline-flex items-center justify-center rounded-2xl
                         bg-gray-50
-                        text-gray-500 w-14 h-14 shadow-lg">
+                        text-gray-500 w-12 h-12 shadow-lg">
                 <i class="fal fa-headset text-xl"></i>
             </div>
         </div>
@@ -41,42 +41,44 @@
                 Support & Kontakt
             </p>
 
+        </div>
+        
+    </div>
+    <div class="sm:ml-16 space-y-4">
+        <!-- Mail -->
+        <div class="flex items-center gap-3 mt-3">
+            <a href="mailto:info@regulierungs-check.de"
+            class="inline-flex items-center justify-center
+                    w-12 h-12 rounded-xl
+                    bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600
+                    text-white shadow-md
+                    hover:scale-105 transition shrink-0"
+            aria-label="E-Mail">
+                <i class="fal fa-envelope text-lg"></i>
+            </a>
 
-<!-- Mail -->
-<div class="flex items-center gap-3 mt-3">
-    <a href="mailto:info@regulierungs-check.de"
-       class="inline-flex items-center justify-center
-              w-12 h-12 rounded-xl
-              bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600
-              text-white shadow-md
-              hover:scale-105 transition"
-       aria-label="E-Mail">
-        <i class="fal fa-envelope text-lg"></i>
-    </a>
+            <a href="mailto:info@regulierungs-check.de"
+            class="text-sm font-medium text-gray-800 hover:text-blue-600 transition">
+                info@regulierungs-check.de
+            </a>
+        </div>
 
-    <a href="mailto:info@regulierungs-check.de"
-       class="text-sm font-medium text-gray-800 hover:text-blue-600 transition">
-        info@regulierungs-check.de
-    </a>
-</div>
+        <!-- Instagram -->
+        <div class="flex items-center gap-3 mt-4">
+            <a href="https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr"
+            target="_blank"
+            class="inline-flex items-center justify-center
+                    w-12 h-12 rounded-xl
+                    bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500
+                    text-white shadow-md
+                    hover:scale-105 transition  shrink-0"
+            aria-label="Instagram">
+                <i class="fab fa-instagram text-xl"></i>
+            </a>
 
-            <!-- Instagram -->
-            <div class="flex items-center gap-3 mt-4">
-                <a href="https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr"
-                   target="_blank"
-                   class="inline-flex items-center justify-center
-                          w-12 h-12 rounded-xl
-                          bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500
-                          text-white shadow-md
-                          hover:scale-105 transition"
-                   aria-label="Instagram">
-                    <i class="fab fa-instagram text-xl"></i>
-                </a>
-
-                <span class="text-sm text-gray-500">
-                    Folge uns auf Instagram
-                </span>
-            </div>
+            <span class="text-sm text-gray-500">
+                Folge uns auf Instagram
+            </span>
         </div>
     </div>
 
@@ -112,7 +114,7 @@
                     </div>
 
                     {{-- Formular --}}
-                    <div class="order-2 md:order-1 md:col-span-2 bg-white/95 p-6 md:p-10">
+                    <div class="order-2 md:order-1 md:col-span-2 bg-white/95 p-4 md:p-6 lg:p-10">
 
                         <div class="md:pr-12">
                             <h2 class="text-2xl font-semibold text-gray-900">
