@@ -4,7 +4,7 @@
     <section class=" pb-6 relative z-10">
         <div class="container px-4  mx-auto">
 
-            <div class="rounded-3xl border border-white/10 bg-white/10 backdrop-blur-xl shadow-2xl p-6 md:p-10">
+            <div class="rounded-3xl border border-white/10 bg-white/10 backdrop-blur-xl shadow-2xl  p-4 md:p-6 lg:p-10">
                 <div class="flex max-lg:flex-wrap gap-6">
 
                     {{-- Text --}}
@@ -23,66 +23,66 @@
                     <div class="w-full md:w-1/2">
                         <div class="">
 
-<div class="rounded-2xl bg-white/95 border border-white/10 shadow p-6">
+                                <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-6">
 
-    <div class="flex items-start gap-5">
-        <!-- Großes Icon -->
-        <div class="shrink-0">
-            <div class="inline-flex items-center justify-center rounded-2xl
-                        bg-gray-50
-                        text-gray-500 w-12 h-12 shadow-lg">
-                <i class="fal fa-headset text-xl"></i>
-            </div>
-        </div>
+                                    <div class="flex items-start gap-5">
+                                        <!-- Großes Icon -->
+                                        <div class="shrink-0">
+                                            <div class="inline-flex items-center justify-center rounded-2xl
+                                                        bg-gray-50
+                                                        text-gray-500 w-12 h-12 shadow-lg">
+                                                <i class="fal fa-headset text-xl"></i>
+                                            </div>
+                                        </div>
 
-        <!-- Content -->
-        <div class="min-w-0">
-            <p class="text-lg font-semibold text-gray-900 mb-1">
-                Support & Kontakt
-            </p>
+                                        <!-- Content -->
+                                        <div class="min-w-0">
+                                            <p class="text-lg font-semibold text-gray-900 mb-1">
+                                                Support & Kontakt
+                                            </p>
 
-        </div>
-        
-    </div>
-    <div class="sm:ml-16 space-y-4">
-        <!-- Mail -->
-        <div class="flex items-center gap-3 mt-3">
-            <a href="mailto:info@regulierungs-check.de"
-            class="inline-flex items-center justify-center
-                    w-12 h-12 rounded-xl
-                    bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600
-                    text-white shadow-md
-                    hover:scale-105 transition shrink-0"
-            aria-label="E-Mail">
-                <i class="fal fa-envelope text-lg"></i>
-            </a>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="sm:ml-16 space-y-4">
+                                        <!-- Mail -->
+                                        <div class="flex items-center gap-3 mt-3">
+                                            <a href="mailto:info@regulierungs-check.de"
+                                            class="inline-flex items-center justify-center
+                                                    w-12 h-12 rounded-xl
+                                                    bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600
+                                                    text-white shadow-md
+                                                    hover:scale-105 transition shrink-0"
+                                            aria-label="E-Mail">
+                                                <i class="fal fa-envelope text-lg"></i>
+                                            </a>
 
-            <a href="mailto:info@regulierungs-check.de"
-            class="text-sm font-medium text-gray-800 hover:text-blue-600 transition">
-                info@regulierungs-check.de
-            </a>
-        </div>
+                                            <a href="mailto:info@regulierungs-check.de"
+                                            class="text-sm font-medium text-gray-800 hover:text-blue-600 transition">
+                                                info@regulierungs-check.de
+                                            </a>
+                                        </div>
 
-        <!-- Instagram -->
-        <div class="flex items-center gap-3 mt-4">
-            <a href="https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr"
-            target="_blank"
-            class="inline-flex items-center justify-center
-                    w-12 h-12 rounded-xl
-                    bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500
-                    text-white shadow-md
-                    hover:scale-105 transition  shrink-0"
-            aria-label="Instagram">
-                <i class="fab fa-instagram text-xl"></i>
-            </a>
+                                        <!-- Instagram -->
+                                        <div class="flex items-center gap-3 mt-4">
+                                            <a href="https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr"
+                                            target="_blank"
+                                            class="inline-flex items-center justify-center
+                                                    w-12 h-12 rounded-xl
+                                                    bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500
+                                                    text-white shadow-md
+                                                    hover:scale-105 transition  shrink-0"
+                                            aria-label="Instagram">
+                                                <i class="fab fa-instagram text-xl"></i>
+                                            </a>
 
-            <span class="text-sm text-gray-500">
-                Folge uns auf Instagram
-            </span>
-        </div>
-    </div>
+                                            <span class="text-sm text-gray-500">
+                                                Folge uns auf Instagram
+                                            </span>
+                                        </div>
+                                    </div>
 
-</div>
+                                </div>
 
 
                         </div>
