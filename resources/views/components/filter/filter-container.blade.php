@@ -151,7 +151,6 @@
                     x-cloak
                     x-transition
                     x-ref="filterPanel"
-                    @click.stop
                     class="relative flex flex-col rounded-xl bg-white p-2 text-gray-700 shadow-xl shadow-gray-900/5
                            max-xl:absolute max-xl:right-4 max-xl:top-0 max-xl:w-[20rem]"
                     :style="$store.nav.isScreenXl
