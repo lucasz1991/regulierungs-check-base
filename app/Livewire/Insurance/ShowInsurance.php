@@ -75,18 +75,22 @@ class ShowInsurance extends Component
 
 
 
-    public function updatingSelectedInsuranceSubTypefilter($value)
-    {
-        $this->resetPage();
+public function updatingSelectedInsuranceSubTypefilter($value)
+{
+    $this->resetPage();
 
-        if (is_array($value) && count($value) === 1) {
-            $this->isSubTypeFilter = true;
-            $this->subTypeFilterSubType = InsuranceSubtype::find($value[0]);
-        } else {
-            $this->isSubTypeFilter = false;
-            $this->subTypeFilterSubType = null;
-        }
+    if (is_array($value) && count($value) === 1) {
+        $this->isSubTypeFilter = true;
+
+        $this->subTypeFilterSubTypeId = (int) $value[0];
+        $this->subTypeFilterSubType   = InsuranceSubtype::find($value[0]); 
+    } else {
+        $this->isSubTypeFilter = false;
+
+        $this->subTypeFilterSubTypeId = null;
+        $this->subTypeFilterSubType   = null;
     }
+}
 
 
 // optional: wenn du weiterhin $subTypeFilterSubType brauchst:

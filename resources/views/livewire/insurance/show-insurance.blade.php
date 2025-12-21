@@ -176,7 +176,25 @@
         swiper: null,
         active: 0,
 
+        // Livewire v3: entangle auf die ID (nicht auf ein Model-Objekt)
         subTypeId: $wire.entangle('subTypeFilterSubTypeId').live,
+
+        init() {
+            this.initSwiper();
+
+            // Reagiere gezielt auf Filter-ID Änderungen
+            this.$watch('subTypeId', () => {
+                this.reInitAfterDomPatch();
+            });
+
+            // Extra stabil: nach JEDEM Livewire-DOM-Patch einmal prüfen
+            document.addEventListener('livewire:initialized', () => {
+                Livewire.hook('message.processed', () => {
+                    // hält Swiper auch bei pagination/loadMore stabil
+                    this.safeUpdate();
+                });
+            });
+        },
 
         initSwiper() {
             if (this.swiper) return;
@@ -187,38 +205,60 @@
                 autoHeight: false,
                 observer: true,
                 observeParents: true,
-                pagination: { el: this.$refs.pagination, clickable: true },
+                pagination: {
+                    el: this.$refs.pagination,
+                    clickable: true,
+                },
                 on: {
-                    slideChange: () => this.active = this.swiper?.activeIndex ?? 0,
-                }
+                    slideChange: () => {
+                        this.active = this.swiper?.activeIndex ?? 0;
+                    },
+                },
             });
 
             this.active = this.swiper?.activeIndex ?? 0;
         },
 
-        refreshSwiper() {
+        destroySwiper() {
+            if (!this.swiper) return;
+            try {
+                this.active = this.swiper.activeIndex ?? this.active ?? 0;
+                this.swiper.destroy(true, true);
+            } catch (e) {}
+            this.swiper = null;
+        },
+
+        safeUpdate() {
             if (!this.swiper) return;
 
-            const current = this.active ?? 0;
+            const keep = this.active ?? 0;
 
-            // DOM muss fertig gepatcht sein, dann Swiper updaten
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     this.swiper.update();
                     this.swiper.updateSlides();
                     this.swiper.updateProgress();
                     this.swiper.updateSlidesClasses();
-                    this.swiper.slideTo(Math.min(current, this.swiper.slides.length - 1), 0);
+
+                    const max = Math.max(0, this.swiper.slides.length - 1);
+                    this.swiper.slideTo(Math.min(keep, max), 0);
+                });
+            });
+        },
+
+        reInitAfterDomPatch() {
+            // Wichtig: erst wenn Livewire DOM fertig ist!
+            this.$nextTick(() => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        this.destroySwiper();
+                        this.initSwiper();
+                    });
                 });
             });
         },
     }"
-    x-init="
-        initSwiper();
-        $watch('subTypeId', (v) => console.log('subTypeId changed', v));
-
-        $watch('subTypeId', () => refreshSwiper());
-    "
+    x-init="init()"
 >
                     {{-- SWIPER --}}
                     <div class="swiper" x-ref="mobileSwiper">
