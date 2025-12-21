@@ -183,6 +183,7 @@
                         });
                     "
                     class="relative"
+                    wire:ignore
                 >
                     {{-- SWIPER --}}
                     <div class="swiper" x-ref="mobileSwiper">
@@ -289,7 +290,7 @@
                                                 </span>
                                             </div>
 
-                                            <div class="space-y-6 my-4">
+                                            <div class="space-y-6 my-3">
                                                 {{-- Scoring --}}
                                                 <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
                                                     <span class="text-xs text-gray-700 flex items-center gap-2">
