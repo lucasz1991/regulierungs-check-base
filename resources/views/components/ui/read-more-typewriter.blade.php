@@ -283,7 +283,7 @@
             <span x-show="expanded" x-cloak>
                 <span x-show="needsSpace" x-cloak> </span>
 
-                <span :class="typing ? 'after:content-[\"|\"] after:animate-pulse after:ml-0.5 after:text-gray-400' : ''">
+                <span :class="typing ? ' after:animate-pulse after:ml-0.5 after:text-gray-400' : ''">
                     <template x-if="!asHtml">
                         <span x-text="typedText"></span>
                     </template>

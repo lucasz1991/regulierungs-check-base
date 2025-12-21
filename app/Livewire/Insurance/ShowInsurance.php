@@ -32,12 +32,19 @@ class ShowInsurance extends Component
 
     public $isSubTypeFilter;
     public $subTypeFilterSubType;
-
+    
+    public ?int $subTypeFilterSubTypeId = null;
 
     public function mount(Insurance $insurance)
     {
         $this->insurance = $insurance;
-        $this->insuranceSubTypes = InsuranceSubtype::whereHas('publishedClaimRatings')->get();
+        $this->insuranceSubTypes = InsuranceSubtype::query()
+            ->whereHas('publishedClaimRatings', function ($q) use ($insurance) {
+                $q->where('insurance_id', $insurance->id)
+                ->where('status', 'rated'); // optional, wenn du im Listing auch so filterst
+            })
+            ->orderBy('name') // optional
+            ->get();
         $this->search = '';
         $this->pages = 1;
         $this->sort = 'score_desc';
@@ -81,6 +88,14 @@ class ShowInsurance extends Component
         }
     }
 
+
+// optional: wenn du weiterhin $subTypeFilterSubType brauchst:
+public function getSubTypeFilterSubTypeProperty()
+{
+    return $this->subTypeFilterSubTypeId
+        ? InsuranceSubtype::find($this->subTypeFilterSubTypeId)
+        : null;
+}
 
 
     public function updatingInsuranceType()

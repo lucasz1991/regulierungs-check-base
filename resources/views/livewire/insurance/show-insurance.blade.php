@@ -169,21 +169,57 @@
                 $detailInsuranceRating =  $insurance->latestDetailInsuranceRating;
             @endphp            
             <div class="md:hidden mt-8">
-                <div
-                    x-data="{ swiper: null }"
-                    x-init="
-                        swiper = new Swiper($refs.mobileSwiper, {
-                            slidesPerView: 1,
-                            spaceBetween: 20,
-                            autoHeight: false,
-                            pagination: {
-                                el: $refs.pagination,
-                                clickable: true,
-                            },
-                        });
-                    "
-                    class="relative"
-                >
+<div
+    class="relative"
+    wire:key="insurance-mobile-swiper-{{ $insurance->id }}"
+    x-data="{
+        swiper: null,
+        active: 0,
+
+        subTypeId: $wire.entangle('subTypeFilterSubTypeId').live,
+
+        initSwiper() {
+            if (this.swiper) return;
+
+            this.swiper = new Swiper(this.$refs.mobileSwiper, {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                autoHeight: false,
+                observer: true,
+                observeParents: true,
+                pagination: { el: this.$refs.pagination, clickable: true },
+                on: {
+                    slideChange: () => this.active = this.swiper?.activeIndex ?? 0,
+                }
+            });
+
+            this.active = this.swiper?.activeIndex ?? 0;
+        },
+
+        refreshSwiper() {
+            if (!this.swiper) return;
+
+            const current = this.active ?? 0;
+
+            // DOM muss fertig gepatcht sein, dann Swiper updaten
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    this.swiper.update();
+                    this.swiper.updateSlides();
+                    this.swiper.updateProgress();
+                    this.swiper.updateSlidesClasses();
+                    this.swiper.slideTo(Math.min(current, this.swiper.slides.length - 1), 0);
+                });
+            });
+        },
+    }"
+    x-init="
+        initSwiper();
+        $watch('subTypeId', (v) => console.log('subTypeId changed', v));
+
+        $watch('subTypeId', () => refreshSwiper());
+    "
+>
                     {{-- SWIPER --}}
                     <div class="swiper" x-ref="mobileSwiper">
                         <div class="swiper-wrapper">
