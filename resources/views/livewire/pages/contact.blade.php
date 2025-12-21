@@ -13,7 +13,7 @@
                             Kontakt
                         </h1>
                         <p class="text-white leading-relaxed">
-                            Vielen Dank für dein Interesse an Regulierungs-Check! Wenn du Fragen zur Bewertung von Versicherungen hast,
+                            Vielen Dank für dein Interesse an Regulierungs-CHECK! Wenn du Fragen zur Bewertung von Versicherungen hast,
                             Unterstützung bei der Nutzung unserer Analysetools benötigst oder weitere Informationen rund um Versicherungsvergleiche
                             wünschst, stehen wir dir gerne zur Verfügung.
                         </p>
