@@ -23,7 +23,7 @@
                     <div class="w-full md:w-1/2">
                         <div class="">
 
-                                <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-6">
+                                <div class="rounded-2xl bg-white/95 border border-white/10 shadow   p-4 md:p-6">
 
                                     <div class="flex items-start gap-5">
                                         <!-- Großes Icon -->
