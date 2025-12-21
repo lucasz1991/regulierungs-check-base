@@ -328,7 +328,7 @@
         <div
             class="
                 flex justify-end
-                absolute right-2 bottom-4
+                absolute right-2 bottom-3.5
             "
         >
             <button
