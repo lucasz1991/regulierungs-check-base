@@ -1,131 +1,349 @@
-<div x-data="{ 
+<div
+    x-data="{
         showChat: @entangle('showChat').live ?? false,
-        messagefront: '', 
-        message: @entangle('message'), 
-        isLoading: @entangle('isLoading'), 
+        messagefront: '',
+        message: @entangle('message'),
+        isLoading: @entangle('isLoading'),
         chatHistory: @entangle('chatHistory'),
-        sendMessage() { 
-            if (this.messagefront.trim() === '') return; 
+
+        sendMessage() {
+            if (this.messagefront.trim() === '') return;
+
             this.chatHistory.push({ role: 'user', content: this.messagefront });
             this.isLoading = true;
+
             this.message = this.messagefront;
-            Livewire.dispatch('sendMessage'); 
+            Livewire.dispatch('sendMessage');
+
             this.messagefront = '';
-        }
-    }" 
-    class="chat-container">
+        },
+
+        lockBody() {
+            // nur auf mobile/overlay sinnvoll
+            this.__scrollY = window.scrollY || 0;
+            document.documentElement.classList.add('overflow-hidden');
+            document.body.classList.add('overflow-hidden');
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${this.__scrollY}px`;
+            document.body.style.left = '0';
+            document.body.style.right = '0';
+            document.body.style.width = '100%';
+        },
+
+        unlockBody() {
+            document.documentElement.classList.remove('overflow-hidden');
+            document.body.classList.remove('overflow-hidden');
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.width = '';
+            window.scrollTo(0, this.__scrollY || 0);
+        },
+    }"
+    x-init="
+        $watch('showChat', (v) => {
+            if (v) lockBody();
+            else unlockBody();
+        });
+    "
+    class="chat-container"
+>
     @if($status)
         <div>
-            <!-- Chatbot-Button -->
-            <button x-show="!showChat" x-cloak  x-on:click="showChat = !showChat"  :class="{ 'bounce-in-right': !showChat }" class="fixed bottom-20 md:bottom-4 right-4 z-20 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:outline-offset-0 " >
-                <div class="bg-rcgold  p-2 md:p-3 rounded-full"><img class="w-8 md:w-10" alt="chaticon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjU2NjM2IDI4LjIyMjhDNi4zMDMxOCAyOC43NjIyIDguMjU2NTYgMjguMzMxMyA5LjU5NTg5IDI3LjAzNjRDOS45MjU4OSAyNi43MTczIDEwLjQxOTUgMjYuNjM3IDEwLjgzMzYgMjYuODM1MUMxMi41MTIgMjcuNjM3NiAxNC4zMTQ2IDI4LjAzMjUgMTYuMTkxNyAyOC4wMDI0QzIyLjgyMjkgMjcuOTAzNyAyOC4wMTczIDIyLjYzMjUgMjguMDE3MyAxNi4wMDE3QzI4LjAxNzMgOS41MTU3NiAyMi43NDA5IDQuMTMyODggMTYuMjU1NSA0LjAwMjM5QzkuNTcxOSAzLjg2OTUzIDQuMDE2MTQgOS4yODI2MyA0LjAwMDAyIDE1Ljk3MjNDMy45OTY1MiAxNy40MTA5IDQuMzcyMTggMTguNjU0NiA0Ljc1NzQyIDE5LjkzMDJDNC45NDU4MSAyMC41NTM5IDUuMTM2NDkgMjEuMTg1MyA1LjI4NjI1IDIxLjg1MDdDNS43NjcxNSAyMy45ODc1IDUuNTEzNyAyNi4yNDcgNC41NjYzNiAyOC4yMjI4Wk0xMS41IDE2QzExLjUgMTYuODI4NCAxMC44Mjg0IDE3LjUgMTAgMTcuNUM5LjE3MTU3IDE3LjUgOC41IDE2LjgyODQgOC41IDE2QzguNSAxNS4xNzE2IDkuMTcxNTcgMTQuNSAxMCAxNC41QzEwLjgyODQgMTQuNSAxMS41IDE1LjE3MTYgMTEuNSAxNlpNMTYgMTcuNUMxNi44Mjg0IDE3LjUgMTcuNSAxNi44Mjg0IDE3LjUgMTZDMTcuNSAxNS4xNzE2IDE2LjgyODQgMTQuNSAxNiAxNC41QzE1LjE3MTYgMTQuNSAxNC41IDE1LjE3MTYgMTQuNSAxNkMxNC41IDE2LjgyODQgMTUuMTcxNiAxNy41IDE2IDE3LjVaTTIyIDE3LjVDMjIuODI4NCAxNy41IDIzLjUgMTYuODI4NCAyMy41IDE2QzIzLjUgMTUuMTcxNiAyMi44Mjg0IDE0LjUgMjIgMTQuNUMyMS4xNzE2IDE0LjUgMjAuNSAxNS4xNzE2IDIwLjUgMTZDMjAuNSAxNi44Mjg0IDIxLjE3MTYgMTcuNSAyMiAxNy41WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg=="></div>
+            {{-- Floating Button --}}
+            <button
+                x-show="!showChat"
+                x-cloak
+                x-on:click="showChat = true"
+                :class="{ 'bounce-in-right': !showChat }"
+                class="
+                    fixed bottom-20 md:bottom-4 right-4 z-30
+                    rounded-full
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:outline-offset-0
+                "
+                aria-label="Chat öffnen"
+            >
+                <div
+                    class="
+                        relative
+                        bg-rcgold
+                        p-2.5 md:p-3
+                        rounded-full
+                        shadow-2xl shadow-black/20
+                        ring-1 ring-white/20
+                        hover:brightness-105 transition
+                    "
+                >
+                    <img
+                        class="w-8 md:w-10"
+                        alt="chaticon"
+                        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjU2NjM2IDI4LjIyMjhDNi4zMDMxOCAyOC43NjIyIDguMjU2NTYgMjguMzMxMyA5LjU5NTg5IDI3LjAzNjRDOS45MjU4OSAyNi43MTczIDEwLjQxOTUgMjYuNjM3IDEwLjgzMzYgMjYuODM1MUMxMi41MTIgMjcuNjM3NiAxNC4zMTQ2IDI4LjAzMjUgMTYuMTkxNyAyOC4wMDI0QzIyLjgyMjkgMjcuOTAzNyAyOC4wMTczIDIyLjYzMjUgMjguMDE3MyAxNi4wMDE3QzI4LjAxNzMgOS41MTU3NiAyMi43NDA5IDQuMTMyODggMTYuMjU1NSA0LjAwMjM5QzkuNTcxOSAzLjg2OTUzIDQuMDE2MTQgOS4yODI2MyA0LjAwMDAyIDE1Ljk3MjNDMy45OTY1MiAxNy40MTA5IDQuMzcyMTggMTguNjU0NiA0Ljc1NzQyIDE5LjkzMDJDNC45NDU4MSAyMC41NTM5IDUuMTM2NDkgMjEuMTg1MyA1LjI4NjI1IDIxLjg1MDdDNS43NjcxNSAyMy45ODc1IDUuNTEzNyAyNi4yNDcgNC41NjYzNiAyOC4yMjI4Wk0xMS41IDE2QzExLjUgMTYuODI4NCAxMC44Mjg0IDE3LjUgMTAgMTcuNUM5LjE3MTU3IDE3LjUgOC41IDE2LjgyODQgOC41IDE2QzguNSAxNS4xNzE2IDkuMTcxNTcgMTQuNSAxMCAxNC41QzEwLjgyODQgMTQuNSAxMS41IDE1LjE3MTYgMTEuNSAxNlpNMTYgMTcuNUMxNi44Mjg0IDE3LjUgMTcuNSAxNi44Mjg0IDE3LjUgMTZDMTcuNSAxNS4xNzE2IDE2LjgyODQgMTQuNSAxNiAxNC41QzE1LjE3MTYgMTQuNSAxNC41IDE1LjE3MTYgMTQuNSAxNkMxNC41IDE2LjgyODQgMTUuMTcxNiAxNy41IDE2IDE3LjVaTTIyIDE3LjVDMjIuODI4NCAxNy41IDIzLjUgMTYuODI4NCAyMy41IDE2QzIzLjUgMTUuMTcxNiAyMi44Mjg0IDE0LjUgMjIgMTQuNUMyMS4xNzE2IDE0LjUgMjAuNSAxNS4xNzE2IDIwLjUgMTZDMjAuNSAxNi44Mjg0IDIxLjE3MTYgMTcuNSAyMiAxNy41WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg=="
+                    />
+                    <span class="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-white/90 ring-2 ring-rcgold"></span>
+                </div>
             </button>
 
-            <!-- Overlay -->
-            <div x-show="showChat" x-cloak  x-transition:enter="transition ease-out duration-300 opacity-0" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black bg-opacity-20 z-40"></div>
-            <!-- Chatbot-Container -->
-            <div x-show="showChat" x-cloak  x-transition:enter="transition ease-out duration-300 transform"
-                x-transition:enter-start="translate-x-full "
-                x-transition:enter-end="translate-x-0 "
-                x-transition:leave="transition ease-in duration-200 transform"
-                x-transition:leave-start="translate-x-0 "
-                x-transition:leave-end="translate-x-full"
-                x-on:click.away="showChat = false"
-                class="fixed bottom-4 right-0 mx-[3vw] bg-white p-3 md:p-5 transition rounded-lg border border-[#e5e7eb] w-[650px] max-w-[94vw] h-auto shadow-xl z-50" >
-                <!-- Header -->
-                <div class="flex justify-between pb-4">
-                    <div class="flex space-x-4 items-start">
-                        <div>
-                            <img 
-                                src="{{ asset('site-images/milan-laptop.png') }}" 
-                                alt="Chatbot Avatar" 
-                                class="transition ease-out duration-600 h-auto"
-                                :class="chatHistory.length === 0 ? 'w-40 md:w-64' : 'w-20 md:w-36'"
-                            >
-                        </div>
-                        <div>
-                            <h2 class="font-semibold text-lg tracking-tight">{{ $assistantName }}</h2>
-                            <p class="text-sm text-[#6b7280]">Dein Regulierungs-CHECK Assistent.</p>
-                        </div>
-                    </div>
-                    <div class="flex space-x-4 items-start">
-                        <button wire:click="clearChat()" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M8 7V4a1 1 0 011-1h6a1 1 0 011 1v3" />
-                            </svg>
-                        </button>
-                        <button @click="showChat = false" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            <hr>
-                <!-- Chat-Messages -->
-                <div 
-                    class="chat-messages mb-4 overflow-y-auto scroll-container bg-white rounded min-h-10 h-auto max-h-[50vh] transition-all transition py-2" 
-                    x-ref="messages"
-                    x-init="
-                    $nextTick(() => setTimeout(() => { $refs.messages.scrollTo({ top: $refs.messages.scrollHeight, behavior: 'instant' }) }, 10));
-                    $watch('chatHistory', value => {
-                        $nextTick(() => setTimeout(() => { $refs.messages.scrollTo({ top: $refs.messages.scrollHeight, behavior: 'smooth' }) }, 10))
-                    })"
-                    x-transition >
-                    <template x-for="(message, index) in chatHistory" :key="index">
-                        <div class="p-2 rounded-md text-gray-600 md:w-max max-w-xs mt-2 " x-transition
-                        :class="message.role === 'user' ? 'ml-auto mr-2 bg-gray-100 text-left' : 'mr-auto bg-blue-100 text-left'">
-                        <strong :class="message.role != 'user' ? 'text-secondary' : 'text-primary'" x-text="message.role === 'user' ? 'Du' : '{{ $assistantName }}'"></strong>:<br> 
-                        <span x-text="message.content" class="break-words"></span>
-                        </div>
-                    </template>
-                </div>
-                <!-- Ladeanimation -->
-                <div x-show="isLoading" x-collapse  class=" flex gap-2 items-center text-gray-600 text-sm">
-                    <div class="p-2 mb-4">
-                        <div class="p-2 rounded-md bg-[#9aceff2e] text-gray-600 w-max max-w-xs mt-2 ml-2 flex gap-5 items-center" >
-                            <strong>{{ $assistantName }}:</strong> 
-                            <span class=""><svg class="mr-3 -ml-1 h-5 w-5 animate-spin text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Fragenvorschläge anzeigen, wenn Chat leer ist -->
-                <div x-show="chatHistory.length === 0" class="text-sm text-gray-600 mb-5">
-                    <p class="mb-2 font-semibold">Fragen, die du stellen könntest:</p>
-                    <ul class="space-y-2">
-                        <li>
-                            <button @click="messagefront='Wie funktioniert Regulierungs-CHECK?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                Wie funktioniert Regulierungs-CHECK?
-                            </button>
-                        </li>
-                        <li>
-                            <button @click="messagefront='Sind meine Daten anonym?'; sendMessage();" class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-100">
-                                Sind meine Daten anonym?
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-                <!-- Eingabe & Buttons -->
-                <div class="relative w-full">
+            {{-- Overlay --}}
+            <div
+                x-show="showChat"
+                x-cloak
+                x-transition.opacity
+                class="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+                @click="showChat = false"
+            ></div>
 
-                        <textarea 
-                        x-data="{
-                                resize() {
-                                    this.$el.style.height = 'auto';
-                                    this.$el.style.height = this.$el.scrollHeight + 'px';
-                                    }
+            {{-- Container --}}
+            <div
+                x-show="showChat"
+                x-cloak
+                x-transition:enter="transition ease-out duration-250 transform"
+                x-transition:enter-start="translate-y-3 opacity-0"
+                x-transition:enter-end="translate-y-0 opacity-100"
+                x-transition:leave="transition ease-in duration-180 transform"
+                x-transition:leave-start="translate-y-0 opacity-100"
+                x-transition:leave-end="translate-y-2 opacity-0"
+                x-trap.inert="showChat"
+                class="
+                    fixed z-50
+                    bottom-4 right-0 md:right-4
+                    mx-[3vw] md:mx-0
+                    w-[720px] max-w-[94vw]
+                    rounded-2xl
+                    shadow-2xl shadow-black/25
+                    ring-1 ring-white/10
+                "
+                @click.away="showChat = false"
+            >
+                <div class="rounded-2xl bg-white/90 backdrop-blur-md border border-white/10 overflow-hidden">
+
+                    {{-- Header --}}
+                    <div class="p-3 md:p-5">
+                        <div class="relative flex items-start justify-between gap-3">
+                            <div class="flex items-start gap-4">
+                                <div class="shrink-0">
+                                    <img
+                                        src="{{ asset('site-images/milan-laptop.png') }}"
+                                        alt="Chatbot Avatar"
+                                        class="transition-all duration-500 h-auto"
+                                        :class="chatHistory.length === 0 ? 'w-36 md:w-56' : 'w-16 md:w-28'"
+                                    >
+                                </div>
+
+                                <div class="min-w-0">
+                                    <div class=" ">
+                                        <div class="min-w-0">
+                                            <h2 class="font-semibold text-base md:text-lg tracking-tight text-slate-900 mb-3 pt-2">
+                                                {{ $assistantName }}
+                                            </h2>
+                                            <p class="text-xs md:text-sm text-slate-600">
+                                                Dein Regulierungs-CHECK Assistent.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="absolute right-0 top-0 flex items-center gap-2">
+                                <button
+                                    wire:click="clearChat()"
+                                    class="
+                                        inline-flex items-center justify-center
+                                        h-10 w-10 rounded-xl
+                                        bg-slate-100 text-slate-600
+                                        ring-1 ring-slate-200
+                                        hover:bg-slate-200 hover:text-slate-800
+                                        transition
+                                    "
+                                    title="Chat leeren"
+                                    aria-label="Chat leeren"
+                                >
+                                    <i class="fal fa-trash-alt"></i>
+                                </button>
+
+                                <button
+                                    @click="showChat = false"
+                                    class="
+                                        inline-flex items-center justify-center
+                                        h-10 w-10 rounded-xl
+                                        bg-slate-100 text-slate-600
+                                        ring-1 ring-slate-200
+                                        hover:bg-slate-200 hover:text-slate-800
+                                        transition
+                                    "
+                                    title="Schließen"
+                                    aria-label="Schließen"
+                                >
+                                    <i class="fal fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-slate-200/70"></div>
+
+                    {{-- Messages --}}
+                    <div class="p-3 md:p-5 pt-3">
+                        <div
+                            class="
+                                chat-messages
+                                overflow-y-auto
+                                rounded-2xl
+                                bg-white/60
+                                ring-1 ring-slate-200/70
+                                px-2 md:px-3 py-2
+                                min-h-10
+                                max-h-[50vh]
+                                overscroll-contain
+                            "
+                            x-ref="messages"
+                            x-init="
+                                $nextTick(() => setTimeout(() => {
+                                    $refs.messages.scrollTo({ top: $refs.messages.scrollHeight, behavior: 'instant' })
+                                }, 10));
+
+                                $watch('chatHistory', value => {
+                                    $nextTick(() => setTimeout(() => {
+                                        $refs.messages.scrollTo({ top: $refs.messages.scrollHeight, behavior: 'smooth' })
+                                    }, 10))
+                                })
+                            "
+                        >
+                            <template x-for="(message, index) in chatHistory" :key="index">
+                                <div class="py-1.5">
+                                    <div
+                                        class="max-w-[85%] md:max-w-[70%] rounded-2xl px-3.5 py-3 text-sm leading-relaxed shadow-sm ring-1"
+                                        :class="
+                                            message.role === 'user'
+                                                ? 'ml-auto bg-primary text-white ring-primary/10'
+                                                : 'mr-auto bg-white text-slate-700 ring-slate-200'
+                                        "
+                                    >
+                                        <div class="flex items-center justify-between gap-2 mb-1">
+                                            <strong
+                                                class="text-[11px] tracking-wide uppercase"
+                                                :class="message.role === 'user' ? 'text-white/70' : 'text-rcgold'"
+                                                x-text="message.role === 'user' ? 'Du' : '{{ $assistantName }}'"
+                                            ></strong>
+
+                                            <span
+                                                class="text-[10px]"
+                                                :class="message.role === 'user' ? 'text-white/50' : 'text-slate-400'"
+                                            >
+                                                <i class="fal" :class="message.role === 'user' ? 'fa-user' : 'fa-sparkles'"></i>
+                                            </span>
+                                        </div>
+
+                                        <span x-text="message.content" class="break-words"></span>
+                                    </div>
+                                </div>
+                            </template>
+
+                            {{-- Empty state inside box --}}
+                            <div x-show="chatHistory.length === 0" class="p-3 md:p-4">
+                                <div class="rounded-2xl bg-white/70 ring-1 ring-slate-200 p-4">
+                                    <p class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                                        <i class="fal fa-lightbulb text-rcgold"></i>
+                                        Vorschläge
+                                    </p>
+                                    <p class="mt-1 text-xs text-slate-600">
+                                        Tippe auf eine Frage, um direkt zu starten.
+                                    </p>
+
+                                    <div class="mt-3 flex flex-wrap gap-2">
+                                        <button
+                                            @click="messagefront='Wie funktioniert Regulierungs-CHECK?'; sendMessage();"
+                                            class="inline-flex items-center gap-2 rounded-full bg-rcgold/15 text-slate-800 px-3 py-1.5 text-xs font-medium ring-1 ring-rcgold/20 hover:bg-rcgold/25 transition"
+                                        >
+                                            <i class="fal fa-question-circle text-rcgold"></i>
+                                            Wie funktioniert Regulierungs-CHECK?
+                                        </button>
+
+                                        <button
+                                            @click="messagefront='Sind meine Daten anonym?'; sendMessage();"
+                                            class="inline-flex items-center gap-2 rounded-full bg-rcgold/15 text-slate-800 px-3 py-1.5 text-xs font-medium ring-1 ring-rcgold/20 hover:bg-rcgold/25 transition"
+                                        >
+                                            <i class="fal fa-user-shield text-rcgold"></i>
+                                            Sind meine Daten anonym?
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Loading bubble --}}
+                        <div x-show="isLoading" x-collapse class="mt-3">
+                            <div class="flex items-center gap-2">
+                                <div class="h-9 w-9 rounded-xl bg-rcgold/20 text-rcgold flex items-center justify-center ring-1 ring-rcgold/20">
+                                    <i class="fal fa-sparkles"></i>
+                                </div>
+
+                                <div class="rounded-2xl bg-white/70 ring-1 ring-slate-200 px-4 py-2.5 text-sm text-slate-700 flex items-center gap-3">
+                                    <strong class="text-xs text-rcgold">{{ $assistantName }}</strong>
+                                    <span class="inline-flex items-center gap-2 text-xs text-slate-600">
+                                        denkt nach
+                                        <svg class="h-4 w-4 animate-spin text-rcgold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Composer --}}
+                        <div class="mt-4">
+                            <div class="relative">
+                                <textarea
+                                    x-data="{
+                                        resize() {
+                                            this.$el.style.height = 'auto';
+                                            this.$el.style.height = this.$el.scrollHeight + 'px';
+                                        }
                                     }"
-                            x-init="resize()"
-                            @input="resize()"
-                            x-model="messagefront" 
-                            @keydown.enter="sendMessage()" 
-                            class="w-full border-outline bg-white border border-outline rounded-radius rounded-lg px-2 py-2  pr-24 text-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 min-h-10 overflow-hidden" 
-                            rows="2" 
-                            autofocus
-                            placeholder="Frage stellen...">
-                        </textarea>
-                        <button @click="sendMessage()" class="absolute rounded-lg right-2 bottom-3 bg-secondary text-white rounded-radius px-2 py-1 text-xs tracking-wide text-on-primary transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 ">senden</button>
-                    
+                                    x-init="resize()"
+                                    @input="resize()"
+                                    x-model="messagefront"
+                                    @keydown.enter.prevent="sendMessage()"
+                                    class="
+                                        w-full
+                                        rounded-2xl
+                                        bg-white/70
+                                        ring-1 ring-slate-200
+                                        px-4 py-3 pr-28
+                                        text-sm md:text-base
+                                        text-slate-800
+                                        placeholder:text-slate-400
+                                        focus:outline-none focus:ring-2 focus:ring-rcgold/40
+                                        min-h-12
+                                        overflow-hidden
+                                    "
+                                    rows="2"
+                                    autofocus
+                                    placeholder="Frage stellen…"
+                                ></textarea>
+
+                                <button
+                                    @click="sendMessage()"
+                                    class="
+                                        absolute right-2 bottom-2
+                                        inline-flex items-center gap-2
+                                        rounded-xl
+                                        bg-rcgold px-3.5 py-2
+                                        text-xs md:text-sm font-semibold text-white
+                                        shadow-lg shadow-black/10
+                                        hover:brightness-105 transition
+                                        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary
+                                    "
+                                >
+                                    <i class="fal fa-paper-plane"></i>
+                                    senden
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
