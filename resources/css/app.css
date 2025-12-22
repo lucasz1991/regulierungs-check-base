@@ -293,7 +293,9 @@ nav .top-navigation a.link-active > svg:first-of-type, nav .top-navigation div.s
 }
 
 
-
+.blog-content , .blog-content * {
+  line-height: normal;
+}
 
 
 /* calendar events  */
