@@ -49,7 +49,7 @@
 
             <div class="p-6 md:p-8">
                 {{-- Prose --}}
-                <div class="prose prose-lg max-w-none prose-headings:scroll-mt-24 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline">
+                <div class="">
                     {!! $post->body !!}
                 </div>
             </div>
