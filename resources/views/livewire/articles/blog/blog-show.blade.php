@@ -49,7 +49,7 @@
 
             <div class="p-4 md:p-6">
                 {{-- Prose --}}
-                <div class="blog-content prose">
+                <div class="blog-content prose w-full">
                     {!! $post->body !!}
                 </div>
             </div>
