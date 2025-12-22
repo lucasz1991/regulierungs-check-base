@@ -130,7 +130,7 @@
             <div
                 x-show="showFilters || $store.nav.isScreenXl"
                 x-cloak
-                class="z-40 md:z-20 relative
+                class="z-40 md:z-10 relative
                        xl:shrink-0"
                 :style="$store.nav.isScreenXl ? `width:${panelWidth}px;` : ''"
             >
