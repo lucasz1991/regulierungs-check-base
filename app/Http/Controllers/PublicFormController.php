@@ -16,9 +16,6 @@ class PublicFormController extends Controller
     {
         $data = $request->except('_token');
         $formType = $data['form_type'] ?? 'unbekannt';
-
-        // Logging je nach Formularart
-        Log::info("[$formType] Formular abgeschickt", $data);
         
         // Empfänger dynamisch (optional)
         $recipient = Setting::where('key', 'contact_email')->value('value') ?? 'lucas@zacharias-net.de';
@@ -34,6 +31,8 @@ class PublicFormController extends Controller
             return redirect()->back()->with('success', 'Vielen Dank für deine Anmeldung zum Newsletter!');
         } elseif ($formType === 'kontakt') {
             return redirect()->back()->with('success', 'Vielen Dank für deine Nachricht – wir melden uns bald bei dir!');
+        } elseif ($formType === 'abos') {
+            return redirect()->back()->with('success', 'Vielen Dank für deine unverbindliche Voranmeldung – wir melden uns bald bei dir!');
         } else {
             return redirect()->back()->with('success', 'Vielen Dank für deine Eingabe!');
         }

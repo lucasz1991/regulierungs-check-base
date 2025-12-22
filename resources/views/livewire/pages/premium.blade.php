@@ -104,62 +104,72 @@
                         </div>
                     </div>
 
-                    <form class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                        {{-- E-Mail --}}
-                        <div class="md:col-span-5">
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">
-                                E-Mail-Adresse
-                            </label>
-                            <input
-                                type="email"
-                                placeholder="name@firma.de"
-                                class="w-full rounded-xl
-                                       border border-slate-300
-                                       bg-white/80
-                                       px-4 py-2.5
-                                       text-sm text-slate-800
-                                       focus:outline-none
-                                       focus:ring-2 focus:ring-primary/40"
-                            />
-                        </div>
+<form wire:submit.prevent="submit" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+    {{-- E-Mail --}}
+    <div class="md:col-span-5">
+        <label class="block text-xs font-semibold text-slate-600 mb-1">
+            E-Mail-Adresse
+        </label>
 
-                        {{-- Rolle --}}
-                        <div class="md:col-span-4">
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">
-                                Berufsgruppe (optional)
-                            </label>
-                            <select
-                                class="w-full rounded-xl
-                                       border border-slate-300
-                                       bg-white/80
-                                       px-4 py-2.5
-                                       text-sm text-slate-800
-                                       focus:outline-none
-                                       focus:ring-2 focus:ring-primary/40"
-                            >
-                                <option value="">Bitte auswählen</option>
-                                <option>Versicherungsmakler</option>
-                                <option>Anwalt / Kanzlei</option>
-                                <option>Gutachter</option>
-                                <option>Unternehmen</option>
-                                <option>Sonstiges</option>
-                            </select>
-                        </div>
+        <input
+            type="email"
+            wire:model.defer="email"
+            placeholder="name@firma.de"
+            class="w-full rounded-xl border border-slate-300 bg-white/80 px-4 py-2.5 text-sm text-slate-800
+                   focus:outline-none focus:ring-2 focus:ring-primary/40"
+        />
 
-                        {{-- Submit --}}
-                        <div class="md:col-span-3 flex items-end">
-                            <button
-                                type="submit"
-                                class="w-full inline-flex items-center justify-center gap-2
-                                       rounded-xl bg-primary px-5 py-2.5
-                                       text-sm font-semibold text-white
-                                       shadow hover:opacity-90 transition"
-                            >
-                                <i class="fal fa-paper-plane"></i>
-                                Voranmelden
-                            </button>
-                        </div>
-                    </form>
+        @error('email')
+            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+        @enderror
+    </div>
+
+    {{-- Rolle --}}
+    <div class="md:col-span-4">
+        <label class="block text-xs font-semibold text-slate-600 mb-1">
+            Berufsgruppe (optional)
+        </label>
+
+        <select
+            wire:model.defer="role"
+            class="w-full rounded-xl border border-slate-300 bg-white/80 px-4 py-2.5 text-sm text-slate-800
+                   focus:outline-none focus:ring-2 focus:ring-primary/40"
+        >
+            <option value="">Bitte auswählen</option>
+            <option value="Versicherungsmakler">Versicherungsmakler</option>
+            <option value="Anwalt / Kanzlei">Anwalt / Kanzlei</option>
+            <option value="Gutachter">Gutachter</option>
+            <option value="Unternehmen">Unternehmen</option>
+            <option value="Sonstiges">Sonstiges</option>
+        </select>
+
+        @error('role')
+            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+        @enderror
+    </div>
+
+    {{-- Submit --}}
+    <div class="md:col-span-3 flex items-end">
+        <button
+            type="submit"
+            wire:loading.attr="disabled"
+            class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5
+                   text-sm font-semibold text-white shadow hover:opacity-90 transition
+                   disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+            <span wire:loading.remove>
+                <i class="fal fa-paper-plane"></i>
+                Voranmelden
+            </span>
+
+            <span wire:loading>
+                <i class="fal fa-spinner-third fa-spin"></i>
+                Senden...
+            </span>
+        </button>
+    </div>
+</form>
+
 
                 </div>
 
