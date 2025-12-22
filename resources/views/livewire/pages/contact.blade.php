@@ -136,21 +136,21 @@
 
                                 <div class="md:col-span-2">
                                     <x-label for="name" value="Dein Name" />
-                                    <x-input wire:model="name" id="name" class="block mt-1 w-full"
+                                    <x-input wire:model="name" id="name" class="block mt-1 w-full rounded-xl"
                                              type="text" name="name" required placeholder="Max Mustermann" />
                                     @error('name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div>
                                     <x-label for="email" value="Deine E-Mail" />
-                                    <x-input wire:model="email" id="email" class="block mt-1 w-full"
+                                    <x-input wire:model="email" id="email" class="block mt-1 w-full rounded-xl"
                                              type="email" name="email" required placeholder="name@beispiel.de" />
                                     @error('email') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div>
                                     <x-label for="subject" value="Betreff" />
-                                    <x-input wire:model="subject" id="subject" class="block mt-1 w-full"
+                                    <x-input wire:model="subject" id="subject" class="block mt-1 w-full rounded-xl"
                                              type="text" name="subject" required placeholder="Worum geht es?" />
                                     @error('subject') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                                 </div>
