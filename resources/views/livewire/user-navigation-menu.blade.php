@@ -183,7 +183,7 @@
                                         <!-- Button zum Öffnen des Popups -->
                                         <button @click="open = !open" class="block ">
                                             <span class="relative">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30px" class="fill-[#333] hover:fill-[#077bff] stroke-2 inline" viewBox="0 0 512 512" stroke-width="106">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="27px" class="fill-[#333] hover:fill-[#077bff] stroke-2 inline" viewBox="0 0 512 512" stroke-width="106">
                                                     <g>
                                                         <g>
                                                             <g>
