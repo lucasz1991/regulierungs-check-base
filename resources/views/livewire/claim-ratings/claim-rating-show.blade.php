@@ -189,7 +189,7 @@
                             <div class="prose max-w-full">
                                 <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
                                     <i class="fal fa-comment-alt text-blue-600"></i>
-                                    <span>Kommentar</span>
+                                    <span>Zusammenfassung</span>
                                 </h2>
                                 <p class="text-gray-700 leading-relaxed">
                                     {{ $claimRating->comment() ?: 'Kein Kommentar vorhanden.' }}
