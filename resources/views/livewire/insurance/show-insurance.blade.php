@@ -25,9 +25,6 @@
                 </div>
 
                 <div class="min-w-0">
-                    <h1 class="text-2xl md:text-4xl font-semibold text-white leading-tight">
-                        {{ $insurance->name ?? 'Versicherung' }}
-                    </h1>
                     <p class="mt-2 text-sm md:text-base text-white">
                         {{ $insurance->description }}
                     </p>
