@@ -62,7 +62,7 @@
                             <div>
                                 <p class="text-sm text-gray-700 white flex items-center gap-2">
                                     <i class="fal fa-clock  text-primary fa-2x"></i>
-                                    <span>Ø Bearbeitungsdauer</span>
+                                    <span>Ø Regulierungsdauer </span>
                                 </p>
                             </div>
     
@@ -282,7 +282,7 @@
                                             <div class="flex items-start justify-between gap-4">
                                                 <p class="text-sm text-gray-700 flex items-center gap-2">
                                                     <i class="fal fa-clock text-primary fa-lg"></i>
-                                                    Ø Bearbeitungsdauer
+                                                    Ø Regulierungsdauer 
                                                 </p>
 
                                                 <div class="relative  w-16 h-16  shrink-0">
