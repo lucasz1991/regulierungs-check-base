@@ -33,5 +33,5 @@ Alpine.plugin(persist);
 
         button.style.bottom = '80px';
     }
-    setTimeout(() => {applyUcBottomOffset();}, 1000);
+    setTimeout(() => {applyUcBottomOffset();}, 100);
 })();
