@@ -30,14 +30,12 @@ Alpine.plugin(persist);
         if (!ucRoot || !ucRoot.shadowRoot) return false;
 
         const button = ucRoot.shadowRoot.querySelector(
-            'button[data-testid="uc-privacy-button"]'
+            '#uc-main-dialog'
         );
 
         if (!button) return false;
 
         button.style.bottom = '80px';
-        button.style.top = 'auto';
-        button.style.position = 'fixed';
 
         return true;
     }
