@@ -24,14 +24,27 @@ Alpine.plugin(persist);
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (!isMobile) return;
 
-    function applyUcBottomOffset() {
+    let tries = 0;
+    const maxTries = 50; 
+
+    const interval = setInterval(() => {
+        tries++;
+
         const ucRoot = document.querySelector('#usercentrics-cmp-ui');
+        if (!ucRoot || !ucRoot.shadowRoot) {
+            if (tries >= maxTries) clearInterval(interval);
+            return;
+        }
 
-        const button = ucRoot.shadowRoot.querySelector(
-            '#uc-main-dialog'
-        );
+        const dialog = ucRoot.shadowRoot.querySelector('#uc-main-dialog');
+        if (!dialog) {
+            if (tries >= maxTries) clearInterval(interval);
+            return;
+        }
 
-        button.style.bottom = '80px';
-    }
-    setTimeout(() => {applyUcBottomOffset();}, 100);
+        dialog.style.bottom = '80px';
+        dialog.style.top = 'auto';
+
+        clearInterval(interval);
+    }, 100);
 })();
