@@ -1708,7 +1708,9 @@ div.unterseiten-banner{
     font-size: 0.9rem;
   }
 }
-
+.privacyButton.mobile{
+  bottom: 50px;
+}
 
 .footer-dark-gradient{
   background: #005470;
