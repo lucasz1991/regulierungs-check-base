@@ -27,7 +27,6 @@ Alpine.plugin(persist);
 
     function applyUcBottomOffset() {
         const ucRoot = document.querySelector('#usercentrics-cmp-ui');
-        if (!ucRoot || !ucRoot.shadowRoot) return false;
 
         const button = ucRoot.shadowRoot.querySelector(
             '#uc-main-dialog'
