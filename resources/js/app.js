@@ -20,7 +20,7 @@ Alpine.plugin(anchor);
 Alpine.plugin(masonry);
 Alpine.plugin(persist);
 
-
+(function () {
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (!isMobile) return;
 
@@ -31,20 +31,7 @@ Alpine.plugin(persist);
             '#uc-main-dialog'
         );
 
-        if (!button) return false;
-
         button.style.bottom = '80px';
-
-        return true;
     }
-
-    if (applyUcBottomOffset()) return;
-
-    const observer = new MutationObserver(() => {
-        if (applyUcBottomOffset()) observer.disconnect();
-    });
-
-    observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-    });
+    applyUcBottomOffset();
+})();
