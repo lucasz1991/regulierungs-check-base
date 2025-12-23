@@ -46,5 +46,5 @@ Alpine.plugin(persist);
         dialog.style.top = 'auto';
 
         clearInterval(interval);
-    }, 100);
+    }, 250);
 })();
