@@ -88,7 +88,7 @@
                                 @endif
 
                                 <x-dropdown-link wire:click="reanalyze">
-                                    <i class="fal fa-robot mr-2"></i> Neu analysieren
+                                    <i class="fal fa-user-robot mr-2"></i> Neu analysieren
                                 </x-dropdown-link>
                             @endif
 
