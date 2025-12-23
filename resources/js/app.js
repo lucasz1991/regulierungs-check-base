@@ -26,7 +26,7 @@ Alpine.plugin(persist);
     if (!isMobile) return;
 
     function applyUcBottomOffset() {
-        const ucRoot = document.querySelector('#usercentrics-root');
+        const ucRoot = document.querySelector('#usercentrics-cmp-ui');
         if (!ucRoot || !ucRoot.shadowRoot) return false;
 
         const button = ucRoot.shadowRoot.querySelector(
