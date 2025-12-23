@@ -23,7 +23,7 @@
         <script src="{{ URL::asset('adminresources/aos/aos.js') }}"></script>
                 <link rel="stylesheet" href="{{ asset('adminresources/fontawesome6/css/all.min.css') }}">
 
-    <!--<script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="XFHuZsqPDNpcWX" async></script>-->
+    <script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="XFHuZsqPDNpcWX" async></script>
         
         <!-- Styles -->
         @vite(['resources/css/app.css'])
