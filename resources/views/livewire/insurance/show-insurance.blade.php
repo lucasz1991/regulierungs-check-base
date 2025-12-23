@@ -312,7 +312,7 @@
                                                     Ø Regulierungsdauer 
                                                 </p>
 
-                                                <div class="relative  w-18 h-18  shrink-0">
+                                                <div class="relative  w-20 h-20  shrink-0">
                                                     <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                                     <div
                                                         class="absolute inset-0 rounded-full"
@@ -334,7 +334,7 @@
                                                     Gesamtbewertung
                                                 </p>
 
-                                                <div class="relative  w-18 h-18  shrink-0">
+                                                <div class="relative  w-20 h-20  shrink-0">
                                                     <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                                     <div
                                                         class="absolute inset-0 rounded-full"
@@ -357,7 +357,7 @@
                                                     Bewertungen
                                                 </p>
 
-                                                <div class="relative  w-18 h-18  shrink-0">
+                                                <div class="relative  w-20 h-20  shrink-0">
                                                     <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                                     <div
                                                         class="absolute inset-0 rounded-full"
