@@ -70,7 +70,7 @@
     wire:ignore
     >
     <div class="">
-        <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed w-full z-30 transition-all duration-300 ease-in-out" wire:loading.class="cursor-wait">
+        <nav x-ref="nav"  :style="(!$store.nav.showNav && !$store.nav.isMobileMenuOpen ) ? 'margin-top: -'+$store.nav.height+'px': 'margin-top:0px;' " class="fixed w-full z-30 transition-all duration-300 ease-in-out mainnav" wire:loading.class="cursor-wait">
             <div class="w-full  mt-2 mb-2">
                 <x-ui.basic.content-container class="px-3">
                     <div class="flex flex-wrap justify-between items-center place-items-stretch">
@@ -81,7 +81,7 @@
                                  @auth
                                      <!-- Settings Dropdown -->
                                      <div class="ms-1 relative">
-                                                                 <x-ui.dropdown.anchor-dropdown
+                                        <x-ui.dropdown.anchor-dropdown
                                             align="left"
                                             width="auto"
                                             :matchTriggerWidth="false"
@@ -126,7 +126,7 @@
                                  @else
                                      <!-- Guest Dropdown -->
                                      <div class="ms-1 relative">
-                                                               <x-ui.dropdown.anchor-dropdown
+                                        <x-ui.dropdown.anchor-dropdown
                                             align="left"
                                             width="auto"
                                             :matchTriggerWidth="false"
