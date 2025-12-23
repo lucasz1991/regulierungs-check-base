@@ -21,7 +21,6 @@ Alpine.plugin(masonry);
 Alpine.plugin(persist);
 
 
-(function () {
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (!isMobile) return;
 
@@ -49,4 +48,3 @@ Alpine.plugin(persist);
         childList: true,
         subtree: true,
     });
-})();
