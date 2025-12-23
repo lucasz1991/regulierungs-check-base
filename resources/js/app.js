@@ -19,3 +19,37 @@ Alpine.plugin(intersect);
 Alpine.plugin(anchor);
 Alpine.plugin(masonry);
 Alpine.plugin(persist);
+
+
+(function () {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (!isMobile) return;
+
+    function applyUcBottomOffset() {
+        const ucRoot = document.querySelector('#usercentrics-root');
+        if (!ucRoot || !ucRoot.shadowRoot) return false;
+
+        const button = ucRoot.shadowRoot.querySelector(
+            'button[data-testid="uc-privacy-button"]'
+        );
+
+        if (!button) return false;
+
+        button.style.bottom = '80px';
+        button.style.top = 'auto';
+        button.style.position = 'fixed';
+
+        return true;
+    }
+
+    if (applyUcBottomOffset()) return;
+
+    const observer = new MutationObserver(() => {
+        if (applyUcBottomOffset()) observer.disconnect();
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+    });
+})();
