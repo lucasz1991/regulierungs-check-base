@@ -35,15 +35,15 @@
           </div>
         </div>
       </div>
-      <div class="container mx-auto px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up"  data-aos-delay="400">
+      <div class="container mx-auto px-2 md:px-4 py-2 md:py-4"  data-aos="fade-up"  data-aos-delay="400">
         <div class="max-md:bg-secondary text-white max-md:px-2 max-md:py-2  text-base  md:text-xl md:w-max uppercase md:border-b-2  md:border-secondary md:pb-1">
           <span>Meistbewertete Versicherungen</span>
         </div>
       </div>
-      <div class="mb-20" data-aos="fade-up" data-aos-delay="500">
+      <div class="mb-12" data-aos="fade-up" data-aos-delay="500">
         <livewire:banner.top-insurances-banner  />
       </div>
-      <div class="container mx-auto  px-2 md:px-4 py-2 md:py-6"  data-aos="fade-up" data-aos-delay="200">
+      <div class="container mx-auto  px-2 md:px-4 py-2 md:py-4"  data-aos="fade-up" data-aos-delay="200">
         <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase md:border-b-2  md:border-secondary md:pb-1">
           <span>So funktioniert's</span>
         </div>
