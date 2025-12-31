@@ -13,7 +13,7 @@
                         <div  class="">
                             <div class="mt-1">
                                 <div class="text-sm text-gray-500 font-medium text-center">
-                                    <div class="w-12 mx-auto text-xs text-white p-1 aspect-square  bg-secondary-light ring-2 ring-offset-2 ring-secondary-light  rounded-full flex justify-center items-center"><span>Ø: {{ round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id)) }}<br> Tage</span></div>
+                                    <div class="w-12 h-12 mx-auto text-xs text-white p-1 aspect-square  bg-secondary-light ring-2 ring-offset-2 ring-secondary-light  rounded-full flex justify-center items-center"><span>Ø: {{ round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id)) }}<br> Tage</span></div>
                                 </div>
                             </div>
                         </div>
