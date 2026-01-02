@@ -29,7 +29,7 @@
                     </x-slot>
                     <x-slot name="content">
                         @if($rating->status != 'pending')
-                            <x-dropdown-link href="{{ route('profile.claim-rating.show', ['claimRating' => $rating->id]) }}">
+                            <x-dropdown-link href="{{ route('profile.claim-rating.claim-rating-show', ['claimRating' => $rating->id]) }}">
                                 Details ansehen
                             </x-dropdown-link>
                         @endif

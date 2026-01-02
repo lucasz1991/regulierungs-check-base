@@ -97,7 +97,7 @@ Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\Str
             Route::get('/dashboard', Dashboard::class)->name('dashboard');
             Route::redirect('/profil', '/dashboard')->name('profile.show');
             Route::get('/messages', MessageBox::class)->name('messages');
-            Route::get('/profil/ownreview/{claimRating}', ShowClaimRating::class)->name('profile.claim-rating.show');
+            Route::get('/profil/ownreview/{claimRating}', ShowClaimRating::class)->name('profile.claim-rating.claim-rating-show');
         });
 
     });
