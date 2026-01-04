@@ -95,7 +95,7 @@ Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\Str
         // Customer Routes
         Route::middleware(['role:guest'])->group(function () {
             Route::get('/dashboard', Dashboard::class)->name('dashboard');
-            Route::redirect('/profil', '/dashboard')->name('profile.show');
+            Route::redirect('/profil', '/dashboard');
             Route::get('/messages', MessageBox::class)->name('messages');
             Route::get('/profil/ownreview/{claimRating}', ShowClaimRating::class)->name('profile.claim-rating.claim-rating-show');
         });
