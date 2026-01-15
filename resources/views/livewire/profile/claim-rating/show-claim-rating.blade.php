@@ -9,7 +9,7 @@
         @endif
 
         {{-- TOP BAR (wie neues Layout) --}}
-        <div class="rounded-3xl bg-white/90 border border-white/10 backdrop-blur-xl shadow-2xl p-5 md:p-6">
+        <div class="rounded-3xl bg-white/90 border border-white/10 shadow-2xl p-5 md:p-6">
             <div class="flex items-start justify-between gap-4">
 
                 <div class="min-w-0">
