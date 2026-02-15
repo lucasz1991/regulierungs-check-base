@@ -35,7 +35,7 @@ class InsuranceList extends Component
     public function mount(): void
     {
         $this->insuranceSubTypes = InsuranceSubtype::query()
-            ->whereHas('claimRatings', fn (Builder $q) => $q->where('status', 'rated')->where('is_public', true))
+            ->whereHas('claimRatings', fn (Builder $q) => $q->publiclyVisible())
             ->orderBy('name')
             ->get();
 
@@ -138,17 +138,16 @@ $query = match ($this->sort) {
 
         $query = Insurance::query()
             ->withCount(['claimRatings as claim_ratings_count' => function (Builder $q) {
-                $q->where('status', 'rated')->where('is_public', true);
+                $q->publiclyVisible();
             }])
             ->withAvg(['claimRatings as claim_ratings_avg_rating_score' => function (Builder $q) {
-                $q->where('status', 'rated')->where('is_public', true);
+                $q->publiclyVisible();
             }], 'rating_score')
-            ->whereHas('claimRatings', fn (Builder $q) => $q->where('status', 'rated')->where('is_public', true))
+            ->whereHas('claimRatings', fn (Builder $q) => $q->publiclyVisible())
             ->when(filled($this->search), fn (Builder $q) => $q->where('name', 'like', "%{$this->search}%"))
             ->when(!empty($ids), function (Builder $q) use ($ids) {
                 $q->whereHas('claimRatings', function (Builder $sub) use ($ids) {
-                    $sub->where('status', 'rated')
-                        ->where('is_public', true)
+                    $sub->publiclyVisible()
                         ->whereIn('insurance_subtype_id', $ids);
                 });
             })

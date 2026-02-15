@@ -15,6 +15,19 @@ use App\Jobs\DeleteTempFile;
 
 class AdminStorageController extends Controller
 {
+    protected function buildPublicStorageUrl(string $path): string
+    {
+        $baseUrl = (string) (Setting::where('key', 'base_api_url')->value('value') ?? '');
+        $baseUrl = trim($baseUrl, " \t\n\r\0\x0B'\"");
+        $baseUrl = rtrim($baseUrl, '/');
+
+        if ($baseUrl === '') {
+            return Storage::disk('public')->url($path);
+        }
+
+        return $baseUrl . '/storage/' . ltrim($path, '/');
+    }
+
     protected function validateApiKey(Request $request): bool
     {
         $incomingKey = $request->header('X-API-KEY');
@@ -136,7 +149,7 @@ class AdminStorageController extends Controller
         // Cache-Treffer?
         if ($cached = Cache::get($cacheKey)) {
             if (Storage::disk($publicDisk)->exists($cached['path']) && now()->lt(\Illuminate\Support\Carbon::parse($cached['expires_at']))) {
-                return Storage::disk($publicDisk)->url($cached['path']);
+                return $this->buildPublicStorageUrl($cached['path']);
             }
         }
 
@@ -147,7 +160,7 @@ class AdminStorageController extends Controller
                 // Erneut prüfen (Double-Checked)
                 if ($cached = Cache::get($cacheKey)) {
                     if (Storage::disk($publicDisk)->exists($cached['path']) && now()->lt(\Illuminate\Support\Carbon::parse($cached['expires_at']))) {
-                        return Storage::disk($publicDisk)->url($cached['path']);
+                        return $this->buildPublicStorageUrl($cached['path']);
                     }
                 }
 
@@ -181,7 +194,7 @@ class AdminStorageController extends Controller
                 ];
                 Cache::put($cacheKey, $payload, now()->addMinutes($minutes));
 
-                return Storage::disk($publicDisk)->url($tmpPath);
+                return $this->buildPublicStorageUrl($tmpPath);
             }
         } finally {
             optional($lock)->release();
@@ -190,7 +203,7 @@ class AdminStorageController extends Controller
         // Letzter Versuch: aus Cache lesen
         if ($cached = Cache::get($cacheKey)) {
             if (Storage::disk($publicDisk)->exists($cached['path'])) {
-                return Storage::disk($publicDisk)->url($cached['path']);
+                return $this->buildPublicStorageUrl($cached['path']);
             }
         }
 
@@ -226,7 +239,7 @@ class AdminStorageController extends Controller
 
         $size = Storage::disk($disk)->size($path);
         $mime = $file->getMimeType();
-        $url  = $disk === 'public' ? Storage::disk($disk)->url($path) : null;
+        $url  = $disk === 'public' ? $this->buildPublicStorageUrl($path) : null;
 
         Log::info('Media gespeichert', ['disk' => $disk, 'path' => $path, 'mime' => $mime, 'size' => $size]);
 

@@ -126,8 +126,7 @@ class Insurance extends Model
     public function publishedClaimRatings()
     {
         return $this->hasMany(ClaimRating::class)
-            ->where('status', 'rated')
-            ->where('is_public', true);
+            ->publiclyVisible();
     }
 
     public function ratings_avg_score()
@@ -144,8 +143,7 @@ class Insurance extends Model
     public function published_ratings_count()
     {
         return $this->hasMany(ClaimRating::class)
-                ->where('status', 'rated')
-                ->where('is_public', true)
+                ->publiclyVisible()
                 ->count();
     }
 
@@ -155,8 +153,7 @@ class Insurance extends Model
             ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
                 $query->where('insurance_subtype_id', $subtypeId);
             })
-            ->where('status', 'rated')
-            ->where('is_public', true)
+            ->publiclyVisible()
             ->count();
     }
 

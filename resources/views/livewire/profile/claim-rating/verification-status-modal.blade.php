@@ -85,6 +85,16 @@
         <x-slot name="content">
             @php $v = $claimRating->verification; @endphp
 
+            @if($claimRating->is_public)
+                <x-alert class="mb-4" :mode="'info'">
+                    <p class="text-sm">
+                        Diese Bewertung ist bereits oeffentlich sichtbar.
+                        Die Fall-Verifikation dient hier als ergaenzender Echtheitsnachweis und verbessert den Verifikationsstatus,
+                        ohne die bestehende Veroeffentlichung zu ersetzen.
+                    </p>
+                </x-alert>
+            @endif
+
             {{-- Status-Alert oben je nach State --}}
             @if($v['state'] === 'pending')
                 <x-alert class="mb-4" :mode="'warning'">

@@ -20,6 +20,7 @@ class ShowClaimRating extends Component
 
     /** Ob diese Bewertung aktuell veröffentlicht werden darf */
     public bool $canBePublished = false;
+    public bool $showVerificationSection = false;
 
     public function mount(ClaimRating $claimRating)
     {
@@ -38,6 +39,7 @@ class ShowClaimRating extends Component
         $this->verification          = $this->claimRating->verification;
         $this->requiresVerification  = $this->claimRating->requiresVerification();
         $this->canBePublished        = $this->claimRating->canBePublished();
+        $this->showVerificationSection = $this->requiresVerification || $this->claimRating->hasVerification();
         $this->hasActiveRating       = $this->claimRating->status === ClaimRating::STATUS_PENDING;
     }
 

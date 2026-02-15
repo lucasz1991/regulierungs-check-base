@@ -41,7 +41,7 @@ class ShowInsurance extends Component
         $this->insuranceSubTypes = InsuranceSubtype::query()
             ->whereHas('publishedClaimRatings', function ($q) use ($insurance) {
                 $q->where('insurance_id', $insurance->id)
-                ->where('status', 'rated'); // optional, wenn du im Listing auch so filterst
+                  ->publiclyVisible();
             })
             ->orderBy('name') // optional
             ->get();
@@ -136,7 +136,6 @@ public function getSubTypeFilterSubTypeProperty()
     public function render()
     {
         $claimRatings = $this->insurance->publishedClaimRatings()
-            ->where('status', 'rated')
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })

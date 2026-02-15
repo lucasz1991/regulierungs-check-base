@@ -64,8 +64,7 @@ class InsuranceSubtype extends Model
     public function publishedClaimRatings()
     {
         return $this->hasMany(ClaimRating::class)
-            ->where('status', 'rated')
-            ->where('is_public', true);
+            ->publiclyVisible();
     }
 
     public function ratings_count()
@@ -76,8 +75,7 @@ class InsuranceSubtype extends Model
     public function published_ratings_count()
     {
         return $this->hasMany(ClaimRating::class)
-                ->where('status', 'rated')
-                ->where('is_public', true)
+                ->publiclyVisible()
                 ->count();
     }
 

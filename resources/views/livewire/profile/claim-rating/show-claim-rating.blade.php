@@ -32,12 +32,14 @@
                 {{-- RIGHT ACTIONS --}}
                 <div class="flex items-center gap-2 shrink-0">
 
-                    {{-- Verification modal button (dein bestehendes Livewire) --}}
-                    <livewire:profile.claim-rating.verification-status-modal
-                        :claim-rating="$claimRating"
-                        wire:key="verification-status-{{ $claimRating->id }}"
-                        lazy
-                    />
+                    @if($showVerificationSection)
+                        {{-- Verification modal button (dein bestehendes Livewire) --}}
+                        <livewire:profile.claim-rating.verification-status-modal
+                            :claim-rating="$claimRating"
+                            wire:key="verification-status-{{ $claimRating->id }}"
+                            lazy
+                        />
+                    @endif
 
                     {{-- Optionen Dropdown --}}
                     <x-dropdown>

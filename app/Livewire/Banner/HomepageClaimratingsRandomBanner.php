@@ -13,8 +13,7 @@ class HomepageClaimratingsRandomBanner extends Component
     public function mount()
     {
         $this->claimRatings = ClaimRating::with('insurance')
-            ->where('status', 'rated')
-            ->where('is_public', true)
+            ->publiclyVisible()
             ->inRandomOrder()
             ->take(15)
             ->get();

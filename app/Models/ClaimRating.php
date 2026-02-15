@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use App\Models\AdminTask;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClaimRating extends Model
 {
@@ -25,6 +26,14 @@ class ClaimRating extends Model
     public const STATUS_REJECTED           = 'rejected';
     public const STATUS_PUBLISHED          = 'published';
     public const STATUS_PENDING_VALIDATION = 'pending_validation';
+
+    public static function publicVisibleStatuses(): array
+    {
+        return [
+            self::STATUS_RATED,
+            self::STATUS_PUBLISHED,
+        ];
+    }
 
     protected $fillable = [
         'user_id',
@@ -348,6 +357,13 @@ class ClaimRating extends Model
         }
 
         return true;
+    }
+
+    public function scopePubliclyVisible(Builder $query): Builder
+    {
+        return $query
+            ->where('is_public', true)
+            ->whereIn('status', self::publicVisibleStatuses());
     }
 
     // --------------------------------------

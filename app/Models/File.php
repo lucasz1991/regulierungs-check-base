@@ -13,9 +13,23 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Models\Setting;
 
 class File extends Model
 {
+    protected function buildPublicStorageUrl(string $path): string
+    {
+        $baseUrl = (string) (Setting::where('key', 'base_api_url')->value('value') ?? '');
+        $baseUrl = trim($baseUrl, " \t\n\r\0\x0B'\"");
+        $baseUrl = rtrim($baseUrl, '/');
+
+        if ($baseUrl === '') {
+            return Storage::disk('public')->url($path);
+        }
+
+        return $baseUrl . '/storage/' . ltrim($path, '/');
+    }
+
     protected $fillable = [
         'user_id',
         'name',
@@ -417,7 +431,7 @@ protected static function fileTypeMap(): array
         if ($cached) {
             $expiresAt = Carbon::parse($cached['expires_at']);
             if (now()->lt($expiresAt) && Storage::disk($publicDisk)->exists($cached['path'])) {
-                return Storage::disk($publicDisk)->url($cached['path']);
+                return $this->buildPublicStorageUrl($cached['path']);
             }
         }
 
@@ -428,7 +442,7 @@ protected static function fileTypeMap(): array
                 if ($cached) {
                     $expiresAt = Carbon::parse($cached['expires_at']);
                     if (now()->lt($expiresAt) && Storage::disk($publicDisk)->exists($cached['path'])) {
-                        return Storage::disk($publicDisk)->url($cached['path']);
+                        return $this->buildPublicStorageUrl($cached['path']);
                     }
                 }
 
@@ -455,7 +469,7 @@ protected static function fileTypeMap(): array
                     'expires_at' => now()->addMinutes($minutes)->toIso8601String(),
                 ];
                 Cache::put($cacheKey, $payload, now()->addMinutes($minutes));
-                return Storage::disk($publicDisk)->url($tmpPath);
+                return $this->buildPublicStorageUrl($tmpPath);
             }
         } finally {
             optional($lock)->release();
@@ -463,7 +477,7 @@ protected static function fileTypeMap(): array
 
         $cached = Cache::get($cacheKey);
         if ($cached && Storage::disk($publicDisk)->exists($cached['path'])) {
-            return Storage::disk($publicDisk)->url($cached['path']);
+            return $this->buildPublicStorageUrl($cached['path']);
         }
 
         $tmpName = Str::uuid()->toString() . '-' . basename($this->path);
@@ -487,7 +501,7 @@ protected static function fileTypeMap(): array
             'path'       => $tmpPath,
             'expires_at' => now()->addMinutes($minutes)->toIso8601String(),
         ], now()->addMinutes($minutes));
-        return Storage::disk($publicDisk)->url($tmpPath);
+        return $this->buildPublicStorageUrl($tmpPath);
     }
 
     public function user()
