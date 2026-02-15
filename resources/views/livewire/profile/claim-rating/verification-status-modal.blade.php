@@ -86,11 +86,11 @@
             @php $v = $claimRating->verification; @endphp
 
             @if($claimRating->is_public)
-                <x-alert class="mb-4" :mode="'info'">
+                <x-alert class="mb-4" :mode="'success'">
                     <p class="text-sm">
-                        Diese Bewertung ist bereits oeffentlich sichtbar.
-                        Die Fall-Verifikation dient hier als ergaenzender Echtheitsnachweis und verbessert den Verifikationsstatus,
-                        ohne die bestehende Veroeffentlichung zu ersetzen.
+                        Diese Bewertung ist bereits öffentlich sichtbar.
+                        Die Fall-Verifikation dient hier als ergänzender Echtheitsnachweis und verbessert den Verifikationsstatus,
+                        ohne die bestehende Veröffentlichung zu ersetzen.
                     </p>
                 </x-alert>
             @endif
