@@ -64,7 +64,21 @@ class UpdateCustomerInformationForm extends Component
                 'postal_code' => $this->postal_code,
                 'country' => $this->country,
             ]);
+        }else {
+            Customer::create([
+                'user_id' => Auth::id(),
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'username' => Auth::user()->name,
+                'phone_number' => $this->phone_number,
+                'street' => $this->street,
+                'city' => $this->city,
+                'state' => $this->state,
+                'postal_code' => $this->postal_code,
+                'country' => $this->country,
+            ]);
         }
+
         $this->dispatch('saved');
         session()->flash('message', 'Customer information updated successfully!');
     }
