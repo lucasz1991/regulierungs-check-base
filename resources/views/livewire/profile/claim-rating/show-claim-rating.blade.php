@@ -275,13 +275,13 @@
 
                                 @if($question['type'] == 'calc')
                                     <div class="mt-2">
-                                        <x-insurance.insurance-rating-stars :score="$question['score']" />
+                                        <x-insurance.insurance-rating-stars-review-overview :score="$question['score']" />
                                     </div>
                                 @endif
 
                                 @if($question['type'] == 'ai')
                                     <div class="mt-2">
-                                        <x-insurance.insurance-rating-stars :score="$question['ai_score']" />
+                                        <x-insurance.insurance-rating-stars-review-overview :score="$question['ai_score']" />
                                     </div>
                                     <p class="text-sm text-gray-700 mt-2">
                                         <strong>Kommentar:</strong> {{ $question['ai_comment'] }}
@@ -296,7 +296,7 @@
                             <p class="text-sm text-gray-700">
                                 <strong>Scoring variable Fragen:</strong>
                                 @if($claimRating->attachments['scorings']['variable_questions'] != null)
-                                    <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['variable_questions']" />
+                                    <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['variable_questions']" />
                                 @endif
                             </p>
                         </div>
@@ -306,7 +306,7 @@
                     <div class="rounded-2xl border-white/80 bg-white/90 p-4 md:p-6">
                         <div class="mb-4 text-sm text-gray-700">
                             <strong class="mr-2">Gesamt Scoring:</strong>
-                            <x-insurance.insurance-rating-stars :score="$claimRating->score()" />
+                            <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->score()" />
                         </div>
 
                         <div class="max-lg:flex-col flex gap-4">
@@ -339,28 +339,28 @@
                                         <span class="text-gray-700 inline-flex items-center gap-2">
                                             <i class="fal fa-clock text-gray-400"></i><span>Dauer</span>
                                         </span>
-                                        <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['regulation_speed']" />
+                                        <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['regulation_speed']" />
                                     </div>
 
                                     <div class="grid grid-cols-[1fr_auto] items-center gap-3">
                                         <span class="text-gray-700 inline-flex items-center gap-2">
                                             <i class="fal fa-headset text-gray-400"></i><span>Kundenservice</span>
                                         </span>
-                                        <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['customer_service']" />
+                                        <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['customer_service']" />
                                     </div>
 
                                     <div class="grid grid-cols-[1fr_auto] items-center gap-3">
                                         <span class="text-gray-700 inline-flex items-center gap-2">
                                             <i class="fal fa-balance-scale text-gray-400"></i><span>Fairness</span>
                                         </span>
-                                        <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['fairness']" />
+                                        <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['fairness']" />
                                     </div>
 
                                     <div class="grid grid-cols-[1fr_auto] items-center gap-3">
                                         <span class="text-gray-700 inline-flex items-center gap-2">
                                             <i class="fal fa-eye text-gray-400"></i><span>Transparenz</span>
                                         </span>
-                                        <x-insurance.insurance-rating-stars :score="$claimRating->attachments['scorings']['transparency']" />
+                                        <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['transparency']" />
                                     </div>
 
                                     {{-- Tags --}}
@@ -398,3 +398,4 @@
 
     </div>
 </div>
+

@@ -37,6 +37,7 @@
                 $score5 = $scoreRaw !== null ? round($scoreRaw * 5, 1) : null;
 
                 $count = (int) ($insurance->published_claimRatingsCountBySubtype($subTypeFilterSubType->id ?? null) ?? 0);
+                $ratingDistribution = $insurance->publishedClaimRatingDistributionBySubtype($subTypeFilterSubType->id ?? null);
 
                 // Kreis-Füllstände (0..100)
                 // 1) Dauer: je weniger Tage, desto besser (hier grob: 0 Tage => 100%, 120+ Tage => 0%)
@@ -46,9 +47,21 @@
                 // 2) Score: 0..5 => 0..100
                 $scorePct = $score5 !== null ? (int) round(($score5 / 5) * 100) : 0;
 
-                // 3) Bewertungen: Sättigung (z.B. 200 Bewertungen => 100%)
-                $countCap = 200;
-                $countPct = max(0, min(100, (int) round(min($count, $countCap) / $countCap * 100)));
+                // 3) Bewertungen: Verteilung (gut/ausreichend/sehr schlecht) als Mehrfarben-Kreis
+                $goodCount = (int) ($ratingDistribution['good'] ?? 0);
+                $sufficientCount = (int) ($ratingDistribution['sufficient'] ?? 0);
+                $veryBadCount = (int) ($ratingDistribution['very_bad'] ?? 0);
+
+                $goodPct = $count > 0 ? ($goodCount / $count) * 100 : 0;
+                $sufficientPct = $count > 0 ? ($sufficientCount / $count) * 100 : 0;
+                $veryBadPct = $count > 0 ? ($veryBadCount / $count) * 100 : 0;
+
+                $segment1 = round($goodPct, 2);
+                $segment2 = round($goodPct + $sufficientPct, 2);
+                $segment3 = round($goodPct + $sufficientPct + $veryBadPct, 2);
+                $countDonutGradient = $count > 0
+                    ? "conic-gradient(#22c55e 0% {$segment1}%, #f59e0b {$segment1}% {$segment2}%, #ef4444 {$segment2}% {$segment3}%, #e5e7eb {$segment3}% 100%)"
+                    : "conic-gradient(#e5e7eb 0 100%)";
             @endphp
             <div class="hidden md:block">
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -120,7 +133,7 @@
                                 <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                 <div
                                     class="absolute inset-0 rounded-full"
-                                    style="background: conic-gradient(#10b981 {{ $countPct }}%, #e5e7eb 0);"
+                                    style="background: {{ $countDonutGradient }};"
                                 ></div>
                                 <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center text-center">
                                     <div class="text-lg font-semibold text-gray-900 leading-none">{{ $count }}</div>
@@ -361,7 +374,7 @@
                                                     <div class="absolute inset-0 rounded-full bg-gray-100"></div>
                                                     <div
                                                         class="absolute inset-0 rounded-full"
-                                                        style="background: conic-gradient(#10b981 {{ $countPct }}%, #e5e7eb 0);"
+                                                        style="background: {{ $countDonutGradient }};"
                                                     ></div>
                                                     <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center">
                                                         <div class="text-lg font-semibold">{{ $count }}</div>

@@ -157,6 +157,36 @@ class Insurance extends Model
             ->count();
     }
 
+    public function publishedClaimRatingDistributionBySubtype(?int $subtypeId = null): array
+    {
+        $stats = $this->claimRatings()
+            ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
+                $query->where('insurance_subtype_id', $subtypeId);
+            })
+            ->publiclyVisible()
+            ->selectRaw('
+                COUNT(*) as total_count,
+                SUM(CASE WHEN rating_score >= 0.7 THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN rating_score >= 0.4 AND rating_score < 0.7 THEN 1 ELSE 0 END) as sufficient_count,
+                SUM(CASE WHEN rating_score < 0.4 THEN 1 ELSE 0 END) as very_bad_count
+            ')
+            ->first();
+
+        $total = (int) ($stats->total_count ?? 0);
+        $good = (int) ($stats->good_count ?? 0);
+        $sufficient = (int) ($stats->sufficient_count ?? 0);
+        $veryBad = (int) ($stats->very_bad_count ?? 0);
+        $other = max(0, $total - ($good + $sufficient + $veryBad));
+
+        return [
+            'total' => $total,
+            'good' => $good,
+            'sufficient' => $sufficient,
+            'very_bad' => $veryBad,
+            'other' => $other,
+        ];
+    }
+
     public function published_claimRatings_avgRatingDurationBySubtype(?int $subtypeId = null)
     {
 return null;

@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Customer\ClaimRating\AIEvalController;
+use App\Notifications\MailNotification;
 
 use App\Models\ClaimRating;
 use App\Models\Insurance;
@@ -25,13 +26,15 @@ class ClaimRatingAIEval implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public ClaimRating $claimRating;
+    public bool $isAdminReanalysis;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(ClaimRating $claimRating)
+    public function __construct(ClaimRating $claimRating, bool $isAdminReanalysis = false)
     {
         $this->claimRating = $claimRating;
+        $this->isAdminReanalysis = $isAdminReanalysis;
     }
 
     /**
@@ -155,6 +158,15 @@ class ClaimRatingAIEval implements ShouldQueue
         $this->claimRating->rating_score = round((float) $allScore, 2);
         $this->claimRating->status = 'rated';
         $this->claimRating->saveQuietly();
+
+        if ($this->isAdminReanalysis && $this->claimRating->user) {
+            $this->claimRating->user->notify(new MailNotification([
+                'subject' => 'Regulierungs-CHECK: Deine Schadenbewertung wurde neu analysiert',
+                'header' => 'Hallo ' . ($this->claimRating->user->name ?: ''),
+                'body' => 'Eine Neubewertung deiner Schadenbewertung wurde durch das Admin-Team von Regulierungs-CHECK ausgelöst. Bitte prüfe den aktuellen Stand direkt in deinem Profil.',
+                'link' => route('profile.claim-rating.claim-rating-show', $this->claimRating),
+            ]));
+        }
     
         Log::info("AI-Evaluation completed for ClaimRating ID ".$this->claimRating->id);
 
