@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Customer\ClaimRating\AIEvalController;
-use App\Notifications\MailNotification;
+use App\Models\Mail;
 
 use App\Models\ClaimRating;
 use App\Models\Insurance;
@@ -160,16 +160,25 @@ class ClaimRatingAIEval implements ShouldQueue
         $this->claimRating->saveQuietly();
 
         if ($this->isAdminReanalysis && $this->claimRating->user) {
-            $this->claimRating->user->notify(new MailNotification([
-                'subject' => 'Regulierungs-CHECK: Deine Schadenbewertung wurde neu analysiert',
-                'header' => 'Hallo ' . ($this->claimRating->user->name ?: ''),
-                'body' => 'Deine eingereichte Bewertung wurde im Rahmen unserer Qualitätssicherung erneut analysiert.
+            Mail::create([
+                'type' => 'both',
+                'status' => false,
+                'content' => [
+                    'subject' => 'Regulierungs-CHECK: Deine Schadenbewertung wurde neu analysiert',
+                    'header' => 'Hallo ' . ($this->claimRating->user->name ?: ''),
+                    'body' => 'Deine eingereichte Bewertung wurde im Rahmen unserer Qualitätssicherung erneut analysiert.
 
 Nur du kannst sie in deinem Profil wieder veröffentlichen. Bitte nimm dir kurz die Zeit dafür, damit weiterhin ausreichend Bewertungen für transparente Vergleiche verfügbar bleiben.
 
 Danke für deinen Beitrag zu transparenten Versicherungsvergleichen.',
-                'link' => route('profile.claim-rating.claim-rating-show', $this->claimRating),
-            ]));
+                    'link' => route('profile.claim-rating.claim-rating-show', $this->claimRating),
+                ],
+                'recipients' => [[
+                    'user_id' => $this->claimRating->user->id,
+                    'email' => $this->claimRating->user->email,
+                    'status' => false,
+                ]],
+            ]);
         }
     
         Log::info("AI-Evaluation completed for ClaimRating ID ".$this->claimRating->id);

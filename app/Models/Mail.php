@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Jobs\ProcessMailJob;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Mail extends Model
 {
     protected $fillable = [
-        'status', 'content', 'recipients'
+        'type',
+        'status',
+        'content',
+        'recipients',
     ];
 
     protected $casts = [
@@ -17,14 +20,17 @@ class Mail extends Model
         'recipients' => 'json',
     ];
 
-        // Event-Listener für das "created"-Ereignis
-        protected static function boot()
-        {
-            parent::boot();
-    
-            static::created(function ($mail) {
-                // Dispatch Job zur Verarbeitung der Mail
-                ProcessMailJob::dispatch($mail);
-            });
-        }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($mail) {
+            ProcessMailJob::dispatch($mail);
+        });
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

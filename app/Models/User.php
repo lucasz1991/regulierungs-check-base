@@ -101,6 +101,33 @@ class User extends Authenticatable
         ]);
     }
 
+    public function receiveMessage($subject, $message, $fromUserId = null, $files = null)
+    {
+        $createdMessage = Message::create([
+            'subject' => $subject,
+            'message' => $message,
+            'from_user' => $fromUserId ?? 1,
+            'to_user' => $this->id,
+            'status' => '1',
+        ]);
+
+        if ($files) {
+            foreach ($files as $file) {
+                $createdMessage->files()->create([
+                    'user_id' => $file->user_id ?? null,
+                    'name' => $file->name,
+                    'path' => $file->path,
+                    'mime_type' => $file->mime_type,
+                    'type' => $file->type ?? 'default',
+                    'size' => $file->size,
+                    'expires_at' => $file->expires_at ?? null,
+                ]);
+            }
+        }
+
+        return $createdMessage;
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

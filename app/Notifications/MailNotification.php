@@ -2,57 +2,91 @@
 
 namespace App\Notifications;
 
+use App\Models\Mail as MailModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class MailNotification extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, SerializesModels;
 
-    protected $content;
+    protected $mailData;
 
     /**
-     * Create a new notification instance.
-     *
-     * @param array $content
+     * @param \App\Models\Mail|array $mailData
      */
-    public function __construct(array $content)
+    public function __construct($mailData)
     {
-        $this->content = $content;
+        $this->mailData = $mailData;
     }
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $mailMessage = (new MailMessage)
-            ->subject($this->content['subject'])
-            ->greeting($this->content['header'])
-            ->line($this->content['body'])
-            ->salutation('Mit freundlichen Grüßen,dein Regulierungs-CHECK Team'); 
+        $content = [];
+        $files = collect();
 
-        if (!empty($this->content['link'])) {
-            $mailMessage->action('weiter', $this->content['link']);
+        if ($this->mailData instanceof MailModel) {
+            $this->mailData->loadMissing('files');
+            $content = is_array($this->mailData->content) ? $this->mailData->content : [];
+            $files = $this->mailData->files ?? collect();
+        } elseif (is_array($this->mailData)) {
+            $content = $this->mailData;
+        }
+
+        $subject = $content['subject'] ?? 'Nachricht';
+        $greeting = $content['header'] ?? null;
+        $body = $content['body'] ?? '';
+        $link = $content['link'] ?? null;
+
+        $mailMessage = (new MailMessage)
+            ->from(config('mail.from.address'), config('mail.from.name'))
+            ->subject($subject);
+
+        if (! empty($greeting)) {
+            $mailMessage->greeting($greeting);
+        }
+
+        $mailMessage->line($body);
+
+        if (! empty($link)) {
+            $mailMessage->action('Weiter', $link);
+        }
+
+        $mailMessage->salutation('Mit freundlichen Gruessen, dein Regulierungs-CHECK Team');
+
+        foreach ($files as $file) {
+            $disk = $file->disk ?? 'private';
+            $path = $file->path;
+
+            if (method_exists($mailMessage, 'attachFromStorageDisk')) {
+                $mailMessage->attachFromStorageDisk($disk, $path, [
+                    'as' => $file->name ?: basename($path),
+                    'mime' => $file->mime_type ?: null,
+                ]);
+            } else {
+                $absolute = Storage::disk($disk)->path($path);
+                $mailMessage->attach($absolute, [
+                    'as' => $file->name ?: basename($path),
+                    'mime' => $file->mime_type ?: null,
+                ]);
+            }
         }
 
         return $mailMessage;
     }
-
 }
