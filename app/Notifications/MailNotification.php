@@ -67,7 +67,7 @@ class MailNotification extends Notification implements ShouldQueue
             $mailMessage->action('Weiter', $link);
         }
 
-        $mailMessage->salutation('Mit freundlichen Gruessen, dein Regulierungs-CHECK Team');
+        $mailMessage->salutation('Mit freundlichen Grüßen, dein Regulierungs-CHECK Team');
 
         foreach ($files as $file) {
             $disk = $file->disk ?? 'private';
