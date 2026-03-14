@@ -14,7 +14,7 @@ class MailNotification extends Notification implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    protected $mailData;
+    protected $mailData; 
 
     /**
      * @param \App\Models\Mail|array $mailData
