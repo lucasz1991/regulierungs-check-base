@@ -33,7 +33,8 @@
             @php
                 // Werte vorbereiten (robust)
                 $days = (int) round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType->id ?? null));
-                $scoreRaw = $insurance->latestDetailInsuranceRating->total_score ?? null;
+                $detailInsuranceRating = $insurance->latestDetailInsuranceRating;
+                $scoreRaw = $detailInsuranceRating?->total_score;
                 $score5 = $scoreRaw !== null ? round($scoreRaw * 5, 1) : null;
 
                 $regulationTypeDistribution = $insurance->publishedClaimRatingRegulationTypeDistributionBySubtype($subTypeFilterSubType->id ?? null);
@@ -88,6 +89,67 @@
                     $countDonutGradient = 'conic-gradient(' . implode(', ', $segments) . ')';
                 } else {
                     $countDonutGradient = 'conic-gradient(#e5e7eb 0 100%)';
+                }
+
+                // 4) Automatische Kurz-Zusammenfassung (Regulierungsarten + Scorings)
+                $autoSummaryMap = [];
+
+                if ($count > 0) {
+                    $criticalSettlementCount = $teilzahlungCount + $ablehnungCount;
+
+                    if ($criticalSettlementCount > 0 && ($criticalSettlementCount / $count) >= 0.45) {
+                        $autoSummaryMap['settlement_risk'] = "{$criticalSettlementCount} von {$count} Faellen enden mit Teilzahlung oder Ablehnung.";
+                    } elseif ($vollzahlungCount > 0 && ($vollzahlungCount / $count) >= 0.6) {
+                        $autoSummaryMap['settlement_positive'] = "{$vollzahlungCount} von {$count} Faellen wurden als Vollzahlung reguliert.";
+                    }
+
+                    if ($days >= 45) {
+                        $autoSummaryMap['speed_risk'] = "Haeufige Verzoegerungen bei der Schadensbearbeitung (Durchschnitt {$days} Tage).";
+                    } elseif ($days > 0 && $days <= 21) {
+                        $autoSummaryMap['speed_positive'] = "Regulierung wirkt insgesamt zuegig (Durchschnitt {$days} Tage).";
+                    }
+                }
+
+                if ($detailInsuranceRating) {
+                    $speedScore = (float) ($detailInsuranceRating->speed ?? 0);
+                    $communicationScore = (float) ($detailInsuranceRating->communication ?? 0);
+                    $fairnessScore = (float) ($detailInsuranceRating->fairness ?? 0);
+                    $transparencyScore = (float) ($detailInsuranceRating->transparency ?? 0);
+                    $communicationTransparencyAvg = ($communicationScore + $transparencyScore) / 2;
+                    $scoringInsightsAdded = false;
+
+                    if ($speedScore <= 0.45) {
+                        $autoSummaryMap['speed_risk'] = "Bearbeitungsgeschwindigkeit wird im Scoring unterdurchschnittlich bewertet.";
+                        $scoringInsightsAdded = true;
+                    }
+
+                    if ($communicationTransparencyAvg <= 0.5) {
+                        $autoSummaryMap['service_risk'] = "Kommunikation und Transparenz werden ueberwiegend nur mittelmaessig bewertet.";
+                        $scoringInsightsAdded = true;
+                    }
+
+                    if ($fairnessScore <= 0.5) {
+                        $autoSummaryMap['fairness_risk'] = "Fairness der Entscheidung wird auffaellig kritisch bewertet.";
+                        $scoringInsightsAdded = true;
+                    }
+
+                    if (min($speedScore, $communicationScore, $fairnessScore, $transparencyScore) >= 0.75) {
+                        $autoSummaryMap['score_positive'] = "Scorings zeigen insgesamt eine stabile und positive Servicequalitaet.";
+                        $scoringInsightsAdded = true;
+                    }
+
+                    if (!$scoringInsightsAdded) {
+                        $score5FromScoring = (float) (($detailInsuranceRating->total_score ?? 0) * 5);
+                        $autoSummaryMap['score_neutral'] = 'Scorings liegen insgesamt im mittleren Bereich (' . number_format($score5FromScoring, 1, ',', '.') . ' / 5).';
+                    }
+                }
+
+                $autoSummaryItems = array_slice(array_values($autoSummaryMap), 0, 4);
+
+                if (empty($autoSummaryItems)) {
+                    $autoSummaryItems[] = $count > 0
+                        ? 'Das Gesamtbild ist aktuell relativ ausgeglichen, ohne starke Ausschlaege in eine Richtung.'
+                        : 'Noch keine ausreichenden Daten fuer eine automatische Kurz-Zusammenfassung.';
                 }
             @endphp
             <div class="hidden md:block">
@@ -189,8 +251,9 @@
                             {{-- große Card links (2/3) --}}
                             <div class="lg:col-span-2 rounded-2xl bg-white/80 border border-white/30 shadow p-5">
                                 <x-insurance.insurance-detail-insurance-ratings
-                                    :detailInsuranceRating="$insurance->latestDetailInsuranceRating"
+                                    :detailInsuranceRating="$detailInsuranceRating"
                                     :insurance="$insurance"
+                                    :autoSummaryItems="$autoSummaryItems"
                                 />
                             </div>
                         </div>
@@ -211,9 +274,6 @@
                 </div>
 
             </div>
-            @php
-                $detailInsuranceRating =  $insurance->latestDetailInsuranceRating;
-            @endphp            
             <div class="md:hidden mt-8">
 <div
     class="relative"
@@ -435,7 +495,38 @@
                             </div>
 
                             {{-- ===================================================== --}}
-                            {{-- SLIDE 2: Scorings --}}
+                            {{-- SLIDE 2: Kompakte Auswertung --}}
+                            {{-- ===================================================== --}}
+                            <div class="swiper-slide">
+                                <div class="">
+                                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
+                                                <i class="fal fa-list-check text-blue-600"></i>
+                                                Kompakte Auswertung
+                                            </h3>
+                                        </div>
+
+                                        <div class="rounded-xl bg-white p-3 shadow-sm border border-gray-100">
+                                            <ul class="space-y-2">
+                                                @foreach ($autoSummaryItems as $item)
+                                                    <li class="flex items-start gap-2 text-xs text-slate-700 leading-relaxed">
+                                                        <span class="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-teal-600 text-white">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 010 1.414l-7.5 7.5a1 1 0 01-1.414 0l-3.5-3.5A1 1 0 015.704 9.29l2.793 2.793 6.793-6.793a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </span>
+                                                        <span>{{ $item }}</span>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- ===================================================== --}}
+                            {{-- SLIDE 3: Scorings --}}
                             {{-- ===================================================== --}}
                             <div class="swiper-slide">
                                 <div class="">
@@ -487,9 +578,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                     @else
                                         <div class="rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 flex gap-3">
                                             <i class="fal fa-exclamation-triangle mt-0.5"></i>
@@ -506,7 +594,7 @@
                             </div>
 
                             {{-- ===================================================== --}}
-                            {{-- SLIDE 3: Kommentar --}}
+                            {{-- SLIDE 4: KI-Kommentar --}}
                             {{-- ===================================================== --}}
                             <div class="swiper-slide">
                                 <div class="">
@@ -516,7 +604,7 @@
                                             <div class="flex items-center gap-2 mb-3">
                                                 <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
                                                     <i class="fal fa-comment-alt text-blue-600"></i>
-                                                    Zusammenfassung
+                                                    KI-Kommentar
                                                 </h3>
                                             </div>
 
@@ -643,3 +731,4 @@
     </div>
 
 </div>
+
