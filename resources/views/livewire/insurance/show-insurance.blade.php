@@ -91,66 +91,92 @@
                     $countDonutGradient = 'conic-gradient(#e5e7eb 0 100%)';
                 }
 
-                // 4) Automatische Kurz-Zusammenfassung (Regulierungsarten + Scorings)
-                $autoSummaryMap = [];
+                // 4) Automatische Kurz-Zusammenfassung (immer 4 Punkte)
+                $speedScore = (float) ($detailInsuranceRating->speed ?? 0);
+                $communicationScore = (float) ($detailInsuranceRating->communication ?? 0);
+                $fairnessScore = (float) ($detailInsuranceRating->fairness ?? 0);
+                $transparencyScore = (float) ($detailInsuranceRating->transparency ?? 0);
+                $communicationTransparencyAvg = ($communicationScore + $transparencyScore) / 2;
+                $score5FromScoring = (float) (($detailInsuranceRating->total_score ?? 0) * 5);
+                $hasScoringData = (bool) $detailInsuranceRating;
 
-                if ($count > 0) {
+                // Punkt 1: Regulierungsbild
+                if ($count <= 0) {
+                    $summarySettlement = 'Noch zu wenig veröffentlichte Bewertungen für eine belastbare Aussage zum Regulierungsbild.';
+                } else {
                     $criticalSettlementCount = $teilzahlungCount + $ablehnungCount;
+                    $fullPaymentRatio = $vollzahlungCount / $count;
 
                     if ($criticalSettlementCount > 0 && ($criticalSettlementCount / $count) >= 0.45) {
-                        $autoSummaryMap['settlement_risk'] = "{$criticalSettlementCount} von {$count} Faellen enden mit Teilzahlung oder Ablehnung.";
-                    } elseif ($vollzahlungCount > 0 && ($vollzahlungCount / $count) >= 0.6) {
-                        $autoSummaryMap['settlement_positive'] = "{$vollzahlungCount} von {$count} Faellen wurden als Vollzahlung reguliert.";
-                    }
-
-                    if ($days >= 45) {
-                        $autoSummaryMap['speed_risk'] = "Haeufige Verzoegerungen bei der Schadensbearbeitung (Durchschnitt {$days} Tage).";
-                    } elseif ($days > 0 && $days <= 21) {
-                        $autoSummaryMap['speed_positive'] = "Regulierung wirkt insgesamt zuegig (Durchschnitt {$days} Tage).";
-                    }
-                }
-
-                if ($detailInsuranceRating) {
-                    $speedScore = (float) ($detailInsuranceRating->speed ?? 0);
-                    $communicationScore = (float) ($detailInsuranceRating->communication ?? 0);
-                    $fairnessScore = (float) ($detailInsuranceRating->fairness ?? 0);
-                    $transparencyScore = (float) ($detailInsuranceRating->transparency ?? 0);
-                    $communicationTransparencyAvg = ($communicationScore + $transparencyScore) / 2;
-                    $scoringInsightsAdded = false;
-
-                    if ($speedScore <= 0.45) {
-                        $autoSummaryMap['speed_risk'] = "Bearbeitungsgeschwindigkeit wird im Scoring unterdurchschnittlich bewertet.";
-                        $scoringInsightsAdded = true;
-                    }
-
-                    if ($communicationTransparencyAvg <= 0.5) {
-                        $autoSummaryMap['service_risk'] = "Kommunikation und Transparenz werden ueberwiegend nur mittelmaessig bewertet.";
-                        $scoringInsightsAdded = true;
-                    }
-
-                    if ($fairnessScore <= 0.5) {
-                        $autoSummaryMap['fairness_risk'] = "Fairness der Entscheidung wird auffaellig kritisch bewertet.";
-                        $scoringInsightsAdded = true;
-                    }
-
-                    if (min($speedScore, $communicationScore, $fairnessScore, $transparencyScore) >= 0.75) {
-                        $autoSummaryMap['score_positive'] = "Scorings zeigen insgesamt eine stabile und positive Servicequalitaet.";
-                        $scoringInsightsAdded = true;
-                    }
-
-                    if (!$scoringInsightsAdded) {
-                        $score5FromScoring = (float) (($detailInsuranceRating->total_score ?? 0) * 5);
-                        $autoSummaryMap['score_neutral'] = 'Scorings liegen insgesamt im mittleren Bereich (' . number_format($score5FromScoring, 1, ',', '.') . ' / 5).';
+                        $summarySettlement = "{$criticalSettlementCount} von {$count} Fällen enden mit Teilzahlung oder Ablehnung.";
+                    } elseif ($vollzahlungCount > 0 && $fullPaymentRatio >= 0.6) {
+                        $summarySettlement = "{$vollzahlungCount} von {$count} Fällen wurden als Vollzahlung reguliert.";
+                    } elseif ($vollzahlungCount > $criticalSettlementCount && $fullPaymentRatio >= 0.4) {
+                        $summarySettlement = "Vollzahlungen überwiegen derzeit mit {$vollzahlungCount} von {$count} Fällen.";
+                    } elseif ($ablehnungCount > 0 && ($ablehnungCount / $count) >= 0.2) {
+                        $summarySettlement = "Ablehnungen sind mit {$ablehnungCount} von {$count} Fällen überdurchschnittlich präsent.";
+                    } else {
+                        $summarySettlement = "Regulierungsarten zeigen derzeit ein gemischtes Bild ohne starke Ausreißer.";
                     }
                 }
 
-                $autoSummaryItems = array_slice(array_values($autoSummaryMap), 0, 4);
-
-                if (empty($autoSummaryItems)) {
-                    $autoSummaryItems[] = $count > 0
-                        ? 'Das Gesamtbild ist aktuell relativ ausgeglichen, ohne starke Ausschlaege in eine Richtung.'
-                        : 'Noch keine ausreichenden Daten fuer eine automatische Kurz-Zusammenfassung.';
+                // Punkt 2: Geschwindigkeit
+                if ($days >= 45 || ($hasScoringData && $speedScore <= 0.45)) {
+                    $summarySpeed = "Häufige Verzögerungen bei der Schadensbearbeitung (Durchschnitt {$days} Tage).";
+                } elseif ($days > 0 && $days <= 21 && (!$hasScoringData || $speedScore >= 0.65)) {
+                    $summarySpeed = "Bearbeitung wirkt insgesamt zügig (Durchschnitt {$days} Tage).";
+                } else {
+                    $summarySpeed = "Bearbeitungsgeschwindigkeit liegt aktuell im mittleren Bereich.";
                 }
+
+                // Punkt 3: Kommunikation & Transparenz
+                if (!$hasScoringData) {
+                    $summaryService = 'Kommunikation und Transparenz werden nach weiteren Scoring-Daten genauer eingeordnet.';
+                } elseif ($communicationTransparencyAvg <= 0.5) {
+                    $summaryService = 'Kommunikation und Transparenz werden überwiegend nur mittelmäßig bewertet.';
+                } elseif ($communicationTransparencyAvg >= 0.75) {
+                    $summaryService = 'Kommunikation und Transparenz werden überwiegend positiv hervorgehoben.';
+                } else {
+                    $summaryService = 'Kommunikation und Transparenz wirken insgesamt ausgeglichen.';
+                }
+
+                // Punkt 4: Fairness / Gesamtwirkung
+                if (!$hasScoringData) {
+                    $summaryFairness = 'Fairness und Gesamtwirkung werden mit weiteren Scoring-Daten präziser eingeordnet.';
+                } elseif ($fairnessScore <= 0.5 || $score5FromScoring < 2.8) {
+                    $summaryFairness = 'Entscheidungen werden bei Fairness und Gesamtwirkung häufig kritisch eingeschätzt.';
+                } elseif ($fairnessScore >= 0.75 && $score5FromScoring >= 4.0) {
+                    $summaryFairness = 'Fairness und Gesamtwirkung werden überwiegend positiv bewertet.';
+                } else {
+                    $summaryFairness = 'Fairness und Gesamtwirkung liegen aktuell im soliden Mittelfeld.';
+                }
+
+                $autoSummaryItems = [
+                    [
+                        'icon' => 'fa-file-invoice-dollar',
+                        'icon_bg' => 'bg-teal-600',
+                        'title' => 'Regulierungsbild',
+                        'text' => $summarySettlement,
+                    ],
+                    [
+                        'icon' => 'fa-clock',
+                        'icon_bg' => 'bg-teal-600',
+                        'title' => 'Bearbeitungsdauer',
+                        'text' => $summarySpeed,
+                    ],
+                    [
+                        'icon' => 'fa-comments',
+                        'icon_bg' => 'bg-teal-600',
+                        'title' => 'Kommunikation',
+                        'text' => $summaryService,
+                    ],
+                    [
+                        'icon' => 'fa-balance-scale',
+                        'icon_bg' => 'bg-teal-600',
+                        'title' => 'Fairness',
+                        'text' => $summaryFairness,
+                    ],
+                ];
             @endphp
             <div class="hidden md:block">
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -499,7 +525,7 @@
                             {{-- ===================================================== --}}
                             <div class="swiper-slide">
                                 <div class="">
-                                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+                                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3  flex flex-col">
                                         <div class="flex items-center gap-2 mb-3">
                                             <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
                                                 <i class="fal fa-list-check text-blue-600"></i>
@@ -507,16 +533,14 @@
                                             </h3>
                                         </div>
 
-                                        <div class="rounded-xl bg-white p-3 shadow-sm border border-gray-100">
-                                            <ul class="space-y-2">
+                                        <div class="rounded-xl bg-white p-3.5 shadow-sm border border-gray-100 flex-1">
+                                            <ul class="space-y-2.5">
                                                 @foreach ($autoSummaryItems as $item)
-                                                    <li class="flex items-start gap-2 text-xs text-slate-700 leading-relaxed">
-                                                        <span class="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-teal-600 text-white">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 010 1.414l-7.5 7.5a1 1 0 01-1.414 0l-3.5-3.5A1 1 0 015.704 9.29l2.793 2.793 6.793-6.793a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                            </svg>
+                                                    <li class="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed rounded-lg border border-slate-100 bg-slate-50/80 p-2">
+                                                        <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-600 text-white">
+                                                            <i class="fal {{ $item['icon'] ?? 'fa-check' }} text-[10px]"></i>
                                                         </span>
-                                                        <span>{{ $item }}</span>
+                                                        <span>{{ $item['text'] ?? '' }}</span>
                                                     </li>
                                                 @endforeach
                                             </ul>
