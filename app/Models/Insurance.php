@@ -187,6 +187,39 @@ class Insurance extends Model
         ];
     }
 
+    public function publishedClaimRatingRegulationTypeDistributionBySubtype(?int $subtypeId = null): array
+    {
+        $counts = [
+            'total' => 0,
+            'teilzahlung' => 0,
+            'vollzahlung' => 0,
+            'ablehnung' => 0,
+            'austehend' => 0,
+            'other' => 0,
+        ];
+
+        $this->claimRatings()
+            ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
+                $query->where('insurance_subtype_id', $subtypeId);
+            })
+            ->publiclyVisible()
+            ->get(['answers'])
+            ->each(function (ClaimRating $rating) use (&$counts) {
+                $regulationType = strtolower((string) data_get($rating->answers, 'regulationType', ''));
+
+                $counts['total']++;
+
+                if (array_key_exists($regulationType, $counts) && !in_array($regulationType, ['total', 'other'], true)) {
+                    $counts[$regulationType]++;
+                    return;
+                }
+
+                $counts['other']++;
+            });
+
+        return $counts;
+    }
+
     public function published_claimRatings_avgRatingDurationBySubtype(?int $subtypeId = null)
     {
 return null;

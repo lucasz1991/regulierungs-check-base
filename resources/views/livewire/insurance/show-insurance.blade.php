@@ -36,8 +36,8 @@
                 $scoreRaw = $insurance->latestDetailInsuranceRating->total_score ?? null;
                 $score5 = $scoreRaw !== null ? round($scoreRaw * 5, 1) : null;
 
-                $count = (int) ($insurance->published_claimRatingsCountBySubtype($subTypeFilterSubType->id ?? null) ?? 0);
-                $ratingDistribution = $insurance->publishedClaimRatingDistributionBySubtype($subTypeFilterSubType->id ?? null);
+                $regulationTypeDistribution = $insurance->publishedClaimRatingRegulationTypeDistributionBySubtype($subTypeFilterSubType->id ?? null);
+                $count = (int) ($regulationTypeDistribution['total'] ?? 0);
 
                 // Kreis-Füllstände (0..100)
                 // 1) Dauer: je weniger Tage, desto besser (hier grob: 0 Tage => 100%, 120+ Tage => 0%)
@@ -47,21 +47,48 @@
                 // 2) Score: 0..5 => 0..100
                 $scorePct = $score5 !== null ? (int) round(($score5 / 5) * 100) : 0;
 
-                // 3) Bewertungen: Verteilung (gut/ausreichend/sehr schlecht) als Mehrfarben-Kreis
-                $goodCount = (int) ($ratingDistribution['good'] ?? 0);
-                $sufficientCount = (int) ($ratingDistribution['sufficient'] ?? 0);
-                $veryBadCount = (int) ($ratingDistribution['very_bad'] ?? 0);
+                // 3) Bewertungen: Verteilung nach Regulierungsart als Mehrfarben-Kreis
+                $teilzahlungCount = (int) ($regulationTypeDistribution['teilzahlung'] ?? 0);
+                $vollzahlungCount = (int) ($regulationTypeDistribution['vollzahlung'] ?? 0);
+                $ablehnungCount = (int) ($regulationTypeDistribution['ablehnung'] ?? 0);
+                $austehendCount = (int) ($regulationTypeDistribution['austehend'] ?? 0);
+                $otherRegulationCount = (int) ($regulationTypeDistribution['other'] ?? 0);
 
-                $goodPct = $count > 0 ? ($goodCount / $count) * 100 : 0;
-                $sufficientPct = $count > 0 ? ($sufficientCount / $count) * 100 : 0;
-                $veryBadPct = $count > 0 ? ($veryBadCount / $count) * 100 : 0;
+                $regulationTypeLegend = [
+                    ['label' => 'Teilzahlungen', 'count' => $teilzahlungCount, 'color' => '#f59e0b'],
+                    ['label' => 'Vollzahlungen', 'count' => $vollzahlungCount, 'color' => '#22c55e'],
+                    ['label' => 'Ablehnungen', 'count' => $ablehnungCount, 'color' => '#ef4444'],
+                ];
 
-                $segment1 = round($goodPct, 2);
-                $segment2 = round($goodPct + $sufficientPct, 2);
-                $segment3 = round($goodPct + $sufficientPct + $veryBadPct, 2);
-                $countDonutGradient = $count > 0
-                    ? "conic-gradient(#22c55e 0% {$segment1}%, #f59e0b {$segment1}% {$segment2}%, #ef4444 {$segment2}% {$segment3}%, #e5e7eb {$segment3}% 100%)"
-                    : "conic-gradient(#e5e7eb 0 100%)";
+                if ($austehendCount > 0) {
+                    $regulationTypeLegend[] = ['label' => 'Ausstehend', 'count' => $austehendCount, 'color' => '#3b82f6'];
+                }
+
+                if ($otherRegulationCount > 0) {
+                    $regulationTypeLegend[] = ['label' => 'Sonstige', 'count' => $otherRegulationCount, 'color' => '#6b7280'];
+                }
+
+                if ($count > 0) {
+                    $segments = [];
+                    $startPct = 0.0;
+
+                    foreach ($regulationTypeLegend as $entry) {
+                        $entryCount = (int) ($entry['count'] ?? 0);
+
+                        if ($entryCount <= 0) {
+                            continue;
+                        }
+
+                        $endPct = round($startPct + (($entryCount / $count) * 100), 2);
+                        $segments[] = "{$entry['color']} {$startPct}% {$endPct}%";
+                        $startPct = $endPct;
+                    }
+
+                    $segments[] = "#e5e7eb {$startPct}% 100%";
+                    $countDonutGradient = 'conic-gradient(' . implode(', ', $segments) . ')';
+                } else {
+                    $countDonutGradient = 'conic-gradient(#e5e7eb 0 100%)';
+                }
             @endphp
             <div class="hidden md:block">
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -121,11 +148,20 @@
                     {{-- KPI 3: Bewertungen --}}
                     <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-5">
                         <div class="flex items-start justify-between gap-4">
-                            <div>
+                            <div class="space-y-2">
                                 <p class="text-sm text-gray-700 flex items-center gap-2">
                                     <i class="fal fa-comments  text-primary fa-2x"></i>
                                     <span>Bewertungen</span>
                                 </p>
+
+                                <div class="space-y-1 text-xs text-gray-600">
+                                    @foreach ($regulationTypeLegend as $entry)
+                                        <div class="flex items-center gap-2">
+                                            <span class="inline-block h-2.5 w-2.5 rounded-full" style="background-color: {{ $entry['color'] }};"></span>
+                                            <span><span class="font-semibold text-gray-900">{{ $entry['count'] }}</span> {{ $entry['label'] }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
     
                             {{-- Kreis --}}
@@ -365,10 +401,21 @@
                                         {{-- KPI 3 --}}
                                         <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-2">
                                             <div class="flex items-start justify-between gap-4">
-                                                <p class="text-sm text-gray-700 flex items-center gap-2">
-                                                    <i class="fal fa-comments text-emerald-500 fa-lg"></i>
-                                                    Bewertungen
-                                                </p>
+                                                <div class="space-y-1">
+                                                    <p class="text-sm text-gray-700 flex items-center gap-2">
+                                                        <i class="fal fa-comments text-emerald-500 fa-lg"></i>
+                                                        Bewertungen
+                                                    </p>
+
+                                                    <div class="space-y-0.5 text-[11px] text-gray-600">
+                                                        @foreach ($regulationTypeLegend as $entry)
+                                                            <div class="flex items-center gap-2 leading-none">
+                                                                <span class="inline-block h-2 w-2 rounded-full" style="background-color: {{ $entry['color'] }};"></span>
+                                                                <span><span class="font-semibold text-gray-900">{{ $entry['count'] }}</span> {{ $entry['label'] }}</span>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
 
                                                 <div class="relative  w-[70px] h-[70px]  shrink-0">
                                                     <div class="absolute inset-0 rounded-full bg-gray-100"></div>
