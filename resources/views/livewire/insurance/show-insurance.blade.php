@@ -1,10 +1,6 @@
 <div class="min-h-screen ">
-
-    {{-- HERO / ÜBERBLICK --}}
     <div class="container mx-auto px-4 pb-8">
         <div class="">
-
-            {{-- Top row: Logo + Name --}}
             <div class="md:flex items-start gap-4">
                 <div class="shrink-0 max-md:mb-6">
                     @if ($insurance->logo)
@@ -23,7 +19,6 @@
                         </div>
                     @endif
                 </div>
-
                 <div class="min-w-0">
                     <p class="mt-2 text-sm md:text-base text-white">
                         {{ $insurance->description }}
@@ -31,7 +26,6 @@
                 </div>
             </div>
             @php
-                // Werte vorbereiten (robust)
                 $days = (int) round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType->id ?? null));
                 $detailInsuranceRating = $insurance->latestDetailInsuranceRating;
                 $scoreRaw = $detailInsuranceRating?->total_score;
@@ -40,12 +34,10 @@
                 $regulationTypeDistribution = $insurance->publishedClaimRatingRegulationTypeDistributionBySubtype($subTypeFilterSubType->id ?? null);
                 $count = (int) ($regulationTypeDistribution['total'] ?? 0);
 
-                // Kreis-Füllstände (0..100)
-                // 1) Dauer: je weniger Tage, desto besser (hier grob: 0 Tage => 100%, 120+ Tage => 0%)
+
                 $daysCap = 120;
                 $daysPct = max(0, min(100, (int) round((1 - min($days, $daysCap) / $daysCap) * 100)));
 
-                // 2) Score: 0..5 => 0..100
                 $scorePct = $score5 !== null ? (int) round(($score5 / 5) * 100) : 0;
 
                 // 3) Bewertungen: Verteilung nach Regulierungsart als Mehrfarben-Kreis
