@@ -99,6 +99,30 @@ class Insurance extends Model
         );
     }
 
+    public function avgRatingDurationBySubtypeIds(array $subtypeIds = [])
+    {
+        $subtypeIds = collect($subtypeIds)
+            ->filter(fn ($id) => !is_null($id) && $id !== '')
+            ->map(fn ($id) => (int) $id)
+            ->values()
+            ->all();
+
+        return round(
+            $this->claimRatings()
+                ->when(!empty($subtypeIds), function ($query) use ($subtypeIds) {
+                    $query->whereIn('insurance_subtype_id', $subtypeIds);
+                })
+                ->publiclyVisible()
+                ->get()
+                ->map(function ($rating) {
+                    return $rating->ratingDuration();
+                })
+                ->filter()
+                ->avg(),
+            1
+        );
+    }
+
     public function claimRatingsCountBySubtype(?int $subtypeId = null)
     {
         return $this->claimRatings()
@@ -155,6 +179,38 @@ class Insurance extends Model
             })
             ->publiclyVisible()
             ->count();
+    }
+
+    public function published_claimRatingsCountBySubtypeIds(array $subtypeIds = [])
+    {
+        $subtypeIds = collect($subtypeIds)
+            ->filter(fn ($id) => !is_null($id) && $id !== '')
+            ->map(fn ($id) => (int) $id)
+            ->values()
+            ->all();
+
+        return $this->claimRatings()
+            ->when(!empty($subtypeIds), function ($query) use ($subtypeIds) {
+                $query->whereIn('insurance_subtype_id', $subtypeIds);
+            })
+            ->publiclyVisible()
+            ->count();
+    }
+
+    public function published_ratings_avg_scoreBySubtypeIds(array $subtypeIds = [])
+    {
+        $subtypeIds = collect($subtypeIds)
+            ->filter(fn ($id) => !is_null($id) && $id !== '')
+            ->map(fn ($id) => (int) $id)
+            ->values()
+            ->all();
+
+        return $this->claimRatings()
+            ->when(!empty($subtypeIds), function ($query) use ($subtypeIds) {
+                $query->whereIn('insurance_subtype_id', $subtypeIds);
+            })
+            ->publiclyVisible()
+            ->avg('rating_score');
     }
 
     public function publishedClaimRatingDistributionBySubtype(?int $subtypeId = null): array
