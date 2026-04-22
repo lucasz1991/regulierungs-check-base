@@ -1,4 +1,8 @@
 <div class="container mx-auto px-2 md:px-4">
+    @php
+        $insurancesUrl = route('insurances', $selectedInsuranceTypeId ? ['types' => (string) $selectedInsuranceTypeId] : []);
+    @endphp
+
     <div class="mb-3 md:mb-4 overflow-x-auto">
         <div class="text-xs md:text-sm text-white font-semibold mb-2">
             Versicherungs Kategorie filtern
@@ -96,12 +100,13 @@
                                     :isSubTypeFilter="!empty($selectedSubtypeIds)"
                                     :subTypeFilterSubType="null"
                                     :subTypeFilterSubTypeIds="$selectedSubtypeIds"
+                                    :selectedInsuranceTypeId="$selectedInsuranceTypeId"
                                 />
                             </div>
                         @endforeach
 
                         <div class="swiper-slide w-36 pr-4 h-full">
-                            <a href="/insurances"
+                            <a href="{{ $insurancesUrl }}"
                                class="block h-full hover:shadow-lg cursor-pointer overflow-hidden rounded-xl shadow">
                                 <div class="bg-white px-2 pt-9 pb-2 relative transition-shadow duration-300 flex flex-col justify-center items-center h-full">
                                     <div class="w-12 h-12 rounded-full bg-secondary-light ring-2 ring-offset-2 ring-secondary-light transition-all duration-200 flex items-center justify-center mt-4">

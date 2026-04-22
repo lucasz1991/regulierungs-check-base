@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Insurance;
 
+use App\Models\ClaimRating;
 use App\Models\Insurance;
 use App\Models\InsuranceSubtype;
+use App\Models\InsuranceType;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Livewire\Attributes\Session;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class InsuranceList extends Component
@@ -15,10 +17,11 @@ class InsuranceList extends Component
     public string $search = '';
 
     /** IMPORTANT: muss Collection sein (dein Dropdown macht $options->pluck()) */
+    public Collection $insuranceTypes;
     public Collection $insuranceSubTypes;
 
-    #[Session(key: 'selectedInsuranceSubTypefilter')]
-    public array $selectedInsuranceSubTypefilter = [];
+    public $selectedInsuranceTypefilter = [];
+    public $selectedInsuranceSubTypefilter = [];
 
     public int $perPage = 20;
     public int $pages   = 1;
@@ -32,8 +35,33 @@ class InsuranceList extends Component
     public bool $isSubTypeFilter = false;
     public ?InsuranceSubtype $subTypeFilterSubType = null;
 
+    protected $queryString = [
+        'selectedInsuranceTypefilter' => ['as' => 'types', 'except' => []],
+        'selectedInsuranceSubTypefilter' => ['as' => 'subtypes', 'except' => []],
+        'search' => ['as' => 'q', 'except' => ''],
+        'minRatingCount' => ['as' => 'min_count', 'except' => 1],
+        'minAvgScore' => ['as' => 'min_score', 'except' => null],
+        'sort' => ['except' => 'count_desc'],
+        'onlyActive' => ['as' => 'active', 'except' => false],
+    ];
+
     public function mount(): void
     {
+        $this->selectedInsuranceTypefilter = $this->normalizeFilterIds($this->selectedInsuranceTypefilter);
+        $this->selectedInsuranceSubTypefilter = $this->normalizeFilterIds($this->selectedInsuranceSubTypefilter);
+        $this->insuranceTypes = InsuranceType::query()
+            ->where('insurance_types.is_active', true)
+            ->where(function (Builder $query) {
+                $query->whereIn('id', ClaimRating::query()
+                    ->select('insurance_type_id')
+                    ->whereNotNull('insurance_type_id')
+                    ->publiclyVisible()
+                    ->distinct()
+                )->orWhereHas('subtypes.publishedClaimRatings', fn (Builder $q) => $q->publiclyVisible());
+            })
+            ->orderBy('name')
+            ->get();
+
         $this->insuranceSubTypes = InsuranceSubtype::query()
             ->whereHas('claimRatings', fn (Builder $q) => $q->publiclyVisible())
             ->orderBy('name')
@@ -50,11 +78,17 @@ class InsuranceList extends Component
     public function updatingMinAvgScore(): void { $this->pages = 1; }
     public function updatingOnlyActive(): void { $this->pages = 1; }
 
+    public function updatingSelectedInsuranceTypefilter($value): void
+    {
+        $this->pages = 1;
+        $this->selectedInsuranceTypefilter = $this->normalizeFilterIds($value);
+    }
+
     public function updatingSelectedInsuranceSubTypefilter($value): void
     {
         $this->pages = 1;
 
-        $value = is_array($value) ? $value : [];
+        $value = $this->normalizeFilterIds($value);
         $this->selectedInsuranceSubTypefilter = $value;
 
         $this->syncSubtypeState($value);
@@ -68,11 +102,13 @@ class InsuranceList extends Component
     public function resetFilters(): void
     {
         $this->reset([
+            'selectedInsuranceTypefilter',
             'selectedInsuranceSubTypefilter',
             'search',
             'minRatingCount',
             'minAvgScore',
             'onlyActive',
+            'sort',
         ]);
 
         $this->pages = 1;
@@ -81,7 +117,8 @@ class InsuranceList extends Component
 
     public function getIsFilteredProperty(): bool
     {
-        return !empty($this->selectedInsuranceSubTypefilter)
+        return !empty($this->selectedInsuranceTypefilter)
+            || !empty($this->selectedInsuranceSubTypefilter)
             || filled($this->search)
             || !is_null($this->minAvgScore)
             || ($this->minRatingCount !== 1)
@@ -126,31 +163,36 @@ $query = match ($this->sort) {
         return view('livewire.insurance.insurance-list', [
             'insurances'           => $insurances,
             'total'                => $total,
+            'insuranceTypes'       => $this->insuranceTypes,
             'insuranceSubTypes'    => $this->insuranceSubTypes,
             'isSubTypeFilter'      => $this->isSubTypeFilter,
             'subTypeFilterSubType' => $this->subTypeFilterSubType,
+            'selectedInsuranceTypeIds' => $this->selectedInsuranceTypeIds(),
+            'selectedInsuranceSubTypeIds' => $this->selectedInsuranceSubtypeIds(),
+            'selectedInsuranceTypeSubtypeIds' => $this->selectedInsuranceTypeSubtypeIds($this->selectedInsuranceTypeIds()),
         ]);
     }
 
     private function baseQuery(): Builder
     {
-        $ids = array_values(array_filter($this->selectedInsuranceSubTypefilter, fn ($v) => is_numeric($v)));
+        $typeIds = $this->selectedInsuranceTypeIds();
+        $typeSubtypeIds = $this->selectedInsuranceTypeSubtypeIds($typeIds);
+        $subtypeIds = $this->selectedInsuranceSubtypeIds();
 
         $query = Insurance::query()
-            ->withCount(['claimRatings as claim_ratings_count' => function (Builder $q) {
+            ->withCount(['claimRatings as claim_ratings_count' => function (Builder $q) use ($typeIds, $typeSubtypeIds, $subtypeIds) {
                 $q->publiclyVisible();
+                $this->applyRatingFilters($q, $typeIds, $typeSubtypeIds, $subtypeIds);
             }])
-            ->withAvg(['claimRatings as claim_ratings_avg_rating_score' => function (Builder $q) {
+            ->withAvg(['claimRatings as claim_ratings_avg_rating_score' => function (Builder $q) use ($typeIds, $typeSubtypeIds, $subtypeIds) {
                 $q->publiclyVisible();
+                $this->applyRatingFilters($q, $typeIds, $typeSubtypeIds, $subtypeIds);
             }], 'rating_score')
-            ->whereHas('claimRatings', fn (Builder $q) => $q->publiclyVisible())
-            ->when(filled($this->search), fn (Builder $q) => $q->where('name', 'like', "%{$this->search}%"))
-            ->when(!empty($ids), function (Builder $q) use ($ids) {
-                $q->whereHas('claimRatings', function (Builder $sub) use ($ids) {
-                    $sub->publiclyVisible()
-                        ->whereIn('insurance_subtype_id', $ids);
-                });
+            ->whereHas('claimRatings', function (Builder $q) use ($typeIds, $typeSubtypeIds, $subtypeIds) {
+                $q->publiclyVisible();
+                $this->applyRatingFilters($q, $typeIds, $typeSubtypeIds, $subtypeIds);
             })
+            ->when(filled($this->search), fn (Builder $q) => $q->where('name', 'like', "%{$this->search}%"))
             ->when($this->minRatingCount, fn (Builder $q) => $q->having('claim_ratings_count', '>=', $this->minRatingCount))
             ->when(!is_null($this->minAvgScore), fn (Builder $q) => $q->having('claim_ratings_avg_rating_score', '>=', $this->minAvgScore));
 
@@ -160,9 +202,9 @@ $query = match ($this->sort) {
         return $query;
     }
 
-    private function syncSubtypeState(array $value): void
+    private function syncSubtypeState($value): void
     {
-        $value = array_values(array_filter($value, fn ($v) => is_numeric($v)));
+        $value = $this->normalizeFilterIds($value);
 
         if (count($value) === 1) {
             $this->isSubTypeFilter = true;
@@ -171,5 +213,70 @@ $query = match ($this->sort) {
             $this->isSubTypeFilter = false;
             $this->subTypeFilterSubType = null;
         }
+    }
+
+    private function applyRatingFilters(Builder $query, array $typeIds, array $typeSubtypeIds, array $subtypeIds): void
+    {
+        if (!empty($typeIds) || !empty($typeSubtypeIds)) {
+            $query->where(function (Builder $typeQuery) use ($typeIds, $typeSubtypeIds) {
+                if (!empty($typeIds)) {
+                    $typeQuery->whereIn('insurance_type_id', $typeIds);
+                }
+
+                if (!empty($typeSubtypeIds)) {
+                    if (!empty($typeIds)) {
+                        $typeQuery->orWhereIn('insurance_subtype_id', $typeSubtypeIds);
+                    } else {
+                        $typeQuery->whereIn('insurance_subtype_id', $typeSubtypeIds);
+                    }
+                }
+            });
+        }
+
+        if (!empty($subtypeIds)) {
+            $query->whereIn('insurance_subtype_id', $subtypeIds);
+        }
+    }
+
+    private function selectedInsuranceTypeIds(): array
+    {
+        return $this->normalizeFilterIds($this->selectedInsuranceTypefilter);
+    }
+
+    private function selectedInsuranceSubtypeIds(): array
+    {
+        return $this->normalizeFilterIds($this->selectedInsuranceSubTypefilter);
+    }
+
+    private function selectedInsuranceTypeSubtypeIds(array $selectedInsuranceTypeIds): array
+    {
+        if (empty($selectedInsuranceTypeIds)) {
+            return [];
+        }
+
+        return DB::table('insurance_type_insurance_subtype')
+            ->whereIn('insurance_type_id', $selectedInsuranceTypeIds)
+            ->pluck('insurance_subtype_id')
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    private function normalizeFilterIds($value): array
+    {
+        if (is_null($value) || $value === '') {
+            return [];
+        }
+
+        $values = is_array($value) ? $value : [$value];
+
+        return collect($values)
+            ->flatMap(fn ($id) => is_string($id) ? explode(',', $id) : [$id])
+            ->filter(fn ($id) => is_numeric($id))
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->all();
     }
 }

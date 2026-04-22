@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\InsuranceType;
 use App\Models\InsuranceSubType;
 use App\Models\DetailInsuranceRating;
@@ -123,6 +124,20 @@ class Insurance extends Model
         );
     }
 
+    public function avgRatingDurationByTypeAndSubtypeIds(array $typeIds = [], array $typeSubtypeIds = [], array $subtypeIds = [])
+    {
+        return round(
+            $this->filteredPublishedClaimRatings($typeIds, $typeSubtypeIds, $subtypeIds)
+                ->get()
+                ->map(function ($rating) {
+                    return $rating->ratingDuration();
+                })
+                ->filter()
+                ->avg(),
+            1
+        );
+    }
+
     public function claimRatingsCountBySubtype(?int $subtypeId = null)
     {
         return $this->claimRatings()
@@ -197,6 +212,12 @@ class Insurance extends Model
             ->count();
     }
 
+    public function published_claimRatingsCountByTypeAndSubtypeIds(array $typeIds = [], array $typeSubtypeIds = [], array $subtypeIds = [])
+    {
+        return $this->filteredPublishedClaimRatings($typeIds, $typeSubtypeIds, $subtypeIds)
+            ->count();
+    }
+
     public function published_ratings_avg_scoreBySubtypeIds(array $subtypeIds = [])
     {
         $subtypeIds = collect($subtypeIds)
@@ -210,6 +231,12 @@ class Insurance extends Model
                 $query->whereIn('insurance_subtype_id', $subtypeIds);
             })
             ->publiclyVisible()
+            ->avg('rating_score');
+    }
+
+    public function published_ratings_avg_scoreByTypeAndSubtypeIds(array $typeIds = [], array $typeSubtypeIds = [], array $subtypeIds = [])
+    {
+        return $this->filteredPublishedClaimRatings($typeIds, $typeSubtypeIds, $subtypeIds)
             ->avg('rating_score');
     }
 
@@ -276,6 +303,85 @@ class Insurance extends Model
         return $counts;
     }
 
+    public function publishedClaimRatingRegulationTypeDistributionByTypeAndSubtypeIds(array $typeIds = [], array $typeSubtypeIds = [], array $subtypeIds = []): array
+    {
+        $counts = [
+            'total' => 0,
+            'teilzahlung' => 0,
+            'vollzahlung' => 0,
+            'ablehnung' => 0,
+            'austehend' => 0,
+            'other' => 0,
+        ];
+
+        $this->filteredPublishedClaimRatings($typeIds, $typeSubtypeIds, $subtypeIds)
+            ->get(['answers'])
+            ->each(function (ClaimRating $rating) use (&$counts) {
+                $regulationType = strtolower((string) data_get($rating->answers, 'regulationType', ''));
+
+                $counts['total']++;
+
+                if (array_key_exists($regulationType, $counts) && !in_array($regulationType, ['total', 'other'], true)) {
+                    $counts[$regulationType]++;
+                    return;
+                }
+
+                $counts['other']++;
+            });
+
+        return $counts;
+    }
+
+    public function detailInsuranceRatingByTypeAndSubtypeIds(array $typeIds = [], array $typeSubtypeIds = [], array $subtypeIds = []): ?DetailInsuranceRating
+    {
+        $typeIds = $this->normalizeFilterIds($typeIds);
+        $typeSubtypeIds = $this->normalizeFilterIds($typeSubtypeIds);
+        $subtypeIds = $this->normalizeFilterIds($subtypeIds);
+
+        if (empty($typeIds) && empty($typeSubtypeIds) && empty($subtypeIds)) {
+            return $this->latestDetailInsuranceRatingBySubtype();
+        }
+
+        $detailSubtypeIds = !empty($subtypeIds) ? $subtypeIds : $typeSubtypeIds;
+
+        if (count($detailSubtypeIds) === 1) {
+            return $this->latestDetailInsuranceRatingBySubtype($detailSubtypeIds[0]);
+        }
+
+        if (empty($detailSubtypeIds)) {
+            return null;
+        }
+
+        $stats = $this->detailInsuranceRatings()
+            ->whereIn('insurance_subtype_id', $detailSubtypeIds)
+            ->selectRaw('
+                COUNT(*) as detail_count,
+                AVG(speed) as speed,
+                AVG(communication) as communication,
+                AVG(fairness) as fairness,
+                AVG(transparency) as transparency,
+                AVG(total_score) as total_score
+            ')
+            ->first();
+
+        if ((int) ($stats->detail_count ?? 0) <= 0) {
+            return null;
+        }
+
+        return new DetailInsuranceRating([
+            'insurance_id' => $this->id,
+            'insurance_subtype_id' => null,
+            'type' => 'aggregated',
+            'status' => 'published',
+            'speed' => $stats->speed,
+            'communication' => $stats->communication,
+            'fairness' => $stats->fairness,
+            'transparency' => $stats->transparency,
+            'total_score' => $stats->total_score,
+            'ai_comment' => null,
+        ]);
+    }
+
     public function published_claimRatings_avgRatingDurationBySubtype(?int $subtypeId = null)
     {
 return null;
@@ -285,6 +391,44 @@ return null;
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    private function filteredPublishedClaimRatings(array $typeIds = [], array $typeSubtypeIds = [], array $subtypeIds = []): HasMany
+    {
+        $typeIds = $this->normalizeFilterIds($typeIds);
+        $typeSubtypeIds = $this->normalizeFilterIds($typeSubtypeIds);
+        $subtypeIds = $this->normalizeFilterIds($subtypeIds);
+
+        return $this->claimRatings()
+            ->publiclyVisible()
+            ->when(!empty($typeIds) || !empty($typeSubtypeIds), function ($query) use ($typeIds, $typeSubtypeIds) {
+                $query->where(function ($typeQuery) use ($typeIds, $typeSubtypeIds) {
+                    if (!empty($typeIds)) {
+                        $typeQuery->whereIn('insurance_type_id', $typeIds);
+                    }
+
+                    if (!empty($typeSubtypeIds)) {
+                        if (!empty($typeIds)) {
+                            $typeQuery->orWhereIn('insurance_subtype_id', $typeSubtypeIds);
+                        } else {
+                            $typeQuery->whereIn('insurance_subtype_id', $typeSubtypeIds);
+                        }
+                    }
+                });
+            })
+            ->when(!empty($subtypeIds), function ($query) use ($subtypeIds) {
+                $query->whereIn('insurance_subtype_id', $subtypeIds);
+            });
+    }
+
+    private function normalizeFilterIds(array $ids): array
+    {
+        return collect($ids)
+            ->filter(fn ($id) => is_numeric($id))
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->all();
     }
 
 }

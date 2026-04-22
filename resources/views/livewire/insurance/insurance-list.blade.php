@@ -31,7 +31,17 @@
 
                             <div class="p-2 mb-2">
                                 <label class="text-sm text-gray-400 px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
-                                    <span>Arten:</span>
+                                    <span>Typen:</span>
+                                </label>
+                                <x-filter.filter-dropdown-checkbox
+                                    wire:model.live="selectedInsuranceTypefilter"
+                                    :options="$insuranceTypes"
+                                />
+                            </div>
+
+                            <div class="p-2 mb-2">
+                                <label class="text-sm text-gray-400 px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
+                                    <span>Unterarten:</span>
                                 </label>
                                 <x-filter.filter-dropdown-checkbox
                                     wire:model.live="selectedInsuranceSubTypefilter"
@@ -89,6 +99,9 @@
                                         :insurance="$insurance"
                                         :isSubTypeFilter="$isSubTypeFilter"
                                         :subTypeFilterSubType="$subTypeFilterSubType"
+                                        :selectedInsuranceTypeIds="$selectedInsuranceTypeIds"
+                                        :selectedInsuranceSubTypeIds="$selectedInsuranceSubTypeIds"
+                                        :selectedInsuranceTypeSubtypeIds="$selectedInsuranceTypeSubtypeIds"
                                     />
                                 </div>
                             @endforeach

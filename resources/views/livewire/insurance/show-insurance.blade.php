@@ -25,151 +25,6 @@
                     </p>
                 </div>
             </div>
-            @php
-                $days = (int) round($insurance->avgRatingDurationBySubtype($subTypeFilterSubType->id ?? null));
-                $detailInsuranceRating = $insurance->latestDetailInsuranceRating;
-                $scoreRaw = $detailInsuranceRating?->total_score;
-                $score5 = $scoreRaw !== null ? round($scoreRaw * 5, 1) : null;
-
-                $regulationTypeDistribution = $insurance->publishedClaimRatingRegulationTypeDistributionBySubtype($subTypeFilterSubType->id ?? null);
-                $count = (int) ($regulationTypeDistribution['total'] ?? 0);
-
-
-                $daysCap = 120;
-                $daysPct = max(0, min(100, (int) round((1 - min($days, $daysCap) / $daysCap) * 100)));
-
-                $scorePct = $score5 !== null ? (int) round(($score5 / 5) * 100) : 0;
-
-                // 3) Bewertungen: Verteilung nach Regulierungsart als Mehrfarben-Kreis
-                $teilzahlungCount = (int) ($regulationTypeDistribution['teilzahlung'] ?? 0);
-                $vollzahlungCount = (int) ($regulationTypeDistribution['vollzahlung'] ?? 0);
-                $ablehnungCount = (int) ($regulationTypeDistribution['ablehnung'] ?? 0);
-                $austehendCount = (int) ($regulationTypeDistribution['austehend'] ?? 0);
-                $otherRegulationCount = (int) ($regulationTypeDistribution['other'] ?? 0);
-
-                $regulationTypeLegend = [
-                    ['label' => 'Teilzahlungen', 'count' => $teilzahlungCount, 'color' => '#f59e0b'],
-                    ['label' => 'Vollzahlungen', 'count' => $vollzahlungCount, 'color' => '#22c55e'],
-                    ['label' => 'Ablehnungen', 'count' => $ablehnungCount, 'color' => '#ef4444'],
-                ];
-
-                if ($austehendCount > 0) {
-                    $regulationTypeLegend[] = ['label' => 'Ausstehend', 'count' => $austehendCount, 'color' => '#3b82f6'];
-                }
-
-                if ($otherRegulationCount > 0) {
-                    $regulationTypeLegend[] = ['label' => 'Sonstige', 'count' => $otherRegulationCount, 'color' => '#6b7280'];
-                }
-
-                if ($count > 0) {
-                    $segments = [];
-                    $startPct = 0.0;
-
-                    foreach ($regulationTypeLegend as $entry) {
-                        $entryCount = (int) ($entry['count'] ?? 0);
-
-                        if ($entryCount <= 0) {
-                            continue;
-                        }
-
-                        $endPct = round($startPct + (($entryCount / $count) * 100), 2);
-                        $segments[] = "{$entry['color']} {$startPct}% {$endPct}%";
-                        $startPct = $endPct;
-                    }
-
-                    $segments[] = "#e5e7eb {$startPct}% 100%";
-                    $countDonutGradient = 'conic-gradient(' . implode(', ', $segments) . ')';
-                } else {
-                    $countDonutGradient = 'conic-gradient(#e5e7eb 0 100%)';
-                }
-
-                // 4) Automatische Kurz-Zusammenfassung (immer 4 Punkte)
-                $speedScore = (float) ($detailInsuranceRating->speed ?? 0);
-                $communicationScore = (float) ($detailInsuranceRating->communication ?? 0);
-                $fairnessScore = (float) ($detailInsuranceRating->fairness ?? 0);
-                $transparencyScore = (float) ($detailInsuranceRating->transparency ?? 0);
-                $communicationTransparencyAvg = ($communicationScore + $transparencyScore) / 2;
-                $score5FromScoring = (float) (($detailInsuranceRating->total_score ?? 0) * 5);
-                $hasScoringData = (bool) $detailInsuranceRating;
-
-                // Punkt 1: Regulierungsbild
-                if ($count <= 0) {
-                    $summarySettlement = 'Noch zu wenig veröffentlichte Bewertungen für eine belastbare Aussage zum Regulierungsbild.';
-                } else {
-                    $criticalSettlementCount = $teilzahlungCount + $ablehnungCount;
-                    $fullPaymentRatio = $vollzahlungCount / $count;
-
-                    if ($criticalSettlementCount > 0 && ($criticalSettlementCount / $count) >= 0.45) {
-                        $summarySettlement = "{$criticalSettlementCount} von {$count} Fällen enden mit Teilzahlung oder Ablehnung.";
-                    } elseif ($vollzahlungCount > 0 && $fullPaymentRatio >= 0.6) {
-                        $summarySettlement = "{$vollzahlungCount} von {$count} Fällen wurden als Vollzahlung reguliert.";
-                    } elseif ($vollzahlungCount > $criticalSettlementCount && $fullPaymentRatio >= 0.4) {
-                        $summarySettlement = "Vollzahlungen überwiegen derzeit mit {$vollzahlungCount} von {$count} Fällen.";
-                    } elseif ($ablehnungCount > 0 && ($ablehnungCount / $count) >= 0.2) {
-                        $summarySettlement = "Ablehnungen sind mit {$ablehnungCount} von {$count} Fällen überdurchschnittlich präsent.";
-                    } else {
-                        $summarySettlement = "Regulierungsarten zeigen derzeit ein gemischtes Bild ohne starke Ausreißer.";
-                    }
-                }
-
-                // Punkt 2: Geschwindigkeit
-                if ($days >= 45 || ($hasScoringData && $speedScore <= 0.45)) {
-                    $summarySpeed = "Häufige Verzögerungen bei der Schadensbearbeitung (Durchschnitt {$days} Tage).";
-                } elseif ($days > 0 && $days <= 21 && (!$hasScoringData || $speedScore >= 0.65)) {
-                    $summarySpeed = "Bearbeitung wirkt insgesamt zügig (Durchschnitt {$days} Tage).";
-                } else {
-                    $summarySpeed = "Bearbeitungsgeschwindigkeit liegt aktuell im mittleren Bereich.";
-                }
-
-                // Punkt 3: Kommunikation & Transparenz
-                if (!$hasScoringData) {
-                    $summaryService = 'Kommunikation und Transparenz werden nach weiteren Scoring-Daten genauer eingeordnet.';
-                } elseif ($communicationTransparencyAvg <= 0.5) {
-                    $summaryService = 'Kommunikation und Transparenz werden überwiegend nur mittelmäßig bewertet.';
-                } elseif ($communicationTransparencyAvg >= 0.75) {
-                    $summaryService = 'Kommunikation und Transparenz werden überwiegend positiv hervorgehoben.';
-                } else {
-                    $summaryService = 'Kommunikation und Transparenz wirken insgesamt ausgeglichen.';
-                }
-
-                // Punkt 4: Fairness / Gesamtwirkung
-                if (!$hasScoringData) {
-                    $summaryFairness = 'Fairness und Gesamtwirkung werden mit weiteren Scoring-Daten präziser eingeordnet.';
-                } elseif ($fairnessScore <= 0.5 || $score5FromScoring < 2.8) {
-                    $summaryFairness = 'Entscheidungen werden bei Fairness und Gesamtwirkung häufig kritisch eingeschätzt.';
-                } elseif ($fairnessScore >= 0.75 && $score5FromScoring >= 4.0) {
-                    $summaryFairness = 'Fairness und Gesamtwirkung werden überwiegend positiv bewertet.';
-                } else {
-                    $summaryFairness = 'Fairness und Gesamtwirkung liegen aktuell im soliden Mittelfeld.';
-                }
-
-                $autoSummaryItems = [
-                    [
-                        'icon' => 'fa-file-invoice-dollar',
-                        'icon_bg' => 'bg-teal-600',
-                        'title' => 'Regulierungsbild',
-                        'text' => $summarySettlement,
-                    ],
-                    [
-                        'icon' => 'fa-clock',
-                        'icon_bg' => 'bg-teal-600',
-                        'title' => 'Bearbeitungsdauer',
-                        'text' => $summarySpeed,
-                    ],
-                    [
-                        'icon' => 'fa-comments',
-                        'icon_bg' => 'bg-teal-600',
-                        'title' => 'Kommunikation',
-                        'text' => $summaryService,
-                    ],
-                    [
-                        'icon' => 'fa-balance-scale',
-                        'icon_bg' => 'bg-teal-600',
-                        'title' => 'Fairness',
-                        'text' => $summaryFairness,
-                    ],
-                ];
-            @endphp
             <div class="hidden md:block">
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     
@@ -264,7 +119,7 @@
     
                 {{-- DASHBOARD: Auswertung in Cards (hell) --}}
                 <div class="mt-6">
-                    @if($insurance->detailInsuranceRatings()->count() > 0)
+                    @if($hasDetailInsuranceRatings)
                         <div class="">
                             {{-- große Card links (2/3) --}}
                             <div class="lg:col-span-2 rounded-2xl bg-white/80 border border-white/30 shadow p-5">
@@ -547,7 +402,7 @@
                             <div class="swiper-slide">
                                 <div class="">
 
-                                    @if($insurance->detailInsuranceRatings()->count() > 0)
+                                    @if($hasDetailInsuranceRatings)
                                         <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3 pb-5">
                                             <div class="flex items-center justify-between mb-3">
                                                 <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
@@ -615,7 +470,7 @@
                             <div class="swiper-slide">
                                 <div class="">
 
-                                    @if($insurance->detailInsuranceRatings()->count() > 0)
+                                    @if($hasDetailInsuranceRatings)
                                         <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
                                             <div class="flex items-center gap-2 mb-3">
                                                 <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
@@ -660,11 +515,11 @@
 
      <div class="mt-6">
         <div class="container mx-auto px-4 pt-6 py-6 ">
-            @if($insurance->published_ratings_count() > 0)
+            @if($publishedRatingsCount > 0)
                 <h2 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                     <span class="w-max text-white">Bewertungen</span>
                     <span class="ml-2 bg-white text-sky-600 text-xs shadow border border-sky-200 font-bold aspect-square px-2 py-1 flex items-center justify-center rounded-full h-7 leading-none">
-                        {{ $insurance->published_ratings_count() }}
+                        {{ $publishedRatingsCount }}
                     </span>
                 </h2>
                 <x-filter.filter-container>
@@ -674,10 +529,19 @@
                         </div>
                         <div class="p-2 mb-2">
                             <label class="text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
+                                <svg class="w-4 stroke-current stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M7 12h10M10 18h4" />
+                                </svg>
+                                <span>Typen:</span>
+                            </label>
+                            <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsuranceTypefilter" :options="$insuranceTypes" />
+                        </div>
+                        <div class="p-2 mb-2">
+                            <label class="text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
                                 <svg class="w-4 stroke-current stroke-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50">
                                     <path d="M 20 3 C 18.355469 3 17 4.355469 17 6 L 17 9 L 3 9 C 1.355469 9 0 10.355469 0 12 L 0 26.8125 C -0.0078125 26.875 -0.0078125 26.9375 0 27 L 0 44 C 0 45.644531 1.355469 47 3 47 L 47 47 C 48.644531 47 50 45.644531 50 44 L 50 12 C 50 10.355469 48.644531 9 47 9 L 33 9 L 33 6 C 33 4.355469 31.644531 3 30 3 Z M 20 5 L 30 5 C 30.5625 5 31 5.4375 31 6 L 31 9 L 19 9 L 19 6 C 19 5.4375 19.4375 5 20 5 Z M 3 11 L 47 11 C 47.5625 11 48 11.4375 48 12 L 48 26.84375 C 48 26.875 48 26.90625 48 26.9375 L 48 27 C 48 27.5625 47.5625 28 47 28 L 3 28 C 2.4375 28 2 27.5625 2 27 C 2.007813 26.9375 2.007813 26.875 2 26.8125 L 2 12 C 2 11.4375 2.4375 11 3 11 Z M 25 22 C 23.894531 22 23 22.894531 23 24 C 23 25.105469 23.894531 26 25 26 C 26.105469 26 27 25.105469 27 24 C 27 22.894531 26.105469 22 25 22 Z M 2 29.8125 C 2.316406 29.925781 2.648438 30 3 30 L 47 30 C 47.351563 30 47.683594 29.925781 48 29.8125 L 48 44 C 48 44.5625 47.5625 45 47 45 L 3 45 C 2.4375 45 2 44.5625 2 44 Z"></path>
                                 </svg>                                
-                                <span>Arten:</span>
+                                <span>Unterarten:</span>
                             </label>
                             <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsuranceSubTypefilter"  :options="$insuranceSubTypes" />
                         </div>

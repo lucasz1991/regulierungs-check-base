@@ -3,6 +3,7 @@
     'isSubTypeFilter' => false,
     'subTypeFilterSubType' => null,
     'subTypeFilterSubTypeIds' => [],
+    'selectedInsuranceTypeId' => null,
 ])
 
 @php
@@ -12,7 +13,30 @@
         ->values()
         ->all();
 
-    $selectedSubtypeId = $subTypeFilterSubType?->id;
+    $selectedSubtypeId = is_object($subTypeFilterSubType)
+        ? $subTypeFilterSubType?->id
+        : $subTypeFilterSubType;
+
+    if (empty($selectedSubtypeIds) && $selectedSubtypeId) {
+        $selectedSubtypeIds = [(int) $selectedSubtypeId];
+    }
+
+    $selectedTypeIds = $selectedInsuranceTypeId ? [(int) $selectedInsuranceTypeId] : [];
+
+    $filterQuery = [];
+
+    if (!empty($selectedTypeIds)) {
+        $filterQuery['types'] = implode(',', $selectedTypeIds);
+    }
+
+    if (empty($selectedTypeIds) && !empty($selectedSubtypeIds)) {
+        $filterQuery['subtypes'] = implode(',', $selectedSubtypeIds);
+    }
+
+    $insuranceUrl = route('insurance.show-insurance', array_merge(
+        ['insurance' => $insurance->slug],
+        $filterQuery
+    ));
 
     if ($isSubTypeFilter && !empty($selectedSubtypeIds)) {
         $avgDuration = $insurance->avgRatingDurationBySubtypeIds($selectedSubtypeIds);
@@ -27,7 +51,7 @@
     $avgDurationDisplay = is_null($avgDuration) ? '-' : round($avgDuration);
 @endphp
 
-<a href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="block  hover:shadow-lg  cursor-pointer overflow-hidden   rounded-xl shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
+<a href="{{ $insuranceUrl }}" class="block  hover:shadow-lg  cursor-pointer overflow-hidden   rounded-xl shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
     <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
