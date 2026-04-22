@@ -38,15 +38,14 @@
         $filterQuery
     ));
 
-    if ($isSubTypeFilter && !empty($selectedSubtypeIds)) {
-        $avgDuration = $insurance->avgRatingDurationBySubtypeIds($selectedSubtypeIds);
-        $avgScore = $insurance->published_ratings_avg_scoreBySubtypeIds($selectedSubtypeIds);
-        $publishedCount = $insurance->published_claimRatingsCountBySubtypeIds($selectedSubtypeIds);
-    } else {
-        $avgDuration = $insurance->avgRatingDurationBySubtype($selectedSubtypeId);
-        $avgScore = $insurance->ratings_avg_score();
-        $publishedCount = $insurance->published_claimRatingsCountBySubtype($selectedSubtypeId);
-    }
+    $hasTypeFilter = !empty($selectedTypeIds);
+    $hasSubtypeFilter = !$hasTypeFilter && !empty($selectedSubtypeIds);
+    $typeSubtypeIds = $hasTypeFilter ? $selectedSubtypeIds : [];
+    $ratingSubtypeIds = $hasSubtypeFilter ? $selectedSubtypeIds : [];
+
+    $avgDuration = $insurance->avgRatingDurationByTypeAndSubtypeIds($selectedTypeIds, $typeSubtypeIds, $ratingSubtypeIds);
+    $avgScore = $insurance->published_ratings_avg_scoreByTypeAndSubtypeIds($selectedTypeIds, $typeSubtypeIds, $ratingSubtypeIds);
+    $publishedCount = $insurance->published_claimRatingsCountByTypeAndSubtypeIds($selectedTypeIds, $typeSubtypeIds, $ratingSubtypeIds);
 
     $avgDurationDisplay = is_null($avgDuration) ? '-' : round($avgDuration);
 @endphp
