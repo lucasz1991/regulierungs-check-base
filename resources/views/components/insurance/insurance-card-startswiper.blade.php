@@ -50,8 +50,8 @@
     $avgDurationDisplay = is_null($avgDuration) ? '-' : round($avgDuration);
 @endphp
 
-<a href="{{ $insuranceUrl }}" class="block  hover:shadow-lg  cursor-pointer overflow-hidden   rounded-xl shadow" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
-    <div class="bg-white px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full"
+<a href="{{ $insuranceUrl }}" class="block  hover:shadow-lg  cursor-pointer bg-white border border-slate-200 rounded-xl shadow-xl" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
+    <div class="px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
         >
