@@ -91,12 +91,13 @@
                             </div>
                         @endif
 
-                        <div wire:key="insurances-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div wire:key="insurances-list" class="mx-auto grid max-w-6xl grid-cols-1 gap-5 lg:grid-cols-2">
                             @foreach($insurances as $insurance)
                                 <div wire:key="insurance-{{ $insurance->id }}">
 
                                     <x-insurance.insurance-card
                                         :insurance="$insurance"
+                                        :rank="$loop->iteration"
                                         :isSubTypeFilter="$isSubTypeFilter"
                                         :subTypeFilterSubType="$subTypeFilterSubType"
                                         :selectedInsuranceTypeIds="$selectedInsuranceTypeIds"
