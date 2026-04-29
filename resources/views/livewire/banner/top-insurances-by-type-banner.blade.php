@@ -57,14 +57,12 @@
                 @endforeach
             </div>
             <div class="flex justify-center mb-2">
-                <button
-                    type="button"
-                    wire:click="selectInsuranceType(null)"
+                <a href="{{ $insurancesUrl }}"
                     class="inline-flex items-center gap-1.5 rounded-full bg-[#0f6b86] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-white shadow-[0_8px_20px_rgba(15,107,134,0.28)] transition hover:bg-[#0c5870]"
                 >
                     Alle zeigen
                     <i class="fas fa-chevron-right text-[10px]"></i>
-                </button>
+                </a>
             </div>
 
             @if ($insurances->isNotEmpty())
