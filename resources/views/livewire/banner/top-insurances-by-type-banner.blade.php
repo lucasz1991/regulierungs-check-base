@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="mb-6 grid grid-cols-2 gap-2.5 md:mb-10 md:grid-cols-3 md:gap-3">
+            <div class="mb-3 grid grid-cols-2 gap-2.5 md:mb-10 md:grid-cols-3 md:gap-3">
                 @foreach ($displayTypes as $type)
                     <button
                         type="button"
@@ -56,7 +56,7 @@
                     </button>
                 @endforeach
             </div>
-            <div class="flex justify-center">
+            <div class="flex justify-center mb-2">
                 <button
                     type="button"
                     wire:click="selectInsuranceType(null)"
