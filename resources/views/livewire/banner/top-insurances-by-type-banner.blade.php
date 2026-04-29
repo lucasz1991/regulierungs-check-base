@@ -1,4 +1,4 @@
-<div class="">
+<div class="bg-gray-50">
     <div class="container mx-auto px-4 py-5 md:px-6 md:py-10">
         @php
             $insurancesUrl = route('insurances', $selectedInsuranceTypeId ? ['types' => (string) $selectedInsuranceTypeId] : []);
@@ -11,12 +11,12 @@
 
         <div class="mx-auto">
             <div class="mb-4 text-center md:mb-8">
-                <h2 class="text-[1.75rem] font-semibold leading-[1.02] tracking-[-0.02em] text-[#12324f] md:text-[3.1rem]">
+                <h2 class="text-lg font-semibold leading-[1.02] tracking-[-0.02em] text-[#12324f] md:text-lg">
                     Welche Versicherung
                 </h2>
                 <div class="mt-1.5 flex items-center justify-center gap-3 md:mt-2 md:gap-6">
                     <span class="h-px w-10 bg-slate-200 md:w-32"></span>
-                    <p class="text-[1rem] font-medium leading-tight text-slate-800 md:text-[1.55rem]">
+                    <p class="text-md font-medium leading-tight text-slate-800 md:text-md">
                         möchtest du vergleichen?
                     </p>
                     <span class="h-px w-10 bg-slate-200 md:w-32"></span>
@@ -29,18 +29,18 @@
                         type="button"
                         wire:click="selectInsuranceType({{ $type->id }})"
                         @class([
-                            'inline-flex min-h-[3.4rem] items-center gap-2 rounded-xl border px-3 py-2.5 text-left text-sm font-medium shadow-[0_6px_18px_rgba(15,23,42,0.10)] transition-all md:min-h-[4rem] md:gap-2.5 md:px-4 md:py-3 md:text-[0.95rem]',
+                            'inline-flex min-h-[3rem] items-center gap-1.5 rounded-xl border px-2 py-1 text-left text-[0.82rem] font-medium shadow-[0_6px_18px_rgba(15,23,42,0.10)] transition-all md:min-h-[3.6rem] md:gap-2 md:px-3.5 md:py-2.5 md:text-[0.9rem]',
                             'border-[#bfe0e6] bg-gradient-to-br from-[#e6f6f9] to-[#f8fcfd] text-[#12324f] shadow-[0_8px_22px_rgba(15,23,42,0.12)]' => (int) $selectedInsuranceTypeId === (int) $type->id,
                             'border-slate-200 bg-white text-slate-800 hover:border-[#d4e7eb] hover:bg-slate-50' => (int) $selectedInsuranceTypeId !== (int) $type->id,
                         ])
                     >
                         <span @class([
-                            'shrink-0 text-[1.2rem] leading-none md:text-[1.45rem]',
+                            'shrink-0 text-[1rem] leading-none md:text-[1.2rem]',
                             'text-[#1f6f8b]' => (int) $selectedInsuranceTypeId === (int) $type->id,
                             'text-slate-500' => (int) $selectedInsuranceTypeId !== (int) $type->id,
                         ])>
                             @if (!empty($type->icon_svg))
-                                <span class="block h-5 w-5 [&_svg]:h-5 [&_svg]:w-5 md:h-6 md:w-6 md:[&_svg]:h-6 md:[&_svg]:w-6">
+                                <span class="block h-4 w-4 [&_svg]:h-4 [&_svg]:w-4 md:h-5 md:w-5 md:[&_svg]:h-5 md:[&_svg]:w-5">
                                     @if ($type->icon_type === 'svg' && $type->icon_svg)
                                         {!! $type->icon_svg !!}
                                     @elseif ($type->icon_type === 'fontawesome')
@@ -52,9 +52,19 @@
                             @endif
                         </span>
 
-                        <span class="min-w-0 truncate text-[0.9rem] leading-tight md:text-[0.95rem]">{{ $type->name }}</span>
+                        <span class="min-w-0 truncate text-[0.8rem] leading-tight md:text-[0.9rem]">{{ $type->name }}</span>
                     </button>
                 @endforeach
+            </div>
+            <div class="flex justify-center">
+                <button
+                    type="button"
+                    wire:click="selectInsuranceType(null)"
+                    class="inline-flex items-center gap-1.5 rounded-full bg-[#0f6b86] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-white shadow-[0_8px_20px_rgba(15,107,134,0.28)] transition hover:bg-[#0c5870]"
+                >
+                    Alle zeigen
+                    <i class="fas fa-chevron-right text-[10px]"></i>
+                </button>
             </div>
 
             @if ($insurances->isNotEmpty())
@@ -62,8 +72,6 @@
                     <div class="min-w-0 shrink text-[1.55rem] font-medium tracking-[-0.02em] text-[#1a2d42] md:text-[2rem]">
                         @if ($selectedType?->name)
                             <h3 class="flex min-w-0 items-baseline gap-2">
-                                <span class="shrink-0">Top Versicherer</span>
-                                <span class="shrink-0 font-semibold">-</span>
                                 <span class="min-w-0 truncate font-semibold">{{ $selectedType->name }}</span>
                             </h3>
                         @else

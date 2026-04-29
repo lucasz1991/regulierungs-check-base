@@ -21,9 +21,6 @@
                       <x-buttons.button-basic class="font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
                         Jetzt bewerten
                       </x-buttons.button-basic>
-                      <x-buttons.button-basic class="font-semibold" :mode="'layoutprimary'" href="/insurances" x-data="{ isClicked: false }" x-on:click="isClicked = true; setTimeout(() => isClicked = false, 100)" x-bind:style="isClicked ? 'transform:scale(0.9);' : ''">
-                        Vergleichen
-                      </x-buttons.button-basic>
                     </div>
                   </div>
                 </div>
@@ -35,7 +32,7 @@
           </div>
         </div>
       </div>
-      <div class="bg-gray-50">
+      <div class="">
         <div class="mb-2" data-aos="fade-up" data-aos-delay="500">
           <livewire:banner.top-insurances-by-type-banner />
         </div>

@@ -1,7 +1,7 @@
 <div class="relative overflow-hidden py-20">
     <div class="container mx-auto mb-12 px-5">
-            <h4 class="text-xl font-medium text-[#12324f] md:text-2xl"><span class="border-b-2 border-secondary pb-1">Aktuelle Bewertungen</span></h4>
-            <p class="mt-4 font-medium text-slate-700 md:text-xl">Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.</p>
+            <h4 class="text-xl font-medium text-white md:text-2xl"><span class="border-b-2 border-secondary pb-1">Aktuelle Bewertungen</span></h4>
+            <p class="mt-4 font-medium text-white md:text-xl">Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.</p>
     </div>
     <div class="container px-5 mx-auto overflow-hidden">
 
