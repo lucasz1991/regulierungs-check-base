@@ -24,7 +24,7 @@
 
             <ul class="space-y-2 flex-1">
                 @foreach ($autoSummaryItems as $item)
-                    <li class="flex items-start gap-2.5 rounded-lg border border-slate-100 bg-slate-50/70 px-2 py-1.5">
+                    <li class="flex items-start gap-2.5  px-2 py-1.5">
                         <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-600 text-white">
                             <i class="fal {{ $item['icon'] ?? 'fa-check' }} text-[10px]"></i>
                         </span>

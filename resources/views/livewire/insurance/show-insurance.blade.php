@@ -380,7 +380,7 @@
                                             </h3>
                                         </div>
 
-                                        <div class="rounded-xl bg-white p-3.5 shadow-sm border border-gray-100 flex-1">
+                                        <div class=" p-3.5 flex-1">
                                             <ul class="space-y-2.5">
                                                 @foreach ($autoSummaryItems as $item)
                                                     <li class="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed rounded-lg border border-slate-100 bg-slate-50/80 p-2">
