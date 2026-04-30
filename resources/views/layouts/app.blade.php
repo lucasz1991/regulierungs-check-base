@@ -69,6 +69,7 @@
                     isScreenXl: false,
                     isMobileMenuOpen: false,
                     showNav: true,
+                    showBottomNav: false,
                 });
             });
         </script>

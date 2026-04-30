@@ -16,6 +16,7 @@
 
         if (current === 0) {
             $store.nav.showNav = true;
+            $store.nav.showBottomNav = false;
             lastScrollTop = 0;
             return;
         }
@@ -26,6 +27,7 @@
 
         scrollTop  = current;
         isScrolled = current > 0;
+        $store.nav.showBottomNav = current > 80;
         if (diff > 0) {
             // Wir bewegen uns nach unten
             scrollDirection = 'down';
@@ -486,7 +488,8 @@
     <template x-teleport="#bottom-nav">
         <!-- Mobile Bottom Navigation (nur unter md sichtbar) -->
         <nav
-            class="fixed bottom-0 inset-x-0 z-10 md:hidden bg-white/95 border-t border-gray-200 backdrop-blur"
+            :class="($store.nav.showBottomNav && !$store.nav.isMobileMenuOpen) ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'"
+            class="fixed bottom-0 inset-x-0 z-10 border-t border-gray-200 bg-white/95 backdrop-blur transition-all duration-300 ease-in-out md:hidden"
         >
             <div class="max-w-6xl mx-auto px-3">
                 <div class="flex items-stretch justify-between text-[11px] sm:text-xs text-gray-600">

@@ -23,20 +23,20 @@
                 </div>
             </div>
 
-            <div class="mb-3 grid grid-cols-2 gap-2.5 md:mb-10 md:grid-cols-3 md:gap-3">
+            <div class="mb-3 grid grid-cols-2 gap-2.5 md:mb-10 lg:grid-cols-4 md:gap-3">
                 @foreach ($displayTypes as $type)
                     <button
                         type="button"
                         wire:click="selectInsuranceType({{ $type->id }})"
                         @class([
                             'inline-flex min-h-[3rem] items-center gap-1.5 rounded-xl border px-2 py-1 text-left text-[0.82rem] font-medium shadow-[0_6px_18px_rgba(15,23,42,0.10)] transition-all md:min-h-[3.6rem] md:gap-2 md:px-3.5 md:py-2.5 md:text-[0.9rem]',
-                            'border-[#bfe0e6] bg-gradient-to-br from-[#e6f6f9] to-[#f8fcfd] text-[#12324f] shadow-[0_8px_22px_rgba(15,23,42,0.12)]' => (int) $selectedInsuranceTypeId === (int) $type->id,
+                            'border-[#7fc7d6] bg-gradient-to-br from-[#d9f4f8] via-[#eefbfd] to-white text-[#0f3f59] ring-2 ring-[#b9e7ef] shadow-[0_12px_28px_rgba(15,107,134,0.22)] scale-[1.015]' => (int) $selectedInsuranceTypeId === (int) $type->id,
                             'border-slate-200 bg-white text-slate-800 hover:border-[#d4e7eb] hover:bg-slate-50' => (int) $selectedInsuranceTypeId !== (int) $type->id,
                         ])
                     >
                         <span @class([
                             'shrink-0 text-[1rem] leading-none md:text-[1.2rem]',
-                            'text-[#1f6f8b]' => (int) $selectedInsuranceTypeId === (int) $type->id,
+                            'text-[#0f6b86]' => (int) $selectedInsuranceTypeId === (int) $type->id,
                             'text-slate-500' => (int) $selectedInsuranceTypeId !== (int) $type->id,
                         ])>
                             @if (!empty($type->icon_svg))
@@ -101,7 +101,7 @@
                                         slidesOffsetAfter: 0,
                                         speed: 500,
                                         loop: false,
-                                        freeMode: false,
+                                        freeMode: true,
                                         autoHeight: false,
                                         pagination: {
                                             el: '.swiper-pagination-top',

@@ -81,13 +81,13 @@
 <a href="{{ $insuranceUrl }}" class="block">
     <div class="relative">
         @if ($hasRank)
-            <div class="absolute left-0 top-3 z-10 -translate-x-[15%] rounded-r-2xl rounded-l-xl px-4 py-3 text-2xl font-semibold leading-none {{ $rankBadgeClasses }}">
+            <div class="absolute left-0 top-3 z-10 -translate-x-[15%] rounded-r-2xl rounded-l-xl px-4 py-2.5 text-2xl font-semibold leading-none {{ $rankBadgeClasses }}">
                 {{ $rank }}
             </div>
         @endif
 
         <article class="group relative overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]">
-            <div class="absolute right-0 top-3 z-[5] w-32 rounded-l-[24px] border border-r-0 border-[#d8e7e5] bg-gradient-to-br from-[#f1fbf8] to-[#e3f1ef] px-3 py-1.5 text-right shadow-[0_8px_20px_rgba(15,23,42,0.08)]">
+            <div class="absolute right-0 top-3 z-[5] w-32 rounded-l-[24px] border border-r-0 border-[#d8e7e5] bg-gradient-to-br from-[#f1fbf8] to-[#e3f1ef] px-3 py-1 text-right shadow-[0_8px_20px_rgba(15,23,42,0.08)]">
                 <div class="text-xs font-medium tracking-tight text-slate-600">Ø Regulierung</div>
                 @if ($avgDurationDisplay === '-')
                     <div class="mt-0.5 text-base font-semibold leading-none text-[#0f4e69]">-</div>
@@ -99,7 +99,7 @@
                 @endif
             </div>
 
-            <div class="flex flex-col gap-2.5 px-5 pb-3 pt-3 sm:px-7 sm:pb-3 sm:pt-3">
+            <div class="flex flex-col gap-2 px-5 pb-2.5 pt-2.5 sm:px-7 sm:pb-2.5 sm:pt-2.5">
                 <div class="relative flex items-start">
                     <div class="min-w-0 flex-1 pr-32 {{ $hasRank ? 'pl-9 sm:pl-11' : '' }}">
                         <x-insurance.insurance-name
@@ -109,7 +109,7 @@
                             disclaimerButtonClass="text-slate-400 transition-colors hover:text-slate-600 focus:outline-none"
                         />
 
-                        <div class="mt-1.5 flex min-w-0 items-center overflow-hidden">
+                        <div class="mt-1 flex min-w-0 items-center overflow-hidden">
                             <div class="origin-left scale-[0.84] sm:scale-100">
                                 <x-insurance.insurance-rating-stars :score="$avgScore" :size="'lg'" />
                             </div>
@@ -131,7 +131,7 @@
                         @endforeach
                     </div>
 
-                    <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#e7ebf1]">
+                    <div class="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[#e7ebf1]">
                         <div class="flex h-full w-full">
                             @forelse ($progressItems as $item)
                                 @php
@@ -147,7 +147,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-1.5 text-[15px] font-medium text-slate-500">
+                    <div class="mt-1 text-[15px] font-medium text-slate-500">
                         {{ $reviewCountDisplay }} Bewertungen
                     </div>
                 </div>
