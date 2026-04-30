@@ -78,6 +78,7 @@ class ShowInsurance extends Component
         $this->minRatingCount = $this->minRatingCount ?: 1;
         $this->selectedAspect = $this->selectedAspect ?: 'allgemein';
         $this->syncSubTypeFilterState($this->selectedInsuranceSubTypefilter);
+        $this->dispatchActiveEvaluationFilterAlert();
     }
 
     public function updatingSearch()
@@ -105,10 +106,20 @@ class ShowInsurance extends Component
         $this->resetResults();
     }
 
+    public function updatedSelectedInsuranceTypefilter()
+    {
+        $this->dispatchActiveEvaluationFilterAlert();
+    }
+
     public function updatingSelectedInsuranceSubTypefilter($value)
     {
         $this->resetResults();
         $this->syncSubTypeFilterState($value);
+    }
+
+    public function updatedSelectedInsuranceSubTypefilter()
+    {
+        $this->dispatchActiveEvaluationFilterAlert();
     }
 
     public function getSubTypeFilterSubTypeProperty()
@@ -262,6 +273,24 @@ class ShowInsurance extends Component
         $this->isSubTypeFilter = false;
         $this->subTypeFilterSubTypeId = null;
         $this->subTypeFilterSubType = null;
+    }
+
+    private function dispatchActiveEvaluationFilterAlert(): void
+    {
+        $hasTypeFilter = !empty($this->selectedInsuranceTypeIds());
+        $hasSubtypeFilter = !empty($this->selectedInsuranceSubtypeIds());
+
+        if (!$hasTypeFilter && !$hasSubtypeFilter) {
+            return;
+        }
+
+        $message = match (true) {
+            $hasTypeFilter && $hasSubtypeFilter => 'Es sind Filter für <strong>Versicherungsart und Unterart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
+            $hasTypeFilter => 'Es ist ein Filter für die <strong>Versicherungsart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
+            default => 'Es ist ein Filter für die <strong>Versicherungsunterart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
+        };
+
+        $this->dispatch('showAlert', $message, 'info');
     }
 
     private function dashboardData(): array
