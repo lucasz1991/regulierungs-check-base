@@ -70,11 +70,11 @@
                     <div class="min-w-0 shrink text-[1.55rem] font-medium tracking-[-0.02em] text-[#1a2d42] md:text-[2rem]">
                         @if ($selectedType?->name)
                             <h3 class="flex min-w-0 items-baseline gap-2">
-                                <span class="min-w-0 truncate font-semibold">{{ $selectedType->name }}</span>
+                                <span class="min-w-0 truncate">{{ $selectedType->name }}</span>
                             </h3>
                         @else
                             <h3 class="flex min-w-0 items-baseline gap-2">
-                                <span class="min-w-0 truncate font-semibold">Top Versicherer</span>
+                                <span class="min-w-0 truncate">Top Versicherer</span>
                             </h3>
                         @endif
                     </div>
