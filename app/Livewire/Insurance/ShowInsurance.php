@@ -284,9 +284,9 @@ class ShowInsurance extends Component
             return;
         }
         $message = match (true) {
-            $hasTypeFilter && $hasSubtypeFilter => 'Es sind Filter für <strong>Versicherungsart und Unterart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
-            $hasTypeFilter => 'Es ist ein Filter für die <strong>Versicherungsart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
-            default => 'Es ist ein Filter für die <strong>Versicherungsunterart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
+            $hasTypeFilter && $hasSubtypeFilter => 'Eine Versicherungsart ist ausgewählt. Die Werte zeigen den Durchschnitt für diesen Bereich. Filter ändern für andere Versicherungsarten.',
+            $hasTypeFilter => 'Eine Versicherungsart ist ausgewählt. Die Werte zeigen den Durchschnitt für diesen Bereich. Filter ändern für andere Versicherungsarten.',
+            default => 'Eine Versicherungsart ist ausgewählt. Die Werte zeigen den Durchschnitt für diesen Bereich. Filter ändern für andere Versicherungsarten.',
         };
 
         $this->dispatch('showAlert', $message, 'info');
