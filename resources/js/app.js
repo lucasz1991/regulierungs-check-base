@@ -8,6 +8,8 @@ import intersect from '@alpinejs/intersect';
 import anchor from '@alpinejs/anchor';
 import masonry from 'alpinejs-masonry';
 import persist from '@alpinejs/persist'
+import 'sweetalert2/dist/sweetalert2.min.css';
+import './assets/sweetalerts/sweetalerts';
 
 
 
