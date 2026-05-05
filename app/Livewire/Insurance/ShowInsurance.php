@@ -283,7 +283,6 @@ class ShowInsurance extends Component
         if (!$hasTypeFilter && !$hasSubtypeFilter) {
             return;
         }
-
         $message = match (true) {
             $hasTypeFilter && $hasSubtypeFilter => 'Es sind Filter für <strong>Versicherungsart und Unterart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
             $hasTypeFilter => 'Es ist ein Filter für die <strong>Versicherungsart</strong> aktiv. Die dargestellten Auswertungswerte beziehen sich nur auf diese Auswahl.',
