@@ -32,12 +32,12 @@ class UserAlert extends Component
         }
 
         if (session()->has('error')) {
-            $this->displayAlert(session('error'), 'error');
+            $this->displayToast(session('error'), 'error');
             return;
         }
 
         if (session()->has('message')) {
-            $this->displayAlert(
+            $this->displayToast(
                 session('message'),
                 session('messageType', 'info')
             );
@@ -48,6 +48,18 @@ class UserAlert extends Component
     {
         $payload = $this->normalizePayload($message, $type, $options);
 
+        $this->dispatchToast($payload);
+    }
+
+    public function displayAlert($message, $type = 'info', array $options = []): void
+    {
+        $payload = $this->normalizePayload($message, $type, $options);
+
+        $this->dispatchToast($payload);
+    }
+
+    protected function dispatchToast(array $payload): void
+    {
         $this->dispatch(
             'swal:toast',
             type: $payload['type'],
@@ -57,28 +69,11 @@ class UserAlert extends Component
             position: $payload['position'] ?? null,
             timer: $payload['timer'] ?? null,
             redirectTo: $payload['redirectTo'] ?? null,
+            redirectOn: $payload['redirectOn'] ?? null,
             confirmText: $payload['confirmText'] ?? 'OK',
             showConfirm: $payload['showConfirm'] ?? null,
-        );
-    }
-
-    public function displayAlert($message, $type = 'info', array $options = []): void
-    {
-        $payload = $this->normalizePayload($message, $type, $options);
-
-        $this->dispatch(
-            'swal:alert',
-            type: $payload['type'],
-            title: $payload['title'],
-            text: $payload['text'] ?? null,
-            html: $payload['html'] ?? null,
-            showCancel: $payload['showCancel'] ?? false,
-            confirmText: $payload['confirmText'] ?? 'OK',
-            cancelText: $payload['cancelText'] ?? 'Abbrechen',
-            allowOutsideClick: $payload['allowOutsideClick'] ?? true,
             onConfirm: $payload['onConfirm'] ?? null,
-            redirectTo: $payload['redirectTo'] ?? null,
-            redirectOn: $payload['redirectOn'] ?? 'confirm',
+            allowOutsideClick: $payload['allowOutsideClick'] ?? true,
         );
     }
 

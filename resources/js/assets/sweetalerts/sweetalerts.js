@@ -38,43 +38,27 @@ window.addEventListener('swal:toast', (e) => {
         showConfirmButton: showConfirm,
         confirmButtonText: d.confirmText || 'OK',
     }).then((result) => {
-        if ((result.isConfirmed || result.dismiss === Swal.DismissReason.timer) && d.redirectTo) {
+        if (d.onConfirm && result.isConfirmed) {
+            window.dispatchEvent(
+                new CustomEvent(d.onConfirm.name || 'swal:confirmed', {
+                    detail: d.onConfirm.detail || {},
+                })
+            );
+        }
+
+        const redirectOn = d.redirectOn || (showConfirm ? 'confirm' : 'close');
+        const shouldRedirect = d.redirectTo
+            && (
+                (redirectOn === 'confirm' && result.isConfirmed)
+                || (redirectOn === 'close' && (result.dismiss === Swal.DismissReason.timer || result.isDismissed))
+            );
+
+        if (shouldRedirect) {
             window.location.assign(d.redirectTo);
         }
     });
 });
 
-window.addEventListener('swal:alert', async (e) => {
-    const d = e.detail || {};
-    const type = d.type || 'info';
-
-    const res = await Swal.fire({
-        icon: iconMap(type),
-        title: d.title || 'Hinweis',
-        text: d.text ?? undefined,
-        html: d.html ?? undefined,
-        confirmButtonText: d.confirmText || 'OK',
-        showCancelButton: !!d.showCancel,
-        cancelButtonText: d.cancelText || 'Abbrechen',
-        allowOutsideClick: d.allowOutsideClick ?? true,
-    });
-
-    if (d.onConfirm && res.isConfirmed) {
-        window.dispatchEvent(
-            new CustomEvent(d.onConfirm.name || 'swal:confirmed', {
-                detail: d.onConfirm.detail || {},
-            })
-        );
-    }
-
-    const redirectOn = d.redirectOn || 'confirm';
-    const shouldRedirect = d.redirectTo
-        && (
-            (redirectOn === 'confirm' && res.isConfirmed)
-            || (redirectOn === 'close' && (res.isDismissed || res.isDenied))
-        );
-
-    if (shouldRedirect) {
-        window.location.assign(d.redirectTo);
-    }
+window.addEventListener('swal:alert', (e) => {
+    window.dispatchEvent(new CustomEvent('swal:toast', { detail: e.detail || {} }));
 });
