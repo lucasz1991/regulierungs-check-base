@@ -6,11 +6,10 @@
               <div   class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
                 <div id="ijooq">
                   <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
-                    Versicherungen im Bonitäts-CHECK.
+                    Versicherungen im Leistungs-CHECK.
                   </h1>
                   <h1 id="ilifi-2-2" class="title-font text-3xl max-md:text-xl mb-4 text-white" style="text-shadow: 0px 0px 15px rgba(0,0,0,0.8);">
-                    Weil du vorher wissen solltest, wie nachher
-                    geregelt wird.
+                    Weil du vorher wissen solltest, wie schnell im Schadenfall geholfen wird.
                   </h1>
                 </div>
               </div>

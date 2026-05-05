@@ -73,7 +73,9 @@
                                 <span class="min-w-0 truncate font-semibold">{{ $selectedType->name }}</span>
                             </h3>
                         @else
-                            <h3>Top Versicherer</h3>
+                            <h3 class="flex min-w-0 items-baseline gap-2">
+                                <span class="min-w-0 truncate font-semibold">Top Versicherer</span>
+                            </h3>
                         @endif
                     </div>
                     <span class="h-px flex-1 bg-slate-200"></span>
