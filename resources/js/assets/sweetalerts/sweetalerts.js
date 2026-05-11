@@ -33,7 +33,7 @@ window.addEventListener('swal:toast', (e) => {
         title,
         text: d.text ?? undefined,
         html: d.html ?? undefined,
-        timer: showConfirm ? undefined : (d.timer ?? 4000),
+        timer: showConfirm ? undefined : (d.timer ?? 6000),
         timerProgressBar: !showConfirm,
         showConfirmButton: showConfirm,
         confirmButtonText: d.confirmText || 'OK',
