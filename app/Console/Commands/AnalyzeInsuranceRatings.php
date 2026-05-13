@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Insurance;
-use App\Models\ClaimRating;
 use App\Jobs\EvaluateDetailInsuranceRatingWithAI;
+use App\Models\ClaimRating;
+use App\Models\Insurance;
+use Illuminate\Console\Command;
 
 class AnalyzeInsuranceRatings extends Command
 {
@@ -21,7 +21,7 @@ class AnalyzeInsuranceRatings extends Command
      *
      * @var string
      */
-    protected $description = 'Analysiert alle Versicherungen und Subtypen mit mindestens 100 ClaimRatings (status=rated) und startet die KI-Detailauswertung.';
+    protected $description = 'Analysiert Versicherungen, Versicherungsarten und Subtypen mit ausreichend ClaimRatings und startet die KI-Detailauswertung.';
 
     /**
      * Mindestanzahl an Bewertungen.
@@ -30,28 +30,31 @@ class AnalyzeInsuranceRatings extends Command
      */
     protected int $MIN_COUNT = 100;
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): int
     {
         $min = $this->MIN_COUNT;
 
         $this->info("Starte KI-Analyse aller Versicherungen (Mindestanzahl: {$min} Bewertungen)...");
 
-        // === 1. Aggregierte Zählung pro Versicherung ===
         $countsPerInsurance = ClaimRating::query()
             ->selectRaw('insurance_id, COUNT(*) as cnt')
             ->where('status', 'rated')
             ->groupBy('insurance_id')
-            ->pluck('cnt', 'insurance_id'); // [insurance_id => count]
+            ->pluck('cnt', 'insurance_id');
 
         if ($countsPerInsurance->isEmpty()) {
             $this->warn('Keine ClaimRatings mit Status "rated" gefunden.');
             return Command::SUCCESS;
         }
 
-        // === 2. Aggregierte Zählung pro (Versicherung, Subtyp) ===
+        $countsPerType = ClaimRating::query()
+            ->selectRaw('insurance_id, insurance_type_id, COUNT(*) as cnt')
+            ->where('status', 'rated')
+            ->whereNotNull('insurance_type_id')
+            ->groupBy('insurance_id', 'insurance_type_id')
+            ->get()
+            ->groupBy('insurance_id');
+
         $countsPerSubtype = ClaimRating::query()
             ->selectRaw('insurance_id, insurance_subtype_id, COUNT(*) as cnt')
             ->where('status', 'rated')
@@ -60,7 +63,15 @@ class AnalyzeInsuranceRatings extends Command
             ->get()
             ->groupBy('insurance_id');
 
-        // === 3. Relevante Versicherungen (mit >=100 Ratings) ===
+        $countsPerTypeAndSubtype = ClaimRating::query()
+            ->selectRaw('insurance_id, insurance_type_id, insurance_subtype_id, COUNT(*) as cnt')
+            ->where('status', 'rated')
+            ->whereNotNull('insurance_type_id')
+            ->whereNotNull('insurance_subtype_id')
+            ->groupBy('insurance_id', 'insurance_type_id', 'insurance_subtype_id')
+            ->get()
+            ->groupBy('insurance_id');
+
         $eligibleInsuranceIds = $countsPerInsurance
             ->filter(fn ($cnt) => $cnt >= $min)
             ->keys()
@@ -71,37 +82,62 @@ class AnalyzeInsuranceRatings extends Command
             return Command::SUCCESS;
         }
 
-        // === 4. Chunkweise Verarbeitung, um Speicher zu schonen ===
         Insurance::query()
             ->whereIn('id', $eligibleInsuranceIds)
-            ->with(['subtypes:id,insurance_id,name'])
+            ->with(['insuranceTypes:id,name', 'subtypes:id,name'])
             ->orderBy('id')
-            ->chunk(100, function ($insurances) use ($min, $countsPerInsurance, $countsPerSubtype) {
+            ->chunk(100, function ($insurances) use ($min, $countsPerInsurance, $countsPerType, $countsPerSubtype, $countsPerTypeAndSubtype) {
                 foreach ($insurances as $insurance) {
-                    $iid = $insurance->id;
-                    $total = (int) ($countsPerInsurance[$iid] ?? 0);
+                    $insuranceId = $insurance->id;
+                    $total = (int) ($countsPerInsurance[$insuranceId] ?? 0);
 
-                    // --- Allgemeine Analyse (Versicherung) ---
                     if ($total >= $min) {
-                        EvaluateDetailInsuranceRatingWithAI::dispatch($insurance, null);
-                        $this->line("→ General AI-Job: {$insurance->name} ({$total} ratings)");
+                        EvaluateDetailInsuranceRatingWithAI::dispatch($insurance);
+                        $this->line("-> Overall AI-Job: {$insurance->name} ({$total} ratings)");
                     }
 
-                    // --- Subtypenanalyse ---
-                    $subtypeRows = ($countsPerSubtype[$iid] ?? collect());
-                    if ($subtypeRows->isEmpty()) {
-                        continue;
-                    }
+                    $typeRows = $countsPerType[$insuranceId] ?? collect();
+                    foreach ($typeRows as $typeRow) {
+                        $typeId = (int) $typeRow->insurance_type_id;
+                        $count = (int) $typeRow->cnt;
 
-                    $subtypeCounts = $subtypeRows->pluck('cnt', 'insurance_subtype_id');
-                    foreach ($insurance->subtypes as $subtype) {
-                        $sid = $subtype->id;
-                        $cnt = (int) ($subtypeCounts[$sid] ?? 0);
-
-                        if ($cnt >= $min) {
-                            EvaluateDetailInsuranceRatingWithAI::dispatch($insurance, $sid);
-                            $this->line("   ↳ Subtype AI-Job: {$insurance->name} / {$subtype->name} ({$cnt} ratings)");
+                        if ($count < $min) {
+                            continue;
                         }
+
+                        EvaluateDetailInsuranceRatingWithAI::dispatch($insurance, null, $typeId);
+                        $typeName = optional($insurance->insuranceTypes->firstWhere('id', $typeId))->name ?? "Type #{$typeId}";
+                        $this->line("   -> Type AI-Job: {$insurance->name} / {$typeName} ({$count} ratings)");
+                    }
+
+                    $subtypeRows = $countsPerSubtype[$insuranceId] ?? collect();
+                    foreach ($subtypeRows as $subtypeRow) {
+                        $subtypeId = (int) $subtypeRow->insurance_subtype_id;
+                        $count = (int) $subtypeRow->cnt;
+
+                        if ($count < $min) {
+                            continue;
+                        }
+
+                        EvaluateDetailInsuranceRatingWithAI::dispatch($insurance, $subtypeId);
+                        $subtypeName = optional($insurance->subtypes->firstWhere('id', $subtypeId))->name ?? "Subtype #{$subtypeId}";
+                        $this->line("   -> Subtype AI-Job: {$insurance->name} / {$subtypeName} ({$count} ratings)");
+                    }
+
+                    $typeSubtypeRows = $countsPerTypeAndSubtype[$insuranceId] ?? collect();
+                    foreach ($typeSubtypeRows as $typeSubtypeRow) {
+                        $typeId = (int) $typeSubtypeRow->insurance_type_id;
+                        $subtypeId = (int) $typeSubtypeRow->insurance_subtype_id;
+                        $count = (int) $typeSubtypeRow->cnt;
+
+                        if ($count < $min) {
+                            continue;
+                        }
+
+                        EvaluateDetailInsuranceRatingWithAI::dispatch($insurance, $subtypeId, $typeId);
+                        $typeName = optional($insurance->insuranceTypes->firstWhere('id', $typeId))->name ?? "Type #{$typeId}";
+                        $subtypeName = optional($insurance->subtypes->firstWhere('id', $subtypeId))->name ?? "Subtype #{$subtypeId}";
+                        $this->line("   -> Type/Subtype AI-Job: {$insurance->name} / {$typeName} / {$subtypeName} ({$count} ratings)");
                     }
                 }
             });

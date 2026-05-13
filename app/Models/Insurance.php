@@ -73,8 +73,18 @@ class Insurance extends Model
 
     public function latestDetailInsuranceRatingBySubtype(?int $subtypeId = null)
     {
+        return $this->latestDetailInsuranceRatingByTypeAndSubtype(null, $subtypeId);
+    }
+
+    public function latestDetailInsuranceRatingByTypeAndSubtype(?int $typeId = null, ?int $subtypeId = null)
+    {
         return $this->detailInsuranceRatings()
-            ->when($subtypeId, function ($query) use ($subtypeId) {
+            ->when(!is_null($typeId), function ($query) use ($typeId) {
+                $query->where('insurance_type_id', $typeId);
+            }, function ($query) {
+                $query->whereNull('insurance_type_id');
+            })
+            ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
                 $query->where('insurance_subtype_id', $subtypeId);
             }, function ($query) {
                 $query->whereNull('insurance_subtype_id'); // Allgemein
@@ -339,30 +349,111 @@ class Insurance extends Model
         $subtypeIds = $this->normalizeFilterIds($subtypeIds);
 
         if (empty($typeIds) && empty($typeSubtypeIds) && empty($subtypeIds)) {
-            return $this->latestDetailInsuranceRatingBySubtype();
+            return $this->latestDetailInsuranceRatingByTypeAndSubtype();
         }
 
-        $detailSubtypeIds = !empty($subtypeIds) ? $subtypeIds : $typeSubtypeIds;
+        $hasExplicitSubtypeFilter = !empty($subtypeIds);
+        $detailSubtypeIds = $hasExplicitSubtypeFilter ? $subtypeIds : $typeSubtypeIds;
 
-        if (count($detailSubtypeIds) === 1) {
-            return $this->latestDetailInsuranceRatingBySubtype($detailSubtypeIds[0]);
+        if (!empty($typeIds) && !$hasExplicitSubtypeFilter) {
+            if (count($typeIds) === 1) {
+                $rating = $this->latestDetailInsuranceRatingByTypeAndSubtype($typeIds[0]);
+
+                if ($rating) {
+                    return $rating;
+                }
+            }
+
+            $typeAggregate = $this->aggregateDetailInsuranceRatings(
+                $this->detailInsuranceRatings()
+                    ->whereIn('insurance_type_id', $typeIds)
+                    ->whereNull('insurance_subtype_id')
+            );
+
+            if ($typeAggregate) {
+                return $typeAggregate;
+            }
+        }
+
+        if (count($typeIds) === 1 && count($detailSubtypeIds) === 1) {
+            $rating = $this->latestDetailInsuranceRatingByTypeAndSubtype($typeIds[0], $detailSubtypeIds[0]);
+
+            if ($rating) {
+                return $rating;
+            }
+        }
+
+        if (!empty($typeIds) && count($detailSubtypeIds) === 1) {
+            $rating = $this->latestDetailInsuranceRatingBySubtype($detailSubtypeIds[0]);
+
+            if ($rating) {
+                return $rating;
+            }
+        }
+
+        if (empty($typeIds) && count($detailSubtypeIds) === 1) {
+            $rating = $this->latestDetailInsuranceRatingBySubtype($detailSubtypeIds[0]);
+
+            if ($rating) {
+                return $rating;
+            }
         }
 
         if (empty($detailSubtypeIds)) {
             return null;
         }
 
-        $stats = $this->detailInsuranceRatings()
-            ->whereIn('insurance_subtype_id', $detailSubtypeIds)
-            ->selectRaw('
-                COUNT(*) as detail_count,
-                AVG(speed) as speed,
-                AVG(communication) as communication,
-                AVG(fairness) as fairness,
-                AVG(transparency) as transparency,
-                AVG(total_score) as total_score
-            ')
-            ->first();
+        $query = $this->detailInsuranceRatings()
+            ->whereIn('insurance_subtype_id', $detailSubtypeIds);
+
+        if (!empty($typeIds)) {
+            $query->whereIn('insurance_type_id', $typeIds);
+        } else {
+            $query->whereNull('insurance_type_id');
+        }
+
+        $aggregate = $this->aggregateDetailInsuranceRatings($query);
+
+        if ($aggregate) {
+            return $aggregate;
+        }
+
+        if (!empty($typeIds) && !$hasExplicitSubtypeFilter) {
+            return $this->aggregateDetailInsuranceRatings(
+                $this->detailInsuranceRatings()
+                    ->whereNull('insurance_type_id')
+                    ->whereIn('insurance_subtype_id', $detailSubtypeIds)
+            );
+        }
+
+        if (!empty($typeIds) && $hasExplicitSubtypeFilter) {
+            return $this->aggregateDetailInsuranceRatings(
+                $this->detailInsuranceRatings()
+                    ->whereNull('insurance_type_id')
+                    ->whereIn('insurance_subtype_id', $detailSubtypeIds)
+            );
+        }
+
+        if (empty($typeIds)) {
+            return $this->aggregateDetailInsuranceRatings(
+                $this->detailInsuranceRatings()
+                    ->whereIn('insurance_subtype_id', $detailSubtypeIds)
+            );
+        }
+
+        return null;
+    }
+
+    private function aggregateDetailInsuranceRatings($query): ?DetailInsuranceRating
+    {
+        $stats = $query->selectRaw('
+            COUNT(*) as detail_count,
+            AVG(speed) as speed,
+            AVG(communication) as communication,
+            AVG(fairness) as fairness,
+            AVG(transparency) as transparency,
+            AVG(total_score) as total_score
+        ')->first();
 
         if ((int) ($stats->detail_count ?? 0) <= 0) {
             return null;
@@ -370,6 +461,7 @@ class Insurance extends Model
 
         return new DetailInsuranceRating([
             'insurance_id' => $this->id,
+            'insurance_type_id' => null,
             'insurance_subtype_id' => null,
             'type' => 'aggregated',
             'status' => 'published',

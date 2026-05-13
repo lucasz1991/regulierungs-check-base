@@ -9,6 +9,7 @@ class DetailInsuranceRating extends Model
 {
     protected $fillable = [
         'insurance_id',
+        'insurance_type_id',
         'insurance_subtype_id',
         'type',
         'status',
@@ -23,6 +24,8 @@ class DetailInsuranceRating extends Model
     ];
 
     protected $casts = [
+        'insurance_type_id' => 'integer',
+        'insurance_subtype_id' => 'integer',
         'fairness'      => 'float',
         'speed'         => 'float',
         'communication' => 'float',
@@ -34,6 +37,11 @@ class DetailInsuranceRating extends Model
     public function insurance(): BelongsTo
     {
         return $this->belongsTo(Insurance::class);
+    }
+
+    public function insuranceType(): BelongsTo
+    {
+        return $this->belongsTo(InsuranceType::class);
     }
 
     public function insuranceSubtype(): BelongsTo

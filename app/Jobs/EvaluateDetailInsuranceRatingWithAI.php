@@ -2,9 +2,12 @@
 
 namespace App\Jobs;
 
-use App\Models\Insurance;
+use App\Http\Controllers\Customer\ClaimRating\AIEvalController;
 use App\Models\ClaimRating;
 use App\Models\DetailInsuranceRating;
+use App\Models\Insurance;
+use App\Models\InsuranceSubtype;
+use App\Models\InsuranceType;
 use App\Models\RatingTag;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +15,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Customer\ClaimRating\AIEvalController;
 
 class EvaluateDetailInsuranceRatingWithAI implements ShouldQueue
 {
@@ -20,64 +22,71 @@ class EvaluateDetailInsuranceRatingWithAI implements ShouldQueue
 
     public Insurance $insurance;
     public ?int $subtypeId;
+    public ?int $typeId;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct(Insurance $insurance, ?int $subtypeId = null)
+    public function __construct(Insurance $insurance, ?int $subtypeId = null, ?int $typeId = null)
     {
         $this->insurance = $insurance;
         $this->subtypeId = $subtypeId;
+        $this->typeId = $typeId;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         $query = ClaimRating::where('insurance_id', $this->insurance->id)
             ->where('status', 'rated');
 
+        if ($this->typeId) {
+            $query->where('insurance_type_id', $this->typeId);
+        }
+
         if ($this->subtypeId) {
             $query->where('insurance_subtype_id', $this->subtypeId);
-        } else {
-            $query->whereNull('insurance_subtype_id');
         }
 
         $ratings = $query->get();
 
         if ($ratings->count() < 2) {
-            Log::info("Zu wenige Bewertungen für AI-Auswertung: {$this->insurance->name} " . ($this->subtypeId ? "/ Subtype ID: {$this->subtypeId}" : "(Allgemein)"));
+            Log::info("Zu wenige Bewertungen fuer AI-Auswertung: {$this->insurance->name} " . $this->scopeLabel());
             return;
         }
 
-        $subtypeName = $this->subtypeId
-            ? optional($this->insurance->subtypes->firstWhere('id', $this->subtypeId))->name
-            : 'Allgemein';
+        $typeName = $this->typeId
+            ? InsuranceType::query()->whereKey($this->typeId)->value('name')
+            : 'Alle Versicherungsarten';
 
-        // Vollständige Bewertungsdaten sammeln
-        $ratingData = $ratings->map(function ($r) use ($subtypeName) {
+        $subtypeName = $this->subtypeId
+            ? InsuranceSubtype::query()->whereKey($this->subtypeId)->value('name')
+            : 'Alle Subtypen';
+
+        $ratingData = $ratings->map(function (ClaimRating $rating) use ($typeName, $subtypeName) {
             return [
-                'id' => $r->id,
-                'rating_score' => $r->rating_score,
-                'answers' => $r->answers,
-                'attachments' => $r->attachments,
-                'tag_ids' => $r->tag_ids,
-                'created_at' => $r->created_at->toDateTimeString(),
+                'id' => $rating->id,
+                'rating_score' => $rating->rating_score,
+                'answers' => $rating->answers,
+                'attachments' => $rating->attachments,
+                'tag_ids' => $rating->tag_ids,
+                'created_at' => $rating->created_at->toDateTimeString(),
+                'insurance_type_id' => $rating->insurance_type_id,
+                'type_name' => $typeName,
+                'insurance_subtype_id' => $rating->insurance_subtype_id,
                 'subtype_name' => $subtypeName,
             ];
         })->toArray();
 
-        // Alle möglichen Tags laden
         $possibleTags = RatingTag::get()->toArray();
 
-        // KI-Auswertung durchführen
         $evaluation = AIEvalController::getInsuranceDetailEvaluation([
+            'scope' => [
+                'insurance_type_id' => $this->typeId,
+                'type_name' => $typeName,
+                'insurance_subtype_id' => $this->subtypeId,
+                'subtype_name' => $subtypeName,
+            ],
             'data' => $ratingData,
             'possibleTags' => json_encode($possibleTags),
         ]);
 
-        // Durchschnittsscore berechnen
         $totalScore = round((
             $evaluation['average_fairness'] +
             $evaluation['average_regulation_speed'] +
@@ -85,14 +94,14 @@ class EvaluateDetailInsuranceRatingWithAI implements ShouldQueue
             $evaluation['average_transparency']
         ) / 4, 2);
 
-        // Detail-Rating speichern
         DetailInsuranceRating::updateOrCreate(
             [
                 'insurance_id' => $this->insurance->id,
+                'insurance_type_id' => $this->typeId,
                 'insurance_subtype_id' => $this->subtypeId,
             ],
             [
-                'type' => $this->subtypeId ? 'subtyp' : 'overall',
+                'type' => $this->detailType(),
                 'status' => 'evaluated',
                 'fairness' => $evaluation['average_fairness'],
                 'speed' => $evaluation['average_regulation_speed'],
@@ -104,6 +113,34 @@ class EvaluateDetailInsuranceRatingWithAI implements ShouldQueue
             ]
         );
 
-        Log::info("KI-Auswertung abgeschlossen für: {$this->insurance->name}" . ($this->subtypeId ? " / {$subtypeName}" : " (Allgemein)"));
+        Log::info("KI-Auswertung abgeschlossen fuer: {$this->insurance->name} " . $this->scopeLabel($typeName, $subtypeName));
+    }
+
+    private function detailType(): string
+    {
+        if ($this->typeId && $this->subtypeId) {
+            return 'type_subtyp';
+        }
+
+        if ($this->typeId) {
+            return 'type';
+        }
+
+        return $this->subtypeId ? 'subtyp' : 'overall';
+    }
+
+    private function scopeLabel(?string $typeName = null, ?string $subtypeName = null): string
+    {
+        $parts = [];
+
+        if ($this->typeId) {
+            $parts[] = 'Type: ' . ($typeName ?: "#{$this->typeId}");
+        }
+
+        if ($this->subtypeId) {
+            $parts[] = 'Subtype: ' . ($subtypeName ?: "#{$this->subtypeId}");
+        }
+
+        return empty($parts) ? '(Overall)' : '(' . implode(' / ', $parts) . ')';
     }
 }
