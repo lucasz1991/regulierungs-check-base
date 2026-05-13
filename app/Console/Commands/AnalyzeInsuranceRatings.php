@@ -84,7 +84,12 @@ class AnalyzeInsuranceRatings extends Command
 
         Insurance::query()
             ->whereIn('id', $eligibleInsuranceIds)
-            ->with(['insuranceTypes:id,name', 'subtypes:id,name'])
+            ->with([
+                'insuranceTypes:id,name',
+                'subtypes' => function ($query) {
+                    $query->select('insurance_subtypes.id', 'insurance_subtypes.name');
+                },
+            ])
             ->orderBy('id')
             ->chunk(100, function ($insurances) use ($min, $countsPerInsurance, $countsPerType, $countsPerSubtype, $countsPerTypeAndSubtype) {
                 foreach ($insurances as $insurance) {
