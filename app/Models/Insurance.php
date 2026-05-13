@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\InsuranceType;
-use App\Models\InsuranceSubType;
+use App\Models\InsuranceSubtype;
 use App\Models\DetailInsuranceRating;
 
 class Insurance extends Model
@@ -42,7 +42,7 @@ class Insurance extends Model
 
     public function insuranceSubTypes()
     {
-        return $this->belongsToMany(InsuranceSubType::class, 'insurance_insurance_type')
+        return $this->belongsToMany(InsuranceSubtype::class, 'insurance_insurance_type')
             ->withPivot('order_column');
     }
 
@@ -51,7 +51,7 @@ class Insurance extends Model
     public function subtypes()
     {
         return $this->hasManyThrough(
-            InsuranceSubType::class,
+            InsuranceSubtype::class,
             ClaimRating::class,
             'insurance_id',
             'id',
