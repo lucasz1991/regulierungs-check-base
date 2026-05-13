@@ -9,6 +9,7 @@ use App\Models\ClaimRating;
 use App\Models\InsuranceType;
 use App\Models\InsuranceSubtype;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class ShowInsurance extends Component
 {
@@ -65,13 +66,7 @@ class ShowInsurance extends Component
             })
             ->orderBy('name')
             ->get();
-        $this->insuranceSubTypes = InsuranceSubtype::query()
-            ->whereHas('publishedClaimRatings', function ($q) use ($insurance) {
-                $q->where('insurance_id', $insurance->id)
-                  ->publiclyVisible();
-            })
-            ->orderBy('name') // optional
-            ->get();
+        $this->refreshInsuranceSubTypes(true);
         $this->search ??= '';
         $this->pages = 1;
         $this->sort = $this->sort ?: 'score_desc';
@@ -108,6 +103,9 @@ class ShowInsurance extends Component
 
     public function updatedSelectedInsuranceTypefilter()
     {
+        $this->selectedInsuranceTypefilter = $this->selectedInsuranceTypeIds();
+        $this->refreshInsuranceSubTypes(true);
+        $this->syncSubTypeFilterState($this->selectedInsuranceSubTypefilter);
         $this->dispatchActiveEvaluationFilterAlert();
     }
 
@@ -158,6 +156,7 @@ class ShowInsurance extends Component
         ]);
 
         $this->syncSubTypeFilterState([]);
+        $this->refreshInsuranceSubTypes();
         $this->resetResults();
     }
 
@@ -231,6 +230,60 @@ class ShowInsurance extends Component
             ->unique()
             ->values()
             ->all();
+    }
+
+    private function refreshInsuranceSubTypes(bool $pruneSelection = false): void
+    {
+        $this->insuranceSubTypes = $this->availableInsuranceSubTypes();
+
+        if ($pruneSelection) {
+            $this->pruneSelectedInsuranceSubTypes();
+        }
+    }
+
+    private function availableInsuranceSubTypes(): Collection
+    {
+        $selectedInsuranceTypeIds = $this->selectedInsuranceTypeIds();
+
+        return InsuranceSubtype::query()
+            ->whereHas('publishedClaimRatings', function ($q) {
+                $q->where('insurance_id', $this->insurance->id);
+            })
+            ->when(!empty($selectedInsuranceTypeIds), function ($query) use ($selectedInsuranceTypeIds) {
+                $query->where(function ($subTypeQuery) use ($selectedInsuranceTypeIds) {
+                    $subTypeQuery
+                        ->whereHas('insuranceTypes', function ($typeQuery) use ($selectedInsuranceTypeIds) {
+                            $typeQuery->whereIn('insurance_types.id', $selectedInsuranceTypeIds);
+                        })
+                        ->orWhereHas('publishedClaimRatings', function ($ratingQuery) use ($selectedInsuranceTypeIds) {
+                            $ratingQuery
+                                ->where('insurance_id', $this->insurance->id)
+                                ->whereIn('insurance_type_id', $selectedInsuranceTypeIds);
+                        });
+                });
+            })
+            ->orderBy('name')
+            ->get();
+    }
+
+    private function pruneSelectedInsuranceSubTypes(): void
+    {
+        $selectedIds = $this->selectedInsuranceSubtypeIds();
+
+        if (empty($selectedIds)) {
+            return;
+        }
+
+        $availableIds = collect($this->insuranceSubTypes)
+            ->pluck('id')
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $prunedIds = array_values(array_intersect($selectedIds, $availableIds));
+
+        if ($selectedIds !== $prunedIds) {
+            $this->selectedInsuranceSubTypefilter = $prunedIds;
+        }
     }
 
     private function normalizeFilterIds($value): array

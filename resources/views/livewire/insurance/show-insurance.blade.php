@@ -543,7 +543,9 @@
                                 </svg>                                
                                 <span>Unterarten:</span>
                             </label>
-                            <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsuranceSubTypefilter"  :options="$insuranceSubTypes" />
+                            <div wire:key="insurance-subtype-filter-{{ collect($insuranceSubTypes)->pluck('id')->implode('-') }}">
+                                <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsuranceSubTypefilter"  :options="$insuranceSubTypes" />
+                            </div>
                         </div>
                         <div class="p-2 mb-2">
                             <label class=" text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
