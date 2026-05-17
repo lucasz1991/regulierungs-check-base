@@ -1,4 +1,20 @@
-<div class="min-h-screen ">
+<div
+    class="min-h-screen "
+    x-data="{
+        loading: false,
+        async loadMore() {
+            if (this.loading) return;
+            const y = window.scrollY;
+            this.loading = true;
+            document.activeElement?.blur();
+            await $wire.loadMore();
+            requestAnimationFrame(() => {
+                window.scrollTo({ top: y, left: 0, behavior: 'auto' });
+                this.loading = false;
+            });
+        }
+    }"
+>
     <div class="container mx-auto px-4 pb-8">
         <div class="">
             <div class="md:flex items-start gap-4">
@@ -600,10 +616,17 @@
                             @endforeach
                         </div>
                         @if($claimRatings->count() >= $perPage * $pages)
-                            <div class="mt-6 text-center">
-                                <x-buttons.button-basic wire:click="loadMore">
+                            <div class="mt-6 text-center" wire:ignore>
+                                <button
+                                    type="button"
+                                    class="px-4 py-2 rounded-lg border bg-white"
+                                    tabindex="-1"
+                                    onmousedown="event.preventDefault()"
+                                    x-on:click.prevent="loadMore()"
+                                    :disabled="loading"
+                                >
                                     Mehr laden
-                                </x-buttons.button-basic>
+                                </button>
                             </div>
                         @endif
                     </x-slot>
