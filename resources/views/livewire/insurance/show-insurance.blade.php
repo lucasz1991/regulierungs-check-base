@@ -2,6 +2,8 @@
     class="min-h-screen "
     x-data="{
         loading: false,
+        filterPanelOpen: false,
+        pendingActiveEvaluationFilterAlert: null,
         async loadMore() {
             if (this.loading) return;
             const y = window.scrollY;
@@ -12,8 +14,52 @@
                 window.scrollTo({ top: y, left: 0, behavior: 'auto' });
                 this.loading = false;
             });
+        },
+        handleFilterPanelState(detail) {
+            this.filterPanelOpen = !!detail?.open && !detail?.isDesktop;
+
+            if (!this.filterPanelOpen) {
+                this.flushPendingActiveEvaluationFilterAlert();
+            }
+        },
+        handleActiveEvaluationFilterAlert(detail) {
+            if (!detail?.active) {
+                this.pendingActiveEvaluationFilterAlert = null;
+                return;
+            }
+
+            const payload = {
+                type: detail.type || 'info',
+                title: detail.title || 'Information',
+                text: detail.message || detail.text || '',
+            };
+
+            if (this.filterPanelOpen && !$store.nav.isScreenXl) {
+                this.pendingActiveEvaluationFilterAlert = payload;
+                return;
+            }
+
+            this.showActiveEvaluationFilterAlert(payload);
+        },
+        flushPendingActiveEvaluationFilterAlert() {
+            if (!this.pendingActiveEvaluationFilterAlert) return;
+
+            const payload = this.pendingActiveEvaluationFilterAlert;
+            this.pendingActiveEvaluationFilterAlert = null;
+            this.showActiveEvaluationFilterAlert(payload);
+        },
+        showActiveEvaluationFilterAlert(payload) {
+            window.dispatchEvent(new CustomEvent('swal:toast', {
+                detail: {
+                    type: payload.type,
+                    title: payload.title,
+                    text: payload.text,
+                },
+            }));
         }
     }"
+    x-on:filter-panel-state.window="handleFilterPanelState($event.detail)"
+    x-on:active-evaluation-filter-alert.window="handleActiveEvaluationFilterAlert($event.detail)"
 >
     <div class="container mx-auto px-4 pb-8">
         <div class="">

@@ -73,7 +73,7 @@ class ShowInsurance extends Component
         $this->minRatingCount = $this->minRatingCount ?: 1;
         $this->selectedAspect = $this->selectedAspect ?: 'allgemein';
         $this->syncSubTypeFilterState($this->selectedInsuranceSubTypefilter);
-        $this->dispatchActiveEvaluationFilterAlert();
+        $this->dispatchActiveEvaluationFilterAlert(immediate: true);
     }
 
     public function updatingSearch()
@@ -158,6 +158,7 @@ class ShowInsurance extends Component
         $this->syncSubTypeFilterState([]);
         $this->refreshInsuranceSubTypes();
         $this->resetResults();
+        $this->dispatchActiveEvaluationFilterAlert();
     }
 
     public function getIsFilteredProperty()
@@ -250,16 +251,8 @@ class ShowInsurance extends Component
                 $q->where('insurance_id', $this->insurance->id);
             })
             ->when(!empty($selectedInsuranceTypeIds), function ($query) use ($selectedInsuranceTypeIds) {
-                $query->where(function ($subTypeQuery) use ($selectedInsuranceTypeIds) {
-                    $subTypeQuery
-                        ->whereHas('insuranceTypes', function ($typeQuery) use ($selectedInsuranceTypeIds) {
-                            $typeQuery->whereIn('insurance_types.id', $selectedInsuranceTypeIds);
-                        })
-                        ->orWhereHas('publishedClaimRatings', function ($ratingQuery) use ($selectedInsuranceTypeIds) {
-                            $ratingQuery
-                                ->where('insurance_id', $this->insurance->id)
-                                ->whereIn('insurance_type_id', $selectedInsuranceTypeIds);
-                        });
+                $query->whereHas('insuranceTypes', function ($typeQuery) use ($selectedInsuranceTypeIds) {
+                    $typeQuery->whereIn('insurance_types.id', $selectedInsuranceTypeIds);
                 });
             })
             ->orderBy('name')
@@ -328,12 +321,16 @@ class ShowInsurance extends Component
         $this->subTypeFilterSubType = null;
     }
 
-    private function dispatchActiveEvaluationFilterAlert(): void
+    private function dispatchActiveEvaluationFilterAlert(bool $immediate = false): void
     {
         $hasTypeFilter = !empty($this->selectedInsuranceTypeIds());
         $hasSubtypeFilter = !empty($this->selectedInsuranceSubtypeIds());
 
         if (!$hasTypeFilter && !$hasSubtypeFilter) {
+            if (!$immediate) {
+                $this->dispatch('active-evaluation-filter-alert', active: false);
+            }
+
             return;
         }
         $message = match (true) {
@@ -342,7 +339,19 @@ class ShowInsurance extends Component
             default => 'Eine Versicherungsart ist ausgewählt. Die Werte zeigen den Durchschnitt für diesen Bereich. Filter ändern für andere Versicherungsarten.',
         };
 
-        $this->dispatch('showAlert', $message, 'info');
+        if ($immediate) {
+            $this->dispatch('showAlert', $message, 'info');
+
+            return;
+        }
+
+        $this->dispatch(
+            'active-evaluation-filter-alert',
+            active: true,
+            message: $message,
+            type: 'info',
+            title: 'Information',
+        );
     }
 
     private function dashboardData(): array

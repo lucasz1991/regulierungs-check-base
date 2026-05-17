@@ -20,6 +20,15 @@
         init() {
             this.$watch('showFilters', (val) => {
                 if (val && !$store.nav.isScreenXl) this.scrollToPanel();
+                this.emitFilterPanelState(val);
+            });
+
+            this.$watch(() => $store.nav.isScreenXl, () => {
+                this.emitFilterPanelState(this.showFilters);
+            });
+
+            this.$nextTick(() => {
+                this.emitFilterPanelState(this.showFilters);
             });
 
             // falls die Nav ein/ausblendet während locked -> top nachziehen
@@ -42,6 +51,15 @@
 
         closeFilters() {
             this.showFilters = false;
+        },
+
+        emitFilterPanelState(open = this.showFilters) {
+            window.dispatchEvent(new CustomEvent('filter-panel-state', {
+                detail: {
+                    open: !!open,
+                    isDesktop: $store.nav.isScreenXl,
+                },
+            }));
         },
 
         scrollToPanel() {
@@ -113,7 +131,7 @@
 
         <!-- Mobile Filter Button -->
         <div x-show="!$store.nav.isScreenXl" x-cloak class="mb-4 max-xl:flex max-xl:justify-end">
-            <button @click="__openedByUser = true; showFilters = !showFilters" class="text-sm text-primary hover:underline p-2 rounded-xl bg-rcgold mr-3 flex items-center justify-center shadow-xl shadow-gray-900/5 border border-rcgold-light">
+            <button @click="toggleFilters()" class="text-sm text-primary hover:underline p-2 rounded-xl bg-rcgold mr-3 flex items-center justify-center shadow-xl shadow-gray-900/5 border border-rcgold-light">
                 <svg :class="{ 'xl:rotate-180 max-xl:rotate-0': !showFilters, 'max-xl:rotate-180 xl:rotate-0': showFilters }"
                     xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary transform transition-all  mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
