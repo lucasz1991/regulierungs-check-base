@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Schema;
 use App\Models\InsuranceType;
 use App\Models\InsuranceSubtype;
 use App\Models\DetailInsuranceRating;
@@ -78,13 +79,17 @@ class Insurance extends Model
 
     public function latestDetailInsuranceRatingByTypeAndSubtype(?int $typeId = null, ?int $subtypeId = null)
     {
-        return $this->detailInsuranceRatings()
-            ->when(!is_null($typeId), function ($query) use ($typeId) {
+        $query = $this->detailInsuranceRatings();
+
+        if ($this->detailInsuranceRatingsHaveInsuranceTypeColumn()) {
+            $query->when(!is_null($typeId), function ($query) use ($typeId) {
                 $query->where('insurance_type_id', $typeId);
             }, function ($query) {
                 $query->whereNull('insurance_type_id');
-            })
-            ->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
+            });
+        }
+
+        return $query->when(!is_null($subtypeId), function ($query) use ($subtypeId) {
                 $query->where('insurance_subtype_id', $subtypeId);
             }, function ($query) {
                 $query->whereNull('insurance_subtype_id'); // Allgemein
@@ -354,8 +359,9 @@ class Insurance extends Model
 
         $hasExplicitSubtypeFilter = !empty($subtypeIds);
         $detailSubtypeIds = $hasExplicitSubtypeFilter ? $subtypeIds : $typeSubtypeIds;
+        $hasTypeColumn = $this->detailInsuranceRatingsHaveInsuranceTypeColumn();
 
-        if (!empty($typeIds) && !$hasExplicitSubtypeFilter) {
+        if ($hasTypeColumn && !empty($typeIds) && !$hasExplicitSubtypeFilter) {
             if (count($typeIds) === 1) {
                 $rating = $this->latestDetailInsuranceRatingByTypeAndSubtype($typeIds[0]);
 
@@ -375,7 +381,7 @@ class Insurance extends Model
             }
         }
 
-        if (count($typeIds) === 1 && count($detailSubtypeIds) === 1) {
+        if ($hasTypeColumn && count($typeIds) === 1 && count($detailSubtypeIds) === 1) {
             $rating = $this->latestDetailInsuranceRatingByTypeAndSubtype($typeIds[0], $detailSubtypeIds[0]);
 
             if ($rating) {
@@ -406,10 +412,12 @@ class Insurance extends Model
         $query = $this->detailInsuranceRatings()
             ->whereIn('insurance_subtype_id', $detailSubtypeIds);
 
-        if (!empty($typeIds)) {
-            $query->whereIn('insurance_type_id', $typeIds);
-        } else {
-            $query->whereNull('insurance_type_id');
+        if ($hasTypeColumn) {
+            if (!empty($typeIds)) {
+                $query->whereIn('insurance_type_id', $typeIds);
+            } else {
+                $query->whereNull('insurance_type_id');
+            }
         }
 
         $aggregate = $this->aggregateDetailInsuranceRatings($query);
@@ -418,7 +426,7 @@ class Insurance extends Model
             return $aggregate;
         }
 
-        if (!empty($typeIds) && !$hasExplicitSubtypeFilter) {
+        if ($hasTypeColumn && !empty($typeIds) && !$hasExplicitSubtypeFilter) {
             return $this->aggregateDetailInsuranceRatings(
                 $this->detailInsuranceRatings()
                     ->whereNull('insurance_type_id')
@@ -426,7 +434,7 @@ class Insurance extends Model
             );
         }
 
-        if (!empty($typeIds) && $hasExplicitSubtypeFilter) {
+        if ($hasTypeColumn && !empty($typeIds) && $hasExplicitSubtypeFilter) {
             return $this->aggregateDetailInsuranceRatings(
                 $this->detailInsuranceRatings()
                     ->whereNull('insurance_type_id')
@@ -442,6 +450,13 @@ class Insurance extends Model
         }
 
         return null;
+    }
+
+    private function detailInsuranceRatingsHaveInsuranceTypeColumn(): bool
+    {
+        static $hasColumn = null;
+
+        return $hasColumn ??= Schema::hasColumn('detail_insurance_ratings', 'insurance_type_id');
     }
 
     private function aggregateDetailInsuranceRatings($query): ?DetailInsuranceRating
