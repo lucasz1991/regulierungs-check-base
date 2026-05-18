@@ -62,10 +62,7 @@ class InsuranceList extends Component
             ->orderBy('name')
             ->get();
 
-        $this->insuranceSubTypes = InsuranceSubtype::query()
-            ->whereHas('claimRatings', fn (Builder $q) => $q->publiclyVisible())
-            ->orderBy('name')
-            ->get();
+        $this->refreshInsuranceSubTypes(true);
 
         $this->pages = 1;
         $this->syncSubtypeState($this->selectedInsuranceSubTypefilter);
@@ -78,10 +75,16 @@ class InsuranceList extends Component
     public function updatingMinAvgScore(): void { $this->pages = 1; }
     public function updatingOnlyActive(): void { $this->pages = 1; }
 
-    public function updatingSelectedInsuranceTypefilter($value): void
+    public function updatingSelectedInsuranceTypefilter(): void
     {
         $this->pages = 1;
-        $this->selectedInsuranceTypefilter = $this->normalizeFilterIds($value);
+    }
+
+    public function updatedSelectedInsuranceTypefilter(): void
+    {
+        $this->selectedInsuranceTypefilter = $this->selectedInsuranceTypeIds();
+        $this->refreshInsuranceSubTypes(true);
+        $this->syncSubtypeState($this->selectedInsuranceSubTypefilter);
     }
 
     public function updatingSelectedInsuranceSubTypefilter($value): void
@@ -112,6 +115,7 @@ class InsuranceList extends Component
         ]);
 
         $this->pages = 1;
+        $this->refreshInsuranceSubTypes();
         $this->syncSubtypeState($this->selectedInsuranceSubTypefilter);
     }
 
@@ -212,6 +216,50 @@ $query = match ($this->sort) {
         } else {
             $this->isSubTypeFilter = false;
             $this->subTypeFilterSubType = null;
+        }
+    }
+
+    private function refreshInsuranceSubTypes(bool $pruneSelection = false): void
+    {
+        $this->insuranceSubTypes = $this->availableInsuranceSubTypes();
+
+        if ($pruneSelection) {
+            $this->pruneSelectedInsuranceSubTypes();
+        }
+    }
+
+    private function availableInsuranceSubTypes(): Collection
+    {
+        $selectedInsuranceTypeIds = $this->selectedInsuranceTypeIds();
+
+        return InsuranceSubtype::query()
+            ->whereHas('claimRatings', fn (Builder $q) => $q->publiclyVisible())
+            ->when(!empty($selectedInsuranceTypeIds), function (Builder $query) use ($selectedInsuranceTypeIds) {
+                $query->whereHas('insuranceTypes', function (Builder $typeQuery) use ($selectedInsuranceTypeIds) {
+                    $typeQuery->whereIn('insurance_types.id', $selectedInsuranceTypeIds);
+                });
+            })
+            ->orderBy('name')
+            ->get();
+    }
+
+    private function pruneSelectedInsuranceSubTypes(): void
+    {
+        $selectedIds = $this->selectedInsuranceSubtypeIds();
+
+        if (empty($selectedIds)) {
+            return;
+        }
+
+        $availableIds = $this->insuranceSubTypes
+            ->pluck('id')
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $prunedIds = array_values(array_intersect($selectedIds, $availableIds));
+
+        if ($selectedIds !== $prunedIds) {
+            $this->selectedInsuranceSubTypefilter = $prunedIds;
         }
     }
 
