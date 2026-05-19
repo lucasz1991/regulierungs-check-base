@@ -80,11 +80,7 @@
 
 <a href="{{ $insuranceUrl }}" class="block">
     <div class="relative">
-        @if ($hasRank)
-            <div class="absolute left-0 top-3 z-10 -translate-x-[15%] rounded-r-2xl rounded-l-xl px-4 py-2.5 text-2xl font-semibold leading-none {{ $rankBadgeClasses }}">
-                {{ $rank }}
-            </div>
-        @endif
+
 
         <article class="group relative overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]">
             <div class="absolute right-0 top-3 z-[5] w-32 rounded-l-[24px] border border-r-0 border-[#d8e7e5] bg-gradient-to-br from-[#f1fbf8] to-[#e3f1ef] px-3 py-1 text-right shadow-[0_8px_20px_rgba(15,23,42,0.08)]">
@@ -153,5 +149,10 @@
                 </div>
             </div>
         </article>
+        @if ($hasRank)
+            <div class="absolute left-0 top-3  -translate-x-[15%] rounded-r-2xl rounded-l-xl px-4 py-2.5 text-2xl font-semibold leading-none {{ $rankBadgeClasses }}">
+                {{ $rank }}
+            </div>
+        @endif
     </div>
 </a>
