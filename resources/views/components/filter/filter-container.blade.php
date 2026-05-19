@@ -157,7 +157,7 @@
                     x-show="showFilters && !$store.nav.isScreenXl"
                     x-cloak
                     x-transition.opacity
-                    class="max-xl:fixed xl:hidden inset-0"
+                    class="max-xl:fixed xl:hidden inset-0 z-20"
                     @click="closeFilters()"
                 >
                     <div class="absolute inset-0 bg-black/20 backdrop-blur-md"></div>
@@ -173,7 +173,7 @@
                            max-xl:absolute max-xl:right-4 max-xl:top-0 max-xl:w-[20rem]"
                     :style="$store.nav.isScreenXl
                         ? `width:${panelWidth}px; max-height: calc(100vh - ${offsetTop}px - 16px);`
-                        : ''"
+                        : ' z-index: 40;'"
                 >
                     <div class="xl:hidden flex justify-between pb-2">
                         <span class="font-semibold">Filter</span>

@@ -81,7 +81,7 @@
 <a href="{{ $insuranceUrl }}" class="block">
     <div class="relative">
         @if ($hasRank)
-            <div class="absolute left-0 top-3 z-6 -translate-x-[15%] rounded-r-2xl rounded-l-xl px-4 py-2.5 text-2xl font-semibold leading-none {{ $rankBadgeClasses }}">
+            <div class="absolute left-0 top-3 z-10 -translate-x-[15%] rounded-r-2xl rounded-l-xl px-4 py-2.5 text-2xl font-semibold leading-none {{ $rankBadgeClasses }}">
                 {{ $rank }}
             </div>
         @endif
