@@ -6,10 +6,14 @@
             $topInsurerTitle = $selectedType?->name
                 ? 'Top Versicherer - ' . $selectedType->name
                 : 'Top Versicherer';
-            $displayTypes = $types->take(4);
+            $initialTypes = $types->take(4);
+            $additionalTypes = $types->slice(4, 4);
         @endphp
 
-        <div class="mx-auto">
+        <div
+            class="mx-auto"
+            x-data="{ showAllInsuranceTypes: @entangle('showAllInsuranceTypes').live }"
+        >
             <div class="mb-4 text-center md:mb-8">
                 <h2 class="text-lg font-semibold leading-[1.02] tracking-[-0.02em] text-[#12324f] md:text-lg">
                     Welche Versicherung
@@ -24,7 +28,7 @@
             </div>
 
             <div class="mb-3 grid grid-cols-2 gap-2.5 md:mb-10 lg:grid-cols-4 md:gap-3">
-                @foreach ($displayTypes as $type)
+                @foreach ($initialTypes as $type)
                     <button
                         type="button"
                         wire:click="selectInsuranceType({{ $type->id }})"
@@ -56,14 +60,64 @@
                     </button>
                 @endforeach
             </div>
-            <div class="flex justify-center mb-2">
-                <a href="{{ $insurancesUrl }}"
-                    class="inline-flex items-center gap-1.5 rounded-full bg-[#0f6b86] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-white shadow-[0_8px_20px_rgba(15,107,134,0.28)] transition hover:bg-[#0c5870]"
+
+            @if ($additionalTypes->isNotEmpty())
+                <div
+                    x-cloak
+                    x-show="showAllInsuranceTypes"
+                    x-collapse.duration.400ms
                 >
-                    Alle zeigen
-                    <i class="fas fa-chevron-right text-[10px]"></i>
-                </a>
-            </div>
+                    <div class="mb-3 grid grid-cols-2 gap-2.5 md:mb-10 lg:grid-cols-4 md:gap-3">
+                        @foreach ($additionalTypes as $type)
+                            <button
+                                type="button"
+                                wire:click="selectInsuranceType({{ $type->id }})"
+                                @class([
+                                    'inline-flex min-h-[3rem] items-center gap-1.5 rounded-xl border px-2 py-1 text-left text-[0.82rem] font-medium shadow-[0_6px_18px_rgba(15,23,42,0.10)] transition-all md:min-h-[3.6rem] md:gap-2 md:px-3.5 md:py-2.5 md:text-[0.9rem]',
+                                    'border-[#7fc7d6] bg-gradient-to-br from-[#d9f4f8] via-[#eefbfd] to-white text-[#0f3f59] ring-2 ring-[#b9e7ef] shadow-[0_12px_28px_rgba(15,107,134,0.22)] scale-[1.015]' => (int) $selectedInsuranceTypeId === (int) $type->id,
+                                    'border-slate-200 bg-white text-slate-800 hover:border-[#d4e7eb] hover:bg-slate-50' => (int) $selectedInsuranceTypeId !== (int) $type->id,
+                                ])
+                            >
+                                <span @class([
+                                    'shrink-0 text-[1rem] leading-none md:text-[1.2rem]',
+                                    'text-[#0f6b86]' => (int) $selectedInsuranceTypeId === (int) $type->id,
+                                    'text-slate-500' => (int) $selectedInsuranceTypeId !== (int) $type->id,
+                                ])>
+                                    @if (!empty($type->icon_svg))
+                                        <span class="block h-4 w-4 [&_svg]:h-4 [&_svg]:w-4 md:h-5 md:w-5 md:[&_svg]:h-5 md:[&_svg]:w-5">
+                                            @if ($type->icon_type === 'svg' && $type->icon_svg)
+                                                {!! $type->icon_svg !!}
+                                            @elseif ($type->icon_type === 'fontawesome')
+                                                <i class="{!! $type->icon_svg !!}"></i>
+                                            @endif
+                                        </span>
+                                    @else
+                                        <i class="fal fa-shield-alt"></i>
+                                    @endif
+                                </span>
+
+                                <span class="min-w-0 truncate text-[0.8rem] leading-tight md:text-[0.9rem]">{{ $type->name }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div
+                    x-cloak
+                    x-show="!showAllInsuranceTypes"
+                    x-transition.opacity.duration.200ms
+                    class="mb-2 flex justify-center"
+                >
+                    <button
+                        type="button"
+                        x-on:click="showAllInsuranceTypes = true"
+                        class="inline-flex items-center gap-1.5 rounded-full bg-[#0f6b86] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-white shadow-[0_8px_20px_rgba(15,107,134,0.28)] transition hover:bg-[#0c5870]"
+                    >
+                        Alle zeigen
+                        <i class="fas fa-chevron-down text-[10px]"></i>
+                    </button>
+                </div>
+            @endif
 
             @if ($insurances->isNotEmpty())
                 <div class="mb-4 flex items-center gap-4 md:mb-5 md:gap-6">

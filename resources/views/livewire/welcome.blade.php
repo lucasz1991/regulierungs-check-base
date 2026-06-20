@@ -6,11 +6,13 @@
               <div   class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
                 <div id="ijooq">
                   <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
-                    Versicherungen im Leistungs-CHECK.
+                    Du hattest schon mal einen Schadenfall?
                   </h1>
                   <h1 id="ilifi-2-2" class="title-font text-3xl max-md:text-xl mb-4 text-white" style="text-shadow: 0px 0px 15px rgba(0,0,0,0.8);">
-                    Weil du vorher wissen solltest, wie schnell im Schadenfall geholfen wird.
+                    Hilf dabei, Transparenz zu schaffen.
                   </h1>
+                  <p class="leading-relaxed text-white/90 text-sm md:text-base" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
+                    Damit jeder schon vor Vertragsabschluss weiß, was ihn im Schadenfall erwartet. </p>
                 </div>
               </div>
               <div class="">
@@ -18,7 +20,7 @@
                   <div>
                     <div  class="flex space-x-2 md:space-x-4 items-center md:mb-4 w-full ">
                       <x-buttons.button-basic class="font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
-                        Jetzt bewerten
+                        Erfahrung teilen
                       </x-buttons.button-basic>
                     </div>
                   </div>

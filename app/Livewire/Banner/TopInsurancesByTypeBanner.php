@@ -16,6 +16,7 @@ class TopInsurancesByTypeBanner extends Component
 
     public ?int $selectedInsuranceTypeId = null;
     public array $selectedSubtypeIds = [];
+    public bool $showAllInsuranceTypes = false;
 
     public int $limit = 20;
     public int $minPublishedCount = 1;
