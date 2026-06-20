@@ -5,6 +5,7 @@ namespace App\Livewire\Banner;
 use App\Models\ClaimRating;
 use App\Models\Insurance;
 use App\Models\InsuranceType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
@@ -88,36 +89,42 @@ class TopInsurancesByTypeBanner extends Component
 
         $this->insurances = Insurance::query()
             ->where('is_active', true)
-            ->when($selectedTypeId, function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
-                $query->whereHas('insuranceTypes', function ($typeQuery) use ($selectedTypeId) {
-                    $typeQuery->where('insurance_types.id', $selectedTypeId);
-                });
-
-                $query->whereHas('publishedClaimRatings', function ($ratingQuery) use ($selectedSubtypeIds) {
-                    $ratingQuery->whereIn('insurance_subtype_id', $selectedSubtypeIds);
-                });
-            }, function ($query) {
-                $query->whereHas('publishedClaimRatings');
+            ->whereHas('claimRatings', function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
+                $this->applyRatingFilter($query, $selectedTypeId, $selectedSubtypeIds);
             })
             ->withCount([
-                'publishedClaimRatings as published_count' => function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
-                    if ($selectedTypeId) {
-                        $query->whereIn('insurance_subtype_id', $selectedSubtypeIds);
-                    }
+                'claimRatings as published_count' => function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
+                    $this->applyRatingFilter($query, $selectedTypeId, $selectedSubtypeIds);
                 },
             ])
             ->withAvg([
-                'publishedClaimRatings as published_avg' => function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
-                    if ($selectedTypeId) {
-                        $query->whereIn('insurance_subtype_id', $selectedSubtypeIds);
-                    }
+                'claimRatings as published_avg' => function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
+                    $this->applyRatingFilter($query, $selectedTypeId, $selectedSubtypeIds);
                 },
             ], 'rating_score')
             ->having('published_count', '>=', $this->minPublishedCount)
             ->orderByDesc('published_count')
             ->orderByDesc('published_avg')
+            ->orderBy('insurances.id')
             ->take($this->limit)
             ->get();
+    }
+
+    private function applyRatingFilter(Builder $query, ?int $typeId, array $subtypeIds): void
+    {
+        $query->publiclyVisible();
+
+        if (!$typeId) {
+            return;
+        }
+
+        $query->where(function (Builder $filterQuery) use ($typeId, $subtypeIds) {
+            $filterQuery->where('insurance_type_id', $typeId);
+
+            if (!empty($subtypeIds)) {
+                $filterQuery->orWhereIn('insurance_subtype_id', $subtypeIds);
+            }
+        });
     }
 
     public function render()
