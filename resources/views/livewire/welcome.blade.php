@@ -28,7 +28,7 @@
               </div>
             </div>
             <div class="hidden md:flex md:w-1/2 justify-center" data-aos="fade-up" data-aos-delay="150">
-              <img class="w-full max-w-xl" src="{{ asset('/site-images/start-illu-1-01.png') }}" alt="">
+              <img class="w-full max-w-xl" src="{{ asset('/site-images/start_illu_new-01.png') }}" alt="">
             </div>
           </div>
         </div>
