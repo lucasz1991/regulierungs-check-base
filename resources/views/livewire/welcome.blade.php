@@ -2,7 +2,7 @@
       <div class="container mx-auto px-4 py-2 md:py-6 max-md:pt-6  mb-8">
         <div  class="relative overflow-hidden rounded-xl home-banner md:py-4 md:pt-20">
           <div class=" flex items-center justify-between">
-            <div class=" md:w-1/2"  data-aos="fade-up">
+            <div class="w-2/3 md:w-1/2"  data-aos="fade-up">
               <div   class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
                 <div id="ijooq">
                   <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
@@ -27,8 +27,8 @@
                 </div>
               </div>
             </div>
-            <div class="hidden md:flex md:w-1/2 justify-center" data-aos="fade-up" data-aos-delay="150">
-              <img class="w-full max-w-xl" src="{{ asset('/site-images/start_illu5.png') }}" alt="">
+            <div class="w-1/3 md:w-1/2 justify-center" data-aos="fade-up" data-aos-delay="150">
+              <img class="w-full max-w-xl" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
             </div>
           </div>
         </div>
