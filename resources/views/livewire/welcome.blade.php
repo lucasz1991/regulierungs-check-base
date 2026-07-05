@@ -27,8 +27,8 @@
                 </div>
               </div>
             </div>
-            <div class="w-1/3 md:w-1/2 justify-center" data-aos="fade-up" data-aos-delay="150">
-              <img class="w-full max-w-xl" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
+            <div class="w-1/3 md:w-1/2 block md:flex justify-center text-center p-2 md:p-6" data-aos="fade-up" data-aos-delay="150">
+              <img class="max-w-full md:max-w-[330px]" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
             </div>
           </div>
         </div>
