@@ -60,7 +60,7 @@ class AdminStorageController extends Controller
             }
 
             // Nutze die vorhandene Funktion aus dem Model
-            $url = $file->getEphemeralPublicUrl($minutes);
+            $url = $file->getEphemeralPublicUrl($minutes, $disk);
 
             if (!$url) {
                 return response()->json([
@@ -252,6 +252,7 @@ class AdminStorageController extends Controller
             'mime'       => $mime,
             'type'       => $ext,
             'size'       => $size,
+            'disk'       => $disk,
             'visibility' => $visibility,
         ]);
     }

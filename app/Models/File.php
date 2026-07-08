@@ -31,9 +31,11 @@ class File extends Model
     }
 
     protected $fillable = [
+        'filepool_id',
         'user_id',
         'name',
         'path',
+        'disk',
         'mime_type',
         'type',
         'size',
@@ -50,7 +52,7 @@ class File extends Model
     protected static function booted(): void
     {
         static::deleting(function (File $file) {
-            $disk = 'private';
+            $disk = $file->storageDisk();
 
             if ($file->path && Storage::disk($disk)->exists($file->path)) {
                 try {
@@ -384,6 +386,15 @@ protected static function fileTypeMap(): array
         return $types['*'];
     }
 
+    public function storageDisk(): string
+    {
+        if (in_array($this->disk, ['public', 'private'], true)) {
+            return $this->disk;
+        }
+
+        return 'private';
+    }
+
     public function getIsImageAttribute(): bool
     {
         $mime = (string) ($this->mime_type ?? '');
@@ -421,10 +432,10 @@ protected static function fileTypeMap(): array
         }
     }
 
-    public function getEphemeralPublicUrl(int $minutes = 10): string
+    public function getEphemeralPublicUrl(int $minutes = 10, ?string $disk = null): string
     {
         $publicDisk = 'public';
-        $sourceDisk = 'private';
+        $sourceDisk = in_array($disk, ['public', 'private'], true) ? $disk : $this->storageDisk();
         $cacheKey   = "file:{$this->getKey()}:temp_url";
         $cached = Cache::get($cacheKey);
 
@@ -559,11 +570,12 @@ protected static function fileTypeMap(): array
         return null;
     }
 
-    public function download(string $disk = 'private', bool $denyExpired = true): StreamedResponse
+    public function download(?string $disk = null, bool $denyExpired = true): StreamedResponse
     {
         if ($denyExpired && $this->isExpired()) {
             abort(403, 'Diese Datei ist abgelaufen und kann nicht mehr heruntergeladen werden.');
         }
+        $disk = in_array($disk, ['public', 'private'], true) ? $disk : $this->storageDisk();
         $filename = $this->name_with_extension ?? $this->name ?? 'datei';
         $mime = $this->mime_type
             ?: (Storage::disk($disk)->exists($this->path) ? (Storage::disk($disk)->mimeType($this->path) ?: null) : null)
