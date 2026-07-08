@@ -536,6 +536,22 @@
                         </svg>
                         <span>Blog</span>
                     </a>
+                    @if(\App\Models\Setting::enabled('webcontent', 'news_enabled', false))
+                        <!-- News -->
+                        <a href="/news"
+                        class="flex-1 flex flex-col items-center justify-center py-2 gap-1 "
+                        :class="{'text-primary-600' : '{{ request()->is('news') || request()->is('news/*') ? 'true' : 'false' }}' === 'true'}"
+                        >
+                            <svg viewBox="0 0 24 24" class="w-5 h-5" stroke="currentColor" stroke-width="1.5"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3V5Z"></path>
+                                <path d="M8 9h8"></path>
+                                <path d="M8 13h6"></path>
+                                <path d="M4 16H3a1 1 0 0 1-1-1V7"></path>
+                            </svg>
+                            <span>News</span>
+                        </a>
+                    @endif
                 </div>
             </div>
         </nav>

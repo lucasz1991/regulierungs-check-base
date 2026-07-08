@@ -19,11 +19,21 @@ class Post extends Model
         'category_id',
         'published',
         'published_at',
+        'layout',
+        'images',
     ];
 
     protected $casts = [
         'published' => 'boolean',
         'published_at' => 'datetime',
+        'images' => 'array',
+    ];
+
+    public const NEWS_LAYOUTS = [
+        'image_top',
+        'image_bottom',
+        'image_left',
+        'image_right',
     ];
 
     protected static function booted()
@@ -91,6 +101,45 @@ class Post extends Model
         return $this->cover_image
             ? asset('storage/' . $this->cover_image)
             : asset('images/default-post.jpg');
+    }
+
+    public function newsImages(): array
+    {
+        $images = collect($this->images ?? [])
+            ->filter(fn ($image) => is_array($image) && !empty($image['path']))
+            ->sortBy(fn ($image) => (int) ($image['sort'] ?? 0))
+            ->values()
+            ->map(function ($image) {
+                $path = ltrim((string) $image['path'], '/');
+
+                return [
+                    'path' => $path,
+                    'url' => asset('storage/' . $path),
+                    'alt' => $image['alt'] ?? $this->title,
+                    'caption' => $image['caption'] ?? null,
+                    'sort' => (int) ($image['sort'] ?? 0),
+                ];
+            })
+            ->all();
+
+        if ($images === [] && $this->cover_image) {
+            $path = ltrim($this->cover_image, '/');
+
+            return [[
+                'path' => $path,
+                'url' => asset('storage/' . $path),
+                'alt' => $this->title,
+                'caption' => null,
+                'sort' => 0,
+            ]];
+        }
+
+        return $images;
+    }
+
+    public function firstNewsImage(): ?array
+    {
+        return $this->newsImages()[0] ?? null;
     }
 
     // ✂️ Vorschau aus dem Body generieren
