@@ -14,6 +14,7 @@ class HomepageNewsTeaserBanner extends Component
 
         $posts = $newsEnabled
             ? Post::where('type', 'news')
+                ->with(['newsCategory', 'pagebuilderProject'])
                 ->published()
                 ->latest('published_at')
                 ->limit(3)

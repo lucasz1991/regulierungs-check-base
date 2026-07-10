@@ -15,27 +15,41 @@ class HomepageClaimratingsRandomBanner extends Component
 
     public function mount()
     {
-        $preferredClaimRatings = $this->claimRatingQuery()
+        // 50/50-Mix: Hälfte Bewertungen mit sichtbarem Namen, Hälfte anonym
+        $namedTarget = (int) ceil(self::LIMIT / 2);
+        $anonymousTarget = self::LIMIT - $namedTarget;
+
+        $namedClaimRatings = $this->claimRatingQuery()
             ->whereHas('user', fn (Builder $query) => $query
                 ->where('privacy_settings->ratings->name_visibility', 'all')
-                ->where('privacy_settings->ratings->avatar_visibility', 'all')
             )
             ->inRandomOrder()
-            ->take(self::LIMIT)
+            ->take($namedTarget)
             ->get();
 
-        $fallbackClaimRatings = collect();
+        $anonymousClaimRatings = $this->claimRatingQuery()
+            ->whereDoesntHave('user', fn (Builder $query) => $query
+                ->where('privacy_settings->ratings->name_visibility', 'all')
+            )
+            ->inRandomOrder()
+            ->take($anonymousTarget)
+            ->get();
 
-        if ($preferredClaimRatings->count() < self::LIMIT) {
-            $fallbackClaimRatings = $this->claimRatingQuery()
-                ->whereNotIn('id', $preferredClaimRatings->pluck('id'))
+        // Fehlende Plätze aus dem jeweils anderen Pool auffüllen
+        $missing = self::LIMIT - $namedClaimRatings->count() - $anonymousClaimRatings->count();
+
+        $fillClaimRatings = collect();
+        if ($missing > 0) {
+            $fillClaimRatings = $this->claimRatingQuery()
+                ->whereNotIn('id', $namedClaimRatings->pluck('id')->merge($anonymousClaimRatings->pluck('id')))
                 ->inRandomOrder()
-                ->take(self::LIMIT - $preferredClaimRatings->count())
+                ->take($missing)
                 ->get();
         }
 
-        $this->claimRatings = $preferredClaimRatings
-            ->concat($fallbackClaimRatings)
+        $this->claimRatings = $namedClaimRatings
+            ->concat($anonymousClaimRatings)
+            ->concat($fillClaimRatings)
             ->shuffle()
             ->values();
     }

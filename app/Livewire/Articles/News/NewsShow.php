@@ -20,11 +20,21 @@ class NewsShow extends Component
             404
         );
 
-        $this->post = $post;
+        $this->post = $post->load(['newsCategory', 'pagebuilderProject']);
     }
 
     public function render()
     {
-        return view('livewire.articles.news.news-show')->layout('layouts.app');
+        $relatedPosts = Post::where('type', 'news')
+            ->published()
+            ->where('id', '!=', $this->post->id)
+            ->with('newsCategory')
+            ->latest('published_at')
+            ->limit(3)
+            ->get();
+
+        return view('livewire.articles.news.news-show', [
+            'relatedPosts' => $relatedPosts,
+        ])->layout('layouts.app');
     }
 }

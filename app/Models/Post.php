@@ -17,6 +17,8 @@ class Post extends Model
         'cover_image',
         'user_id',
         'category_id',
+        'news_category_id',
+        'pagebuilder_project_id',
         'published',
         'published_at',
         'layout',
@@ -54,6 +56,26 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo(BlogCategory::class, 'category_id');
+    }
+
+    public function newsCategory()
+    {
+        return $this->belongsTo(NewsCategory::class, 'news_category_id');
+    }
+
+    public function pagebuilderProject()
+    {
+        return $this->belongsTo(PagebuilderProject::class, 'pagebuilder_project_id');
+    }
+
+    // ⏱️ Lesezeit in Minuten (aus Pagebuilder-HTML oder Body, ~200 Wörter/Minute)
+    public function getReadingTimeMinutesAttribute(): int
+    {
+        $html = $this->pagebuilder_project_id ? optional($this->pagebuilderProject)->cleaned_html : null;
+        $text = strip_tags(($html ?: '') . ' ' . ($this->body ?? ''));
+        $words = str_word_count($text);
+
+        return max(1, (int) ceil($words / 200));
     }
 
 
