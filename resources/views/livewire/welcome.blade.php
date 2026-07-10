@@ -12,10 +12,10 @@
               <div   class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
                 <div id="ijooq">
                   <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
-                    Du hattest schon mal einen <span class="text-teal-300">Schadenfall?</span>
+                    Du hattest schon mal einen <span class="text-primary">Schadenfall?</span>
                   </h1>
                   <h1 id="ilifi-2-2" class="title-font text-3xl max-md:text-xl mb-4 text-white" style="text-shadow: 0px 0px 15px rgba(0,0,0,0.8);">
-                    Hilf dabei, <span class="text-teal-300">Transparenz</span> zu schaffen.
+                    Hilf dabei, <span class="text-primary">Transparenz</span> zu schaffen.
                   </h1>
                   <p class="leading-relaxed text-white/90 text-sm md:text-base" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
                     Damit jeder schon vor Vertragsabschluss weiß, was ihn im Schadenfall erwartet. </p>
@@ -25,8 +25,7 @@
                 <div class="max-w-full md:max-w-3xl text-left space-y-3 relative h-max z-10 py-2 md:py-6">
                   @if($ratedInsurerCount > 0)
                     <p class="flex items-center gap-2 text-sm text-white/90" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
-                      <svg class="h-4 w-4 shrink-0 text-teal-300" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
-                      Ø-Regulierungsdauer von <span class="font-semibold text-teal-300">{{ $ratedInsurerCount }} Versicherern</span>
+                      Ø-Regulierungsdauer von <span class="font-semibold text-primary">{{ $ratedInsurerCount }} Versicherern</span>
                     </p>
                   @endif
 
@@ -61,11 +60,10 @@
                       </span>
                     </div>
 
-                    <svg class="h-5 w-5 shrink-0 text-teal-300" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16c6 2 12 0 15-6"></path><path d="M19 10l1-4-4 1"></path></svg>
+                    <svg class="h-5 w-5 shrink-0 text-primary" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16c6 2 12 0 15-6"></path><path d="M19 10l1-4-4 1"></path></svg>
 
                     <p class="text-sm text-white/90" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
-                      Gemeinsam besser entscheiden.<br class="hidden sm:block">
-                      Für mehr <span class="font-semibold text-teal-300">Klarheit</span> im Ernstfall.
+                      …und viele weitere.
                     </p>
                   </div>
                 </div>
@@ -89,7 +87,7 @@
         </section>
       </div>
       <div class="container mx-auto  px-2 md:px-4 py-2 md:py-4"  data-aos="fade-up" data-aos-delay="200">
-        <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase md:border-b-2  md:border-secondary md:pb-1">
+        <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase md:border-b-2  md:border-primary md:pb-1">
           <span>So funktioniert's</span>
         </div>
       </div>
@@ -97,7 +95,7 @@
       <div class="container mx-auto px-2 py-2 md:py-6 mb-4"  data-aos="fade-up"  data-aos-delay="300">
         <div class="grid grid-cols-3 gap-4">
           <a href="{{ route('howto') }}" class="flex flex-col items-center text-center bg-white/80 hover:bg-white rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
-            <div class="mb-2 flex items-center justify-center rounded-full bg-secondary-light text-white p-3">
+            <div class="mb-2 flex items-center justify-center rounded-full bg-primary-light text-white p-3">
               <svg  class="h-6 w-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" id="iu3mvh" class="w-5 h-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
             </div>
             <h3 class="text-xs md:text-base font-semibold text-gray-900">
@@ -108,7 +106,7 @@
             </p>
           </a>
           <a href="{{ route('howto') }}" class="flex flex-col items-center text-center bg-white/80 hover:bg-white rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
-            <div class="mb-2 flex  items-center justify-center rounded-full bg-secondary-light text-white p-3">
+            <div class="mb-2 flex  items-center justify-center rounded-full bg-primary-light text-white p-3">
               <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" id="ifhv0i" class="w-5 h-5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
             </div>
             <h3 class="text-xs md:text-base font-semibold text-gray-900">
