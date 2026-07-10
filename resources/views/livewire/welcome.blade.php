@@ -12,10 +12,10 @@
               <div   class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
                 <div id="ijooq">
                   <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
-                    Du hattest schon mal einen <span class="text-primary">Schadenfall?</span>
+                    Du hattest schon mal einen <span class="text-rcgold">Schadenfall?</span>
                   </h1>
                   <h1 id="ilifi-2-2" class="title-font text-3xl max-md:text-xl mb-4 text-white" style="text-shadow: 0px 0px 15px rgba(0,0,0,0.8);">
-                    Hilf dabei, <span class="text-primary">Transparenz</span> zu schaffen.
+                    Hilf dabei, <span class="text-rcgold">Transparenz</span> zu schaffen.
                   </h1>
                   <p class="leading-relaxed text-white/90 text-sm md:text-base" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
                     Damit jeder schon vor Vertragsabschluss weiß, was ihn im Schadenfall erwartet. </p>
@@ -25,19 +25,15 @@
                 <div class="max-w-full md:max-w-3xl text-left space-y-3 relative h-max z-10 py-2 md:py-6">
                   @if($ratedInsurerCount > 0)
                     <p class="flex items-center gap-2 text-sm text-white/90" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
-                      Ø-Regulierungsdauer von <span class="font-semibold text-primary">{{ $ratedInsurerCount }} Versicherern</span>
+                      Ø-Regulierungsdauer von <span class="font-semibold text-rcgold">{{ $ratedInsurerCount }} Versicherern</span>
                     </p>
                   @endif
 
                   <div  class="flex flex-wrap gap-2 md:gap-4 items-center md:mb-4 w-full ">
-                    <x-buttons.button-basic class="font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
+                    <x-buttons.button-basic class="font-semibold" :mode="'layoutsecondary'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
                       Erfahrung teilen
                     </x-buttons.button-basic>
 
-                    <a href="{{ route('news.index') }}" wire:navigate class="inline-flex items-center gap-2 rounded-lg border border-white/40 bg-white/10 px-4 py-2 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/20">
-                      News &amp; Urteile
-                      <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
-                    </a>
                   </div>
 
                   {{-- Avatare mit leichter Überlappung + Hinweis --}}
@@ -60,7 +56,7 @@
                       </span>
                     </div>
 
-                    <svg class="h-5 w-5 shrink-0 text-primary" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16c6 2 12 0 15-6"></path><path d="M19 10l1-4-4 1"></path></svg>
+                    <svg class="h-5 w-5 shrink-0 text-rcgold" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16c6 2 12 0 15-6"></path><path d="M19 10l1-4-4 1"></path></svg>
 
                     <p class="text-sm text-white/90" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
                       …und viele weitere.
