@@ -1,10 +1,9 @@
 <div wire:loading.class="cursor-wait">
       <div class="container mx-auto px-4 py-2 md:py-6 max-md:pt-6  mb-8">
         <div  class="relative overflow-hidden rounded-xl home-banner md:py-4 md:pt-20">
-          {{-- Mobile: Illustration dezent im Hintergrund rechts, mit Overlay für gute Lesbarkeit --}}
+          {{-- Mobile: Illustration dezent rechts ohne Hintergrund-Overlay --}}
           <div class="md:hidden absolute inset-y-0 right-0 w-2/3 pointer-events-none" aria-hidden="true">
-            <img class="absolute right-[-10%] top-1/2 -translate-y-1/2 max-h-[90%] opacity-40" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
-            <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/70 to-primary/20"></div>
+            <img class="absolute right-[-10%] top-1/2 -translate-y-1/2 max-h-[90%] opacity-50" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
           </div>
 
           <div class=" flex items-center justify-between">
