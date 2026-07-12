@@ -4,10 +4,26 @@
     $category = $post->newsCategory;
     $project = $post->pagebuilderProject;
     $layout = in_array($post->layout, \App\Models\Post::NEWS_LAYOUTS, true) ? $post->layout : 'image_top';
+    $usesFullPageBuilderLayout = $project?->cleaned_html
+        && str_contains($project->cleaned_html, 'rc-news-template')
+        && str_contains($project->cleaned_html, 'news-layout-01');
 @endphp
 
 <div class="min-h-screen w-full bg-white text-gray-900">
-    <div class="container mx-auto px-4 pb-12">
+    @if($usesFullPageBuilderLayout)
+        @if($isAdminPreview)
+            <div class="container mx-auto px-4 pt-4">
+                <x-news.admin-preview-notice />
+            </div>
+        @endif
+
+        <div id="news-pagebuilder-{{ $project->id }}" class="news-pagebuilder-content w-full overflow-hidden" wire:ignore>
+            {!! $project->cleaned_html !!}
+            <style>{!! $project->css !!}</style>
+            <script>{!! $project->js !!}</script>
+        </div>
+    @else
+        <div class="container mx-auto px-4 pb-12">
         <article class="space-y-6">
         <a href="{{ route('news.index') }}" wire:navigate class="inline-flex items-center gap-2 pt-4 text-sm font-medium text-teal-700 hover:text-teal-900">
             <i class="fal fa-arrow-left"></i>
@@ -196,5 +212,6 @@
             </section>
         @endif
         </article>
-    </div>
+        </div>
+    @endif
 </div>

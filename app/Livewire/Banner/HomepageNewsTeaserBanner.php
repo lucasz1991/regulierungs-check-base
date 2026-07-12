@@ -30,16 +30,25 @@ class HomepageNewsTeaserBanner extends Component
             $posts = $postsQuery->limit(6)->get();
         }
 
-        $tickerItems = collect();
-        $tickerShouldAnimate = $posts->count() > 1;
+        $tickerItems = $posts
+            ->values()
+            ->map(fn (Post $post, int $index) => [
+                'post' => $post,
+                'is_filler' => false,
+                'slot' => $index + 1,
+            ]);
 
+        $tickerShouldAnimate = $posts->isNotEmpty();
+
+        // Responsive empty cards fill the viewport without turning repeated News
+        // into additional links or screen-reader content. The duplicated sequence
+        // still brings a single real item back in seamlessly from the right.
         if ($posts->isNotEmpty()) {
-            $tickerItemCount = $tickerShouldAnimate ? max(6, $posts->count()) : 1;
-
-            for ($index = 0; $index < $tickerItemCount; $index++) {
+            for ($slot = $posts->count() + 1; $slot <= 12; $slot++) {
                 $tickerItems->push([
-                    'post' => $posts[$index % $posts->count()],
-                    'is_filler' => $index >= $posts->count(),
+                    'post' => null,
+                    'is_filler' => true,
+                    'slot' => $slot,
                 ]);
             }
         }
