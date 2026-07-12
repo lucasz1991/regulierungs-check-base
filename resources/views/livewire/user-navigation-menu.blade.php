@@ -536,7 +536,7 @@
                         </svg>
                         <span>Blog</span>
                     </a>
-                    @if(\App\Models\Setting::enabled('webcontent', 'news_enabled', false))
+                    @if(\App\Models\Setting::enabled('webcontent', 'news_enabled', false) || app(\App\Support\NewsPreviewAccess::class)->isActive(request()))
                         <!-- News -->
                         <a href="/news"
                         class="flex-1 flex flex-col items-center justify-center py-2 gap-1 "

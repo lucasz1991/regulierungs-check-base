@@ -14,6 +14,10 @@
             Zurück zu News
         </a>
 
+        @if($isAdminPreview)
+            <x-news.admin-preview-notice />
+        @endif
+
         {{-- Hero mit Bild, Kategorie-Badge und Datum --}}
         <header class="overflow-hidden rounded-2xl bg-white/95 shadow-xl">
             @if($heroImage)
@@ -26,7 +30,7 @@
                     <div class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-black/70 to-transparent px-4 pb-3 pt-10 md:px-6">
                         @if($category)
                             <span
-                                class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-white"
+                                class="news-category-badge inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-white"
                                 style="background-color: {{ $category->color }};"
                             >
                                 @if($category->icon)
@@ -35,7 +39,13 @@
                                 {{ $category->name }}
                             </span>
                         @endif
-                        <span class="text-xs font-medium text-white/90">{{ $post->published_at->format('d.m.Y') }}</span>
+                        @if($post->published_at)
+                            <time class="text-xs font-medium text-white/90" datetime="{{ $post->published_at->toDateString() }}">
+                                {{ $post->published_at->format('d.m.Y') }}
+                            </time>
+                        @else
+                            <span class="rounded-full bg-amber-300 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-950">Entwurf</span>
+                        @endif
                     </div>
                 </div>
             @endif
@@ -45,18 +55,24 @@
                     <div class="mb-3 flex items-center gap-3">
                         @if($category)
                             <span
-                                class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-white"
+                                class="news-category-badge inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-white"
                                 style="background-color: {{ $category->color }};"
                             >
                                 {{ $category->name }}
                             </span>
                         @endif
-                        <span class="text-xs text-gray-500">{{ $post->published_at->format('d.m.Y') }}</span>
+                        @if($post->published_at)
+                            <time class="text-xs text-gray-500" datetime="{{ $post->published_at->toDateString() }}">
+                                {{ $post->published_at->format('d.m.Y') }}
+                            </time>
+                        @else
+                            <span class="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-900">Entwurf</span>
+                        @endif
                     </div>
                 @endif
 
                 <h1 class="text-2xl font-semibold leading-tight text-gray-900 md:text-4xl">
-                    {!! $post->title !!}
+                    {{ strip_tags((string) $post->title) }}
                 </h1>
 
                 @if($post->excerpt)
@@ -159,16 +175,20 @@
                             <div class="min-w-0">
                                 @if($relatedCategory)
                                     <span
-                                        class="inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold text-white"
+                                        class="news-category-badge inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold text-white"
                                         style="background-color: {{ $relatedCategory->color }};"
                                     >
                                         {{ $relatedCategory->name }}
                                     </span>
                                 @endif
                                 <h3 class="mt-1 line-clamp-2 text-sm font-semibold leading-snug text-gray-900 group-hover:text-blue-700">
-                                    {!! $related->title !!}
+                                    {{ strip_tags((string) $related->title) }}
                                 </h3>
-                                <p class="mt-1 text-xs text-gray-500">{{ $related->published_at->format('d.m.Y') }}</p>
+                                @if($related->published_at)
+                                    <p class="mt-1 text-xs text-gray-500">{{ $related->published_at->format('d.m.Y') }}</p>
+                                @else
+                                    <span class="mt-1 inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-900">Entwurf</span>
+                                @endif
                             </div>
                         </a>
                     @endforeach
