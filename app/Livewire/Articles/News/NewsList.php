@@ -4,6 +4,7 @@ namespace App\Livewire\Articles\News;
 
 use App\Models\Post;
 use App\Models\Setting;
+use App\Support\NewsPreviewAccess;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,15 +21,25 @@ class NewsList extends Component
 
     public function render()
     {
-        abort_unless(Setting::enabled('webcontent', 'news_enabled', false), 404);
+        $publicNewsEnabled = Setting::enabled('webcontent', 'news_enabled', false);
+        $isAdminPreview = app(NewsPreviewAccess::class)->isActive(request());
 
-        $posts = Post::where('type', 'news')
-            ->published()
-            ->latest('published_at')
-            ->paginate($this->perPage);
+        abort_unless($publicNewsEnabled || $isAdminPreview, 404);
+
+        $postsQuery = Post::where('type', 'news')
+            ->with(['newsCategory', 'pagebuilderProject']);
+
+        if ($isAdminPreview) {
+            $postsQuery->latest('updated_at');
+        } else {
+            $postsQuery->published()->latest('published_at');
+        }
+
+        $posts = $postsQuery->paginate($this->perPage);
 
         return view('livewire.articles.news.news-list', [
             'posts' => $posts,
+            'isAdminPreview' => $isAdminPreview,
         ])->layout('layouts.app');
     }
 }

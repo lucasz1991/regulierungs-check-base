@@ -6,9 +6,10 @@
     $layout = in_array($post->layout, \App\Models\Post::NEWS_LAYOUTS, true) ? $post->layout : 'image_top';
 @endphp
 
-<div class="container mx-auto px-4 pb-12">
-    <article class="space-y-6">
-        <a href="{{ route('news.index') }}" wire:navigate class="inline-flex items-center gap-2 pt-4 text-sm font-medium text-white/80 hover:text-white">
+<div class="min-h-screen w-full bg-white text-gray-900">
+    <div class="container mx-auto px-4 pb-12">
+        <article class="space-y-6">
+        <a href="{{ route('news.index') }}" wire:navigate class="inline-flex items-center gap-2 pt-4 text-sm font-medium text-teal-700 hover:text-teal-900">
             <i class="fal fa-arrow-left"></i>
             Zurück zu News
         </a>
@@ -174,5 +175,6 @@
                 </div>
             </section>
         @endif
-    </article>
+        </article>
+    </div>
 </div>

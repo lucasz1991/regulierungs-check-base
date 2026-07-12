@@ -17,20 +17,26 @@
                     Hilf dabei, <span class="text-rcgold">Transparenz</span> zu schaffen.
                   </h1>
                   <p class="leading-relaxed text-white/90 text-sm md:text-base" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
-                    Damit jeder schon vor Vertragsabschluss weiß, was ihn im Schadenfall erwartet. </p>
+                    Damit jeder schon vor Vertragsabschluss weiß, was ihn im Schadenfall erwartet.
+                  </p>
                 </div>
               </div>
               <div class="">
                 <div class="max-w-full md:max-w-3xl text-left space-y-3 relative h-max z-10 py-2 md:py-6">
                   @if($ratedInsurerCount > 0)
+                    <div class="h-0.5 w-12 rounded-full bg-rcgold/80" aria-hidden="true"></div>
                     <p class="flex items-center gap-2 text-sm text-white/90" style="text-shadow: 0px 0px 10px rgba(0,0,0,0.7);">
                       Ø-Regulierungsdauer von <span class="font-semibold text-rcgold">{{ $ratedInsurerCount }} Versicherern</span>
                     </p>
                   @endif
 
                   <div  class="flex flex-wrap gap-2 md:gap-4 items-center md:mb-4 w-full ">
-                    <x-buttons.button-basic class="font-semibold" :mode="'layoutsecondary'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
-                      Erfahrung teilen
+                    <x-buttons.button-basic class="group font-semibold" :mode="'layoutsecondary'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
+                      <span>Erfahrung teilen</span>
+                      <svg class="ml-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M5 12h14"></path>
+                        <path d="m13 6 6 6-6 6"></path>
+                      </svg>
                     </x-buttons.button-basic>
 
                   </div>
@@ -68,6 +74,8 @@
               <img class="max-w-full md:max-w-[330px]" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
             </div>
           </div>
+
+          <livewire:banner.homepage-news-teaser-banner />
         </div>
       </div>
       <div class="">
@@ -76,9 +84,6 @@
         </div>
         <section  class="mb-6" data-aos="fade-up" data-aos-delay="500">
           <livewire:banner.homepage-claimratings-random-banner  />
-        </section>
-        <section class="mb-6" data-aos="fade-up" data-aos-delay="500">
-          <livewire:banner.homepage-news-teaser-banner />
         </section>
       </div>
       <div class="container mx-auto  px-2 md:px-4 py-2 md:py-4"  data-aos="fade-up" data-aos-delay="200">
