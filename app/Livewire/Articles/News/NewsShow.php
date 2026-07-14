@@ -10,32 +10,29 @@ use Livewire\Component;
 class NewsShow extends Component
 {
     public Post $post;
-    public bool $isAdminPreview = false;
 
     public function mount(Post $post): void
     {
         $publicNewsEnabled = Setting::enabled('webcontent', 'news_enabled', false);
-        $this->isAdminPreview = app(NewsPreviewAccess::class)->isActive(request());
+        $isAdminPreview = app(NewsPreviewAccess::class)->isActive(request());
 
-        abort_unless(
-            $post->type === 'news'
-                && (
-                    $this->isAdminPreview
-                    || ($publicNewsEnabled && $post->published && $post->published_at !== null)
-                ),
-            404
-        );
+        $this->ensurePostIsAccessible($post, $publicNewsEnabled, $isAdminPreview);
 
         $this->post = $post->load(['newsCategory', 'pagebuilderProject']);
     }
 
     public function render()
     {
+        $publicNewsEnabled = Setting::enabled('webcontent', 'news_enabled', false);
+        $isAdminPreview = app(NewsPreviewAccess::class)->isActive(request());
+
+        $this->ensurePostIsAccessible($this->post, $publicNewsEnabled, $isAdminPreview);
+
         $relatedPostsQuery = Post::where('type', 'news')
             ->where('id', '!=', $this->post->id)
             ->with('newsCategory');
 
-        if ($this->isAdminPreview) {
+        if ($isAdminPreview) {
             $relatedPostsQuery->latest('updated_at');
         } else {
             $relatedPostsQuery->published()->latest('published_at');
@@ -45,11 +42,30 @@ class NewsShow extends Component
 
         return view('livewire.articles.news.news-show', [
             'relatedPosts' => $relatedPosts,
-            'isAdminPreview' => $this->isAdminPreview,
+            'isAdminPreview' => $isAdminPreview,
             'pagebuilderHtml' => $this->contentOnlyPagebuilderHtml(
                 $this->post->pagebuilderProject?->cleaned_html
             ),
         ])->layout('layouts.app');
+    }
+
+    protected function ensurePostIsAccessible(
+        Post $post,
+        bool $publicNewsEnabled,
+        bool $isAdminPreview
+    ): void {
+        abort_unless(
+            $post->type === 'news'
+                && (
+                    $isAdminPreview
+                    || (
+                        $publicNewsEnabled
+                        && $post->published
+                        && $post->published_at?->lte(now())
+                    )
+                ),
+            404
+        );
     }
 
     /**
@@ -75,8 +91,8 @@ class NewsShow extends Component
         try {
             $loaded = $document->loadHTML(
                 '<?xml encoding="utf-8" ?><!DOCTYPE html><html><body><div id="rc-news-builder-root">'
-                    . $html
-                    . '</div></body></html>',
+                    .$html
+                    .'</div></body></html>',
                 LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
             );
 
@@ -93,7 +109,7 @@ class NewsShow extends Component
                 foreach (iterator_to_array($templateRoots) as $templateRoot) {
                     $legacySections = $xpath->query(
                         './/*[contains(concat(" ", normalize-space(@class), " "), " rc-news-hero ")'
-                        . ' or contains(concat(" ", normalize-space(@class), " "), " rc-news-related ")]',
+                        .' or contains(concat(" ", normalize-space(@class), " "), " rc-news-related ")]',
                         $templateRoot
                     );
 
@@ -105,7 +121,7 @@ class NewsShow extends Component
 
                     $templateRoot->setAttribute(
                         'class',
-                        trim($templateRoot->getAttribute('class') . ' rc-news-template--content')
+                        trim($templateRoot->getAttribute('class').' rc-news-template--content')
                     );
                     $templateRoot->setAttribute('data-template-version', '2');
                     $templateRoot->setAttribute('data-template-scope', 'content');

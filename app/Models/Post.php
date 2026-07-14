@@ -109,7 +109,10 @@ class Post extends Model
     // 🔍 Nur veröffentlichte Beiträge
     public function scopePublished($query)
     {
-        return $query->where('published', true)->whereNotNull('published_at');
+        return $query
+            ->where('published', true)
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 
     public function getRouteKeyName()
