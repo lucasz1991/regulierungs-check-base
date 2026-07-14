@@ -44,17 +44,17 @@
                   {{-- Avatare mit leichter Überlappung + Hinweis --}}
                   <div class="flex flex-wrap items-center gap-3 pt-2">
                     <div class="flex items-center -space-x-2">
-                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80 bg-[#f3d9c6]">
-                        <svg viewBox="0 0 36 36" class="h-full w-full"><rect width="36" height="36" fill="#e8f4f2"/><circle cx="18" cy="30" r="10" fill="#0f766e"/><circle cx="18" cy="14" r="7" fill="#f3d9c6"/><path d="M10 13c0-6 4-9 8-9s8 3 8 9c0 2-1 3-1 3 0-5-3-7-7-7s-7 2-7 7c0 0-1-1-1-3z" fill="#5b3a29"/></svg>
+                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80">
+                        <img src="{{ asset('/site-images/home/avatars/avatar-brunette.png') }}" alt="" class="h-full w-full object-cover">
                       </span>
-                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80 bg-[#e7c1a0]">
-                        <svg viewBox="0 0 36 36" class="h-full w-full"><rect width="36" height="36" fill="#eef2f8"/><circle cx="18" cy="30" r="10" fill="#1e3a8a"/><circle cx="18" cy="14" r="7" fill="#e7c1a0"/><path d="M11 12c0-5 3-8 7-8s7 3 7 8c0 1-.5 2-.5 2 0-4-2.5-6-6.5-6s-6.5 2-6.5 6c0 0-.5-1-.5-2z" fill="#2b2b2b"/></svg>
+                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80">
+                        <img src="{{ asset('/site-images/home/avatars/avatar-bearded.png') }}" alt="" class="h-full w-full object-cover">
                       </span>
-                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80 bg-[#f5dcc4]">
-                        <svg viewBox="0 0 36 36" class="h-full w-full"><rect width="36" height="36" fill="#f3ede8"/><circle cx="18" cy="30" r="10" fill="#7c3aed"/><circle cx="18" cy="14" r="7" fill="#f5dcc4"/><path d="M9 16c0-8 5-11 9-11s9 3 9 11c0 0-2-2-3-5-1 2-9 3-12 0-1 3-3 5-3 5z" fill="#d9a441"/></svg>
+                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80">
+                        <img src="{{ asset('/site-images/home/avatars/avatar-blonde.png') }}" alt="" class="h-full w-full object-cover">
                       </span>
-                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80 bg-[#d9b08c]">
-                        <svg viewBox="0 0 36 36" class="h-full w-full"><rect width="36" height="36" fill="#eaf2ee"/><circle cx="18" cy="30" r="10" fill="#111827"/><circle cx="18" cy="14" r="7" fill="#d9b08c"/><path d="M11 12c0-5 3-8 7-8s7 3 7 8c0 1-.5 2-.5 2 0-4-2.5-6-6.5-6s-6.5 2-6.5 6c0 0-.5-1-.5-2z" fill="#3f3f3f"/><rect x="11" y="12" width="6" height="4" rx="2" fill="none" stroke="#374151" stroke-width="1.2"/><rect x="19" y="12" width="6" height="4" rx="2" fill="none" stroke="#374151" stroke-width="1.2"/><path d="M17 13.5h2" stroke="#374151" stroke-width="1.2"/></svg>
+                      <span class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/80">
+                        <img src="{{ asset('/site-images/home/avatars/avatar-glasses.png') }}" alt="" class="h-full w-full object-cover">
                       </span>
                       <span class="inline-flex h-9 w-9 items-center justify-center rounded-full ring-2 ring-white/80 bg-white/20 text-white backdrop-blur-sm">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>

@@ -45,10 +45,12 @@
                                            </x-nav.nav-link-submenu-link>
                                        </x-slot>
                                     </x-nav.nav-link-submenu>
-                                    <x-nav.nav-link href="/blog" wire:navigate  :active="request()->is('blog')">
-                                           <svg viewBox="0 0 24 24" class="w-5 max-md:w-6  mr-1 max-md:mr-2 " stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                                            {{ __('Blog') }}
-                                    </x-nav.nav-link>
+                                    @if(\App\Models\Setting::enabled('webcontent', 'blog_enabled', false))
+                                        <x-nav.nav-link href="/blog" wire:navigate  :active="request()->is('blog') || request()->is('posts/*')">
+                                               <svg viewBox="0 0 24 24" class="w-5 max-md:w-6  mr-1 max-md:mr-2 " stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                                {{ __('Blog') }}
+                                        </x-nav.nav-link>
+                                    @endif
                                     @if(\App\Models\Setting::enabled('webcontent', 'news_enabled', false) || app(\App\Support\NewsPreviewAccess::class)->isActive(request()))
                                         <x-nav.nav-link href="/news" wire:navigate  :active="request()->is('news') || request()->is('news/*')">
                                                <svg viewBox="0 0 24 24" class="w-5 max-md:w-6 mr-1 max-md:mr-2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">

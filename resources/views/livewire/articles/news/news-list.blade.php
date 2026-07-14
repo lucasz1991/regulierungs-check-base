@@ -1,10 +1,11 @@
-<div class="container mx-auto px-3 pb-12 pt-3 sm:px-5 sm:pb-16 sm:pt-5 lg:px-8">
-    <div class="mx-auto max-w-6xl">
+<section class="min-h-screen w-full bg-white">
+    <div class="container mx-auto px-3 pb-12 pt-3 sm:px-5 sm:pb-16 sm:pt-5 lg:px-8">
+        <div class="mx-auto max-w-6xl">
         @if($isAdminPreview)
             <x-news.admin-preview-notice class="mb-4 sm:mb-5" />
         @endif
 
-        <header class="mb-5 overflow-hidden rounded-[1.75rem] border border-white/20 bg-white/95 px-5 py-6 shadow-[0_20px_55px_-32px_rgba(15,23,42,0.65)] sm:mb-7 sm:px-8 sm:py-8 lg:flex lg:items-end lg:justify-between lg:gap-10 lg:px-10">
+        <header class="mb-5 border-b border-slate-200 px-2 py-5 sm:mb-7 sm:px-3 sm:py-7 lg:flex lg:items-end lg:justify-between lg:gap-10">
             <div>
                 <p class="text-xs font-bold uppercase tracking-[0.18em] text-secondary">Aktuelles</p>
                 <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">News</h1>
@@ -22,7 +23,7 @@
                 @endforeach
             </div>
         @else
-            <div class="rounded-[1.5rem] border border-white/20 bg-white/95 px-5 py-8 text-center shadow-lg sm:px-8">
+            <div class="rounded-[1.5rem] border border-slate-200 bg-white px-5 py-8 text-center shadow-[0_10px_30px_-24px_rgba(15,23,42,0.5)] sm:px-8">
                 <span class="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 text-secondary">
                     <i class="fal fa-newspaper text-lg" aria-hidden="true"></i>
                 </span>
@@ -36,7 +37,7 @@
                     type="button"
                     wire:click="loadMore"
                     wire:loading.attr="disabled"
-                    class="group inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-white px-6 py-3 text-sm font-semibold text-primary shadow-lg shadow-slate-950/10 transition duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-white disabled:pointer-events-none disabled:opacity-60"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-primary shadow-[0_8px_24px_-18px_rgba(15,23,42,0.5)] transition duration-300 hover:-translate-y-0.5 hover:border-secondary hover:bg-secondary hover:text-white disabled:pointer-events-none disabled:opacity-60"
                 >
                     <span wire:loading.remove wire:target="loadMore">Weitere News laden</span>
                     <span wire:loading wire:target="loadMore">News werden geladen</span>
@@ -44,5 +45,6 @@
                 </button>
             </div>
         @endif
+        </div>
     </div>
-</div>
+</section>

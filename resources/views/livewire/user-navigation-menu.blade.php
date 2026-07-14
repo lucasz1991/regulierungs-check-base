@@ -524,18 +524,20 @@
                         </svg>
                         <span>Versicherungen</span>
                     </a>
-                    <!-- Blog -->
-                    <a href="/blog"
-                    class="flex-1 flex flex-col items-center justify-center py-2 gap-1 "
-                    :class="{'text-primary-600' : '{{ request()->is('blog') ? 'true' : 'false' }}' === 'true'}"
-                    >
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" stroke="currentColor" stroke-width="1.5"
-                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                        </svg>
-                        <span>Blog</span>
-                    </a>
+                    @if(\App\Models\Setting::enabled('webcontent', 'blog_enabled', false))
+                        <!-- Blog -->
+                        <a href="/blog"
+                        class="flex-1 flex flex-col items-center justify-center py-2 gap-1 "
+                        :class="{'text-primary-600' : '{{ request()->is('blog') || request()->is('posts/*') ? 'true' : 'false' }}' === 'true'}"
+                        >
+                            <svg viewBox="0 0 24 24" class="w-5 h-5" stroke="currentColor" stroke-width="1.5"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                            <span>Blog</span>
+                        </a>
+                    @endif
                     @if(\App\Models\Setting::enabled('webcontent', 'news_enabled', false) || app(\App\Support\NewsPreviewAccess::class)->isActive(request()))
                         <!-- News -->
                         <a href="/news"

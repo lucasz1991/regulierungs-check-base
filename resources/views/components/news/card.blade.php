@@ -8,7 +8,7 @@
 <a href="{{ route('news.show', $post) }}"
    wire:navigate
    aria-label="{{ strip_tags($post->title) }} lesen"
-   class="group grid min-h-[11.5rem] grid-cols-[35%_minmax(0,1fr)] overflow-hidden rounded-[1.35rem] border border-white/80 bg-white shadow-[0_14px_38px_-24px_rgba(15,23,42,0.7)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_48px_-24px_rgba(15,23,42,0.72)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary sm:min-h-[13.5rem] sm:grid-cols-[34%_minmax(0,1fr)] sm:rounded-[1.6rem] lg:min-h-[15rem] lg:grid-cols-[30%_minmax(0,1fr)]"
+   class="group grid min-h-[11.5rem] grid-cols-[35%_minmax(0,1fr)] overflow-hidden rounded-[1.35rem] border border-slate-200 bg-white shadow-[0_12px_32px_-24px_rgba(15,23,42,0.55)] transition duration-300 hover:-translate-y-0.5 hover:border-secondary/35 hover:shadow-[0_20px_42px_-24px_rgba(15,23,42,0.62)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary sm:min-h-[13.5rem] sm:grid-cols-[34%_minmax(0,1fr)] sm:rounded-[1.6rem] lg:min-h-[15rem] lg:grid-cols-[30%_minmax(0,1fr)]"
 >
     <div class="relative min-h-full overflow-hidden bg-slate-100">
         @if($image)

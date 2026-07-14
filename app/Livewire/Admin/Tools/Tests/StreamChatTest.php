@@ -35,6 +35,9 @@ class StreamChatTest extends Component
         $this->aiModel = Crypt::encryptString(Setting::getValue('ai_assistant', 'ai_model'));
         $this->modelTitle = Crypt::encryptString(Setting::getValue('ai_assistant', 'model_title'));
         $this->refererUrl = Crypt::encryptString(Setting::getValue('ai_assistant', 'referer_url'));
+        $navigationTargetPrompt = collect($this->navigationTargets())
+            ->map(fn (string $target) => '                    "'.$target.'"')
+            ->implode(",\n");
         $this->trainContent = <<<EOT
             Du bist der Regulierungs-Check Assistent mit dem Namen "Milan" auf der offiziellen Regulierungs-Check Website.  
             Du hilfst Nutzern dabei, die Plattform zu verstehen, ihre Möglichkeiten zu entdecken und ggf. zu interagieren.  
@@ -93,15 +96,7 @@ class StreamChatTest extends Component
                 "navigate": {
                 "description": "Leitet den Nutzer direkt zu einem bestimmten Bereich der Website weiter.",
                 "values": [
-                    "home",
-                    "reviews",
-                    "insurances",
-                    "blog",
-                    "aboutus",
-                    "guidance",
-                    "howto",
-                    "contact",
-                    "#start-rating"
+            {$navigationTargetPrompt}
                 ]
                 }
             }
@@ -225,7 +220,7 @@ class StreamChatTest extends Component
                                     ],
                                     'function_value' => [
                                         'type' => 'string',
-                                        'enum' => ['', 'home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating' ],
+                                        'enum' => $this->navigationTargets(includeEmpty: true),
                                         'description' => 'Parameter zur Funktion, z. B. Zielroute oder ID. Muss leer sein, wenn function_name "none" ist.'
                                     ],
                                     'function_trigger' => [
@@ -292,14 +287,14 @@ class StreamChatTest extends Component
         $value = $data['function_value'] ?? null;
         // Erlaubte Funktionen + Zielwerte
         $allowedFunctions = [
-            'navigate' => ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating']
+            'navigate' => $this->navigationTargets(),
         ];
 
         if (!array_key_exists($function, $allowedFunctions)) {
             return; // Unbekannte Funktion
         }
 
-        if (is_array($allowedFunctions[$function]) && !in_array($value, $allowedFunctions[$function])) {
+        if (is_array($allowedFunctions[$function]) && !in_array($value, $allowedFunctions[$function], true)) {
             return; // Ungültiger Zielwert
         }
         
@@ -313,14 +308,25 @@ class StreamChatTest extends Component
     {
             $target = $data['function_value'];
             // Nur erlaubte Ziele verarbeiten
-            $allowedRoutes = ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
-            if (in_array($target, $allowedRoutes)) {
+            $allowedRoutes = $this->navigationTargets();
+            if (in_array($target, $allowedRoutes, true)) {
                 if ($target === 'home') {
                     redirect()->to(url('/'));
                 }else{
                     redirect()->to(url($target === '#' ? '/' : $target));
                 }
             }
+    }
+
+    protected function navigationTargets(bool $includeEmpty = false): array
+    {
+        $targets = ['home', 'reviews', 'insurances', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
+
+        if (Setting::enabled('webcontent', 'blog_enabled', false)) {
+            array_splice($targets, 3, 0, ['blog']);
+        }
+
+        return $includeEmpty ? ['', ...$targets] : $targets;
     }
 
     public function clearChat()

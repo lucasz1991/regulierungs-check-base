@@ -71,7 +71,7 @@ class Chatbot extends Component
                     'messages' => array_merge([
                         [
                             'role'    => 'system',
-                            'content' => trim(preg_replace('/\s+/', ' ', Crypt::decryptString($this->trainContent)))
+                            'content' => $this->systemPrompt()
                         ]
                     ], $this->chatHistory),
                     'response_format' => [
@@ -93,7 +93,7 @@ class Chatbot extends Component
                                     ],
                                     'function_value' => [
                                         'type' => 'string',
-                                        'enum' => ['', 'home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating' ],
+                                        'enum' => $this->navigationTargets(includeEmpty: true),
                                         'description' => 'Parameter zur Funktion, z. B. Zielroute oder ID. Muss leer sein, wenn function_name "none" ist.'
                                     ],
                                     'function_trigger' => [
@@ -165,14 +165,14 @@ class Chatbot extends Component
         $value = $data['function_value'] ?? null;
         // Erlaubte Funktionen + Zielwerte
         $allowedFunctions = [
-            'navigate' => ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating']
+            'navigate' => $this->navigationTargets(),
         ];
 
         if (!array_key_exists($function, $allowedFunctions)) {
             return; // Unbekannte Funktion
         }
 
-        if (is_array($allowedFunctions[$function]) && !in_array($value, $allowedFunctions[$function])) {
+        if (is_array($allowedFunctions[$function]) && !in_array($value, $allowedFunctions[$function], true)) {
             return; // Ungültiger Zielwert
         }
         
@@ -186,8 +186,8 @@ class Chatbot extends Component
     {
             $target = $data['function_value'];
             // Nur erlaubte Ziele verarbeiten
-            $allowedRoutes = ['home', 'reviews', 'insurances', 'blog', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
-            if (in_array($target, $allowedRoutes)) {
+            $allowedRoutes = $this->navigationTargets();
+            if (in_array($target, $allowedRoutes, true)) {
                 // sleep(1);
                 
                 // Timeout für die Navigation setzen (z.B. 2 Sekunden)
@@ -198,6 +198,33 @@ class Chatbot extends Component
                     $this->redirect(url($target === '#' ? '/' : $target), navigate: true);
                 }
             }
+    }
+
+    protected function navigationTargets(bool $includeEmpty = false): array
+    {
+        $targets = ['home', 'reviews', 'insurances', 'aboutus', 'guidance', 'howto', 'contact', '#start-rating'];
+
+        if ($this->blogEnabled()) {
+            array_splice($targets, 3, 0, ['blog']);
+        }
+
+        return $includeEmpty ? ['', ...$targets] : $targets;
+    }
+
+    protected function systemPrompt(): string
+    {
+        $prompt = trim(preg_replace('/\s+/', ' ', Crypt::decryptString($this->trainContent)));
+
+        if (!$this->blogEnabled()) {
+            $prompt .= ' Der öffentliche Blog ist derzeit deaktiviert. Biete keine Blog-Inhalte und keine Navigation zum Blog an.';
+        }
+
+        return $prompt;
+    }
+
+    protected function blogEnabled(): bool
+    {
+        return Setting::enabled('webcontent', 'blog_enabled', false);
     }
 
     public function clearChat()
