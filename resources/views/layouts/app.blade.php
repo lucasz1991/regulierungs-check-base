@@ -26,7 +26,13 @@
         <script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="XFHuZsqPDNpcWX" async></script>
         
         <!-- Styles -->
-        @stack('pagebuilder-styles')
+        @if($loadNewsPagebuilderTailwind ?? false)
+            <link
+                rel="stylesheet"
+                href="{{ asset('adminresources/css/pagebuilder-tailwind.min.css') }}?v={{ filemtime(public_path('adminresources/css/pagebuilder-tailwind.min.css')) }}"
+                data-news-pagebuilder-tailwind
+            >
+        @endif
         @vite(['resources/css/app.css'])
 
         <!-- Styles -->

@@ -18,13 +18,24 @@ class NewsPagebuilderTailwindAssetTest extends TestCase
             resource_path('views/livewire/articles/news/news-show.blade.php')
         );
 
-        $this->assertStringContainsString("@stack('pagebuilder-styles')", $layout);
-        $this->assertStringContainsString("@push('pagebuilder-styles')", $newsDetail);
+        $newsComponent = file_get_contents(
+            app_path('Livewire/Articles/News/NewsShow.php')
+        );
+
+        $this->assertStringContainsString(
+            '$loadNewsPagebuilderTailwind ?? false',
+            $layout
+        );
         $this->assertStringContainsString(
             'adminresources/css/pagebuilder-tailwind.min.css',
-            $newsDetail
+            $layout
         );
-        $this->assertStringContainsString('data-news-pagebuilder-tailwind', $newsDetail);
+        $this->assertStringContainsString('data-news-pagebuilder-tailwind', $layout);
+        $this->assertStringContainsString(
+            "'loadNewsPagebuilderTailwind' => true",
+            $newsComponent
+        );
+        $this->assertStringNotContainsString('pagebuilder-tailwind.min.css', $newsDetail);
     }
 
     public function test_committed_asset_matches_the_admin_build_when_both_projects_exist(): void
