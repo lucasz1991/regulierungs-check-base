@@ -287,6 +287,31 @@ class NewsVisibilityLifecycleTest extends TestCase
         $this->assertSame(2, $newsCache->remember('ttl', ['post_id' => 1], $resolver));
     }
 
+    public function test_public_news_cache_reads_the_latest_legacy_generation_row(): void
+    {
+        DB::table('settings')->insert([
+            [
+                'type' => 'webcontent',
+                'key' => 'news_cache_version',
+                'value' => 'legacy-first',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'type' => 'webcontent',
+                'key' => 'news_cache_version',
+                'value' => 'legacy-latest',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        $this->assertSame(
+            'legacy-latest',
+            app(PublicNewsCache::class)->generation()
+        );
+    }
+
     private function setPreviewActive(bool $active): void
     {
         $this->request->attributes->set(NewsPreviewAccess::REQUEST_ATTRIBUTE, $active);

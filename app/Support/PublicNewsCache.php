@@ -24,6 +24,8 @@ final class PublicNewsCache
         $generation = DB::table('settings')
             ->where('type', self::SETTING_TYPE)
             ->where('key', self::SETTING_KEY)
+            ->latest('updated_at')
+            ->latest('id')
             ->value('value');
 
         return filled($generation) ? (string) $generation : '1';

@@ -31,7 +31,7 @@
                   @endif
 
                   <div  class="flex flex-wrap gap-2 md:gap-4 items-center md:mb-4 w-full ">
-                    <x-buttons.button-basic class="group font-semibold" :mode="'layoutsecondary'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
+                    <x-buttons.button-basic class="group font-semibold" :mode="'layoutprimary'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
                       <span>Erfahrung teilen</span>
                       <svg class="ml-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M5 12h14"></path>
