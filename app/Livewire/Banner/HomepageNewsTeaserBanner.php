@@ -5,6 +5,7 @@ namespace App\Livewire\Banner;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Support\NewsPreviewAccess;
+use App\Support\PublicNewsCache;
 use Livewire\Component;
 
 class HomepageNewsTeaserBanner extends Component
@@ -18,16 +19,26 @@ class HomepageNewsTeaserBanner extends Component
         $posts = collect();
 
         if ($newsEnabled) {
-            $postsQuery = Post::where('type', 'news')
-                ->with(['newsCategory', 'pagebuilderProject']);
-
             if ($isAdminPreview) {
-                $postsQuery->latest('updated_at');
+                $posts = Post::where('type', 'news')
+                    ->with(['newsCategory', 'pagebuilderProject'])
+                    ->latest('updated_at')
+                    ->limit(6)
+                    ->get();
             } else {
-                $postsQuery->published()->latest('published_at');
-            }
+                $newsCache = app(PublicNewsCache::class);
 
-            $posts = $postsQuery->limit(6)->get();
+                $posts = $newsCache->remember(
+                    'homepage-ticker',
+                    ['limit' => 6],
+                    fn () => Post::where('type', 'news')
+                        ->with(['newsCategory', 'pagebuilderProject'])
+                        ->published()
+                        ->latest('published_at')
+                        ->limit(6)
+                        ->get()
+                );
+            }
         }
 
         $tickerItems = $posts

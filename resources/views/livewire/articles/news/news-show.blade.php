@@ -1,3 +1,11 @@
+@push('pagebuilder-styles')
+    <link
+        rel="stylesheet"
+        href="{{ asset('adminresources/css/pagebuilder-tailwind.min.css') }}?v={{ filemtime(public_path('adminresources/css/pagebuilder-tailwind.min.css')) }}"
+        data-news-pagebuilder-tailwind
+    >
+@endpush
+
 @php
     $images = $post->newsImages();
     $heroImage = $post->firstNewsImage();

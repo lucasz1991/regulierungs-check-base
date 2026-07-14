@@ -5,6 +5,7 @@ namespace App\Livewire\Articles\News;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Support\NewsPreviewAccess;
+use App\Support\PublicNewsCache;
 use Livewire\Component;
 
 class NewsShow extends Component
@@ -18,7 +19,7 @@ class NewsShow extends Component
 
         $this->ensurePostIsAccessible($post, $publicNewsEnabled, $isAdminPreview);
 
-        $this->post = $post->load(['newsCategory', 'pagebuilderProject']);
+        $this->post = $this->loadPostRelations($post, $isAdminPreview);
     }
 
     public function render()
@@ -28,17 +29,38 @@ class NewsShow extends Component
 
         $this->ensurePostIsAccessible($this->post, $publicNewsEnabled, $isAdminPreview);
 
-        $relatedPostsQuery = Post::where('type', 'news')
-            ->where('id', '!=', $this->post->id)
-            ->with('newsCategory');
-
         if ($isAdminPreview) {
-            $relatedPostsQuery->latest('updated_at');
-        } else {
-            $relatedPostsQuery->published()->latest('published_at');
-        }
+            $this->post->loadMissing(['newsCategory', 'pagebuilderProject']);
 
-        $relatedPosts = $relatedPostsQuery->limit(3)->get();
+            $relatedPosts = Post::where('type', 'news')
+                ->where('id', '!=', $this->post->id)
+                ->with('newsCategory')
+                ->latest('updated_at')
+                ->limit(3)
+                ->get();
+        } else {
+            $newsCache = app(PublicNewsCache::class);
+            $generation = $newsCache->generation();
+
+            $this->post = $this->loadPostRelations($this->post, false, $generation);
+            $this->ensurePostIsAccessible($this->post, $publicNewsEnabled, false);
+
+            $relatedPosts = $newsCache->remember(
+                'related',
+                [
+                    'post_id' => $this->post->getKey(),
+                    'limit' => 3,
+                ],
+                fn () => Post::where('type', 'news')
+                    ->where('id', '!=', $this->post->id)
+                    ->with('newsCategory')
+                    ->published()
+                    ->latest('published_at')
+                    ->limit(3)
+                    ->get(),
+                $generation
+            );
+        }
 
         return view('livewire.articles.news.news-show', [
             'relatedPosts' => $relatedPosts,
@@ -65,6 +87,27 @@ class NewsShow extends Component
                     )
                 ),
             404
+        );
+    }
+
+    private function loadPostRelations(
+        Post $post,
+        bool $isAdminPreview,
+        ?string $generation = null
+    ): Post {
+        if ($isAdminPreview) {
+            return $post->load(['newsCategory', 'pagebuilderProject']);
+        }
+
+        $newsCache = app(PublicNewsCache::class);
+
+        return $newsCache->remember(
+            'detail',
+            ['post_id' => $post->getKey()],
+            fn () => Post::query()
+                ->with(['newsCategory', 'pagebuilderProject'])
+                ->findOrFail($post->getKey()),
+            $generation ?? $newsCache->generation()
         );
     }
 

@@ -7,9 +7,11 @@ use App\Livewire\Articles\News\NewsShow;
 use App\Livewire\Banner\HomepageNewsTeaserBanner;
 use App\Models\Post;
 use App\Support\NewsPreviewAccess;
+use App\Support\PublicNewsCache;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -66,6 +68,7 @@ class NewsVisibilityLifecycleTest extends TestCase
 
         $this->request = Request::create('/news/current-news', 'GET');
         $this->app->instance('request', $this->request);
+        Cache::flush();
         $this->setPreviewActive(false);
     }
 
@@ -161,6 +164,129 @@ class NewsVisibilityLifecycleTest extends TestCase
         $this->assertSame($expectedPublicIds, $publishedIds);
     }
 
+    public function test_public_news_surfaces_refresh_when_the_shared_generation_changes(): void
+    {
+        $this->setNewsEnabled(true);
+        $this->setNewsCacheGeneration('generation-a');
+
+        $current = $this->createNews('cache-current', true, now()->subMinutes(10));
+        $firstRelated = $this->createNews('cache-first-related', true, now()->subMinutes(5));
+
+        $list = new NewsList;
+        $ticker = new HomepageNewsTeaserBanner;
+        $detail = new NewsShow;
+        $detail->mount($current);
+
+        $this->assertSame(
+            [$current->id, $firstRelated->id],
+            $list->render()->getData()['posts']->getCollection()->pluck('id')->sort()->values()->all()
+        );
+        $this->assertSame(
+            [$current->id, $firstRelated->id],
+            $ticker->render()->getData()['posts']->pluck('id')->sort()->values()->all()
+        );
+        $this->assertSame(
+            [$firstRelated->id],
+            $detail->render()->getData()['relatedPosts']->pluck('id')->all()
+        );
+
+        $newRelated = $this->createNews('cache-new-related', true, now()->subMinute());
+
+        $this->assertNotContains(
+            $newRelated->id,
+            $list->render()->getData()['posts']->getCollection()->pluck('id')->all()
+        );
+        $this->assertNotContains(
+            $newRelated->id,
+            $ticker->render()->getData()['posts']->pluck('id')->all()
+        );
+        $this->assertNotContains(
+            $newRelated->id,
+            $detail->render()->getData()['relatedPosts']->pluck('id')->all()
+        );
+
+        $this->setNewsCacheGeneration('generation-b');
+
+        $this->assertContains(
+            $newRelated->id,
+            $list->render()->getData()['posts']->getCollection()->pluck('id')->all()
+        );
+        $this->assertContains(
+            $newRelated->id,
+            $ticker->render()->getData()['posts']->pluck('id')->all()
+        );
+        $this->assertContains(
+            $newRelated->id,
+            $detail->render()->getData()['relatedPosts']->pluck('id')->all()
+        );
+    }
+
+    public function test_admin_preview_news_surfaces_bypass_the_public_cache(): void
+    {
+        $this->setNewsEnabled(true);
+        $this->setNewsCacheGeneration('preview-bypass');
+
+        $current = $this->createNews('preview-cache-current', true, now()->subMinutes(10));
+
+        (new NewsList)->render();
+        (new HomepageNewsTeaserBanner)->render();
+
+        $this->setPreviewActive(true);
+        $draft = $this->createNews('preview-cache-draft', false, null);
+
+        $this->assertContains(
+            $draft->id,
+            (new NewsList)->render()->getData()['posts']->getCollection()->pluck('id')->all()
+        );
+        $this->assertContains(
+            $draft->id,
+            (new HomepageNewsTeaserBanner)->render()->getData()['posts']->pluck('id')->all()
+        );
+
+        $detail = new NewsShow;
+        $detail->mount($current);
+        $detail->render();
+
+        $newDraft = $this->createNews('preview-cache-new-draft', false, null);
+
+        $this->assertContains(
+            $newDraft->id,
+            $detail->render()->getData()['relatedPosts']->pluck('id')->all()
+        );
+    }
+
+    public function test_public_news_cache_keys_separate_locale_page_and_generation_and_expire_after_sixty_seconds(): void
+    {
+        $this->setNewsCacheGeneration('key-generation-a');
+        $newsCache = app(PublicNewsCache::class);
+
+        app()->setLocale('de');
+        $germanPageOne = $newsCache->key('list', ['page' => 1, 'per_page' => 6]);
+        $germanPageTwo = $newsCache->key('list', ['page' => 2, 'per_page' => 6]);
+
+        app()->setLocale('en');
+        $englishPageOne = $newsCache->key('list', ['page' => 1, 'per_page' => 6]);
+
+        $this->setNewsCacheGeneration('key-generation-b');
+        $newGenerationPageOne = $newsCache->key('list', ['page' => 1, 'per_page' => 6]);
+
+        $this->assertNotSame($germanPageOne, $germanPageTwo);
+        $this->assertNotSame($germanPageOne, $englishPageOne);
+        $this->assertNotSame($englishPageOne, $newGenerationPageOne);
+
+        $calls = 0;
+        $resolver = function () use (&$calls): int {
+            return ++$calls;
+        };
+
+        $this->assertSame(1, $newsCache->remember('ttl', ['post_id' => 1], $resolver));
+        $this->assertSame(1, $newsCache->remember('ttl', ['post_id' => 1], $resolver));
+
+        Carbon::setTestNow(now()->addSeconds(PublicNewsCache::TTL_SECONDS + 1));
+
+        $this->assertSame(2, $newsCache->remember('ttl', ['post_id' => 1], $resolver));
+    }
+
     private function setPreviewActive(bool $active): void
     {
         $this->request->attributes->set(NewsPreviewAccess::REQUEST_ATTRIBUTE, $active);
@@ -172,6 +298,18 @@ class NewsVisibilityLifecycleTest extends TestCase
             ['type' => 'webcontent', 'key' => 'news_enabled'],
             [
                 'value' => $enabled ? '1' : '0',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+    }
+
+    private function setNewsCacheGeneration(string $generation): void
+    {
+        DB::table('settings')->updateOrInsert(
+            ['type' => 'webcontent', 'key' => 'news_cache_version'],
+            [
+                'value' => $generation,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

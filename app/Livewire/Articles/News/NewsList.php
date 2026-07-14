@@ -5,6 +5,7 @@ namespace App\Livewire\Articles\News;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Support\NewsPreviewAccess;
+use App\Support\PublicNewsCache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -26,16 +27,30 @@ class NewsList extends Component
 
         abort_unless($publicNewsEnabled || $isAdminPreview, 404);
 
-        $postsQuery = Post::where('type', 'news')
-            ->with(['newsCategory', 'pagebuilderProject']);
-
         if ($isAdminPreview) {
-            $postsQuery->latest('updated_at');
+            $posts = Post::where('type', 'news')
+                ->with(['newsCategory', 'pagebuilderProject'])
+                ->latest('updated_at')
+                ->paginate($this->perPage);
         } else {
-            $postsQuery->published()->latest('published_at');
-        }
+            $page = (int) $this->getPage();
+            $newsCache = app(PublicNewsCache::class);
+            $generation = $newsCache->generation();
 
-        $posts = $postsQuery->paginate($this->perPage);
+            $posts = $newsCache->remember(
+                'list',
+                [
+                    'page' => $page,
+                    'per_page' => $this->perPage,
+                ],
+                fn () => Post::where('type', 'news')
+                    ->with(['newsCategory', 'pagebuilderProject'])
+                    ->published()
+                    ->latest('published_at')
+                    ->paginate($this->perPage, ['*'], 'page', $page),
+                $generation
+            );
+        }
 
         return view('livewire.articles.news.news-list', [
             'posts' => $posts,

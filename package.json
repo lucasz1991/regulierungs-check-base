@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "sync:news-pagebuilder-tailwind": "node scripts/sync-news-pagebuilder-tailwind.mjs"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
