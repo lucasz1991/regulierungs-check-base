@@ -28,7 +28,7 @@
             <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/55 to-slate-950/10" aria-hidden="true"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20" aria-hidden="true"></div>
 
-            <div class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full px-3 pt-4  mt-[80px]">
+            <div class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full px-3 pt-4  pt-[80px]">
                 <a
                     href="{{ route('news.index') }}"
                     wire:navigate
