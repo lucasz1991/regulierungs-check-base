@@ -37,7 +37,7 @@ class NewsFullPageBuilderLayoutTest extends TestCase
     public function test_regular_builder_content_is_rendered_between_native_sections(): void
     {
         $html = $this->renderNewsShow(
-            '<main class="rc-news-template" data-template-version="2" data-template-scope="content"><p>Regular Builder Marker</p></main>',
+            '<main data-template="news-layout-01" data-template-version="2" data-template-scope="content" style="padding: 20px"><p style="color: #142536">Regular Builder Marker</p></main>',
             998,
             collect([$this->relatedPost()])
         );
@@ -48,6 +48,13 @@ class NewsFullPageBuilderLayoutTest extends TestCase
         $this->assertStringContainsString('Ähnliche Themen', $html);
         $this->assertStringContainsString('Related News Marker', $html);
         $this->assertStringContainsString('Alle anzeigen', $html);
+        $this->assertStringContainsString('data-pagebuilder-project-css="998"', $html);
+        $this->assertStringContainsString('.editor-css-marker { color: #084058; }', $html);
+        $this->assertSame(1, substr_count($html, '.editor-css-marker { color: #084058; }'));
+        $this->assertStringContainsString('data-pagebuilder-project-js="998"', $html);
+        $this->assertSame(1, substr_count($html, 'window.newsEditorMarker = true;'));
+        $this->assertStringNotContainsString('rc-news-template--content {', $html);
+        $this->assertStringContainsString('container mx-auto px-3', $html);
     }
 
     public function test_fallback_uses_first_image_only_as_hero_and_secondary_images_in_content(): void
@@ -93,6 +100,7 @@ class NewsFullPageBuilderLayoutTest extends TestCase
         ])->render();
 
         $this->assertStringContainsString('min-h-screen w-full bg-white', $html);
+        $this->assertStringContainsString('container mx-auto px-3', $html);
         $this->assertStringContainsString('border border-slate-200 bg-white', $html);
         $this->assertStringContainsString('Synthetic News', $html);
         $this->assertStringContainsString('List excerpt marker', $html);
@@ -107,8 +115,8 @@ class NewsFullPageBuilderLayoutTest extends TestCase
 
         $project = new PagebuilderProject([
             'cleaned_html' => $builderHtml,
-            'css' => '.marker {}',
-            'js' => '',
+            'css' => '.editor-css-marker { color: #084058; }',
+            'js' => 'window.newsEditorMarker = true;',
         ]);
         $project->id = $projectId;
 

@@ -28,7 +28,7 @@
             <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/55 to-slate-950/10" aria-hidden="true"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20" aria-hidden="true"></div>
 
-            <div class="absolute inset-x-0 top-0 z-20 mx-auto flex w-full max-w-6xl px-4 pt-4 sm:px-6 lg:px-8">
+            <div class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full px-3 pt-4">
                 <a
                     href="{{ route('news.index') }}"
                     wire:navigate
@@ -40,12 +40,12 @@
             </div>
 
             @if($isAdminPreview)
-                <div class="absolute inset-x-0 top-16 z-20 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+                <div class="container absolute inset-x-0 top-16 z-20 mx-auto w-full px-3">
                     <x-news.admin-preview-notice compact class="max-w-xl" />
                 </div>
             @endif
 
-            <div class="relative z-10 mx-auto flex min-h-[22rem] w-full max-w-6xl flex-col items-start justify-end px-4 pb-8 pt-28 text-white sm:min-h-[27rem] sm:px-6 sm:pb-12 lg:min-h-[31rem] lg:px-8 lg:pb-14">
+            <div class="container relative z-10 mx-auto flex min-h-[22rem] w-full flex-col items-start justify-end px-3 pb-8 pt-28 text-white sm:min-h-[27rem] sm:pb-12 lg:min-h-[31rem] lg:pb-14">
                 <span
                     class="news-category-badge inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-white shadow-lg sm:text-xs"
                     @if($category) style="background-color: {{ $category->color }};" @else style="background-color: #0c968e;" @endif
@@ -71,25 +71,19 @@
         </header>
 
         <section class="bg-white">
-            @if($project && $pagebuilderHtml !== '')
-                <div id="news-pagebuilder-{{ $project->id }}" class="news-pagebuilder-content w-full" wire:ignore>
-                    {!! $pagebuilderHtml !!}
-                    <style>{!! $project->css !!}</style>
-                    <style>
-                        #news-pagebuilder-{{ $project->id }} > .rc-news-template--content {
-                            min-height: 0 !important;
-                            overflow: visible !important;
-                        }
-
-                        #news-pagebuilder-{{ $project->id }} .rc-news-template .rc-news-hero,
-                        #news-pagebuilder-{{ $project->id }} .rc-news-template .rc-news-related {
-                            display: none !important;
-                        }
-                    </style>
-                    <script>{!! $project->js !!}</script>
-                </div>
-            @else
-                <div class="mx-auto w-full max-w-[920px] px-4 py-8 sm:px-6 sm:py-10 lg:px-0 lg:py-12">
+            <div class="container mx-auto px-3">
+                @if($project && $pagebuilderHtml !== '')
+                    <div id="news-pagebuilder-{{ $project->id }}" class="news-pagebuilder-content w-full" wire:ignore>
+                        {!! $pagebuilderHtml !!}
+                        @if(filled($project->css))
+                            <style data-pagebuilder-project-css="{{ $project->id }}">{!! $project->css !!}</style>
+                        @endif
+                        @if(filled($project->js))
+                            <script data-pagebuilder-project-js="{{ $project->id }}">{!! $project->js !!}</script>
+                        @endif
+                    </div>
+                @else
+                <div class="mx-auto w-full max-w-[920px] py-8 sm:py-10 lg:py-12">
                     <div @class([
                         'grid gap-8',
                         'md:grid-cols-2 md:items-start' => $hasSideLayout,
@@ -115,12 +109,13 @@
                         @endif
                     </div>
                 </div>
-            @endif
+                @endif
+            </div>
         </section>
 
         @if($relatedPosts->isNotEmpty())
             <section class="bg-white pb-10 sm:pb-14" aria-labelledby="related-news-heading">
-                <div class="mx-auto w-full max-w-6xl border-t border-slate-200 px-4 pt-7 sm:px-6 sm:pt-8 lg:px-8">
+                <div class="container mx-auto w-full border-t border-slate-200 px-3 pt-7 sm:pt-8">
                     <div class="flex items-center justify-between gap-4">
                         <h2 id="related-news-heading" class="text-xs font-bold uppercase tracking-[0.1em] text-secondary sm:text-sm">
                             Ähnliche Themen
