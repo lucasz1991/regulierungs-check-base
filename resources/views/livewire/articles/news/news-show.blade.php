@@ -11,7 +11,7 @@
 
 <div class="min-h-screen w-full bg-white text-slate-900 mt-[-80px]">
     <article>
-        <header class="relative isolate flex min-h-[22rem] w-full overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary sm:min-h-[27rem] lg:min-h-[31rem]">
+        <header class="relative isolate flex min-h-[22rem] w-full overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary sm:min-h-[27rem] lg:min-h-[31rem] pt-[80px]">
             @if($heroImage)
                 <img
                     src="{{ $heroImage['url'] }}"
