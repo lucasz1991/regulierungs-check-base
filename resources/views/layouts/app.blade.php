@@ -27,9 +27,10 @@
         
         <!-- Styles -->
         @if($loadNewsPagebuilderTailwind ?? false)
+            @php($newsTailwindPath = public_path('adminresources/css/tailwind.min.css'))
             <link
                 rel="stylesheet"
-                href="{{ asset('adminresources/css/pagebuilder-tailwind.min.css') }}?v={{ filemtime(public_path('adminresources/css/pagebuilder-tailwind.min.css')) }}"
+                href="{{ asset('adminresources/css/tailwind.min.css') }}?v={{ is_file($newsTailwindPath) ? filemtime($newsTailwindPath) : 'missing' }}"
                 data-news-pagebuilder-tailwind
             >
         @endif

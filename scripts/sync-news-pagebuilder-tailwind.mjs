@@ -17,7 +17,7 @@ const target = path.resolve(
     'public',
     'adminresources',
     'css',
-    'pagebuilder-tailwind.min.css',
+    'tailwind.min.css',
 );
 
 try {
@@ -31,4 +31,4 @@ await copyFile(source, target);
 
 const targetStats = await stat(target);
 
-console.log(`News-PageBuilder-Tailwind synchronisiert (${targetStats.size} Bytes): ${target}`);
+console.log(`Admin-Tailwind für News synchronisiert (${targetStats.size} Bytes): ${target}`);

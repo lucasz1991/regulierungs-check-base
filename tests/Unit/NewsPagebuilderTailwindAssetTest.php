@@ -6,9 +6,9 @@ use Tests\TestCase;
 
 class NewsPagebuilderTailwindAssetTest extends TestCase
 {
-    public function test_news_detail_loads_the_committed_pagebuilder_tailwind_asset(): void
+    public function test_news_detail_loads_the_committed_admin_tailwind_asset(): void
     {
-        $asset = public_path('adminresources/css/pagebuilder-tailwind.min.css');
+        $asset = public_path('adminresources/css/tailwind.min.css');
 
         $this->assertFileExists($asset);
         $this->assertGreaterThan(100_000, filesize($asset));
@@ -27,15 +27,16 @@ class NewsPagebuilderTailwindAssetTest extends TestCase
             $layout
         );
         $this->assertStringContainsString(
-            'adminresources/css/pagebuilder-tailwind.min.css',
+            'adminresources/css/tailwind.min.css',
             $layout
         );
+        $this->assertStringContainsString('is_file($newsTailwindPath)', $layout);
         $this->assertStringContainsString('data-news-pagebuilder-tailwind', $layout);
         $this->assertStringContainsString(
             "'loadNewsPagebuilderTailwind' => true",
             $newsComponent
         );
-        $this->assertStringNotContainsString('pagebuilder-tailwind.min.css', $newsDetail);
+        $this->assertStringNotContainsString('adminresources/css/tailwind.min.css', $newsDetail);
     }
 
     public function test_committed_asset_matches_the_admin_build_when_both_projects_exist(): void
@@ -52,7 +53,7 @@ class NewsPagebuilderTailwindAssetTest extends TestCase
             hash_file('sha256', $adminAsset),
             hash_file(
                 'sha256',
-                public_path('adminresources/css/pagebuilder-tailwind.min.css')
+                public_path('adminresources/css/tailwind.min.css')
             )
         );
     }
