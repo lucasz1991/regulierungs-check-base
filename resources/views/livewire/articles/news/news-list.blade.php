@@ -1,6 +1,6 @@
 <section class="min-h-screen w-full bg-white">
     <div class="container mx-auto px-3 pb-12 pt-3 sm:pb-16 sm:pt-5">
-        <div class="mx-auto max-w-6xl">
+        <div class="w-full">
         @if($isAdminPreview)
             <x-news.admin-preview-notice class="mb-4 sm:mb-5" />
         @endif

@@ -55,6 +55,28 @@ class NewsFullPageBuilderLayoutTest extends TestCase
         $this->assertSame(1, substr_count($html, 'window.newsEditorMarker = true;'));
         $this->assertStringNotContainsString('rc-news-template--content {', $html);
         $this->assertStringContainsString('container mx-auto px-3', $html);
+        $this->assertMatchesRegularExpression(
+            '/id="news-pagebuilder-998"[^>]*>\s*<div class="container mx-auto px-3">\s*<main/s',
+            $html
+        );
+    }
+
+    public function test_default_template_uses_its_own_container_without_a_nested_shell(): void
+    {
+        $html = $this->renderNewsShow(
+            '<section data-template="news-layout-01" data-template-version="2" data-template-scope="content"><div class="container mx-auto px-3" data-news-container="true"><p>Owned Container Marker</p></div></section>',
+            997
+        );
+
+        $this->assertStringContainsString('Owned Container Marker', $html);
+        $this->assertMatchesRegularExpression(
+            '/id="news-pagebuilder-997"[^>]*>\s*<section[^>]*>\s*<div class="container mx-auto px-3" data-news-container="true"/s',
+            $html
+        );
+        $this->assertDoesNotMatchRegularExpression(
+            '/id="news-pagebuilder-997"[^>]*>\s*<div class="container mx-auto px-3">\s*<section/s',
+            $html
+        );
     }
 
     public function test_fallback_uses_first_image_only_as_hero_and_secondary_images_in_content(): void
@@ -101,6 +123,7 @@ class NewsFullPageBuilderLayoutTest extends TestCase
 
         $this->assertStringContainsString('min-h-screen w-full bg-white', $html);
         $this->assertStringContainsString('container mx-auto px-3', $html);
+        $this->assertStringNotContainsString('max-w-6xl', $html);
         $this->assertStringContainsString('border border-slate-200 bg-white', $html);
         $this->assertStringContainsString('Synthetic News', $html);
         $this->assertStringContainsString('List excerpt marker', $html);

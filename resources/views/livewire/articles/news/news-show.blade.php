@@ -7,9 +7,13 @@
     $layout = in_array($post->layout, \App\Models\Post::NEWS_LAYOUTS, true) ? $post->layout : 'image_top';
     $hasSideLayout = in_array($layout, ['image_left', 'image_right'], true) && count($secondaryImages) > 0;
     $mediaAfterContent = in_array($layout, ['image_bottom', 'image_right'], true);
+    $pagebuilderHasContainer = str_contains($pagebuilderHtml, 'data-news-container="true"');
 @endphp
 
-<div class="min-h-screen w-full bg-white text-slate-900 mt-[-80px]">
+<div
+    class="min-h-screen w-full bg-white text-slate-900"
+    :style="`margin-top: -${$store.nav.height}px`"
+>
     <article>
         <header class="relative isolate flex min-h-[22rem] w-full overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary sm:min-h-[27rem] lg:min-h-[31rem]">
             @if($heroImage)
@@ -28,7 +32,10 @@
             <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/55 to-slate-950/10" aria-hidden="true"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20" aria-hidden="true"></div>
 
-            <div class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full px-3 pt-4  pt-[80px]">
+            <div
+                class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full px-3"
+                :style="`padding-top: ${$store.nav.height + 16}px`"
+            >
                 <a
                     href="{{ route('news.index') }}"
                     wire:navigate
@@ -71,46 +78,53 @@
         </header>
 
         <section class="bg-white">
-            <div class="container mx-auto px-3">
-                @if($project && $pagebuilderHtml !== '')
-                    <div id="news-pagebuilder-{{ $project->id }}" class="news-pagebuilder-content w-full" wire:ignore>
+            @if($project && $pagebuilderHtml !== '')
+                <div id="news-pagebuilder-{{ $project->id }}" class="news-pagebuilder-content w-full" wire:ignore>
+                    @if($pagebuilderHasContainer)
                         {!! $pagebuilderHtml !!}
-                        @if(filled($project->css))
-                            <style data-pagebuilder-project-css="{{ $project->id }}">{!! $project->css !!}</style>
-                        @endif
-                        @if(filled($project->js))
-                            <script data-pagebuilder-project-js="{{ $project->id }}">{!! $project->js !!}</script>
-                        @endif
-                    </div>
-                @else
-                <div class="mx-auto w-full max-w-[920px] py-8 sm:py-10 lg:py-12">
-                    <div @class([
-                        'grid gap-8',
-                        'md:grid-cols-2 md:items-start' => $hasSideLayout,
-                    ])>
-                        @if(count($secondaryImages) > 0 && ! $mediaAfterContent)
-                            <x-news.media :images="$secondaryImages" :title="$post->title" />
-                        @endif
+                    @else
+                        <div class="container mx-auto px-3">
+                            {!! $pagebuilderHtml !!}
+                        </div>
+                    @endif
 
-                        <div class="min-w-0">
-                            @if($post->excerpt)
-                                <p class="mb-7 text-lg font-medium leading-relaxed text-slate-700 sm:text-xl">
-                                    {{ $post->excerpt }}
-                                </p>
+                    @if(filled($project->css))
+                        <style data-pagebuilder-project-css="{{ $project->id }}">{!! $project->css !!}</style>
+                    @endif
+                    @if(filled($project->js))
+                        <script data-pagebuilder-project-js="{{ $project->id }}">{!! $project->js !!}</script>
+                    @endif
+                </div>
+            @else
+                <div class="container mx-auto px-3">
+                    <div class="mx-auto w-full max-w-[920px] py-8 sm:py-10 lg:py-12">
+                        <div @class([
+                            'grid gap-8',
+                            'md:grid-cols-2 md:items-start' => $hasSideLayout,
+                        ])>
+                            @if(count($secondaryImages) > 0 && ! $mediaAfterContent)
+                                <x-news.media :images="$secondaryImages" :title="$post->title" />
                             @endif
 
-                            <div class="default-format-text blog-content w-full">
-                                {!! $post->body !!}
-                            </div>
-                        </div>
+                            <div class="min-w-0">
+                                @if($post->excerpt)
+                                    <p class="mb-7 text-lg font-medium leading-relaxed text-slate-700 sm:text-xl">
+                                        {{ $post->excerpt }}
+                                    </p>
+                                @endif
 
-                        @if(count($secondaryImages) > 0 && $mediaAfterContent)
-                            <x-news.media :images="$secondaryImages" :title="$post->title" />
-                        @endif
+                                <div class="default-format-text blog-content w-full">
+                                    {!! $post->body !!}
+                                </div>
+                            </div>
+
+                            @if(count($secondaryImages) > 0 && $mediaAfterContent)
+                                <x-news.media :images="$secondaryImages" :title="$post->title" />
+                            @endif
+                        </div>
                     </div>
                 </div>
-                @endif
-            </div>
+            @endif
         </section>
 
         @if($relatedPosts->isNotEmpty())
