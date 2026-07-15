@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class NewsPagebuilderTailwindAssetTest extends TestCase
 {
-    public function test_news_detail_loads_the_committed_admin_tailwind_asset(): void
+    public function test_news_detail_does_not_load_admin_tailwind_globally(): void
     {
         $asset = public_path('adminresources/css/tailwind.min.css');
 
@@ -14,10 +14,6 @@ class NewsPagebuilderTailwindAssetTest extends TestCase
         $this->assertGreaterThan(100_000, filesize($asset));
 
         $layout = file_get_contents(resource_path('views/layouts/app.blade.php'));
-        $newsDetail = file_get_contents(
-            resource_path('views/livewire/articles/news/news-show.blade.php')
-        );
-
         $newsComponent = file_get_contents(
             app_path('Livewire/Articles/News/NewsShow.php')
         );
@@ -32,11 +28,8 @@ class NewsPagebuilderTailwindAssetTest extends TestCase
         );
         $this->assertStringContainsString('is_file($newsTailwindPath)', $layout);
         $this->assertStringContainsString('data-news-pagebuilder-tailwind', $layout);
-        $this->assertStringContainsString(
-            "'loadNewsPagebuilderTailwind' => true",
-            $newsComponent
-        );
-        $this->assertStringNotContainsString('adminresources/css/tailwind.min.css', $newsDetail);
+        $this->assertStringNotContainsString('loadNewsPagebuilderTailwind', $newsComponent);
+        $this->assertStringContainsString("->layout('layouts.app')", $newsComponent);
     }
 
     public function test_committed_asset_matches_the_admin_build_when_both_projects_exist(): void

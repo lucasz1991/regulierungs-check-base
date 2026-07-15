@@ -68,9 +68,7 @@ class NewsShow extends Component
             'pagebuilderHtml' => $this->contentOnlyPagebuilderHtml(
                 $this->post->pagebuilderProject?->cleaned_html
             ),
-        ])->layout('layouts.app', [
-            'loadNewsPagebuilderTailwind' => true,
-        ]);
+        ])->layout('layouts.app');
     }
 
     protected function ensurePostIsAccessible(
