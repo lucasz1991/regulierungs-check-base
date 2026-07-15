@@ -9,7 +9,7 @@
     $mediaAfterContent = in_array($layout, ['image_bottom', 'image_right'], true);
 @endphp
 
-<div class="min-h-screen w-full bg-white text-slate-900">
+<div class="min-h-screen w-full bg-white text-slate-900 mt-[-80px]">
     <article>
         <header class="relative isolate flex min-h-[22rem] w-full overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary sm:min-h-[27rem] lg:min-h-[31rem]">
             @if($heroImage)
