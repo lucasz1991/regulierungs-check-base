@@ -4,8 +4,8 @@
             $insurancesUrl = route('insurances', $selectedInsuranceTypeId ? ['types' => (string) $selectedInsuranceTypeId] : []);
             $selectedType = $selectedInsuranceTypeId ? $types->firstWhere('id', $selectedInsuranceTypeId) : null;
             $topInsurerTitle = $selectedType?->name
-                ? 'Top Versicherer - ' . $selectedType->name
-                : 'Top Versicherer';
+                ? 'Vergleich - ' . $selectedType->name
+                : 'Versicherer im Vergleich';
             $initialTypes = $types->take(4);
             $additionalTypes = $types->slice(4, 4);
         @endphp
