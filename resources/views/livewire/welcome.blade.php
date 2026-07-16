@@ -3,7 +3,7 @@
         <div  class="relative  rounded-xl home-banner md:pt-20">
           {{-- Mobile: Illustration dezent rechts ohne Hintergrund-Overlay --}}
           <div class="md:hidden absolute inset-y-0 right-0 w-2/3 pointer-events-none" aria-hidden="true">
-            <img class="absolute right-[-10%] top-1/2 -translate-y-1/2 max-h-[90%] opacity-50" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
+            <img class="absolute right-[-10%] top-1/2 -translate-y-1/2 max-h-[90%] opacity-30" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
           </div>
 
           <div class=" flex items-center justify-between">
@@ -31,7 +31,7 @@
                   @endif
 
                   <div  class="flex flex-wrap gap-2 md:gap-4 items-center md:mb-4 w-full ">
-                    <x-buttons.button-basic class="group font-semibold" :mode="'layoutsecondary'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
+                    <x-buttons.button-basic class="group font-semibold" :mode="'layoutgold'" x-on:click="Livewire.dispatch('showFormModal'); isClicked = true; setTimeout(() => isClicked = false, 100)">
                       <span>Erfahrung teilen</span>
                       <svg class="ml-2 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M5 12h14"></path>
