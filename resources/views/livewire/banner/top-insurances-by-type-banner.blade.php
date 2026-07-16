@@ -128,7 +128,7 @@
                             </h3>
                         @else
                             <h3 class="flex min-w-0 items-baseline gap-2">
-                                <span class="min-w-0 truncate">Top Versicherer</span>
+                                <span class="min-w-0 truncate">Versicherer im Vergleich</span>
                             </h3>
                         @endif
                     </div>
