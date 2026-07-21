@@ -1,5 +1,5 @@
 <div wire:loading.class="cursor-wait">
-      <div class="container mx-auto px-4 pt-6">
+      <div class="container mx-auto px-4 pt-6 overflow-hidden">
         <div  class="relative  rounded-xl home-banner md:pt-20">
           {{-- Mobile: Illustration dezent rechts ohne Hintergrund-Overlay --}}
           <div class="md:hidden absolute inset-y-0 right-0 w-2/3 pointer-events-none" aria-hidden="true">
