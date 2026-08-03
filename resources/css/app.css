@@ -1655,6 +1655,17 @@ div.home-banner{
   height: 4rem;
 }
 
+/*
+   Beim Ziehen darf der Browser weder Text markieren noch sein eigenes
+   Link-Dragging starten - sonst bleibt der Slider mit der Maus unbedienbar.
+*/
+.homepage-news-ticker__viewport,
+.homepage-news-ticker__card a {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 .news-category-badge {
   background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%));
 }

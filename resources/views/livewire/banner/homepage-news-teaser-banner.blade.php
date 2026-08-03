@@ -1,10 +1,12 @@
 <div class="relative z-20">
     @if($newsEnabled && $posts->isNotEmpty())
         @php
-            // Loop braucht genug echte Slides, sonst springt Swiper. Unterhalb
-            // dieser Schwelle laeuft der Slider ohne Endlosschleife und ohne
-            // Autoplay - es gibt dann schlicht nichts zu rotieren.
-            $newsSliderLoops = $posts->count() > 2;
+            // Swiper braucht fuer eine saubere Endlosschleife deutlich mehr
+            // Material als eine Bildschirmbreite. Bei wenigen News wiederholen
+            // wir die Slides daher im Markup - sonst stoppt das Autoplay am
+            // Ende, weil Swiper den Loop mangels Slides abschaltet.
+            $newsSliderLoops = $posts->count() > 1;
+            $newsSliderRepeat = $newsSliderLoops ? (int) max(1, ceil(8 / max(1, $posts->count()))) : 1;
         @endphp
 
         <section class="homepage-news-ticker" aria-label="Aktuelle News">
@@ -34,6 +36,10 @@
                                 nextSlideMessage: 'Nächste News',
                             },
                         });
+
+                        // Erst nach dem Laden der Bilder stimmen die Breiten.
+                        window.addEventListener('load', () => this.swiper?.update());
+                        window.addEventListener('resize', () => this.swiper?.update());
                     },
                 }"
                 x-init="initNewsSwiper()"
@@ -41,6 +47,7 @@
             >
                 <div class="swiper homepage-news-ticker__viewport" x-ref="newsSwiper">
                     <div class="swiper-wrapper">
+                        @for($repeat = 0; $repeat < $newsSliderRepeat; $repeat++)
                         @foreach($posts as $post)
                             @php
                                 $category = $post->newsCategory;
@@ -54,6 +61,10 @@
                                 <a
                                     href="{{ route('news.show', $post) }}"
                                     wire:navigate
+                                    @if($repeat > 0) aria-hidden="true" tabindex="-1" @endif
+                                    {{-- Ohne das startet der Browser beim Ziehen sein eigenes Link-Dragging
+                                         und der Slider laesst sich nicht mit der Maus bewegen. --}}
+                                    draggable="false"
                                     class="group relative flex h-full w-full items-center gap-2 rounded-lg border border-gray-100 bg-white/95 px-3 pb-1.5 pt-2.5 text-left shadow-md transition duration-300 hover:bg-white hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                 >
                                     <span
@@ -95,6 +106,7 @@
                                 </a>
                             </div>
                         @endforeach
+                        @endfor
                     </div>
                 </div>
             </div>
