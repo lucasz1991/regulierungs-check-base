@@ -7,7 +7,7 @@
           </div>
 
           <div class=" flex items-center justify-between">
-            <div class="w-full md:w-1/2 relative z-10"  data-aos="fade-up">
+            <div class="w-full md:w-1/2 relative z-10">
               <div   class="max-w-full md:max-w-3xl text-left space-y-4 relative h-max z-10 md:py-4">
                 <div id="ijooq">
                   <h1 id="ilifi-2" class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
@@ -70,7 +70,7 @@
                 </div>
               </div>
             </div>
-            <div class="hidden md:flex w-1/2 justify-center text-center p-2 md:p-6" data-aos="fade-up" data-aos-delay="150">
+            <div class="hidden md:flex w-1/2 justify-center text-center p-2 md:p-6">
               <img class="max-w-full md:max-w-[330px]" src="{{ asset('/site-images/start_illu6.png') }}" alt="">
             </div>
           </div>
@@ -79,20 +79,20 @@
         </div>
       </div>
       <div class="">
-        <div class="mb-2" data-aos="fade-up" data-aos-delay="500">
+        <div class="mb-2">
           <livewire:banner.top-insurances-by-type-banner />
         </div>
-        <section  class="mb-6" data-aos="fade-up" data-aos-delay="500">
+        <section  class="mb-6">
           <livewire:banner.homepage-claimratings-random-banner  />
         </section>
       </div>
-      <div class="container mx-auto  px-2 md:px-4 py-2 md:py-4"  data-aos="fade-up" data-aos-delay="200">
+      <div class="container mx-auto  px-2 md:px-4 py-2 md:py-4">
         <div class="max-md:bg-rcgold text-white max-md:px-2 max-md:py-2 text-base  md:text-xl md:w-max uppercase md:border-b-2  md:border-primary md:pb-1">
           <span>So funktioniert's</span>
         </div>
       </div>
 
-      <div class="container mx-auto px-2 py-2 md:py-6 mb-4"  data-aos="fade-up"  data-aos-delay="300">
+      <div class="container mx-auto px-2 py-2 md:py-6 mb-4">
         <div class="grid grid-cols-3 gap-4">
           <a href="{{ route('howto') }}" class="flex flex-col items-center text-center bg-white/80 hover:bg-white rounded-xl shadow-md px-4 py-5 md:px-6 md:py-6">
             <div class="mb-2 flex items-center justify-center rounded-full bg-primary-light text-white p-3">

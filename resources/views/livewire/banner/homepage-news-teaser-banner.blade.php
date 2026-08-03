@@ -21,6 +21,18 @@
                             grabCursor: true,
                             loop: {{ $newsSliderLoops ? 'true' : 'false' }},
                             watchSlidesProgress: true,
+                            /*
+                             * Swiper unterdrueckt den Klick, sobald es die Geste
+                             * als Wischen wertet - und das passiert schon, wenn
+                             * der Zeiger waehrend des Klicks minimal wandert oder
+                             * gerade eine Autoplay-Bewegung laeuft. Auf den Karten
+                             * liegen Links, die dadurch tot wirkten. Hier gibt der
+                             * Klick also immer durch; die Wisch-Erkennung bleibt
+                             * ueber threshold erhalten.
+                             */
+                            preventClicks: false,
+                            preventClicksPropagation: false,
+                            threshold: 8,
                             @if($newsSliderLoops)
                             autoplay: {
                                 delay: 3500,
