@@ -13,6 +13,7 @@ class Post extends Model
         'title',
         'slug',
         'excerpt',
+        'reading_time_minutes',
         'body',
         'cover_image',
         'user_id',
@@ -68,14 +69,54 @@ class Post extends Model
         return $this->belongsTo(PagebuilderProject::class, 'pagebuilder_project_id');
     }
 
-    // ⏱️ Lesezeit in Minuten (aus Pagebuilder-HTML oder Body, ~200 Wörter/Minute)
+    /**
+     * ⏱️ Lesezeit in Minuten.
+     *
+     * Massgeblich ist der im Adminbereich gepflegte Wert. Nur wenn dort nichts
+     * gesetzt ist, wird aus dem Text geschaetzt.
+     *
+     * Der Accessor heisst wie die Spalte und hat damit Vorrang vor ihr - der
+     * Rohwert muss deshalb ueber $this->attributes gelesen werden, sonst
+     * ruft sich der Accessor selbst auf.
+     */
     public function getReadingTimeMinutesAttribute(): int
     {
-        $html = $this->pagebuilder_project_id ? optional($this->pagebuilderProject)->cleaned_html : null;
-        $text = strip_tags(($html ?: '') . ' ' . ($this->body ?? ''));
-        $words = str_word_count($text);
+        $stored = $this->attributes['reading_time_minutes'] ?? null;
 
-        return max(1, (int) ceil($words / 200));
+        if ($stored !== null && (int) $stored > 0) {
+            return (int) $stored;
+        }
+
+        return $this->estimatedReadingTimeMinutes();
+    }
+
+    /**
+     * Wurde die Lesezeit im Adminbereich manuell gesetzt?
+     */
+    public function hasManualReadingTime(): bool
+    {
+        $stored = $this->attributes['reading_time_minutes'] ?? null;
+
+        return $stored !== null && (int) $stored > 0;
+    }
+
+    /**
+     * Schaetzung aus Pagebuilder-HTML und Body, ~200 Woerter pro Minute.
+     */
+    public function estimatedReadingTimeMinutes(): int
+    {
+        $html = $this->pagebuilder_project_id ? optional($this->pagebuilderProject)->cleaned_html : null;
+
+        // Tags durch ein Leerzeichen ersetzen. strip_tags() entfernt sie ersatzlos,
+        // wodurch benachbarte Bloecke wie </p><p> zu einem Wort verschmelzen.
+        $text = preg_replace('/<[^>]+>/', ' ', ($html ?: '').' '.($this->body ?? '')) ?? '';
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        // str_word_count() ist nicht UTF-8-faehig und zerlegt jedes Wort mit
+        // Umlaut in mehrere Treffer.
+        $words = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        return max(1, (int) ceil(count($words) / 200));
     }
 
 

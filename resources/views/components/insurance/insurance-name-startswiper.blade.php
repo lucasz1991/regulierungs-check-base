@@ -1,10 +1,17 @@
 <!-- Component insurance.insurance-name-startswiper  -->
 <div>
     @if ($insurance->logo)
+        {{--
+            `disclaimerOpen` haelt das Info-Icon sichtbar, solange der Hinweis
+            offen ist. Sonst wuerde der Anker beim Wechsel auf die Box
+            ausgeblendet und x-anchor haette kein Bezugselement mehr.
+        --}}
         <div
-            x-data="{ hover: false }"
+            x-data="{ hover: false, disclaimerOpen: false }"
             @mouseenter="hover = true"
             @mouseleave="hover = false"
+            @logo-disclaimer-open="disclaimerOpen = true"
+            @logo-disclaimer-close="disclaimerOpen = false"
             class="relative w-full"
         >
             <!-- Logo -->
@@ -13,7 +20,7 @@
                  loading="lazy">
             <!-- Info-Icon nur bei Hover sichtbar -->
             <div
-                x-show="hover"
+                x-show="hover || disclaimerOpen"
                 x-transition.opacity.duration.150ms
                 class="absolute right-0 top-0"
                 x-cloak

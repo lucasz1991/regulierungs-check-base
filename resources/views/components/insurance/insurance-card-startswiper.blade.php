@@ -50,7 +50,9 @@
     $avgDurationDisplay = is_null($avgDuration) ? '-' : round($avgDuration);
 @endphp
 
-<a href="{{ $insuranceUrl }}" class="block  hover:shadow-lg  cursor-pointer bg-white border border-slate-200 rounded-xl shadow-xl" x-data="{ hover: false }" @click.away="showInfos = false" x-cloak>
+{{-- `@click.away="showInfos = false"` entfernt: showInfos war nie definiert und
+     warf bei jedem Klick daneben einen Alpine-Fehler. --}}
+<a href="{{ $insuranceUrl }}" class="block  hover:shadow-lg  cursor-pointer bg-white border border-slate-200 rounded-xl shadow-xl" x-data="{ hover: false }" x-cloak>
     <div class="px-2 py-2 relative transition-shadow duration-300 flex flex-col justify-between h-full"
         x-on:mouseenter="hover = true"
         x-on:mouseleave="hover = false"
