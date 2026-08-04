@@ -1,65 +1,43 @@
 <div class="relative z-20">
     @if($newsEnabled && $posts->isNotEmpty())
         @php
-            // Swiper braucht fuer eine saubere Endlosschleife deutlich mehr
-            // Material als eine Bildschirmbreite. Bei wenigen News wiederholen
-            // wir die Slides daher im Markup - sonst stoppt das Autoplay am
-            // Ende, weil Swiper den Loop mangels Slides abschaltet.
-            $newsSliderLoops = $posts->count() > 1;
-            $newsSliderRepeat = $newsSliderLoops ? (int) max(1, ceil(8 / max(1, $posts->count()))) : 1;
+            // Kartenbreite (20rem) plus Abstand. Der Abstand haengt als
+            // margin-right an der Karte und nicht als gap an der Spur - nur so
+            // ist die Spur exakt doppelt so breit wie eine Sequenz und der
+            // Sprung bei -50 % faellt nahtlos auf den Anfang zurueck.
+            $cardStride = 332;
+
+            // Eine Sequenz muss breiter sein als der Bildschirm, sonst klafft
+            // bei wenigen News eine Luecke. Mindestens 16 Karten ergeben rund
+            // 5.300 px und decken damit auch sehr breite Desktop-Viewports ab.
+            $minimumSequenceCards = 16;
+            $sequenceRepeat = (int) max(1, ceil($minimumSequenceCards / max(1, $posts->count())));
+            $sequenceWidth = $sequenceRepeat * $posts->count() * $cardStride;
+
+            // Konstantes Tempo statt fester Dauer: mehr Karten laufen laenger,
+            // nicht schneller.
+            $tickerDuration = (int) max(30, round($sequenceWidth / 45));
         @endphp
 
-        <section class="homepage-news-ticker" aria-label="Aktuelle News">
-            <div
-                x-data="{
-                    swiper: null,
-                    initNewsSwiper() {
-                        this.swiper = new Swiper(this.$refs.newsSwiper, {
-                            slidesPerView: 'auto',
-                            spaceBetween: 12,
-                            speed: 600,
-                            grabCursor: true,
-                            loop: {{ $newsSliderLoops ? 'true' : 'false' }},
-                            watchSlidesProgress: true,
-                            /*
-                             * Swiper unterdrueckt den Klick, sobald es die Geste
-                             * als Wischen wertet - und das passiert schon, wenn
-                             * der Zeiger waehrend des Klicks minimal wandert oder
-                             * gerade eine Autoplay-Bewegung laeuft. Auf den Karten
-                             * liegen Links, die dadurch tot wirkten. Hier gibt der
-                             * Klick also immer durch; die Wisch-Erkennung bleibt
-                             * ueber threshold erhalten.
-                             */
-                            preventClicks: false,
-                            preventClicksPropagation: false,
-                            threshold: 8,
-                            @if($newsSliderLoops)
-                            autoplay: {
-                                delay: 3500,
-                                // Ziehen darf das Autoplay nicht dauerhaft killen.
-                                disableOnInteraction: false,
-                                // Pausiert bei Mouseenter und laeuft bei Mouseleave weiter.
-                                pauseOnMouseEnter: true,
-                            },
-                            @endif
-                            a11y: {
-                                enabled: true,
-                                prevSlideMessage: 'Vorherige News',
-                                nextSlideMessage: 'Nächste News',
-                            },
-                        });
+        {{--
+            Bewusst eine CSS-Laufschrift und kein Swiper.
 
-                        // Erst nach dem Laden der Bilder stimmen die Breiten.
-                        window.addEventListener('load', () => this.swiper?.update());
-                        window.addEventListener('resize', () => this.swiper?.update());
-                    },
-                }"
-                x-init="initNewsSwiper()"
-                wire:ignore
-            >
-                <div class="swiper homepage-news-ticker__viewport" x-ref="newsSwiper">
-                    <div class="swiper-wrapper">
-                        @for($repeat = 0; $repeat < $newsSliderRepeat; $repeat++)
+            Swiper bewegt sich in Schritten und ordnet beim Umbruch die Slides
+            um (loopFix), was genau das Zucken erzeugt. Eine einzelne
+            Transform-Animation ueber eine doppelt vorhandene Spur laeuft
+            dagegen linear durch und kann an der Naht nicht stocken. Sie
+            braucht ausserdem kein JavaScript - damit entfaellt auch das
+            Ruckeln durch nachtraegliche swiper.update()-Aufrufe beim Laden.
+        --}}
+        <section
+            class="homepage-news-ticker"
+            aria-label="Aktuelle News"
+            style="--homepage-news-ticker-duration: {{ $tickerDuration }}s"
+        >
+            <div class="homepage-news-ticker__track">
+                {{-- Zwei identische Durchlaeufe: der zweite traegt die Naht. --}}
+                @for($copy = 0; $copy < 2; $copy++)
+                    @for($repeat = 0; $repeat < $sequenceRepeat; $repeat++)
                         @foreach($posts as $post)
                             @php
                                 $category = $post->newsCategory;
@@ -67,16 +45,16 @@
                                     trim(strip_tags((string) $post->excerpt_preview)),
                                     90
                                 );
+                                // Nur der erste Durchlauf ist fuer Screenreader
+                                // und Tastatur da, sonst kaeme jede News mehrfach.
+                                $isEcho = $copy > 0 || $repeat > 0;
                             @endphp
 
-                            <div class="swiper-slide homepage-news-ticker__card">
+                            <div class="homepage-news-ticker__card" @if($isEcho) aria-hidden="true" @endif>
                                 <a
                                     href="{{ route('news.show', $post) }}"
                                     wire:navigate
-                                    @if($repeat > 0) aria-hidden="true" tabindex="-1" @endif
-                                    {{-- Ohne das startet der Browser beim Ziehen sein eigenes Link-Dragging
-                                         und der Slider laesst sich nicht mit der Maus bewegen. --}}
-                                    draggable="false"
+                                    @if($isEcho) tabindex="-1" @endif
                                     class="group relative flex h-full w-full items-center gap-2 rounded-lg border border-gray-100 bg-white/95 px-3 pb-1.5 pt-2.5 text-left shadow-md transition duration-300 hover:bg-white hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                 >
                                     <span
@@ -118,9 +96,8 @@
                                 </a>
                             </div>
                         @endforeach
-                        @endfor
-                    </div>
-                </div>
+                    @endfor
+                @endfor
             </div>
         </section>
     @endif

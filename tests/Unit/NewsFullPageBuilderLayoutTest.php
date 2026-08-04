@@ -53,6 +53,10 @@ class NewsFullPageBuilderLayoutTest extends TestCase
         $this->assertSame(1, substr_count($html, '.editor-css-marker { color: #084058; }'));
         $this->assertStringContainsString('data-pagebuilder-project-js="998"', $html);
         $this->assertSame(1, substr_count($html, 'window.newsEditorMarker = true;'));
+        // Der Teilen-Handler fuer [data-share] (u. a. "Artikel teilen" aus der
+        // Vorlage) liegt genau einmal an der Seite.
+        $this->assertSame(1, substr_count($html, 'data-rc-share-init'));
+        $this->assertSame(1, substr_count($html, 'window.rcShareInit = true'));
         $this->assertStringNotContainsString('rc-news-template--content {', $html);
         $this->assertStringContainsString('container mx-auto px-3', $html);
         $this->assertMatchesRegularExpression(

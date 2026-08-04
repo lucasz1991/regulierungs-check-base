@@ -1630,40 +1630,46 @@ div.home-banner{
 }
 
 .homepage-news-ticker {
-  width: 100vw;
-  max-width: none;
-  margin: 0 calc(50% - 50vw) .75rem;
+  /*
+     Steht als Geschwister der Container-Spalte direkt in der Seite und ist
+     dadurch ohne Breakout-Trick volle Bildschirmbreite. Frueher lag der
+     Ticker im Container mit overflow:hidden - die 100vw-Breite wurde dort
+     zwar berechnet, aber sichtbar abgeschnitten.
+  */
+  width: 100%;
+  margin: 0 0 .75rem;
+  overflow: hidden;
+  padding-block: .7rem .2rem;
+}
+
+.homepage-news-ticker__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: homepage-news-ticker-scroll var(--homepage-news-ticker-duration, 60s) linear infinite;
 }
 
 /*
-   Der Ticker laeuft jetzt als Swiper (Drag, Autoplay, Pause bei Hover).
-   Die frueheren Marquee-Regeln (__track, __sequence, Keyframes und die
-   Platzhalter-Slots) sind damit entfallen.
-
-   Das vertikale Padding bleibt: die Kategorie- und Datums-Badges der Karten
-   ragen mit -top-2 nach oben heraus und wuerden am overflow:hidden des
-   Swipers sonst abgeschnitten.
+   Der Abstand haengt an der Karte, nicht als gap an der Spur. Sonst waere die
+   Spur um genau einen Abstand schmaler als zwei Sequenzen und der Ruecksprung
+   bei -50 % saesse minimal daneben - sichtbar als Ruckler an der Naht.
 */
-.homepage-news-ticker__viewport {
-  padding-block: .7rem .2rem;
-  padding-inline: .75rem;
-}
-
 .homepage-news-ticker__card {
   box-sizing: border-box;
+  flex: 0 0 auto;
   width: min(20rem, calc(100vw - 1.5rem));
   height: 4rem;
+  margin-right: .75rem;
 }
 
-/*
-   Beim Ziehen darf der Browser weder Text markieren noch sein eigenes
-   Link-Dragging starten - sonst bleibt der Slider mit der Maus unbedienbar.
-*/
-.homepage-news-ticker__viewport,
-.homepage-news-ticker__card a {
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
+.homepage-news-ticker:hover .homepage-news-ticker__track,
+.homepage-news-ticker:focus-within .homepage-news-ticker__track {
+  animation-play-state: paused;
+}
+
+@keyframes homepage-news-ticker-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 .news-category-badge {
@@ -1671,8 +1677,13 @@ div.home-banner{
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .homepage-news-ticker__viewport .swiper-wrapper {
-    transition-duration: 1ms !important;
+  .homepage-news-ticker {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+  }
+
+  .homepage-news-ticker__track {
+    animation: none;
   }
 }
 @media (max-width: 500px) {

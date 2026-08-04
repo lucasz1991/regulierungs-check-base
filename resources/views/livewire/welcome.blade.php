@@ -75,9 +75,16 @@
             </div>
           </div>
 
-          <livewire:banner.homepage-news-teaser-banner />
         </div>
       </div>
+
+      {{--
+          Bewusst ausserhalb der Container-Spalte: der Ticker soll ueber die
+          volle Bildschirmbreite laufen. Innerhalb lag er im overflow-hidden
+          des Containers und wurde auf Containerbreite abgeschnitten.
+      --}}
+      <livewire:banner.homepage-news-teaser-banner />
+
       <div class="">
         <div class="mb-2">
           <livewire:banner.top-insurances-by-type-banner />

@@ -194,4 +194,73 @@
             </section>
         @endif
     </article>
+
+    {{--
+        Teilen-Handler fuer [data-share]-Elemente aus dem PageBuilder-Inhalt,
+        insbesondere den "Artikel teilen"-Button der News-Vorlage. Die Vorlage
+        selbst kann kein Skript mitbringen (der Editor-Parser verwirft
+        Script-Tags), deshalb liegt der Handler hier an der Seite.
+
+        Delegiert und idempotent; Elemente, die der Teilen-Block des
+        PageBuilders bereits selbst verdrahtet hat (data-share-wired), werden
+        uebersprungen, damit nichts doppelt ausgeloest wird.
+    --}}
+    <script data-rc-share-init>
+        (function () {
+            if (window.rcShareInit) { return; }
+            window.rcShareInit = true;
+
+            function pageUrl() { return window.location.href.split('#')[0]; }
+            function pageTitle() { return document.title || ''; }
+
+            function targetFor(kind) {
+                var u = encodeURIComponent(pageUrl());
+                var t = encodeURIComponent(pageTitle());
+
+                if (kind === 'facebook') { return 'https://www.facebook.com/sharer/sharer.php?u=' + u; }
+                if (kind === 'x') { return 'https://twitter.com/intent/tweet?url=' + u + '&text=' + t; }
+                if (kind === 'linkedin') { return 'https://www.linkedin.com/sharing/share-offsite/?url=' + u; }
+                if (kind === 'whatsapp') { return 'https://api.whatsapp.com/send?text=' + t + '%20' + u; }
+                if (kind === 'email') { return 'mailto:?subject=' + t + '&body=' + u; }
+
+                return null;
+            }
+
+            document.addEventListener('click', function (event) {
+                var trigger = event.target && event.target.closest
+                    ? event.target.closest('[data-share]')
+                    : null;
+
+                if (!trigger || trigger.getAttribute('data-share-wired')) { return; }
+
+                var kind = trigger.getAttribute('data-share');
+
+                if (kind === 'native') {
+                    event.preventDefault();
+
+                    if (navigator.share) {
+                        navigator.share({ title: pageTitle(), url: pageUrl() })['catch'](function () {});
+                    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(pageUrl());
+                    } else {
+                        window.prompt('Link kopieren:', pageUrl());
+                    }
+
+                    return;
+                }
+
+                var target = targetFor(kind);
+
+                if (!target) { return; }
+
+                event.preventDefault();
+
+                if (kind === 'email') {
+                    window.location.href = target;
+                } else {
+                    window.open(target, '_blank', 'noopener,noreferrer,width=640,height=560');
+                }
+            });
+        })();
+    </script>
 </div>
