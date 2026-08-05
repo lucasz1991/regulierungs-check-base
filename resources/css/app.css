@@ -47,6 +47,22 @@ body {
   font-family: 'Montserrat';
   color: var(--primary-font-color);
 }
+
+/*
+ * Auf der Startseite bleiben auch dynamische PageBuilder-Inhalte ohne AOS
+ * sofort sichtbar. Die Regel faengt zudem bereits geladene AOS-Styles ab,
+ * wenn die Startseite per Livewire-Navigation aufgerufen wird.
+ */
+body.homepage-without-aos [data-aos],
+body.homepage-without-aos .aos-init,
+body.homepage-without-aos .aos-animate {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  pointer-events: auto !important;
+}
+
 html, body {
   scrollbar-width: none;
   -ms-overflow-style: none;

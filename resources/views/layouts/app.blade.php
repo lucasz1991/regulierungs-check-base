@@ -1,3 +1,4 @@
+@php($disableAosOnCurrentRoute = request()->routeIs('home'))
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="user-select:none;" class="scroll-smooth">
     <head>
@@ -23,8 +24,6 @@
         <script src="{{ URL::asset('adminresources/flatpickr/flatpickr.min.js') }}"></script>
         <script src="{{ URL::asset('adminresources/flatpickr/l10n/de.js') }}"></script>
         <link href="{{ URL::asset('adminresources/aos/aos.css') }}" rel="stylesheet">
-
-        <script src="{{ URL::asset('adminresources/aos/aos.js') }}"></script>
                 <link rel="stylesheet" href="{{ asset('adminresources/fontawesome6/css/all.min.css') }}">
 
         <script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="XFHuZsqPDNpcWX" async></script>
@@ -43,7 +42,7 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class=" antialiased bg-main">
+    <body class="antialiased bg-main{{ $disableAosOnCurrentRoute ? ' homepage-without-aos' : '' }}">
         <div id="main" >
             @livewire('user-alert')
             <header  wire:ignore>
@@ -86,10 +85,5 @@
                 });
             });
         </script>
-        <script>
-            AOS.init();
-        </script>
-        
-
     </body>
 </html>

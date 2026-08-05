@@ -1,5 +1,6 @@
 import './bootstrap';
 import './homepage-news-ticker';
+import './aos';
 
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';

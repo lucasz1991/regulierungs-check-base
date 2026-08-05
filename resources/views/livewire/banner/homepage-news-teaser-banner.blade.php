@@ -14,10 +14,10 @@
             $sequenceRepeat = (int) max(1, ceil($minimumSequenceCards / max(1, $posts->count())));
             $sequenceWidth = $sequenceRepeat * $posts->count() * $cardStride;
 
-            // 51,75 px/s sind exakt 15 % schneller als das bisherige Tempo
-            // von 45 px/s. Mehr Karten laufen entsprechend laenger, nicht
-            // schneller.
-            $tickerPixelsPerSecond = 45 * 1.15;
+            // 56,925 px/s sind weitere 10 % schneller als das zuletzt auf
+            // 51,75 px/s erhoehte Tempo. Mehr Karten laufen entsprechend
+            // laenger, nicht schneller.
+            $tickerPixelsPerSecond = 45 * 1.15 * 1.10;
             $tickerDuration = max(30, round($sequenceWidth / $tickerPixelsPerSecond, 3));
         @endphp
 

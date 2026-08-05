@@ -102,7 +102,7 @@ class HomepageNewsTickerSpacingTest extends TestCase
         $this->assertStringNotContainsString('$tickerShouldAnimate', $component);
     }
 
-    public function test_ticker_is_fifteen_percent_faster_and_can_be_dragged_with_touch(): void
+    public function test_ticker_is_another_ten_percent_faster_and_can_be_dragged_with_touch(): void
     {
         $view = file_get_contents(
             resource_path('views/livewire/banner/homepage-news-teaser-banner.blade.php')
@@ -111,7 +111,7 @@ class HomepageNewsTickerSpacingTest extends TestCase
         $app = file_get_contents(resource_path('js/app.js'));
         $css = $this->tickerCss();
 
-        $this->assertStringContainsString('$tickerPixelsPerSecond = 45 * 1.15', $view);
+        $this->assertStringContainsString('$tickerPixelsPerSecond = 45 * 1.15 * 1.10;', $view);
         $this->assertStringContainsString('$sequenceWidth / $tickerPixelsPerSecond', $view);
         $this->assertStringContainsString('data-homepage-news-ticker', $view);
         $this->assertStringContainsString("import './homepage-news-ticker'", $app);
@@ -150,7 +150,7 @@ class HomepageNewsTickerSpacingTest extends TestCase
             'posts' => collect([$post]),
         ])->render();
 
-        $this->assertStringContainsString('--homepage-news-ticker-duration: 102.647s', $html);
+        $this->assertStringContainsString('--homepage-news-ticker-duration: 93.316s', $html);
         $this->assertStringContainsString('data-homepage-news-ticker', $html);
         $this->assertSame(32, substr_count($html, 'homepage-news-ticker__card'));
     }
