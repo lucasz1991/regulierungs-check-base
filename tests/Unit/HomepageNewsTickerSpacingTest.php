@@ -128,7 +128,7 @@ class HomepageNewsTickerSpacingTest extends TestCase
         $this->assertStringContainsString("ticker.classList.remove('is-drag-suppressing')", $script);
         $this->assertStringContainsString('track.style.animationPlayState = \'paused\'', $script);
         $this->assertStringContainsString('track.style.animationDelay = `${-(duration * progress)}s`', $script);
-        $this->assertStringContainsString('state.currentX = normalizeX(state.originX + deltaX)', $script);
+        $this->assertStringContainsString('setTrackPosition(state.originX + deltaX)', $script);
         $this->assertStringContainsString("document.addEventListener('livewire:navigated'", $script);
         $this->assertStringContainsString("window.matchMedia('(prefers-reduced-motion: reduce)')", $script);
         $this->assertStringContainsString('draggable="false"', $view);
@@ -155,11 +155,50 @@ class HomepageNewsTickerSpacingTest extends TestCase
         $this->assertSame(32, substr_count($html, 'homepage-news-ticker__card'));
     }
 
+    public function test_horizontal_drag_coasts_locks_vertical_scroll_and_restarts_after_two_seconds(): void
+    {
+        $script = file_get_contents(resource_path('js/homepage-news-ticker.js'));
+
+        $this->assertStringContainsString('const AUTOPLAY_RESTART_DELAY_MS = 2000', $script);
+        $this->assertStringContainsString('const MOMENTUM_FRICTION_PER_FRAME = 0.94', $script);
+        $this->assertStringContainsString('const MOMENTUM_STOP_VELOCITY = 0.02', $script);
+        $this->assertStringContainsString('const MAX_MOMENTUM_DURATION_MS = 1800', $script);
+        $this->assertStringContainsString('window.requestAnimationFrame(step)', $script);
+        $this->assertStringContainsString('window.cancelAnimationFrame(state.momentumFrame)', $script);
+        $this->assertStringContainsString('startMomentum()', $script);
+        $this->assertStringContainsString("setMotionState('coasting')", $script);
+        $this->assertStringContainsString("setMotionState('waiting')", $script);
+        $this->assertStringContainsString('}, AUTOPLAY_RESTART_DELAY_MS)', $script);
+
+        $this->assertStringContainsString("state.axis = 'x'", $script);
+        $this->assertStringContainsString("state.axis = 'y'", $script);
+        $this->assertStringContainsString('Math.abs(deltaY) >= Math.abs(deltaX)', $script);
+        $this->assertStringContainsString(
+            "window.addEventListener('touchmove', blockLockedTouchScroll, { passive: false })",
+            $script
+        );
+        $this->assertStringContainsString("window.removeEventListener('touchmove', blockLockedTouchScroll)", $script);
+        $this->assertStringContainsString("state.axis !== 'x'", $script);
+        $this->assertStringContainsString('|| !state.dragging', $script);
+        $this->assertStringContainsString('event.touches?.length ?? 0', $script);
+        $this->assertStringContainsString('event.preventDefault()', $script);
+        $this->assertStringContainsString("event?.type === 'pointerup'", $script);
+        $this->assertStringContainsString('elapsed >= RELEASE_VELOCITY_IDLE_MS', $script);
+        $this->assertStringContainsString('activeElement.blur()', $script);
+        $this->assertStringContainsString('if (!state.dragging)', $script);
+    }
+
     public function test_hover_pauses_the_marquee(): void
     {
+        $css = $this->tickerCss();
+
+        $this->assertMatchesRegularExpression(
+            '/@media\s*\(hover:\s*hover\)\s*and\s*\(pointer:\s*fine\)/',
+            $css
+        );
         $this->assertMatchesRegularExpression(
             '/\.homepage-news-ticker:hover[^{]*\{[^}]*animation-play-state:\s*paused/s',
-            $this->tickerCss()
+            $css
         );
     }
 

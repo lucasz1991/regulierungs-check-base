@@ -1678,9 +1678,16 @@ div.home-banner{
   margin-right: .75rem;
 }
 
-.homepage-news-ticker:hover .homepage-news-ticker__track,
 .homepage-news-ticker:focus-within .homepage-news-ticker__track {
   animation-play-state: paused;
+}
+
+/* Touch-Browser koennen :hover nach einer Geste festhalten. Darum pausiert
+   Hover nur auf Geraeten mit einem echten feinen Hover-Zeiger. */
+@media (hover: hover) and (pointer: fine) {
+  .homepage-news-ticker:hover .homepage-news-ticker__track {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes homepage-news-ticker-scroll {
