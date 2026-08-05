@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Post;
 use Tests\TestCase;
 
 class HomepageNewsTickerSpacingTest extends TestCase
@@ -93,12 +94,65 @@ class HomepageNewsTickerSpacingTest extends TestCase
             $view,
             'Auch sehr breite Viewports muessen ohne sichtbare Luecke gefuellt bleiben.'
         );
-        $this->assertStringNotContainsString('new Swiper', $view, 'Die Laufschrift kommt ohne JavaScript aus.');
+        $this->assertStringNotContainsString('new Swiper', $view, 'Die Laufschrift kommt ohne Swiper aus.');
 
         $component = file_get_contents(app_path('Livewire/Banner/HomepageNewsTeaserBanner.php'));
 
         $this->assertStringNotContainsString('$tickerItems', $component);
         $this->assertStringNotContainsString('$tickerShouldAnimate', $component);
+    }
+
+    public function test_ticker_is_fifteen_percent_faster_and_can_be_dragged_with_touch(): void
+    {
+        $view = file_get_contents(
+            resource_path('views/livewire/banner/homepage-news-teaser-banner.blade.php')
+        );
+        $script = file_get_contents(resource_path('js/homepage-news-ticker.js'));
+        $app = file_get_contents(resource_path('js/app.js'));
+        $css = $this->tickerCss();
+
+        $this->assertStringContainsString('$tickerPixelsPerSecond = 45 * 1.15', $view);
+        $this->assertStringContainsString('$sequenceWidth / $tickerPixelsPerSecond', $view);
+        $this->assertStringContainsString('data-homepage-news-ticker', $view);
+        $this->assertStringContainsString("import './homepage-news-ticker'", $app);
+        $this->assertStringContainsString("ticker.addEventListener('pointerdown', startDrag)", $script);
+        $this->assertStringContainsString("window.addEventListener('pointermove', moveDrag", $script);
+        $this->assertStringContainsString("window.addEventListener('pointerup', finishDrag)", $script);
+        $this->assertStringContainsString("window.addEventListener('pointercancel', finishDrag)", $script);
+        $this->assertStringContainsString("window.addEventListener('click', suppressDraggedClick, true)", $script);
+        $this->assertStringContainsString('const tickerStates = new WeakMap()', $script);
+        $this->assertStringContainsString('event.target?.closest?.(TICKER_SELECTOR)', $script);
+        $this->assertStringContainsString('state.suppressNextClick = true', $script);
+        $this->assertStringContainsString('state.suppressNextClick = false', $script);
+        $this->assertStringContainsString("ticker.classList.add('is-drag-suppressing')", $script);
+        $this->assertStringContainsString("ticker.classList.remove('is-drag-suppressing')", $script);
+        $this->assertStringContainsString('track.style.animationPlayState = \'paused\'', $script);
+        $this->assertStringContainsString('track.style.animationDelay = `${-(duration * progress)}s`', $script);
+        $this->assertStringContainsString('state.currentX = normalizeX(state.originX + deltaX)', $script);
+        $this->assertStringContainsString("document.addEventListener('livewire:navigated'", $script);
+        $this->assertStringContainsString("window.matchMedia('(prefers-reduced-motion: reduce)')", $script);
+        $this->assertStringContainsString('draggable="false"', $view);
+        $this->assertMatchesRegularExpression('/touch-action:\s*pan-y\s+pinch-zoom\s*;/', $css);
+        $this->assertStringContainsString('cursor: grabbing', $css);
+        $this->assertStringContainsString('.homepage-news-ticker.is-drag-suppressing a', $css);
+        $this->assertStringContainsString('pointer-events: none', $css);
+
+        $post = new Post([
+            'title' => 'Touch-Drag Test',
+            'slug' => 'touch-drag-test',
+            'type' => 'news',
+            'excerpt' => 'Der Ticker bleibt anklickbar und kann gezogen werden.',
+        ]);
+        $post->setRelation('newsCategory', null);
+
+        $html = view('livewire.banner.homepage-news-teaser-banner', [
+            'newsEnabled' => true,
+            'posts' => collect([$post]),
+        ])->render();
+
+        $this->assertStringContainsString('--homepage-news-ticker-duration: 102.647s', $html);
+        $this->assertStringContainsString('data-homepage-news-ticker', $html);
+        $this->assertSame(32, substr_count($html, 'homepage-news-ticker__card'));
     }
 
     public function test_hover_pauses_the_marquee(): void

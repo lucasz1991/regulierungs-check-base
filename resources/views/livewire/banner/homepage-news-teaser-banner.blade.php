@@ -14,9 +14,11 @@
             $sequenceRepeat = (int) max(1, ceil($minimumSequenceCards / max(1, $posts->count())));
             $sequenceWidth = $sequenceRepeat * $posts->count() * $cardStride;
 
-            // Konstantes Tempo statt fester Dauer: mehr Karten laufen laenger,
-            // nicht schneller.
-            $tickerDuration = (int) max(30, round($sequenceWidth / 45));
+            // 51,75 px/s sind exakt 15 % schneller als das bisherige Tempo
+            // von 45 px/s. Mehr Karten laufen entsprechend laenger, nicht
+            // schneller.
+            $tickerPixelsPerSecond = 45 * 1.15;
+            $tickerDuration = max(30, round($sequenceWidth / $tickerPixelsPerSecond, 3));
         @endphp
 
         {{--
@@ -26,11 +28,14 @@
             um (loopFix), was genau das Zucken erzeugt. Eine einzelne
             Transform-Animation ueber eine doppelt vorhandene Spur laeuft
             dagegen linear durch und kann an der Naht nicht stocken. Sie
-            braucht ausserdem kein JavaScript - damit entfaellt auch das
-            Ruckeln durch nachtraegliche swiper.update()-Aufrufe beim Laden.
+            braucht fuer die automatische Bewegung kein JavaScript - damit
+            entfaellt auch das Ruckeln durch nachtraegliche
+            swiper.update()-Aufrufe beim Laden. Das kleine Pointer-Modul ist
+            ausschliesslich fuer das manuelle Ziehen zustaendig.
         --}}
         <section
             class="homepage-news-ticker"
+            data-homepage-news-ticker
             aria-label="Aktuelle News"
             style="--homepage-news-ticker-duration: {{ $tickerDuration }}s"
         >
@@ -54,6 +59,7 @@
                                 <a
                                     href="{{ route('news.show', $post) }}"
                                     wire:navigate
+                                    draggable="false"
                                     @if($isEcho) tabindex="-1" @endif
                                     class="group relative flex h-full w-full items-center gap-2 rounded-lg border border-gray-100 bg-white/95 px-3 pb-1.5 pt-2.5 text-left shadow-md transition duration-300 hover:bg-white hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                 >

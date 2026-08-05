@@ -29,7 +29,8 @@ class NewsPagebuilderTailwindAssetTest extends TestCase
         $this->assertStringContainsString('is_file($newsTailwindPath)', $layout);
         $this->assertStringContainsString('data-news-pagebuilder-tailwind', $layout);
         $this->assertStringNotContainsString('loadNewsPagebuilderTailwind', $newsComponent);
-        $this->assertStringContainsString("->layout('layouts.app')", $newsComponent);
+        $this->assertStringContainsString("->layout('layouts.app', [", $newsComponent);
+        $this->assertStringContainsString("'newsMeta' =>", $newsComponent);
     }
 
     public function test_committed_asset_matches_the_admin_build_when_both_projects_exist(): void

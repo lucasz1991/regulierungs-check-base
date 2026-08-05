@@ -1640,6 +1640,22 @@ div.home-banner{
   margin: 0 0 .75rem;
   overflow: hidden;
   padding-block: .7rem .2rem;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.homepage-news-ticker.is-dragging {
+  cursor: grabbing;
+}
+
+.homepage-news-ticker.is-drag-suppressing a {
+  pointer-events: none;
+}
+
+.homepage-news-ticker__card a {
+  -webkit-user-drag: none;
 }
 
 .homepage-news-ticker__track {
@@ -1680,6 +1696,8 @@ div.home-banner{
   .homepage-news-ticker {
     overflow-x: auto;
     overscroll-behavior-inline: contain;
+    cursor: auto;
+    touch-action: auto;
   }
 
   .homepage-news-ticker__track {

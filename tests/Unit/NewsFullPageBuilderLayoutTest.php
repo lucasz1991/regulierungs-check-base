@@ -53,16 +53,34 @@ class NewsFullPageBuilderLayoutTest extends TestCase
         $this->assertSame(1, substr_count($html, '.editor-css-marker { color: #084058; }'));
         $this->assertStringContainsString('data-pagebuilder-project-js="998"', $html);
         $this->assertSame(1, substr_count($html, 'window.newsEditorMarker = true;'));
-        // Der Teilen-Handler fuer [data-share] (u. a. "Artikel teilen" aus der
-        // Vorlage) liegt genau einmal an der Seite.
-        $this->assertSame(1, substr_count($html, 'data-rc-share-init'));
-        $this->assertSame(1, substr_count($html, 'window.rcShareInit = true'));
         $this->assertStringNotContainsString('rc-news-template--content {', $html);
         $this->assertStringContainsString('container mx-auto px-3', $html);
         $this->assertMatchesRegularExpression(
             '/id="news-pagebuilder-998"[^>]*>\s*<div class="container mx-auto px-3">\s*<main/s',
             $html
         );
+    }
+
+    public function test_shared_layout_registers_the_pagebuilder_link_share_handler_once(): void
+    {
+        $layout = file_get_contents(resource_path('views/layouts/app.blade.php'));
+        $newsView = file_get_contents(resource_path('views/livewire/articles/news/news-show.blade.php'));
+        $html = view('components.share-link-handler')->render();
+
+        $this->assertSame(1, substr_count($layout, '<x-share-link-handler />'));
+        $this->assertStringNotContainsString('data-rc-share-init', $newsView);
+        $this->assertSame(1, substr_count($html, 'data-rc-share-init'));
+        $this->assertSame(1, substr_count($html, 'window.rcShareInit = true'));
+        preg_match_all('/<div[^>]*data-rc-share-notice/s', $html, $shareNotices);
+        $this->assertCount(1, $shareNotices[0]);
+        $this->assertStringContainsString("window.matchMedia('(hover: hover) and (pointer: fine)')", $html);
+        $this->assertStringContainsString("document.execCommand('copy')", $html);
+        $this->assertStringContainsString('Link wurde in die Zwischenablage kopiert.', $html);
+        $this->assertStringContainsString('[data-news-role="meta"] a[aria-label="Artikel teilen"]', $html);
+        $this->assertStringContainsString('link[rel="canonical"]', $html);
+        $this->assertStringContainsString('meta[property="og:title"]', $html);
+        $this->assertStringContainsString('meta[property="og:description"]', $html);
+        $this->assertStringContainsString('text: pageDescription()', $html);
     }
 
     public function test_default_template_uses_its_own_container_without_a_nested_shell(): void

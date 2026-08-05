@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Setting;
 use App\Support\NewsPreviewAccess;
 use App\Support\PublicNewsCache;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class NewsShow extends Component
@@ -62,13 +63,72 @@ class NewsShow extends Component
             );
         }
 
+        $pagebuilderHtml = $this->contentOnlyPagebuilderHtml(
+            $this->post->pagebuilderProject?->cleaned_html
+        );
+
         return view('livewire.articles.news.news-show', [
             'relatedPosts' => $relatedPosts,
             'isAdminPreview' => $isAdminPreview,
-            'pagebuilderHtml' => $this->contentOnlyPagebuilderHtml(
-                $this->post->pagebuilderProject?->cleaned_html
-            ),
-        ])->layout('layouts.app');
+            'pagebuilderHtml' => $pagebuilderHtml,
+        ])->layout('layouts.app', [
+            'newsMeta' => $this->newsMetadata($this->post, $isAdminPreview, $pagebuilderHtml),
+        ]);
+    }
+
+    /**
+     * Link previews are assembled by social platforms from server-rendered
+     * metadata. Keeping this data on the News page means existing and future
+     * PageBuilder projects receive the same preview without a data migration.
+     *
+     * @return array<string, string|null>
+     */
+    protected function newsMetadata(Post $post, bool $isAdminPreview, string $pagebuilderHtml): array
+    {
+        $title = $this->plainText($post->title) ?: config('app.name', 'Regulierungs-Check');
+        $description = $this->newsDescription($post, $pagebuilderHtml);
+        $image = $post->firstNewsImage();
+        $imageUrl = (string) ($image['url'] ?? '');
+
+        if ($imageUrl === '') {
+            $imageUrl = asset('site-images/logo/preview-1200x630.jpg');
+        } elseif (! Str::startsWith($imageUrl, ['http://', 'https://'])) {
+            $imageUrl = url('/'.ltrim($imageUrl, '/'));
+        }
+
+        return [
+            'title' => $title,
+            'description' => $description,
+            'canonical' => route('news.show', $post),
+            'robots' => $isAdminPreview
+                ? 'noindex, nofollow, noarchive'
+                : 'index, follow, max-image-preview:large',
+            'image' => $imageUrl,
+            'imageAlt' => $this->plainText((string) ($image['alt'] ?? '')) ?: $title,
+            'publishedTime' => $post->published_at?->toIso8601String(),
+            'modifiedTime' => $post->updated_at?->toIso8601String(),
+            'section' => $this->plainText((string) ($post->newsCategory?->name ?? '')) ?: null,
+        ];
+    }
+
+    protected function newsDescription(Post $post, string $pagebuilderHtml): string
+    {
+        foreach ([$post->excerpt, $post->body, $pagebuilderHtml] as $source) {
+            $description = $this->plainText((string) $source);
+
+            if ($description !== '') {
+                return Str::limit($description, 200, '…');
+            }
+        }
+
+        return 'Aktuelle Nachricht und Einordnung von Regulierungs-Check.';
+    }
+
+    protected function plainText(string $value): string
+    {
+        $withoutTags = preg_replace('/<[^>]*>/u', ' ', $value) ?? $value;
+
+        return Str::squish(html_entity_decode($withoutTags, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     protected function ensurePostIsAccessible(
