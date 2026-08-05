@@ -202,6 +202,22 @@ class HomepageNewsTickerSpacingTest extends TestCase
         );
     }
 
+    public function test_ticker_never_shows_a_horizontal_scrollbar(): void
+    {
+        $css = $this->tickerCss();
+
+        $this->assertMatchesRegularExpression('/scrollbar-width:\s*none\s*;/', $css);
+        $this->assertMatchesRegularExpression('/-ms-overflow-style:\s*none\s*;/', $css);
+        $this->assertMatchesRegularExpression(
+            '/\.homepage-news-ticker::\-webkit-scrollbar\s*\{[^}]*display:\s*none\s*;[^}]*height:\s*0\s*;/s',
+            $css
+        );
+        $this->assertMatchesRegularExpression(
+            '/@media\s*\(prefers-reduced-motion:\s*reduce\)[^{]*\{.*?\.homepage-news-ticker\s*\{[^}]*overflow-x:\s*auto\s*;/s',
+            $css
+        );
+    }
+
     private function tickerCss(): string
     {
         $css = file_get_contents(resource_path('css/app.css'));
