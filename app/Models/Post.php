@@ -24,12 +24,14 @@ class Post extends Model
         'published_at',
         'layout',
         'images',
+        'social_image_settings',
     ];
 
     protected $casts = [
         'published' => 'boolean',
         'published_at' => 'datetime',
         'images' => 'array',
+        'social_image_settings' => 'array',
     ];
 
     public const NEWS_LAYOUTS = [
