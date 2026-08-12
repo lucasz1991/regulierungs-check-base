@@ -1723,6 +1723,16 @@ div.home-banner{
   background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%));
 }
 
+/*
+ * Die Kategorieverwaltung speichert Font-Awesome-6-Namen. Das öffentliche
+ * Layout nutzt noch Font Awesome 5 Pro; dort heißt dasselbe Waagen-Icon
+ * `fa-balance-scale`. Der Codepoint ist in der geladenen Light-Schrift
+ * vorhanden, lediglich der neue Klassenalias fehlt.
+ */
+.fa-scale-balanced::before {
+  content: "\f24e";
+}
+
 @media (prefers-reduced-motion: reduce) {
   .homepage-news-ticker {
     overflow-x: auto;

@@ -227,6 +227,6 @@ class HomepageNewsTickerSpacingTest extends TestCase
         $start = strpos($css, '.homepage-news-ticker {');
         $this->assertNotFalse($start, 'Der Ticker-Block fehlt im Stylesheet.');
 
-        return substr($css, $start, 2500);
+        return substr($css, $start);
     }
 }
