@@ -86,12 +86,13 @@
                                             >
                                                 {{-- Left: Icon --}}
                                                 <div class="w-8 h-8 shrink-0 md:mr-4 flex items-center justify-center">
-                                                    @if(!empty($type->icon_svg))
+                                                    @php($safeIcon = \App\Support\SafeIconMarkup::forType($type->icon_type, $type->icon_svg))
+                                                    @if($safeIcon)
                                                         <div class="[&_svg]:w-6 [&_svg]:h-6 text-primary">
-                                                            @if($type->icon_type === 'svg' && $type->icon_svg)
-                                                                {!! $type->icon_svg !!}
+                                                            @if($type->icon_type === 'svg')
+                                                                {!! $safeIcon !!}
                                                             @elseif($type->icon_type === 'fontawesome')
-                                                                <i class="{!! $type->icon_svg !!} fa-lg"></i>
+                                                                <i class="{{ $safeIcon }} fa-lg"></i>
                                                             @endif
                                                         </div>
                                                     @endif

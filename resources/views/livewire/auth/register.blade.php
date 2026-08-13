@@ -9,6 +9,15 @@
     </x-slot>
 
     <x-slot name="form">
+        @if (session()->has(\App\Http\Controllers\Participant\Promotion\RedemptionController::TOKEN_SESSION_KEY))
+            <div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+                <p class="font-semibold">Erstelle dein Konto und sichere deinen Gewinn.</p>
+                <p class="mt-1">Der Gewinn wird im selben sicheren Vorgang deinem neuen Konto zugeordnet.</p>
+            </div>
+        @endif
+
+        <x-input-error for="promotion" class="mb-5" />
+
         <form wire:submit.prevent="register" class="space-y-6">
             @csrf
 
@@ -158,7 +167,7 @@
 
             {{-- ACTIONS --}}
             <div class="pt-2 space-y-3">
-                <x-buttons.button-basic mode="layoutprimary" size="lg" class="w-full justify-center" wire:click.prevent="register">
+                <x-buttons.button-basic type="submit" mode="layoutprimary" size="lg" class="w-full justify-center">
                     Registrieren
                 </x-buttons.button-basic>
 

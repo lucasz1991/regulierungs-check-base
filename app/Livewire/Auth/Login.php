@@ -2,10 +2,14 @@
 
 namespace App\Livewire\Auth;
 
+use App\Http\Controllers\Participant\Promotion\RedemptionController;
+use App\Services\Promotion\PromotionWinService;
 use Livewire\Component;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class Login extends Component
 {
@@ -30,15 +34,41 @@ class Login extends Component
         'password.max' => 'Das Passwort darf maximal 255 Zeichen lang sein.',
     ];
 
-    public function login()
+    public function login(PromotionWinService $promotionWinService)
     {
         $this->validate();
 
-        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password, 'status' => true], $this->remember)) {
             throw ValidationException::withMessages([
                 'email' => 'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.',
             ]);
         }
+
+        session()->regenerate();
+
+        if ($token = session()->get(RedemptionController::TOKEN_SESSION_KEY)) {
+            try {
+                $participation = $promotionWinService->bindToken($token, Auth::user(), [
+                    'ip_address' => request()->ip(),
+                    'user_agent' => request()->userAgent(),
+                ]);
+            } catch (Throwable $exception) {
+                Log::warning('Promotion-Gewinnbindung nach Login fehlgeschlagen.', [
+                    'exception_class' => $exception::class,
+                ]);
+                session()->forget(RedemptionController::TOKEN_SESSION_KEY);
+
+                return redirect()->route('promotion.claim')
+                    ->with('promotion_error', 'Der Gewinn konnte nicht zugeordnet werden. Der Link ist möglicherweise abgelaufen oder bereits verwendet.');
+            }
+
+            session()->forget(RedemptionController::TOKEN_SESSION_KEY);
+
+            return redirect()->route('promotion.participation.show', [
+                'participation' => $participation->public_id,
+            ]);
+        }
+
         $this->dispatch('showAlert','Willkommen zurück!', 'success');
         return $this->redirectIntended('/dashboard');
     }

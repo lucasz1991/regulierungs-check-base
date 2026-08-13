@@ -39,7 +39,7 @@ $sizeClasses = match ($size) {
         {{ $slot }}
     </a>
 @else
-    <button type="button" {!! $attributes->merge(['class' => $classes]) !!} x-data="{ isClicked: false }" 
+    <button {!! $attributes->merge(['type' => 'button', 'class' => $classes]) !!} x-data="{ isClicked: false }"
         @click="isClicked = true; setTimeout(() => isClicked = false, 100)"
         style="transform:scale(1);"
         :style="isClicked ? 'transform:scale(0.9);' : ''" >

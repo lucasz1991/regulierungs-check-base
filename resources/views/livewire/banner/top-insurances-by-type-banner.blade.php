@@ -43,12 +43,13 @@
                             'text-[#0f6b86]' => (int) $selectedInsuranceTypeId === (int) $type->id,
                             'text-slate-500' => (int) $selectedInsuranceTypeId !== (int) $type->id,
                         ])>
-                            @if (!empty($type->icon_svg))
+                            @php($safeIcon = \App\Support\SafeIconMarkup::forType($type->icon_type, $type->icon_svg))
+                            @if ($safeIcon)
                                 <span class="block h-4 w-4 [&_svg]:h-4 [&_svg]:w-4 md:h-5 md:w-5 md:[&_svg]:h-5 md:[&_svg]:w-5">
-                                    @if ($type->icon_type === 'svg' && $type->icon_svg)
-                                        {!! $type->icon_svg !!}
+                                    @if ($type->icon_type === 'svg')
+                                        {!! $safeIcon !!}
                                     @elseif ($type->icon_type === 'fontawesome')
-                                        <i class="{!! $type->icon_svg !!}"></i>
+                                        <i class="{{ $safeIcon }}"></i>
                                     @endif
                                 </span>
                             @else
@@ -83,12 +84,13 @@
                                     'text-[#0f6b86]' => (int) $selectedInsuranceTypeId === (int) $type->id,
                                     'text-slate-500' => (int) $selectedInsuranceTypeId !== (int) $type->id,
                                 ])>
-                                    @if (!empty($type->icon_svg))
+                                    @php($safeIcon = \App\Support\SafeIconMarkup::forType($type->icon_type, $type->icon_svg))
+                                    @if ($safeIcon)
                                         <span class="block h-4 w-4 [&_svg]:h-4 [&_svg]:w-4 md:h-5 md:w-5 md:[&_svg]:h-5 md:[&_svg]:w-5">
-                                            @if ($type->icon_type === 'svg' && $type->icon_svg)
-                                                {!! $type->icon_svg !!}
+                                            @if ($type->icon_type === 'svg')
+                                                {!! $safeIcon !!}
                                             @elseif ($type->icon_type === 'fontawesome')
-                                                <i class="{!! $type->icon_svg !!}"></i>
+                                                <i class="{{ $safeIcon }}"></i>
                                             @endif
                                         </span>
                                     @else

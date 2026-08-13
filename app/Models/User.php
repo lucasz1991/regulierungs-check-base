@@ -19,7 +19,7 @@ use App\Notifications\CustomResetPasswordNotification;
 
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -34,7 +34,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password','role', 'status', 'privacy_settings',
+        'name', 'email', 'password','role', 'status', 'privacy_settings', 'current_team_id',
     ];
 
     /**
@@ -56,6 +56,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'status' => 'boolean',
     ];
 
     /**
@@ -70,6 +71,11 @@ class User extends Authenticatable
     public function customer()
     {
         return $this->hasOne(Customer::class, 'user_id');
+    }
+
+    public function promotionParticipations()
+    {
+        return $this->hasMany(PromotionParticipation::class, 'user_id');
     }
     
     public function receivedMessages()
@@ -135,7 +141,7 @@ class User extends Authenticatable
 
     public function isActive(): bool
     {
-        return $this->status;
+        return (bool) $this->status;
     }
 
     public function followers()

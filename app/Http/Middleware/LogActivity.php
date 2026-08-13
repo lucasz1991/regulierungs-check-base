@@ -13,12 +13,18 @@ class LogActivity
 {
     public function handle($request, Closure $next)
     {
-         $pathSlug = Str::slug($request->path());
-         $islivewireupdate = ($pathSlug === 'livewireupdate');
-        if (!$islivewireupdate) {
+        $path = $request->path();
+        $pathSlug = Str::slug($path);
+        $isLivewireUpdate = $pathSlug === 'livewireupdate';
+        $isSensitivePromotionScan = Str::startsWith($path, 'promotion/einloesen/');
+
+        // Der Einmal-Token ist ein Bearer-Geheimnis. Die synchrone Promotion-
+        // Auditkette protokolliert den Vorgang ohne Roh-Token; deshalb bleibt
+        // das allgemeine Request-Log fuer diese URL vollstaendig aus.
+        if (! $isLivewireUpdate && ! $isSensitivePromotionScan) {
             dispatch(new LogActivityJob(auth()->user(), [
                 'method' => $request->method(),
-                'path' => $request->path(),
+                'path' => $path,
                 'full_url' => $request->fullUrl(),
                 'ip' => $request->ip(),
                 'user_agent' => $request->header('User-Agent'),

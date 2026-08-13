@@ -30,7 +30,7 @@
 
         <!-- Titel -->
         <h2 class="text-lg md:text-xl font-semibold text-gray-900 leading-snug">
-            {!! $post->title !!}
+            {{ $post->title }}
         </h2>
 
         <!-- Meta -->

@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Request;
 use App\Models\WebPage;
+use App\Support\SafeIconMarkup;
 
 class PageHeader extends Component
 {
@@ -14,7 +15,7 @@ class PageHeader extends Component
     public bool $isWebPage = false;
     public bool $showHeader = false;
     public $title;
-    public $icon;
+    public $safeIcon;
     public $header_image;
     public $header_image_url;
     public $header_image_positioning;
@@ -54,7 +55,10 @@ class PageHeader extends Component
             // Falls eine WebPage existiert, verwende deren Daten, ansonsten Standardwerte
             $this->showHeader = $webPage->settings['showHeader'];
             $this->title = $webPage->title;
-            $this->icon = $webPage->icon;
+            // WebPage-Daten stammen aus der gemeinsam genutzten Datenbank.
+            // Auch historische Einträge werden vor einer Raw-SVG-Ausgabe
+            // nochmals fail-closed gegen die statische Icon-Allowlist geprüft.
+            $this->safeIcon = SafeIconMarkup::svg($webPage->icon);
             $this->header_image = $webPage->header_image;
             $this->header_image_positioning = $webPage->settings['header_image_positioning'] ?? 'center';
             $this->header_image_url = $webPage->getHeaderImageUrlAttribute(); 

@@ -2,12 +2,19 @@
 
 namespace App\Livewire\Auth;
 
+use App\Http\Controllers\Participant\Promotion\RedemptionController;
 use App\Models\User;
 use App\Models\Customer;
+use App\Models\Team;
+use App\Services\Promotion\PromotionWinService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Throwable;
 
 class Register extends Component
 {
@@ -16,7 +23,7 @@ class Register extends Component
 
     
 
-    public function register()
+    public function register(PromotionWinService $promotionWinService)
     {
         // Validierung
         $this->validate(
@@ -54,38 +61,101 @@ class Register extends Component
             ]
         );
 
-        // User erstellen
-        $user = User::create([
-            'name' => $this->username,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-            'current_team_id' => 4,
-            'role' => 'guest', 
-        ]);
+        $token = session()->get(RedemptionController::TOKEN_SESSION_KEY);
 
-        // Customer erstellen
-        Customer::create([
-            'user_id' => $user->id,
-            'first_name' => '',
-            'last_name' => '',
-            'username' => $this->username,
-            'phone_number' => '',
-            'street' => '',
-            'city' => '',
-            'state' => '',
-            'postal_code' => '',
-            'country' => '',
-        ]);
+        try {
+            [$user, $participation] = DB::transaction(function () use ($promotionWinService, $token): array {
+                $team = Team::query()
+                    ->where('name', 'Benutzer')
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-        // Verifizierungs-E-Mail senden
-        $user->sendEmailVerificationNotification();
+                $user = User::create([
+                    'name' => $this->username,
+                    'email' => $this->email,
+                    'password' => Hash::make($this->password),
+                    'current_team_id' => $team->getKey(),
+                    'role' => 'guest',
+                    'status' => true,
+                ]);
+
+                Customer::create([
+                    'user_id' => $user->id,
+                    'first_name' => '',
+                    'last_name' => '',
+                    'username' => $this->username,
+                    'phone_number' => '',
+                    'street' => '',
+                    'city' => '',
+                    'state' => '',
+                    'postal_code' => '',
+                    'country' => '',
+                ]);
+
+                $user->teams()->attach($team->getKey(), ['role' => 'guest']);
+
+                $participation = $token
+                    ? $promotionWinService->bindToken($token, $user, [
+                        'ip_address' => request()->ip(),
+                        'user_agent' => request()->userAgent(),
+                    ])
+                    : null;
+
+                return [$user, $participation];
+            });
+        } catch (Throwable $exception) {
+            if ($token) {
+                Log::warning('Promotion-Registrierung wurde zurückgerollt.', [
+                    'exception_class' => $exception::class,
+                ]);
+            } else {
+                report($exception);
+            }
+            $this->addError(
+                'promotion',
+                $token
+                    ? 'Die Registrierung konnte nicht abgeschlossen werden, weil der Gewinn-Link nicht mehr gültig ist. Bitte scanne einen neuen QR-Code.'
+                    : 'Die Registrierung konnte nicht abgeschlossen werden. Bitte versuche es erneut.',
+            );
+
+            return;
+        }
 
         // User automatisch einloggen
         Auth::login($user);
+        session()->regenerate();
+        session()->forget(RedemptionController::TOKEN_SESSION_KEY);
 
-        // Erfolgsmeldung und Weiterleitung
-        $this->dispatch('showAlert', 'Registrierung erfolgreich! Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu verifizieren.', 'success');
-        session()->flash('message', 'Registrierung erfolgreich! Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu verifizieren.');
+        // Die Kontenerstellung bleibt erfolgreich, auch wenn der Mailtransport ausfällt.
+        $verificationNotificationSent = true;
+        try {
+            event(new Registered($user));
+            $verificationNotificationSent = ! session()->has('error');
+        } catch (Throwable $exception) {
+            report($exception);
+            $verificationNotificationSent = false;
+        }
+
+        if ($verificationNotificationSent) {
+            $message = 'Registrierung erfolgreich! Bitte überprüfe deine E-Mail, um dein Konto zu verifizieren.';
+            $messageType = 'success';
+        } else {
+            $message = 'Dein Konto wurde erstellt. Die Bestätigungs-E-Mail konnte gerade nicht versendet werden; du kannst sie im nächsten Schritt erneut anfordern.';
+            $messageType = 'warning';
+        }
+
+        // The session is regenerated above. Dispatching a Livewire browser
+        // event here would make the still-mounted alert child send another
+        // request with the old CSRF token before the redirect and show a 419
+        // despite a successful, committed registration.
+        session()->flash('message', $message);
+        session()->flash('messageType', $messageType);
+        if ($participation) {
+            return redirect()->route('promotion.participation.show', [
+                'participation' => $participation->public_id,
+            ]);
+        }
+
         return redirect()->route('dashboard');
     }
 

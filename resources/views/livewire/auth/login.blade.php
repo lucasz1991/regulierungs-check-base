@@ -8,6 +8,13 @@
     <x-slot name="form">
       <div class="mt-2">
 
+    @if (session()->has(\App\Http\Controllers\Participant\Promotion\RedemptionController::TOKEN_SESSION_KEY))
+        <div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            <p class="font-semibold">Dein Gewinn wartet auf die Zuordnung.</p>
+            <p class="mt-1">Melde dich an. Anschließend kannst du den Gewinn prüfen und bestätigen.</p>
+        </div>
+    @endif
+
     <form wire:submit.prevent="login" class="space-y-5">
         @csrf
 
@@ -126,6 +133,5 @@
 
     </x-slot>
 </x-layouts.auth-layout>
-
 
 

@@ -39,8 +39,10 @@ use App\Livewire\Articles\News\NewsList;
 use App\Livewire\Articles\News\NewsShow;
 use App\Livewire\Pages\Guidance;
 use App\Http\Controllers\PublicFormController;
+use App\Http\Controllers\Participant\Promotion\RedemptionController;
+use App\Http\Middleware\PromotionPrivacyHeaders;
+use App\Livewire\Participant\Promotion\ParticipationShow;
 
-use App\Livewire\Admin\Tools\Tests\StreamChatTest;
 
 
 // Routen für alle
@@ -71,10 +73,15 @@ Route::get('/news/{post:slug}', NewsShow::class)->name('news.show');
 
 Route::post('/form-submit', [PublicFormController::class, 'handle'])->name('form.submit');
 
-Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\StreamChatTest::class);
-
-
-
+Route::middleware(['promotion.enabled', PromotionPrivacyHeaders::class])->group(function () {
+    Route::get('/promotion/einloesen/{token}', [RedemptionController::class, 'redeem'])
+        ->where('token', '[A-Za-z0-9_-]+')
+        ->name('promotion.redeem');
+    Route::get('/promotion/gewinn-sichern', [RedemptionController::class, 'claim'])
+        ->name('promotion.claim');
+    Route::post('/promotion/gewinn-sichern/abbrechen', [RedemptionController::class, 'cancel'])
+        ->name('promotion.claim.cancel');
+});
 
     Route::get('/forgot-password', RequestPasswordResetLink::class)->name('password.request');
     // Route::post('/forgot-password', [RequestPasswordResetLink::class, 'sendResetLink'])->name('password.email');
@@ -95,7 +102,7 @@ Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\Str
         Route::get('/register', Register::class)->name('register');
     });
 
-    Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'account.active'])->group(function () {
         // Customer Routes
         Route::middleware(['role:guest'])->group(function () {
             Route::get('/dashboard', Dashboard::class)->name('dashboard');
@@ -104,4 +111,9 @@ Route::get('/admin/tools/tests/stream-chat', \App\Livewire\Admin\Tools\Tests\Str
             Route::get('/profil/ownreview/{claimRating}', ShowClaimRating::class)->name('profile.claim-rating.claim-rating-show');
         });
 
+    });
+
+    Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'account.active', 'promotion.enabled', PromotionPrivacyHeaders::class])->group(function () {
+        Route::get('/promotion/teilnahme/{participation:public_id}', ParticipationShow::class)
+            ->name('promotion.participation.show');
     });

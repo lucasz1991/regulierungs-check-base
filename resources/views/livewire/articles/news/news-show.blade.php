@@ -33,17 +33,29 @@
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20" aria-hidden="true"></div>
 
             <div
-                class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full px-3"
+                data-news-hero-actions
+                class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full items-start justify-between gap-2 px-3"
                 :style="`padding-top: ${$store.nav.height + 16}px`"
             >
                 <a
                     href="{{ route('news.index') }}"
                     wire:navigate
-                    class="inline-flex items-center gap-2 rounded-full border border-white/30 bg-slate-950/35 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur-md transition hover:border-white/60 hover:bg-slate-950/55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-sm"
+                    class="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-white/30 bg-slate-950/35 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur-md transition hover:border-white/60 hover:bg-slate-950/55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-sm"
                 >
                     <i class="fal fa-arrow-left" aria-hidden="true"></i>
                     Zurück zu News
                 </a>
+
+                <span
+                    data-news-category-placement="mobile"
+                    class="news-category-badge ml-auto inline-flex min-w-0 max-w-[48%] items-center gap-1.5 rounded-md px-2.5 py-2 text-[0.65rem] font-bold uppercase leading-none tracking-[0.06em] text-white shadow-lg sm:hidden"
+                    @if($category) style="background-color: {{ $category->color }};" @else style="background-color: #0c968e;" @endif
+                >
+                    @if($category?->icon)
+                        <i class="fal {{ $category->icon }} shrink-0" aria-hidden="true"></i>
+                    @endif
+                    <span class="truncate">{{ $category?->name ?? 'News' }}</span>
+                </span>
             </div>
 
             @if($isAdminPreview)
@@ -54,7 +66,8 @@
 
             <div class="container relative z-10 mx-auto flex min-h-[22rem] w-full flex-col items-start justify-end px-3 pb-8 pt-28 text-white sm:min-h-[27rem] sm:pb-12 lg:min-h-[31rem] lg:pb-14">
                 <span
-                    class="news-category-badge inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-white shadow-lg sm:text-xs"
+                    data-news-category-placement="desktop"
+                    class="news-category-badge hidden items-center gap-2 rounded-md px-3 py-1.5 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-white shadow-lg sm:inline-flex sm:text-xs"
                     @if($category) style="background-color: {{ $category->color }};" @else style="background-color: #0c968e;" @endif
                 >
                     @if($category?->icon)
@@ -114,7 +127,7 @@
                                 @endif
 
                                 <div class="default-format-text blog-content w-full">
-                                    {!! $post->body !!}
+                                    {!! \App\Support\BlogHtmlSanitizer::sanitize((string) $post->body) !!}
                                 </div>
                             </div>
 

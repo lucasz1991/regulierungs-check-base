@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Livewire\Articles\News\NewsShow;
+use App\Models\NewsCategory;
 use App\Models\PagebuilderProject;
 use App\Models\Post;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -108,6 +109,9 @@ class NewsFullPageBuilderLayoutTest extends TestCase
             ['path' => 'uploads/news/hero.jpg', 'alt' => 'Hero', 'sort' => 1],
             ['path' => 'uploads/news/secondary.jpg', 'alt' => 'Secondary', 'sort' => 2],
         ];
+        $post->body = '<h2>Fallback Body Marker</h2><p onfocus="newsXssOne()"><strong>Sicher formatiert</strong>'
+            .'<img src=x onerror="newsXssTwo()"><a href="javascript:newsXssThree()">Unsicherer Link</a></p>'
+            .'<script>newsXssFour()</script>';
         $post->setRelation('pagebuilderProject', null);
         $post->setRelation('newsCategory', null);
 
@@ -121,6 +125,46 @@ class NewsFullPageBuilderLayoutTest extends TestCase
         $this->assertSame(1, substr_count($html, '/storage/uploads/news/hero.jpg'));
         $this->assertSame(1, substr_count($html, '/storage/uploads/news/secondary.jpg'));
         $this->assertStringContainsString('Fallback Body Marker', $html);
+        $this->assertStringContainsString('<strong>Sicher formatiert</strong>', $html);
+        $this->assertStringContainsString('<a>Unsicherer Link</a>', $html);
+        $this->assertStringNotContainsString('newsXssOne', $html);
+        $this->assertStringNotContainsString('newsXssTwo', $html);
+        $this->assertStringNotContainsString('newsXssThree', $html);
+        $this->assertStringNotContainsString('newsXssFour', $html);
+    }
+
+    public function test_mobile_hero_places_the_category_opposite_the_back_link(): void
+    {
+        $post = $this->newsPost();
+        $post->setRelation('pagebuilderProject', null);
+        $post->setRelation('newsCategory', new NewsCategory([
+            'name' => 'Sehr langes mobiles Nachrichtenthema',
+            'color' => '#0c968e',
+            'icon' => 'fa-chart-line',
+        ]));
+
+        $html = view('livewire.articles.news.news-show', [
+            'post' => $post,
+            'relatedPosts' => collect(),
+            'isAdminPreview' => false,
+            'pagebuilderHtml' => '',
+        ])->render();
+
+        $this->assertSame(1, substr_count($html, 'data-news-hero-actions'));
+        $this->assertSame(1, substr_count($html, 'data-news-category-placement="mobile"'));
+        $this->assertSame(1, substr_count($html, 'data-news-category-placement="desktop"'));
+        $this->assertMatchesRegularExpression(
+            '/data-news-hero-actions[^>]*>.*?Zurück zu News.*?data-news-category-placement="mobile"[^>]*class="[^"]*max-w-\[48%\][^"]*sm:hidden[^"]*"/s',
+            $html
+        );
+        $this->assertMatchesRegularExpression(
+            '/data-news-category-placement="mobile"[^>]*>.*?<span class="truncate">Sehr langes mobiles Nachrichtenthema<\/span>/s',
+            $html
+        );
+        $this->assertMatchesRegularExpression(
+            '/data-news-category-placement="desktop"[^>]*class="[^"]*hidden[^"]*sm:inline-flex[^"]*"/s',
+            $html
+        );
     }
 
     public function test_news_list_and_cards_render_on_a_white_surface(): void

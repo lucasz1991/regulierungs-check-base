@@ -46,8 +46,15 @@ class Dashboard extends Component
             ->orderBy('created_at', 'desc')
             ->paginate(6);
 
+        $promotionParticipations = $this->userData
+            ->promotionParticipations()
+            ->with(['campaign', 'currentWin.prize'])
+            ->latest()
+            ->get();
+
         return view('livewire.dashboard', [
             'claimRatings' => $claimRatings,
+            'promotionParticipations' => $promotionParticipations,
         ])->layout("layouts.app");
     }
 }

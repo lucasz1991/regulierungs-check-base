@@ -9,7 +9,7 @@
             </p>
 
             <h1 class="text-xl md:text-2xl font-semibold text-white leading-tight hyphens-auto">
-                {!! $post->title !!}
+                {{ $post->title }}
             </h1>
 
             {{-- Actions Row --}}
@@ -50,7 +50,7 @@
             <div class="p-4 md:p-6">
                 {{-- Prose --}}
                 <div class="blog-content prose w-full !max-w-full">
-                    {!! $post->body !!}
+                    {!! \App\Support\BlogHtmlSanitizer::sanitize((string) $post->body) !!}
                 </div>
             </div>
         </div>
