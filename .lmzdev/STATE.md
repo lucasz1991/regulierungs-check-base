@@ -2,6 +2,7 @@
 
 ## Confirmed
 
+- Das Bewertungsformular kompiliert wieder zu gueltigem PHP. Die SafeIcon-Zuweisung verwendet einen explizit abgeschlossenen `@php`/`@endphp`-Block; ein Regressionstest kompiliert das vollstaendige Blade-Template und prueft es auf `ParseError`.
 - Promotion-Kern ist auf direkten Webrequest-Betrieb reduziert: keine Promotion-Commands/Scheduler, keine Auditmail/Ankerfelder, kein separater Zugriffskontext. Einmal-QR, Transaktionen, Kontingent, RBAC und synchrone HMAC-Auditkette bleiben erhalten.
 - Alle gefundenen Raw-Ausgaben von `posts.body` laufen nun durch eine enge DOM-Allowlist. Dadurch ist auch unsicherer Blog-/News-Altbestand ohne Datenmigration renderseitig passiv, waehrend legitime Rich-HTML-Formatierung erhalten bleibt.
 - LMZ Dev workspace initialized.
@@ -10,6 +11,7 @@
 
 ## Verification
 
+- Bewertungsformular: direkte Blade-Kompilierung erfolgreich; `RatingFormBladeCompilationTest`, `InsuranceTypeIconRenderSecurityTest` und `SafeIconMarkupTest` zusammen 20 Tests/44 Assertions bestanden.
 - Vereinfachter Base-Promotion-Ordner: 35 Tests/212 Assertions bestanden, ausschliesslich ueber die in `phpunit.xml` hart erzwungene SQLite-In-Memory-Verbindung. Darin: Legacy-MAC-Konvertierung und fail-closed Abbruch bei manipuliertem Legacy-MAC.
 - Admin-Auditkern fokussiert: 5 Tests/55 Assertions bestanden. PHP-Lint fuer gemeinsame Settings-/Audit-/Model-/Migrations-/Testdateien bestanden; Settings-Service und -Model sind zwischen Base/Admin byte-identisch.
 - Blog-HTML-Sicherheit: enger Sanitizer-/Blog-Lauf 5 Tests/51 Assertions; kombinierter Lauf mit dem zweiten `posts.body`-Raw-Sink 12 Tests/111 Assertions bestanden. Echtes Blade-Rendering von schadhaftem Altbestand, erlaubte Formatierung, sichere Links und verschleierte URL-/Element-Payloads sind abgedeckt. PHP-Lint und Pint-Test der eng geaenderten PHP-Dateien bestanden.

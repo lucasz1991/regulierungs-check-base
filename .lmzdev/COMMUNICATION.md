@@ -193,3 +193,7 @@ Append-only communication log. Source and runtime evidence override stale entrie
 ## 2026-08-14T05:35:03Z | Codex -> all | status
 
 - Message: Started: Blade ParseError im Bewertungsformular beheben
+
+## 2026-08-14T05:39:19Z | Codex -> all | handoff
+
+- Message: Completed: Blade ParseError durch expliziten php/endphp-Block behoben; direkte Kompilierung und 20 Tests/44 Assertions gruen; Produktion muss Commit ausrollen und View-Cache erneuern.
