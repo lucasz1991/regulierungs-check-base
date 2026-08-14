@@ -12,3 +12,4 @@
 | Deaktivierungsunabhaengige Kontextbereinigung und Auditanker absichern | Codex / audit_retention_disabled_fix | completed | 2026-08-13T17:00:49Z |
 | Blog-Rich-HTML-Altbestand vor jeder Raw-Ausgabe sanitizieren | Codex / blog_html_xss_fix | completed | 2026-08-13T17:04:24Z |
 | Promotion-Kern ohne Commands, Jobs, Scheduler, Auditmail oder Zugriffskontext betreiben | Codex / simplify_promotion_core | completed | 2026-08-13T18:39:00Z |
+| Blade ParseError im Bewertungsformular beheben | Codex | in-progress | 2026-08-14T05:40:00Z |

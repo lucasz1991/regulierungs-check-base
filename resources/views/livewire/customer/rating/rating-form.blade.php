@@ -86,7 +86,9 @@
                                             >
                                                 {{-- Left: Icon --}}
                                                 <div class="w-8 h-8 shrink-0 md:mr-4 flex items-center justify-center">
-                                                    @php($safeIcon = \App\Support\SafeIconMarkup::forType($type->icon_type, $type->icon_svg))
+                                                    @php
+                                                        $safeIcon = \App\Support\SafeIconMarkup::forType($type->icon_type, $type->icon_svg);
+                                                    @endphp
                                                     @if($safeIcon)
                                                         <div class="[&_svg]:w-6 [&_svg]:h-6 text-primary">
                                                             @if($type->icon_type === 'svg')

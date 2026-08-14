@@ -189,3 +189,7 @@ Append-only communication log. Source and runtime evidence override stale entrie
 - Security: Synchrone HMAC-Kette, Einmal-QR, Kontingent-/Transaktionssperren und fail-closed Settings bleiben. Upgrade legitimiert manipulierte Altsettings nicht.
 - Incident: Lokale DB `regulierungs-check` wurde durch den separat dokumentierten falschen `migrate:fresh --env=testing` geleert; keine Restore-Aktion durch diesen Agenten.
 - Next: Root-Agent integriert Admin-UI-Agent, haertet Artisan-Testguard und entscheidet ueber lokalen DB-Restore.
+
+## 2026-08-14T05:35:03Z | Codex -> all | status
+
+- Message: Started: Blade ParseError im Bewertungsformular beheben
