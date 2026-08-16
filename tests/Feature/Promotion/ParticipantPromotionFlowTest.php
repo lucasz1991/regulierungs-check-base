@@ -27,8 +27,8 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
-use Tests\TestCase;
 use Tests\Support\CreatesPromotionParticipants;
+use Tests\TestCase;
 
 class ParticipantPromotionFlowTest extends TestCase
 {

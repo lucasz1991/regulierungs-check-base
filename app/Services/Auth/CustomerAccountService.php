@@ -167,5 +167,4 @@ final class CustomerAccountService
             throw new RuntimeException('Dieses Benutzerkonto ist deaktiviert.');
         }
     }
-
 }

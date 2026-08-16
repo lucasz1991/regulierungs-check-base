@@ -243,10 +243,10 @@ class WheelLanding extends Component
                 ->whereKey($this->ticketId)
                 ->where('user_id', Auth::id())
                 ->with([
-                'participation',
-                'activeTurn.results',
-                'latestTurn.results',
-                'effectiveResult',
+                    'participation',
+                    'activeTurn.results',
+                    'latestTurn.results',
+                    'effectiveResult',
                 ])
                 ->first()
             : null;
