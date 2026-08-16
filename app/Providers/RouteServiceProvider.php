@@ -7,10 +7,11 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth; 
 
 class RouteServiceProvider extends ServiceProvider
 {
+    public const HOME = '/dashboard';
+
     /**
      * The path to your application's "home" route.
      *
@@ -18,11 +19,10 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-
-     public static function home()
-     {
-         return '/dashboard';
-     }
+    public static function home()
+    {
+        return self::HOME;
+    }
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

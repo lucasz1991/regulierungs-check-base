@@ -9,14 +9,20 @@
     </x-slot>
 
     <x-slot name="form">
-        @if (session()->has(\App\Http\Controllers\Participant\Promotion\RedemptionController::TOKEN_SESSION_KEY))
-            <div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-                <p class="font-semibold">Erstelle dein Konto und sichere deinen Gewinn.</p>
-                <p class="mt-1">Der Gewinn wird im selben sicheren Vorgang deinem neuen Konto zugeordnet.</p>
+        @if ($socialProviders !== [])
+            <div class="mb-5 grid gap-3 sm:grid-cols-2">
+                @foreach ($socialProviders as $provider)
+                    <a href="{{ route('social.redirect', ['provider' => $provider, 'return_to' => request()->query('return_to') === '/gluecksrad' ? '/gluecksrad' : '/dashboard']) }}" class="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition hover:border-primary/50 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20">
+                        <span aria-hidden="true" class="text-lg">{{ $provider === 'google' ? 'G' : '' }}</span>
+                        Mit {{ ucfirst($provider) }} registrieren
+                    </a>
+                @endforeach
             </div>
+            <div class="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-slate-400"><span class="h-px flex-1 bg-slate-200"></span>oder<span class="h-px flex-1 bg-slate-200"></span></div>
         @endif
 
-        <x-input-error for="promotion" class="mb-5" />
+        <x-input-error for="social" class="mb-5" />
+        <x-input-error for="registration" class="mb-5" />
 
         <form wire:submit.prevent="register" class="space-y-6">
             @csrf

@@ -13,3 +13,6 @@
 | Blog-Rich-HTML-Altbestand vor jeder Raw-Ausgabe sanitizieren | Codex / blog_html_xss_fix | completed | 2026-08-13T17:04:24Z |
 | Promotion-Kern ohne Commands, Jobs, Scheduler, Auditmail oder Zugriffskontext betreiben | Codex / simplify_promotion_core | completed | 2026-08-13T18:39:00Z |
 | Blade ParseError im Bewertungsformular beheben | Codex | completed | 2026-08-14T05:43:00Z |
+| Glücksrad V2 Domain, Ticket-Zustände und additive Migration | Codex / v2_domain_core | completed | 2026-08-16T08:42:18Z |
+| Glücksrad V2 Teilnehmerseite, Ticket-QR, Social Login und Ergebnismail | Codex / v2_participant_social | completed | 2026-08-16T08:02:18Z |
+| Glücksrad V2 Integration, Gesamtgate und Browser-Screenshots | Codex-root | in-progress | 2026-08-16T07:20:00Z |

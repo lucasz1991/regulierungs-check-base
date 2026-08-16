@@ -14,11 +14,13 @@
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.3",
         "laravel/sanctum": "^3.3",
+        "laravel/socialite": "5.29.0",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
         "paypal/paypal-server-sdk": "^0.6.1",
         "picqer/php-barcode-generator": "^2.4",
         "plesk/ext-laravel-integration": "^7.0",
+        "socialiteproviders/apple": "5.10.0",
         "spatie/laravel-activitylog": "^4.9"
     },
     "require-dev": {

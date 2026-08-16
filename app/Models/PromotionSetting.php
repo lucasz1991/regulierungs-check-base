@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PromotionSetting extends Model
 {
@@ -19,4 +20,9 @@ class PromotionSetting extends Model
         'enabled' => 'boolean',
         'qr_ttl_minutes' => 'integer',
     ];
+
+    public function publicCampaign(): BelongsTo
+    {
+        return $this->belongsTo(PromotionCampaign::class, 'public_campaign_id');
+    }
 }

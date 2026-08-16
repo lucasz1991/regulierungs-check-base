@@ -2,22 +2,28 @@
 
 namespace App\Livewire;
 
+use App\Models\ClaimRating;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Auth;
-use App\Models\ClaimRating;
-use Illuminate\Support\Facades\Session;
 
 class Dashboard extends Component
 {
     use WithPagination;
 
     public $userData;
+
     public $ratingsCount;
+
     public $verifiedRatingsCount;
+
     public $pendingRatingsCount;
+
     public $averageScore;
+
     public $claimRatingVerificationHash;
+
     public $hasActiveRating;
 
     protected $listeners = ['refreshParent' => '$refresh'];
@@ -27,7 +33,7 @@ class Dashboard extends Component
         $this->userData = Auth::user();
         $this->claimRatingVerificationHash = (string) Session::get('claim_rating_verification_hash', '');
 
-       // Nur die noch nicht zugewiesenen Bewertungen aktualisieren
+        // Nur die noch nicht zugewiesenen Bewertungen aktualisieren
         ClaimRating::where('verification_hash', $this->claimRatingVerificationHash)
             ->whereNull('user_id')
             ->update(['user_id' => $this->userData->id]);
@@ -48,13 +54,21 @@ class Dashboard extends Component
 
         $promotionParticipations = $this->userData
             ->promotionParticipations()
+            ->whereDoesntHave('ticket')
             ->with(['campaign', 'currentWin.prize'])
+            ->latest()
+            ->get();
+
+        $promotionTickets = $this->userData
+            ->promotionTickets()
+            ->with(['campaign', 'participation', 'effectiveResult'])
             ->latest()
             ->get();
 
         return view('livewire.dashboard', [
             'claimRatings' => $claimRatings,
             'promotionParticipations' => $promotionParticipations,
-        ])->layout("layouts.app");
+            'promotionTickets' => $promotionTickets,
+        ])->layout('layouts.app');
     }
 }

@@ -197,3 +197,32 @@ Append-only communication log. Source and runtime evidence override stale entrie
 ## 2026-08-14T05:39:19Z | Codex -> all | handoff
 
 - Message: Completed: Blade ParseError durch expliziten php/endphp-Block behoben; direkte Kompilierung und 20 Tests/44 Assertions gruen; Produktion muss Commit ausrollen und View-Cache erneuern.
+
+## 2026-08-16T07:19:29Z | Codex-root -> all | status
+
+- Message: Glücksrad V2 implementation started: additive ticket flow, participant landing, staff scanner, campaign UI, social login, mail and tests.
+
+## 2026-08-16T07:20:48Z | Codex-domain-core -> all | status
+
+- Message: Started: Glücksrad V2 Domainkern, additive Migration und atomare Services
+
+## 2026-08-16T08:02:18Z | Codex v2_participant_social -> all | handoff
+
+- Task: Gluecksrad V2 Teilnehmer-, Auth-, Social-Login-, Ticket-QR- und Ergebnismail-Vertikalschnitt in Base.
+- Status: completed.
+- Changed: Permanente `/gluecksrad`-Landingpage mit integriertem Login/Registrierung, Verifikationsgate, Livewire-Polling und Statusansichten; eigentuemergebundener In-Memory-SVG-Ticket-QR; Google-/Apple-Socialite mit DB-Konfiguration, fail-closed verifizierter Provider-E-Mail und tokenfreier Identitaetsverknuepfung; Dashboard-Ergebnisse; synchroner Ergebnismailer mit auditierten Mailstatus-Transitionen; alte Gewinn-QR-Webrouten entfernt.
+- Security: Keine QR-Dateien, Roh-Tokens oder OAuth-Tokens; `no-store`/`no-referrer`; Apple-/Google-E-Mail-Verifikation fail-closed; Provider-Konfiguration ueber kanonischen MAC-geschuetzten Domainservice; Verifikationsmail auf 1/60 s begrenzt.
+- Verified: Finale Base Promotion-Suite 53 Tests/377 Assertions; darunter Apple-Neuanlage, verifizierte Bestandskonto-Verknuepfung ohne Profilduplikat, keine OAuth-Token-Spalten, Ergebnis-Mailstatus-Polling und verweigerte AGB-Zustimmung; Pint-Test fuer eigene PHP-Pfade; Composer-Validierung; `git diff --check`; npm production build. Composer-Lock fuegt nur neun Socialite-/Apple-Transitivpakete hinzu und aktualisiert keine Bestandsversion.
+- Artifacts: none.
+- Next: Domain/Admin spiegeln den finalen `PromotionResultMailer`, `PromotionResultMail` und die E-Mail-View; Root integriert Admin-Scanner und fuehrt Browser-/Gesamtgate aus.
+
+## 2026-08-16T08:42:18Z | Codex v2_domain_core -> all | handoff
+
+- Task: Additiven Glücksrad-V2-Domainkern in Base implementieren und erforderliche Laufzeitklassen nach Admin spiegeln.
+- Status: completed.
+- Changed: additive Base-Migration für Kampagnen-Landingdaten, Kontingentregeln, Tickets, Aufrufe, Drehergebnisse, Kampagnenzustand, Social-Provider und tokenfreie Provideridentitäten; stateless persönlicher HMAC-QR; atomare Ticket-, Scan-, Freigabe-, Ergebnis-, Korrektur-, Gegenbuchungs-, Ausgabe- und Mailstatus-APIs; Legacy-Gewinne bleiben zähler- und auditkompatibel.
+- Security: genau ein aktiver Aufruf je Kampagne; Nutzerstatus und E-Mail werden beim Scan frisch unter Sperre geprüft; Korrekturfrist bleibt am ersten Abschluss verankert; Ticket-, Participation-, Aufruf-, Ergebnis-, Mail- und Kampagnenzustände sind HMAC-gebunden; fehlende State-Zeilen, Cross-Link-Manipulation und direkte Datenänderungen brechen fail-closed ab. Die V2-Verifikation indexiert letzte Ereignisse einmalig und läuft O(Ereignisse + Objekte).
+- Configuration: keine Promotion-ENV-Werte, Commands, Jobs, Scheduler oder QR-Dateien. Promotion- und Social-Einstellungen liegen verschlüsselt/MAC-geschützt in der Datenbank; die Upgrade-Migration prüft Secret und Alt-MAC vor jeglichem DDL.
+- Verified: Base `tests/Feature/Promotion` 69 Tests/521 Assertions; Admin Promotion plus EmailVerification 81/674; fokussierter Base-V2-Kern 21/170; Pint Base 24 und Admin 21 Dateien; `git diff --check`; 20 gespiegelte Domain-/Maildateien SHA-256-identisch.
+- Artifacts: none.
+- Next: Root-Agent führt Browser-/Geräte-Smoke-Test, Screenshots und den koordinierten Deployment-Handoff aus; echte konkurrierende MariaDB-Verbindungen bleiben ein Rollout-Smoke-Test, während SQLite Constraints und die Lock-Pfade automatisiert geprüft sind.

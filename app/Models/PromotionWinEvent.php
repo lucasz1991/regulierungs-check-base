@@ -32,4 +32,19 @@ class PromotionWinEvent extends Model
         return $this->belongsTo(PromotionWin::class, 'win_id');
     }
 
+    public function ticket(): BelongsTo
+    {
+        return $this->belongsTo(PromotionTicket::class, 'ticket_id');
+    }
+
+    public function turn(): BelongsTo
+    {
+        return $this->belongsTo(PromotionTurn::class, 'turn_id');
+    }
+
+    public function spinResult(): BelongsTo
+    {
+        return $this->belongsTo(PromotionSpinResult::class, 'spin_result_id');
+    }
+
 }

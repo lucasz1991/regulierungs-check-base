@@ -2,21 +2,21 @@
 
 namespace App\Livewire\Auth;
 
-use App\Http\Controllers\Participant\Promotion\RedemptionController;
-use App\Services\Promotion\PromotionWinService;
-use Livewire\Component;
-
+use App\Services\Auth\SocialiteRuntimeConfigurator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-use Throwable;
+use Livewire\Component;
 
 class Login extends Component
 {
     public $message;
+
     public $messageType;
+
     public $email = '';
+
     public $password = '';
+
     public $remember = false;
 
     protected $rules = [
@@ -34,11 +34,11 @@ class Login extends Component
         'password.max' => 'Das Passwort darf maximal 255 Zeichen lang sein.',
     ];
 
-    public function login(PromotionWinService $promotionWinService)
+    public function login()
     {
         $this->validate();
 
-        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password, 'status' => true], $this->remember)) {
+        if (! Auth::attempt(['email' => $this->email, 'password' => $this->password, 'status' => true], $this->remember)) {
             throw ValidationException::withMessages([
                 'email' => 'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.',
             ]);
@@ -46,46 +46,30 @@ class Login extends Component
 
         session()->regenerate();
 
-        if ($token = session()->get(RedemptionController::TOKEN_SESSION_KEY)) {
-            try {
-                $participation = $promotionWinService->bindToken($token, Auth::user(), [
-                    'ip_address' => request()->ip(),
-                    'user_agent' => request()->userAgent(),
-                ]);
-            } catch (Throwable $exception) {
-                Log::warning('Promotion-Gewinnbindung nach Login fehlgeschlagen.', [
-                    'exception_class' => $exception::class,
-                ]);
-                session()->forget(RedemptionController::TOKEN_SESSION_KEY);
+        $this->dispatch('showAlert', 'Willkommen zurück!', 'success');
 
-                return redirect()->route('promotion.claim')
-                    ->with('promotion_error', 'Der Gewinn konnte nicht zugeordnet werden. Der Link ist möglicherweise abgelaufen oder bereits verwendet.');
-            }
-
-            session()->forget(RedemptionController::TOKEN_SESSION_KEY);
-
-            return redirect()->route('promotion.participation.show', [
-                'participation' => $participation->public_id,
-            ]);
-        }
-
-        $this->dispatch('showAlert','Willkommen zurück!', 'success');
         return $this->redirectIntended('/dashboard');
     }
 
     public function mount()
     {
+        if (request()->query('return_to') === '/gluecksrad') {
+            session(['url.intended' => route('promotion.wheel')]);
+        }
+
         // Überprüfen, ob eine Nachricht in der Session existiert
         if (session()->has('message')) {
             $this->message = session()->get('message');
-            $this->messageType = session()->get('messageType', 'default'); 
+            $this->messageType = session()->get('messageType', 'default');
             // Event zum Anzeigen der Nachricht dispatchen
             $this->dispatch('showAlert', $this->message, $this->messageType);
         }
     }
 
-    public function render()
+    public function render(SocialiteRuntimeConfigurator $socialSettings)
     {
-        return view('livewire.auth.login')->layout("layouts/app");
+        return view('livewire.auth.login', [
+            'socialProviders' => $socialSettings->availableProviders(),
+        ])->layout('layouts/app');
     }
 }

@@ -2,31 +2,46 @@
 
 namespace Tests\Feature\Promotion;
 
-use App\Http\Controllers\Participant\Promotion\RedemptionController;
-use App\Jobs\LogActivityJob;
-use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
 use App\Livewire\Dashboard;
-use App\Livewire\Participant\Promotion\ParticipationShow;
+use App\Livewire\Participant\Promotion\WheelLanding;
+use App\Mail\PromotionResultMail;
 use App\Models\Customer;
 use App\Models\PromotionCampaign;
 use App\Models\PromotionParticipation;
 use App\Models\PromotionPrize;
+use App\Models\PromotionTicket;
 use App\Models\User;
 use App\Notifications\CustomVerifyEmail;
-use App\Services\Promotion\PromotionWinService;
 use App\Services\Promotion\PromotionAuditChain;
+use App\Services\Promotion\PromotionResultMailer;
 use App\Services\Promotion\PromotionSettingsService;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Services\Promotion\PromotionTicketQrSigner;
+use App\Services\Promotion\PromotionTicketService;
+use App\Services\Promotion\PromotionTurnService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
+use Tests\Support\CreatesPromotionParticipants;
 
 class ParticipantPromotionFlowTest extends TestCase
 {
+    use CreatesPromotionParticipants;
     use RefreshDatabase;
+
+    private PromotionCampaign $campaign;
+
+    private PromotionPrize $noWinPrize;
+
+    private PromotionPrize $retryPrize;
+
+    private User $admin;
 
     protected function setUp(): void
     {
@@ -37,305 +52,430 @@ class ParticipantPromotionFlowTest extends TestCase
             'redemption_base_url' => 'https://promotion.example.test',
             'qr_ttl_minutes' => 30,
         ]);
+        $this->admin = User::factory()->create(['role' => 'admin', 'status' => true]);
+        $this->campaign = PromotionCampaign::query()->create([
+            'code' => 'STR26',
+            'name' => 'Straßenpromotion 2026',
+            'landing_headline' => 'Dreh dein Glück',
+            'landing_text' => 'Melde dich an und zeige dein Ticket.',
+            'rules_text' => 'Ein Ticket je Konto.',
+            'quota_exhaustion_policy' => 'block',
+            'is_active' => true,
+        ]);
+        $this->noWinPrize = PromotionPrize::query()->create([
+            'campaign_id' => $this->campaign->id,
+            'code' => 'NIETE',
+            'name' => 'Niete',
+            'outcome_type' => 'no_win',
+            'fulfillment_mode' => 'onsite_staff',
+            'quota' => 9999,
+            'is_active' => true,
+        ]);
+        $this->retryPrize = PromotionPrize::query()->create([
+            'campaign_id' => $this->campaign->id,
+            'code' => 'ZUSATZ',
+            'name' => 'Zusatzdreh',
+            'outcome_type' => 'retry',
+            'fulfillment_mode' => 'onsite_staff',
+            'quota' => 9999,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+        app(PromotionAuditChain::class)->appendConfiguration(
+            $this->campaign,
+            'campaign.configured',
+            app(PromotionAuditChain::class)->configurationPayload($this->campaign),
+            $this->admin,
+        );
+        app(PromotionTicketService::class)->publishCampaign($this->campaign, $this->admin);
+        $this->campaign->refresh();
     }
 
-    public function test_user_model_really_requires_email_verification(): void
+    public function test_poster_route_is_public_but_an_unverified_account_gets_no_ticket(): void
     {
-        $this->assertContains(MustVerifyEmail::class, class_implements(User::class));
-    }
-
-    public function test_registration_form_has_one_submit_path(): void
-    {
-        $this->get(route('register'))
+        $this->get('/gluecksrad')
             ->assertOk()
-            ->assertSee('wire:submit.prevent="register"', false)
-            ->assertSee('type="submit"', false)
-            ->assertDontSee('wire:click.prevent="register"', false);
-    }
-
-    public function test_scan_stores_token_only_in_session_and_redirects_to_clean_url(): void
-    {
-        [$issued] = $this->issueWin();
-        Bus::fake();
-
-        $response = $this->get(route('promotion.redeem', ['token' => $issued->plainToken]));
-
-        $response
-            ->assertRedirect(route('promotion.claim'))
-            ->assertSessionHas(RedemptionController::TOKEN_SESSION_KEY, $issued->plainToken)
-            ->assertHeader('Referrer-Policy', 'no-referrer')
-            ->assertHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
-        $this->assertStringContainsString('no-store', (string) $response->headers->get('Cache-Control'));
-        Bus::assertNotDispatched(LogActivityJob::class);
-
-        $this->get(route('promotion.claim'))
-            ->assertOk()
-            ->assertDontSee($issued->plainToken)
+            ->assertSee('Hol dir dein Dreh-Ticket')
+            ->assertDontSee('wire:poll', false)
             ->assertHeader('Referrer-Policy', 'no-referrer');
+
+        $user = $this->createPromotionParticipant(['email_verified_at' => null]);
+
+        $this->actingAs($user)->get('/gluecksrad')
+            ->assertOk()
+            ->assertSee('E-Mail bestätigen')
+            ->assertDontSee('wire:poll', false)
+            ->assertDontSee('qr.svg');
+
+        $this->assertDatabaseMissing('promotion_tickets', ['user_id' => $user->id]);
     }
 
-    public function test_existing_account_can_bind_an_issued_win_once(): void
+    public function test_verified_account_receives_exactly_one_ticket_and_polling_is_idempotent(): void
     {
-        [$issued] = $this->issueWin();
-        $user = User::factory()->unverified()->create(['role' => 'guest']);
+        $user = $this->createPromotionParticipant();
 
-        $response = $this->actingAs($user)->get(route('promotion.redeem', [
-            'token' => $issued->plainToken,
-        ]));
+        $screen = Livewire::actingAs($user)
+            ->test(WheelLanding::class)
+            ->assertSee('Ticket bereit')
+            ->assertSee('wire:poll.1000ms.visible', false)
+            ->assertSet('ticketId', fn (?int $ticketId): bool => $ticketId !== null);
 
-        $participation = PromotionParticipation::query()->where('user_id', $user->id)->firstOrFail();
+        $queries = [];
+        DB::listen(static function ($query) use (&$queries): void {
+            $queries[] = mb_strtolower((string) $query->sql);
+        });
 
-        $response
-            ->assertRedirect(route('promotion.participation.show', ['participation' => $participation->public_id]))
-            ->assertSessionMissing(RedemptionController::TOKEN_SESSION_KEY);
-        $this->assertSame('bound', $this->statusValue($participation->fresh()->status));
+        $screen->call('refreshState')
+            ->call('refreshState')
+            ->assertHasNoErrors();
+
+        $this->assertSame(1, PromotionTicket::query()->where('user_id', $user->id)->count());
+        $this->assertSame(1, PromotionParticipation::query()->where('user_id', $user->id)->count());
+        $this->assertFalse(collect($queries)->contains(
+            static fn (string $sql): bool => str_contains($sql, 'promotion_audit_heads') || str_contains($sql, 'win_events'),
+        ), 'Bestehende Tickets duerfen beim Polling keine vollstaendige Auditverifikation ausloesen.');
     }
 
-    public function test_inactive_account_cannot_login_or_bind_a_win(): void
+    public function test_integrated_registration_waits_for_email_verification_before_creating_ticket(): void
     {
-        [$issued] = $this->issueWin();
-        $user = User::factory()->create(['role' => 'guest', 'status' => false]);
+        Mail::fake();
 
-        Livewire::test(Login::class)
-            ->set('email', $user->email)
-            ->set('password', 'password')
+        Livewire::test(WheelLanding::class)
+            ->set('mode', 'register')
+            ->set('email', 'teilnahme@example.test')
+            ->set('username', 'TeilnahmeUser')
+            ->set('password', 'Sicheres!Passwort1')
+            ->set('password_confirmation', 'Sicheres!Passwort1')
+            ->set('terms', true)
+            ->call('register')
+            ->assertHasNoErrors()
+            ->assertRedirect(route('promotion.wheel'));
+
+        $user = User::query()->where('email', 'teilnahme@example.test')->firstOrFail();
+        $this->assertAuthenticatedAs($user);
+        $this->assertTrue(Customer::query()->where('user_id', $user->id)->exists());
+        $this->assertFalse($user->hasVerifiedEmail());
+        $this->assertDatabaseMissing('promotion_tickets', ['user_id' => $user->id]);
+        $this->get(route('promotion.wheel'))->assertOk()->assertSee('E-Mail bestätigen');
+
+        $user->markEmailAsVerified();
+        Livewire::actingAs($user)->test(WheelLanding::class)->call('refreshState')->assertSee('Ticket bereit');
+        $this->assertDatabaseHas('promotion_tickets', ['user_id' => $user->id, 'status' => 'ready']);
+    }
+
+    public function test_verification_resend_is_rate_limited_server_side(): void
+    {
+        Notification::fake();
+        $user = $this->createPromotionParticipant(['email_verified_at' => null]);
+
+        Livewire::actingAs($user)
+            ->test(WheelLanding::class)
+            ->call('resendVerification')
+            ->assertHasNoErrors()
+            ->call('resendVerification')
+            ->assertHasErrors('verification');
+
+        Notification::assertSentToTimes($user, CustomVerifyEmail::class, 1);
+    }
+
+    public function test_integrated_login_is_rate_limited_by_email_and_ip(): void
+    {
+        $email = 'login-limit@example.test';
+        User::factory()->create([
+            'email' => $email,
+            'password' => Hash::make('Sicheres!Passwort1'),
+            'role' => 'guest',
+        ]);
+
+        $screen = Livewire::test(WheelLanding::class)
+            ->set('email', $email)
+            ->set('password', 'Falsch!Passwort1');
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $screen->call('login')->assertHasErrors('email');
+        }
+
+        $screen->set('password', 'Sicheres!Passwort1')
             ->call('login')
             ->assertHasErrors('email');
 
-        $this->expectException(\DomainException::class);
-        app(PromotionWinService::class)->bindToken($issued->plainToken, $user);
-    }
-
-    public function test_inactive_account_cannot_use_fortify_login_or_an_existing_participation(): void
-    {
-        [$issued] = $this->issueWin();
-        $user = User::factory()->create(['role' => 'guest', 'status' => true]);
-        $participation = app(PromotionWinService::class)->bindToken($issued->plainToken, $user);
-        $user->forceFill(['status' => false])->save();
-
-        $this->post('/login', ['email' => $user->email, 'password' => 'password'])
-            ->assertSessionHasErrors('email');
         $this->assertGuest();
-
-        $this->actingAs($user)
-            ->get(route('promotion.participation.show', ['participation' => $participation->public_id]))
-            ->assertForbidden();
-
-        $this->expectException(\DomainException::class);
-        app(PromotionWinService::class)->confirmParticipation($participation, $user);
+        RateLimiter::clear('promotion-wheel-login:'.hash('sha256', $email.'|127.0.0.1'));
     }
 
-    public function test_internal_test_and_pagebuilder_routes_are_not_public(): void
+    public function test_successful_integrated_login_redirects_to_a_fresh_ticket_page(): void
     {
-        $this->get('/admin/tools/tests/stream-chat')->assertNotFound();
-        $this->postJson('/api/pagebuilder/upload')->assertNotFound();
-        $this->getJson('/api/pagebuilder/assets')->assertNotFound();
-    }
+        $user = $this->createPromotionParticipant([
+            'email' => 'wheel-login@example.test',
+            'password' => Hash::make('Sicheres!Passwort1'),
+        ]);
 
-    public function test_logged_out_existing_account_is_bound_immediately_after_livewire_login(): void
-    {
-        [$issued] = $this->issueWin();
-        $user = User::factory()->create(['role' => 'guest']);
-        session()->put(RedemptionController::TOKEN_SESSION_KEY, $issued->plainToken);
-
-        $component = Livewire::test(Login::class)
+        Livewire::test(WheelLanding::class)
             ->set('email', $user->email)
-            ->set('password', 'password')
+            ->set('password', 'Sicheres!Passwort1')
             ->call('login')
-            ->assertHasNoErrors();
-
-        $participation = $user->promotionParticipations()->firstOrFail();
-
-        $component->assertRedirect(route('promotion.participation.show', ['participation' => $participation->public_id]));
-        $this->assertAuthenticatedAs($user);
-        $this->assertFalse(session()->has(RedemptionController::TOKEN_SESSION_KEY));
-        $this->assertSame('bound', $this->statusValue($participation->status));
-    }
-
-    public function test_normal_livewire_registration_creates_customer_and_team_but_no_participation(): void
-    {
-        Notification::fake();
-
-        Livewire::test(Register::class)
-            ->set('email', 'normal@example.test')
-            ->set('username', 'NormalerTeilnehmer')
-            ->set('password', 'SehrSicher!123')
-            ->set('password_confirmation', 'SehrSicher!123')
-            ->set('terms', true)
-            ->call('register')
             ->assertHasNoErrors()
-            ->assertRedirect(route('dashboard'));
-
-        $user = User::query()->where('email', 'normal@example.test')->firstOrFail();
+            ->assertRedirect(route('promotion.wheel'));
 
         $this->assertAuthenticatedAs($user);
-        $this->assertTrue($user->customer()->exists());
-        $this->assertTrue($user->teams()->where('name', 'Benutzer')->exists());
-        $this->assertFalse($user->hasVerifiedEmail());
-        $this->assertSame(0, $user->promotionParticipations()->count());
-        Notification::assertSentTo($user, CustomVerifyEmail::class);
+        $this->get(route('promotion.wheel'))
+            ->assertOk()
+            ->assertSee('Ticket bereit')
+            ->assertSee('wire:poll.1000ms.visible', false);
     }
 
-    public function test_promotion_registration_is_atomic_and_redirects_to_participation(): void
+    public function test_privileged_accounts_cannot_use_the_participant_password_login(): void
     {
-        [$issued] = $this->issueWin();
-        Notification::fake();
-        session()->put(RedemptionController::TOKEN_SESSION_KEY, $issued->plainToken);
+        foreach (['admin', 'staff'] as $role) {
+            $user = User::factory()->create([
+                'email' => "wheel-{$role}@example.test",
+                'password' => Hash::make('Sicheres!Passwort1'),
+                'role' => $role,
+                'status' => true,
+            ]);
 
-        $component = Livewire::test(Register::class)
-            ->set('email', 'gewinner@example.test')
-            ->set('username', 'Gewinnerin')
-            ->set('password', 'SehrSicher!123')
-            ->set('password_confirmation', 'SehrSicher!123')
-            ->set('terms', true)
-            ->call('register')
-            ->assertHasNoErrors()
-            ->assertNotDispatched('showAlert');
+            Livewire::test(WheelLanding::class)
+                ->set('email', $user->email)
+                ->set('password', 'Sicheres!Passwort1')
+                ->call('login')
+                ->assertHasErrors('email');
 
-        $user = User::query()->where('email', 'gewinner@example.test')->firstOrFail();
-        $participation = $user->promotionParticipations()->firstOrFail();
-
-        $component->assertRedirect(route('promotion.participation.show', ['participation' => $participation->public_id]));
-        $this->assertAuthenticatedAs($user);
-        $this->assertTrue(Customer::query()->where('user_id', $user->id)->exists());
-        $this->assertTrue($user->teams()->where('name', 'Benutzer')->exists());
-        $this->assertFalse(session()->has(RedemptionController::TOKEN_SESSION_KEY));
-        Notification::assertSentTo($user, CustomVerifyEmail::class);
+            $this->assertGuest();
+            $this->assertDatabaseMissing('promotion_tickets', ['user_id' => $user->id]);
+        }
     }
 
-    public function test_failed_promotion_binding_rolls_back_entire_registration(): void
+    public function test_incomplete_guest_account_is_logged_out_instead_of_receiving_a_ticket(): void
     {
-        session()->put(RedemptionController::TOKEN_SESSION_KEY, str_repeat('x', 43));
+        $user = User::factory()->create([
+            'email' => 'incomplete-wheel-user@example.test',
+            'password' => Hash::make('Sicheres!Passwort1'),
+            'role' => 'guest',
+            'status' => true,
+        ]);
 
-        Livewire::test(Register::class)
-            ->set('email', 'rollback@example.test')
-            ->set('username', 'RollbackUser')
-            ->set('password', 'SehrSicher!123')
-            ->set('password_confirmation', 'SehrSicher!123')
-            ->set('terms', true)
-            ->call('register')
-            ->assertHasErrors('promotion');
+        Livewire::test(WheelLanding::class)
+            ->set('email', $user->email)
+            ->set('password', 'Sicheres!Passwort1')
+            ->call('login')
+            ->assertRedirect(route('promotion.wheel'));
 
         $this->assertGuest();
-        $this->assertFalse(User::query()->where('email', 'rollback@example.test')->exists());
-        $this->assertFalse(Customer::query()->where('username', 'RollbackUser')->exists());
+        $this->assertDatabaseMissing('promotion_tickets', ['user_id' => $user->id]);
     }
 
-    public function test_unverified_owner_can_view_and_confirm_but_another_user_cannot_view(): void
+    public function test_integrated_registration_is_rate_limited_by_email_and_ip(): void
     {
-        [$issued] = $this->issueWin();
-        $owner = User::factory()->unverified()->create(['role' => 'guest']);
-        $otherUser = User::factory()->unverified()->create(['role' => 'guest']);
-        $participation = app(PromotionWinService::class)->bindToken($issued->plainToken, $owner);
+        $email = 'registration-limit@example.test';
+        $key = 'promotion-wheel-register-email:'.hash('sha256', $email.'|127.0.0.1');
+        for ($attempt = 0; $attempt < 3; $attempt++) {
+            RateLimiter::hit($key, 600);
+        }
 
-        $this->actingAs($owner)
-            ->get(route('promotion.participation.show', ['participation' => $participation->public_id]))
-            ->assertOk()
-            ->assertSee($participation->public_id);
+        Livewire::test(WheelLanding::class)
+            ->set('mode', 'register')
+            ->set('email', $email)
+            ->set('username', 'RegistrationLimit')
+            ->set('password', 'Sicheres!Passwort1')
+            ->set('password_confirmation', 'Sicheres!Passwort1')
+            ->set('terms', true)
+            ->call('register')
+            ->assertHasErrors('registration');
 
-        Livewire::actingAs($owner)
-            ->test(ParticipationShow::class, ['participation' => $participation])
-            ->call('confirm')
-            ->assertHasNoErrors();
-
-        $this->assertSame('confirmed', $this->statusValue($participation->fresh()->status));
-        $this->assertFalse($owner->fresh()->hasVerifiedEmail());
-
-        $this->actingAs($otherUser)
-            ->get(route('promotion.participation.show', ['participation' => $participation->public_id]))
-            ->assertNotFound();
+        $this->assertDatabaseMissing('users', ['email' => $email]);
+        RateLimiter::clear($key);
     }
 
-    public function test_participant_views_keep_the_issued_prize_name_after_a_later_rename(): void
+    public function test_shared_venue_ip_allows_multiple_distinct_participants(): void
     {
-        [$issued] = $this->issueWin();
-        $owner = User::factory()->create(['role' => 'guest']);
-        $participation = app(PromotionWinService::class)->bindToken($issued->plainToken, $owner);
-        $snapshot = (string) $issued->win->fresh()->prize_name_snapshot;
-        $renamedPrize = 'Nachtraeglich umbenannter Gewinn';
+        Notification::fake();
+        $ipKey = 'promotion-wheel-register-ip:'.hash('sha256', '127.0.0.1');
+        RateLimiter::clear($ipKey);
 
-        $issued->win->prize()->update(['name' => $renamedPrize]);
+        for ($participant = 1; $participant <= 4; $participant++) {
+            $email = "venue-participant-{$participant}@example.test";
 
-        $this->actingAs($owner)
-            ->get(route('promotion.participation.show', ['participation' => $participation->public_id]))
-            ->assertOk()
-            ->assertSee($snapshot)
-            ->assertDontSee($renamedPrize);
+            Livewire::test(WheelLanding::class)
+                ->set('mode', 'register')
+                ->set('email', $email)
+                ->set('username', "VenueParticipant{$participant}")
+                ->set('password', 'Sicheres!Passwort1')
+                ->set('password_confirmation', 'Sicheres!Passwort1')
+                ->set('terms', true)
+                ->call('register')
+                ->assertHasNoErrors()
+                ->assertRedirect(route('promotion.wheel'));
 
-        Livewire::actingAs($owner)
-            ->test(Dashboard::class)
-            ->assertSee($snapshot)
-            ->assertDontSee($renamedPrize);
+            $this->assertDatabaseHas('users', ['email' => $email]);
+            Auth::logout();
+        }
+
+        RateLimiter::clear($ipKey);
     }
 
-    public function test_dashboard_displays_only_the_authenticated_users_participation(): void
+    public function test_ticket_qr_is_owner_only_streamed_no_store_and_never_written_to_disk(): void
     {
-        [$ownersIssued, $campaign] = $this->issueWin();
-        $owner = User::factory()->create(['role' => 'guest']);
-        $otherUser = User::factory()->create(['role' => 'guest']);
-        $ownersParticipation = app(PromotionWinService::class)->bindToken($ownersIssued->plainToken, $owner);
+        Storage::fake('local');
+        $owner = $this->createPromotionParticipant();
+        $other = $this->createPromotionParticipant();
+        $ticket = app(PromotionTicketService::class)->ensureTicket($owner, $this->campaign);
 
-        $prize = PromotionPrize::query()->where('campaign_id', $campaign->id)->firstOrFail();
-        $otherIssued = app(PromotionWinService::class)->issue($campaign, $prize, User::factory()->create([
-            'role' => 'admin',
-            'status' => true,
+        $response = $this->actingAs($owner)->get(route('promotion.ticket.qr', [
+            'participation' => $ticket->participation->public_id,
         ]));
-        $otherParticipation = app(PromotionWinService::class)->bindToken($otherIssued->plainToken, $otherUser);
 
-        Livewire::actingAs($owner)
-            ->test(Dashboard::class)
-            ->assertSee($ownersParticipation->public_id)
-            ->assertDontSee($otherParticipation->public_id)
-            ->assertSee('Meine Gewinne');
+        $response->assertOk()->assertHeader('Content-Type', 'image/svg+xml; charset=UTF-8');
+        $this->assertStringContainsString('no-store', (string) $response->headers->get('Cache-Control'));
+        $this->assertStringContainsString('<svg', $response->getContent());
+        Storage::disk('local')->assertDirectoryEmpty('/');
+
+        $this->flushSession()->actingAs($other)->get(route('promotion.ticket.qr', [
+            'participation' => $ticket->participation->public_id,
+        ]))->assertNotFound();
+
+        $owner->forceFill(['role' => 'staff'])->save();
+        $this->flushSession()->actingAs($owner)->get(route('promotion.ticket.qr', [
+            'participation' => $ticket->participation->public_id,
+        ]))->assertNotFound();
+        $owner->forceFill(['role' => 'guest'])->save();
+
+        $owner->forceFill(['email_verified_at' => null])->save();
+        $this->flushSession()->actingAs($owner)->get(route('promotion.ticket.qr', [
+            'participation' => $ticket->participation->public_id,
+        ]))->assertRedirect(route('verification.notice'));
+        Livewire::actingAs($owner)->test(WheelLanding::class)
+            ->assertSee('E-Mail bestätigen')
+            ->assertDontSee('wire:poll', false);
+        $owner->forceFill(['email_verified_at' => now()])->save();
+
+        $ticket->update(['status' => 'active']);
+        $this->actingAs($owner)->get(route('promotion.ticket.qr', [
+            'participation' => $ticket->participation->public_id,
+        ]))->assertStatus(409);
     }
 
-    /**
-     * @return array{0: object, 1: PromotionCampaign}
-     */
-    private function issueWin(): array
+    public function test_participant_screen_follows_scan_retry_and_final_result_via_poll_state(): void
     {
-        $staff = User::factory()->create(['role' => 'admin', 'status' => true]);
-        $campaign = PromotionCampaign::create([
-            'code' => 'STR26-'.strtoupper(fake()->unique()->bothify('??##')),
-            'name' => 'Straßenpromotion 2026',
-            'is_active' => true,
-        ]);
-        $prize = PromotionPrize::create([
-            'campaign_id' => $campaign->id,
-            'code' => 'AMZ20',
-            'name' => 'Amazon-Gutschein 20 €',
-            'fulfillment_mode' => 'external_admin',
-            'quota' => 10,
-            'is_active' => true,
-        ]);
+        $user = $this->createPromotionParticipant();
+        $ticket = app(PromotionTicketService::class)->ensureTicket($user, $this->campaign);
+        $turns = app(PromotionTurnService::class);
+        $turn = $turns->scanTicket(app(PromotionTicketQrSigner::class)->payload($ticket), $this->admin);
 
-        app(PromotionAuditChain::class)->appendConfiguration($campaign, 'campaign.configured', [
-            'campaign' => [
-                'id' => (int) $campaign->id,
-                'code' => (string) $campaign->code,
-                'name_digest' => hash('sha256', (string) $campaign->name),
-                'starts_at' => $campaign->getRawOriginal('starts_at'),
-                'ends_at' => $campaign->getRawOriginal('ends_at'),
-                'is_active' => (bool) $campaign->is_active,
-            ],
-            'prizes' => [[
-                'id' => (int) $prize->id,
-                'code' => (string) $prize->code,
-                'name_digest' => hash('sha256', (string) $prize->name),
-                'fulfillment_mode' => (string) $prize->getRawOriginal('fulfillment_mode'),
-                'quota' => (int) $prize->quota,
-                'reserved_count' => (int) $prize->reserved_count,
-                'is_active' => (bool) $prize->is_active,
-                'sort_order' => (int) $prize->sort_order,
-                'configuration_digest' => hash('sha256', json_encode($prize->configuration, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES)),
-            ]],
-        ], $staff);
+        Livewire::actingAs($user)->test(WheelLanding::class)
+            ->assertSee('Du bist dran')
+            ->assertDontSee('qr.svg');
 
-        return [app(PromotionWinService::class)->issue($campaign, $prize, $staff), $campaign];
+        $turns->recordResult($turn, $this->retryPrize, 'retry', $this->admin);
+        Livewire::actingAs($user)->test(WheelLanding::class)->assertSee('Zusatzdreh');
+
+        $result = $turns->recordResult($turn, $this->noWinPrize, 'no_win', $this->admin);
+        $screen = Livewire::actingAs($user)->test(WheelLanding::class)
+            ->assertSee('Diesmal leider kein Gewinn')
+            ->assertSee('wird zusätzlich per E-Mail versendet')
+            ->assertSee('wire:poll.2000ms.visible', false);
+
+        $turns->markMailFailed($result, 'SMTP test failure');
+        $screen->call('refreshState')
+            ->assertSee('E-Mail konnte nicht zugestellt werden')
+            ->assertDontSee('und per E-Mail versendet');
+
+        $result = $turns->markMailPendingForResend($result->fresh(), $this->admin);
+        $turns->markMailSent($result);
+        $screen->call('refreshState')->assertSee('und per E-Mail versendet');
+
+        $this->travel(PromotionTurnService::CORRECTION_WINDOW_MINUTES + 1)->minutes();
+        $screen->call('refreshState')->assertDontSee('wire:poll.2000ms.visible', false);
+
+        Livewire::actingAs($user)->test(Dashboard::class)
+            ->assertSee($ticket->participation->public_id)
+            ->assertSee('Diesmal leider kein Gewinn');
     }
 
-    private function statusValue(mixed $status): string
+    public function test_active_turn_and_result_remain_visible_when_campaign_ends(): void
     {
-        return $status instanceof \BackedEnum ? (string) $status->value : (string) $status;
+        $this->travelTo(now()->startOfSecond());
+        $this->campaign->update(['ends_at' => now()->addSeconds(5)]);
+        app(PromotionAuditChain::class)->appendConfiguration(
+            $this->campaign,
+            'campaign.configured',
+            app(PromotionAuditChain::class)->configurationPayload($this->campaign),
+            $this->admin,
+        );
+
+        $user = $this->createPromotionParticipant();
+        $ticket = app(PromotionTicketService::class)->ensureTicket($user, $this->campaign);
+        $turns = app(PromotionTurnService::class);
+        $turn = $turns->scanTicket(app(PromotionTicketQrSigner::class)->payload($ticket), $this->admin);
+        $screen = Livewire::actingAs($user)->test(WheelLanding::class)
+            ->assertSee('Du bist dran');
+
+        $this->travel(6)->seconds();
+        $screen->call('refreshState')
+            ->assertSet('campaignId', $this->campaign->id)
+            ->assertSee('Du bist dran')
+            ->assertDontSee('Aktuell keine Aktion');
+
+        $turns->recordResult($turn, $this->noWinPrize, 'no_win', $this->admin);
+        $screen->call('refreshState')
+            ->assertSee('Diesmal leider kein Gewinn')
+            ->assertDontSee('Aktuell keine Aktion');
+    }
+
+    public function test_personal_qr_payload_contains_no_identity_and_tampering_is_rejected(): void
+    {
+        $user = $this->createPromotionParticipant();
+        $ticket = app(PromotionTicketService::class)->ensureTicket($user, $this->campaign);
+        $signer = app(PromotionTicketQrSigner::class);
+        $payload = $signer->payload($ticket);
+
+        $this->assertStringStartsWith('RC-TICKET-V1:'.$ticket->participation->public_id.':', $payload);
+        $this->assertStringNotContainsString($user->email, $payload);
+        $this->assertStringNotContainsString($user->name, $payload);
+        $this->assertTrue($signer->parse($payload)->is($ticket));
+
+        $this->expectException(\DomainException::class);
+        $signer->parse(substr($payload, 0, -1).($payload[-1] === 'A' ? 'B' : 'A'));
+    }
+
+    public function test_final_result_mail_is_synchronous_and_updates_delivery_state(): void
+    {
+        Mail::fake();
+        $user = $this->createPromotionParticipant();
+        $ticket = app(PromotionTicketService::class)->ensureTicket($user, $this->campaign);
+        $turns = app(PromotionTurnService::class);
+        $turn = $turns->scanTicket(app(PromotionTicketQrSigner::class)->payload($ticket), $this->admin);
+        $result = $turns->recordResult($turn, $this->noWinPrize, 'no_win', $this->admin);
+
+        $this->assertTrue(app(PromotionResultMailer::class)->send($result));
+        Mail::assertSent(PromotionResultMail::class, fn (PromotionResultMail $mail): bool => $mail->hasTo($user->email)
+            && $mail->participantUrl === 'https://promotion.example.test/gluecksrad');
+        $this->assertSame('sent', $result->fresh()->mail_status->value);
+        $this->assertNotNull($result->fresh()->mail_sent_at);
+    }
+
+    public function test_mail_transport_failure_does_not_rollback_result_and_is_audited_as_failed(): void
+    {
+        $user = $this->createPromotionParticipant();
+        $ticket = app(PromotionTicketService::class)->ensureTicket($user, $this->campaign);
+        $turns = app(PromotionTurnService::class);
+        $turn = $turns->scanTicket(app(PromotionTicketQrSigner::class)->payload($ticket), $this->admin);
+        $result = $turns->recordResult($turn, $this->noWinPrize, 'no_win', $this->admin);
+        Mail::shouldReceive('to')->once()->andThrow(new \RuntimeException('SMTP test failure'));
+
+        $this->assertFalse(app(PromotionResultMailer::class)->send($result));
+
+        $result->refresh();
+        $this->assertSame('failed', $result->mail_status->value);
+        $this->assertNotNull($result->mail_failed_at);
+        $this->assertMatchesRegularExpression('/\A[a-f0-9]{64}\z/', (string) $result->mail_error_digest);
+        $this->assertSame('completed', $ticket->fresh()->status->value);
+        $this->assertTrue(app(PromotionAuditChain::class)->verify($this->campaign));
+    }
+
+    public function test_legacy_public_redemption_routes_are_gone(): void
+    {
+        $this->get('/promotion/einloesen/'.str_repeat('a', 43))->assertNotFound();
+        $this->get('/promotion/gewinn-sichern')->assertNotFound();
+        $this->get('/promotion/teilnahme/RC-OLD-0000-0000-0000-X')->assertNotFound();
     }
 }

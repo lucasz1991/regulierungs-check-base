@@ -27,7 +27,7 @@
                                 <svg class="w-5  h-5  xl:min-w-5 mr-1"   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                                 Einstellungen
                             </button>
-                            @if ($promotionParticipations->isNotEmpty())
+                            @if ($promotionTickets->isNotEmpty() || $promotionParticipations->isNotEmpty())
                                 <button x-on:click="selectedTab = 'promotion'" x-bind:aria-selected="selectedTab === 'promotion'" x-bind:tabindex="selectedTab === 'promotion' ? '0' : '-1'" x-bind:class="selectedTab === 'promotion' ? ' bg-primary-50 font-medium text-primary-800 ' : ' hover:bg-gray-50 '" class="flex items-center gap-3 px-4 py-2 rounded w-full">
                                     <svg class="w-5 h-5 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M20 12v10H4V12m-2-5h20v5H2V7Zm10 15V7m0 0H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7Zm0 0h4.5a2.5 2.5 0 1 0 0-5C13 2 12 7 12 7Z" />
@@ -75,16 +75,52 @@
                             @livewire('profile.edit-privacy-settings')
                         </div>
                     </div>
-                    @if ($promotionParticipations->isNotEmpty())
+                    @if ($promotionTickets->isNotEmpty() || $promotionParticipations->isNotEmpty())
                         <div x-cloak x-show="selectedTab === 'promotion'" x-collapse role="tabpanel" aria-label="Meine Gewinne">
                             <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
                                 <div>
                                     <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Promotion-Glücksrad</p>
-                                    <h2 class="mt-2 text-2xl font-bold text-slate-950">Meine Gewinne</h2>
-                                    <p class="mt-2 text-sm text-slate-600">Deine Teilnahme-ID und der aktuelle Bearbeitungsstand bleiben hier dauerhaft abrufbar.</p>
+                                    <h2 class="mt-2 text-2xl font-bold text-slate-950">Meine Glücksrad-Tickets</h2>
+                                    <p class="mt-2 text-sm text-slate-600">Deine Teilnahme-ID und Ergebnisse bleiben hier dauerhaft abrufbar.</p>
                                 </div>
 
                                 <div class="mt-6 space-y-4">
+                                    @foreach ($promotionTickets as $ticket)
+                                        @php
+                                            $ticketStatus = $ticket->status instanceof \BackedEnum ? $ticket->status->value : (string) $ticket->status;
+                                            $ticketOutcome = $ticket->effectiveResult?->outcome_type_snapshot instanceof \BackedEnum
+                                                ? $ticket->effectiveResult->outcome_type_snapshot->value
+                                                : (string) ($ticket->effectiveResult?->outcome_type_snapshot ?? '');
+                                            $ticketStatusLabel = [
+                                                'ready' => 'Ticket bereit',
+                                                'active' => 'Du bist dran',
+                                                'completed' => 'Abgeschlossen',
+                                                'cancelled' => 'Abgebrochen',
+                                            ][$ticketStatus] ?? ucfirst($ticketStatus);
+                                        @endphp
+                                        <article wire:key="promotion-ticket-{{ $ticket->id }}" class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                                            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                                <div class="min-w-0">
+                                                    <p class="text-sm text-slate-500">{{ $ticket->campaign->name }}</p>
+                                                    <p class="mt-1 font-semibold text-slate-950">
+                                                        @if ($ticketStatus !== 'completed')
+                                                            {{ $ticketStatusLabel }}
+                                                        @elseif ($ticketOutcome === 'no_win')
+                                                            Diesmal leider kein Gewinn
+                                                        @else
+                                                            {{ $ticket->effectiveResult?->label_snapshot ?: 'Gewinn' }}
+                                                        @endif
+                                                    </p>
+                                                    <p class="mt-3 break-all font-mono text-sm font-bold tracking-wide text-slate-800">{{ $ticket->participation->public_id }}</p>
+                                                </div>
+                                                <span class="inline-flex w-fit rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-inset ring-slate-200">{{ $ticketStatusLabel }}</span>
+                                            </div>
+                                            @if ($ticketStatus !== 'completed')
+                                                <a href="{{ route('promotion.wheel') }}" class="mt-4 inline-flex font-semibold text-primary underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Ticket öffnen</a>
+                                            @endif
+                                        </article>
+                                    @endforeach
+
                                     @foreach ($promotionParticipations as $participation)
                                         @php
                                             $participationStatus = $participation->status instanceof \BackedEnum
@@ -109,9 +145,7 @@
                                                     {{ $statusLabel }}
                                                 </span>
                                             </div>
-                                            <a href="{{ route('promotion.participation.show', ['participation' => $participation->public_id]) }}" class="mt-4 inline-flex font-semibold text-primary underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                                                Teilnahme öffnen
-                                            </a>
+                                            <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">Früherer Promotion-Vorgang</p>
                                         </article>
                                     @endforeach
                                 </div>

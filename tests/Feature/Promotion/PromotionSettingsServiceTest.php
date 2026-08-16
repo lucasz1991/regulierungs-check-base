@@ -40,8 +40,10 @@ class PromotionSettingsServiceTest extends TestCase
 
         $saved = $service->save($this->validSettings());
 
-        $this->assertTrue($saved['enabled']);
-        $this->assertTrue($saved['is_configured']);
+        $this->assertFalse($saved['enabled']);
+        $this->assertTrue($saved['requested_enabled']);
+        $this->assertFalse($saved['is_configured']);
+        $this->assertNull($saved['public_campaign_id']);
         $this->assertSame('https://promotion.example.test', $saved['redemption_base_url']);
         $this->assertSame($encryptedBefore, PromotionSetting::query()->findOrFail(1)->getRawOriginal('audit_secret_encrypted'));
         $this->assertSame(32, strlen($service->auditKey()));
@@ -142,8 +144,9 @@ class PromotionSettingsServiceTest extends TestCase
 
         $this->assertFalse(Schema::hasColumn('promotion_settings', 'audit_email'));
         $this->assertFalse(Schema::hasColumn('promotion_settings', 'access_context_retention_months'));
-        $this->assertTrue($service->get()['enabled']);
-        $this->assertTrue($service->get()['is_configured']);
+        $this->assertFalse($service->get()['enabled']);
+        $this->assertTrue($service->get()['requested_enabled']);
+        $this->assertFalse($service->get()['is_configured']);
         $this->assertSame($setting->getRawOriginal('audit_secret_encrypted'), PromotionSetting::query()->findOrFail(1)->getRawOriginal('audit_secret_encrypted'));
     }
 
@@ -170,6 +173,40 @@ class PromotionSettingsServiceTest extends TestCase
         }
 
         $this->assertTrue(Schema::hasColumn('promotion_settings', 'audit_email'));
+        $this->assertSame(str_repeat('f', 64), DB::table('promotion_settings')->where('id', 1)->value('configuration_mac'));
+    }
+
+    public function test_v2_migration_rejects_a_bad_secret_and_mac_before_reaching_any_ddl(): void
+    {
+        $migration = require database_path('migrations/2026_08_16_100000_create_promotion_v2_ticket_flow.php');
+        $campaignColumns = Schema::getColumnListing('campaigns');
+        $prizeColumns = Schema::getColumnListing('prizes');
+        $encryptedSecret = DB::table('promotion_settings')->where('id', 1)->value('audit_secret_encrypted');
+        DB::table('promotion_settings')->where('id', 1)->update(['audit_secret_encrypted' => 'not-an-encrypted-secret']);
+
+        try {
+            $migration->up();
+            $this->fail('Die V2-Migration hat einen unlesbaren Schluessel akzeptiert.');
+        } catch (RuntimeException $exception) {
+            $this->assertStringContainsString('nicht entschluesselt', $exception->getMessage());
+        }
+
+        $this->assertSame($campaignColumns, Schema::getColumnListing('campaigns'));
+        $this->assertSame($prizeColumns, Schema::getColumnListing('prizes'));
+
+        DB::table('promotion_settings')->where('id', 1)->update(['audit_secret_encrypted' => $encryptedSecret]);
+        DB::table('promotion_settings')->where('id', 1)->update(['configuration_mac' => str_repeat('f', 64)]);
+
+        try {
+            $migration->up();
+            $this->fail('Die V2-Migration hat manipulierte Legacy-Einstellungen akzeptiert.');
+        } catch (RuntimeException $exception) {
+            $this->assertStringContainsString('manipuliert', $exception->getMessage());
+        }
+
+        $this->assertSame($campaignColumns, Schema::getColumnListing('campaigns'));
+        $this->assertSame($prizeColumns, Schema::getColumnListing('prizes'));
+        $this->assertSame($encryptedSecret, DB::table('promotion_settings')->where('id', 1)->value('audit_secret_encrypted'));
         $this->assertSame(str_repeat('f', 64), DB::table('promotion_settings')->where('id', 1)->value('configuration_mac'));
     }
 

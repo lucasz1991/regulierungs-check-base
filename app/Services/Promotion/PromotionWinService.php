@@ -74,7 +74,7 @@ final class PromotionWinService
                 throw new DomainException('Die Promotion-Konfiguration oder Auditkette ist ungueltig; es wird kein Gewinn ausgegeben.');
             }
 
-            if ($prize->reserved_count >= $prize->quota) {
+            if ($prize->awarded_count >= $prize->quota) {
                 throw new DomainException('Das Kontingent dieser Gewinnart ist erschoepft.');
             }
 
@@ -83,7 +83,10 @@ final class PromotionWinService
                 $tokenHash = hash('sha256', $plainToken);
             } while (PromotionWin::query()->where('token_hash', $tokenHash)->exists());
 
-            $prize->increment('reserved_count');
+            $prize->forceFill([
+                'reserved_count' => $prize->reserved_count + 1,
+                'awarded_count' => $prize->awarded_count + 1,
+            ])->save();
             $win = PromotionWin::query()->create([
                 'campaign_id' => $campaign->getKey(),
                 'prize_id' => $prize->getKey(),
@@ -298,7 +301,10 @@ final class PromotionWinService
             }
 
             $participation = $win->participation;
-            $prize->forceFill(['reserved_count' => max(0, $prize->reserved_count - 1)])->save();
+            $prize->forceFill([
+                'reserved_count' => max(0, $prize->reserved_count - 1),
+                'awarded_count' => max(0, $prize->awarded_count - 1),
+            ])->save();
             $win->forceFill([
                 'status' => PromotionWinStatus::Cancelled,
                 'claim_key' => null,
@@ -391,7 +397,7 @@ final class PromotionWinService
 
     private function assertEnabled(): void
     {
-        if (! $this->settings->isEnabled()) {
+        if (! $this->settings->isLegacyWinFlowEnabled()) {
             throw new DomainException('Die Promotion-Funktion ist nicht vollstaendig konfiguriert oder deaktiviert.');
         }
     }

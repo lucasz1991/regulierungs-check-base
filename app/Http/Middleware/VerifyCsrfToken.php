@@ -13,5 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/chatbot/stream-feed',
+        '/auth/apple/callback',
     ];
 }

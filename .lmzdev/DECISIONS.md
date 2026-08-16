@@ -25,3 +25,11 @@ Record durable decisions with date, context, decision, and consequences.
 - Die Toast-UI-Formatierung bleibt ueber eine enge DOM-Allowlist erhalten: Ueberschriften, Textauszeichnung, Zitate, Listen samt deaktivierten Aufgaben-Checkboxen, Tabellen und Links.
 - Bilder, Styles, beliebige Klassen, Formulare sowie aktive/einbettende Elemente werden entfernt; Links erlauben nur interne Ziele sowie HTTP(S), Mail und Telefon, externe HTTP(S)-Links erhalten `noopener noreferrer`.
 - Admin und Base verwenden byte-identischen Sanitizer-Code; Base prueft Altbestand unmittelbar vor jeder Raw-Ausgabe erneut.
+
+## 2026-08-16 | Glücksrad V2 verwendet ein stateless Ticket und einen gesperrten Kampagnenzustand
+
+- Der Poster-QR verweist dauerhaft auf `/gluecksrad`; erst das verifizierte Teilnehmerkonto erhält je Kampagne ein persistiertes Ticket. Der persönliche QR enthält nur Version, öffentliche Teilnahme-ID und HMAC, wird als SVG gestreamt und weder als Datei noch als Roh-Token gespeichert.
+- `promotion_campaign_states` ist ab dem ersten V2-Laufzeitobjekt verpflichtend. Zeilensperren, eindeutige Constraints und Cross-Invarianten halten Kampagnenzustand, aktiven Aufruf, aktives Ticket und Participation-Verknüpfung konsistent.
+- Jede V2-Fachmutation schreibt synchron in derselben Transaktion einen HMAC-verketteten Snapshot. Die Verifikation indexiert letzte Snapshots linear; nachträgliche Änderungen an Participation, Ticket, Aufruf, Ergebnis, Mailstatus oder Kampagnenzustand verhindern den nächsten legitimen Übergang.
+- Nur neue Tickets und Scans benötigen eine aktuell öffentliche Kampagne. Bereits aktive Aufrufe bleiben nach Deaktivierung oder Kampagnenende freigebbar und abschließbar.
+- Der Betrieb benötigt keine Promotion-Commands, Jobs, Scheduler, Queue-Worker oder ENV-Konfiguration. Einstellungen und Social-Provider werden verschlüsselt und MAC-geschützt im Admin gepflegt.
