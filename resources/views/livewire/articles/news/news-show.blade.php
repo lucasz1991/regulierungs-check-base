@@ -84,7 +84,7 @@
                     <span class="mt-4 inline-flex rounded-full bg-amber-300 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wide text-amber-950">Entwurf</span>
                 @endif
 
-                <h1 class="mt-3 max-w-4xl text-balance text-3xl font-bold leading-[1.08] tracking-tight text-white sm:text-4xl lg:text-6xl">
+                <h1 lang="de" class="news-detail-title mt-3 max-w-4xl text-balance text-3xl font-bold leading-[1.08] tracking-tight text-white sm:text-4xl lg:text-6xl">
                     {{ strip_tags((string) $post->title) }}
                 </h1>
             </div>

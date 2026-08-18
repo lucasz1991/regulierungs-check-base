@@ -1724,6 +1724,18 @@ div.home-banner{
 }
 
 /*
+ * Das Sprachattribut am Titel aktiviert das deutsche Trennwoerterbuch des
+ * Browsers. break-word greift nur als Notfall fuer unbekannte Begriffe,
+ * waehrend word-break: normal willkuerliche Trennungen verhindert.
+ */
+.news-detail-title {
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/*
  * Die Kategorieverwaltung speichert Font-Awesome-6-Namen. Das öffentliche
  * Layout nutzt noch Font Awesome 5 Pro; dort heißt dasselbe Waagen-Icon
  * `fa-balance-scale`. Der Codepoint ist in der geladenen Light-Schrift

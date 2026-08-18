@@ -62,6 +62,16 @@ class ParticipantPromotionFlowTest extends TestCase
             'quota_exhaustion_policy' => 'block',
             'is_active' => true,
         ]);
+        PromotionPrize::query()->create([
+            'campaign_id' => $this->campaign->id,
+            'code' => 'TEST-GEWINN',
+            'name' => 'Testgewinn',
+            'outcome_type' => 'prize',
+            'fulfillment_mode' => 'onsite_staff',
+            'quota' => 100,
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
         $this->noWinPrize = PromotionPrize::query()->create([
             'campaign_id' => $this->campaign->id,
             'code' => 'NIETE',

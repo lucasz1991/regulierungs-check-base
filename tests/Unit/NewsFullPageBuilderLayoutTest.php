@@ -167,6 +167,32 @@ class NewsFullPageBuilderLayoutTest extends TestCase
         );
     }
 
+    public function test_news_title_uses_german_hyphenation_with_a_safe_overflow_fallback(): void
+    {
+        $post = $this->newsPost();
+        $post->title = 'Rechtsschutzversicherungsangelegenheit';
+        $post->setRelation('pagebuilderProject', null);
+        $post->setRelation('newsCategory', null);
+
+        $html = view('livewire.articles.news.news-show', [
+            'post' => $post,
+            'relatedPosts' => collect(),
+            'isAdminPreview' => false,
+            'pagebuilderHtml' => '',
+        ])->render();
+        $css = file_get_contents(resource_path('css/app.css'));
+
+        $this->assertMatchesRegularExpression(
+            '/<h1[^>]*lang="de"[^>]*class="[^"]*news-detail-title[^"]*"[^>]*>\s*Rechtsschutzversicherungsangelegenheit\s*<\/h1>/s',
+            $html
+        );
+        $this->assertMatchesRegularExpression(
+            '/\.news-detail-title\s*\{[^}]*-webkit-hyphens:\s*auto;[^}]*hyphens:\s*auto;[^}]*overflow-wrap:\s*break-word;[^}]*word-break:\s*normal;/s',
+            $css
+        );
+        $this->assertStringNotContainsString('word-break: break-all', $this->newsTitleCss($css));
+    }
+
     public function test_news_list_and_cards_render_on_a_white_surface(): void
     {
         $post = $this->newsPost();
@@ -218,6 +244,15 @@ class NewsFullPageBuilderLayoutTest extends TestCase
             'isAdminPreview' => false,
             'pagebuilderHtml' => $this->contentOnlyPagebuilderHtml($builderHtml),
         ])->render();
+    }
+
+    private function newsTitleCss(string $css): string
+    {
+        $start = strpos($css, '.news-detail-title {');
+
+        $this->assertNotFalse($start, 'Die CSS-Regel für den News-Titel fehlt.');
+
+        return substr($css, $start, 240);
     }
 
     private function contentOnlyPagebuilderHtml(string $html): string

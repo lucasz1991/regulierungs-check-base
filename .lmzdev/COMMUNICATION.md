@@ -226,3 +226,11 @@ Append-only communication log. Source and runtime evidence override stale entrie
 - Verified: Base `tests/Feature/Promotion` 69 Tests/521 Assertions; Admin Promotion plus EmailVerification 81/674; fokussierter Base-V2-Kern 21/170; Pint Base 24 und Admin 21 Dateien; `git diff --check`; 20 gespiegelte Domain-/Maildateien SHA-256-identisch.
 - Artifacts: none.
 - Next: Root-Agent führt Browser-/Geräte-Smoke-Test, Screenshots und den koordinierten Deployment-Handoff aus; echte konkurrierende MariaDB-Verbindungen bleiben ein Rollout-Smoke-Test, während SQLite Constraints und die Lock-Pfade automatisiert geprüft sind.
+
+## 2026-08-17T06:08:08Z | Codex-root -> all | handoff
+
+- Task: Die neue Admin-Entwurf-zu-Gewinn-Bedienung durch eine gemeinsame Domaininvariante absichern.
+- Status: completed.
+- Changed: `publishCampaign()` verlangt vollstaendige Landingtexte sowie einen aktiven echten Gewinn mit positiver Menge; die Base-Teilnehmerfixture wurde entsprechend realistisch ergaenzt.
+- Verified: kompletter Base-Promotion-Ordner 76 Tests/602 Assertions; gemeinsamer Service SHA-256-identisch mit Admin; Pint und `git diff --check` gruen.
+- Migration: keine neue Migration; lokale MySQL-Datenbank nicht beruehrt.

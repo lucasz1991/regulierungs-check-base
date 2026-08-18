@@ -27,3 +27,9 @@
 - Kein offener Promotion-P0/P1 im geprueften Kernstand; Root-Agent uebernimmt abschliessende Admin-Integration und Testguard-Haertung.
 - Bekannte P2: Domaincode ist zwischen Base/Admin gespiegelt; Audit-Verify ist bewusst vollstaendig und damit mit wachsender Eventzahl linear; Schluesselrotation ist fail-closed und benoetigt einen geplanten Wartungspfad.
 - Bestehende schadhafte InsuranceType-Iconwerte bleiben in der Datenbank erhalten, werden aber in allen gefundenen oeffentlichen Raw-Renderpfaden verworfen. Eine spaetere Datenbereinigung ist optional und nicht fuer die XSS-Abwehr erforderlich.
+
+## 2026-08-17 | Domainweite Kampagnen-Veroeffentlichung
+
+- Der gemeinsame PromotionTicketService veroeffentlicht nur aktive, persistierte Kampagnen mit vollstaendigen Landingtexten und mindestens einem aktiven echten Gewinn mit positiver Menge.
+- Der Service ist mit dem Admin byte-identisch; die Teilnehmer-Testfixture enthaelt nun einen echten Gewinn und bildet die Produktionsinvariante ab.
+- Kompletter Base-Promotion-Ordner: 76 Tests/602 Assertions; Pint und `git diff --check` bestanden.
