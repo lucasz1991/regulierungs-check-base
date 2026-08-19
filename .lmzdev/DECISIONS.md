@@ -2,6 +2,12 @@
 
 Record durable decisions with date, context, decision, and consequences.
 
+## 2026-08-18 | News-Titel verwenden sprachgesteuerte Browser-Silbentrennung
+
+- News-Detailtitel tragen `lang="de"` und verwenden `hyphens: auto` inklusive WebKit-Praefix.
+- `word-break: break-all` und `overflow-wrap: anywhere` werden nicht verwendet, weil sie deutsche Woerter an grammatikalisch falschen Stellen trennen koennen.
+- `overflow-wrap: break-word` bleibt als reine Ueberlaufsicherung fuer unbekannte Eigennamen, URLs oder Komposita erhalten, die das Browser-Woerterbuch nicht kennt.
+
 ## 2026-08-13 | Promotion laeuft ausschliesslich in direkten Webrequests
 
 - Gewinn-QR, Bindung, Teilnehmerbestaetigung, Ausgabe und Korrektur bleiben transaktionale Webaktionen; es gibt keine Promotion-Commands, Jobs oder Scheduler-Eintraege.

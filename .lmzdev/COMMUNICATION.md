@@ -2,6 +2,14 @@
 
 Append-only communication log. Source and runtime evidence override stale entries.
 
+## 2026-08-18 | Codex -> all | handoff
+
+- Task: Deutsche, moeglichst silbenkorrekte Umbrueche fuer sehr lange News-Detailtitel sicherstellen.
+- Status: completed (local; deployment open).
+- Changed: `news-show.blade.php` setzt am H1 `lang="de"` und `news-detail-title`; `app.css` aktiviert browsergestuetzte Silbentrennung mit sicherem Ueberlauf-Fallback; Unit-Regressionstest ergaenzt.
+- Verified: News-Fokus 8/64, gesamte Unit-Suite 75/365, Pint, Vite-Build, Diff-Check sowie Browser-Smoke-Test bei 390 px und 320 px ohne horizontalen Ueberlauf.
+- Migration: keine; Datenbank nicht beruehrt.
+
 ## 2026-08-12T20:09:21Z | Codex -> all | status
 
 - Message: Started: Promotion-Gluecksrad Teilnehmerfluss, Einmal-QR und Audit-Domain implementieren

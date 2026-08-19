@@ -33,3 +33,11 @@
 - Der gemeinsame PromotionTicketService veroeffentlicht nur aktive, persistierte Kampagnen mit vollstaendigen Landingtexten und mindestens einem aktiven echten Gewinn mit positiver Menge.
 - Der Service ist mit dem Admin byte-identisch; die Teilnehmer-Testfixture enthaelt nun einen echten Gewinn und bildet die Produktionsinvariante ab.
 - Kompletter Base-Promotion-Ordner: 76 Tests/602 Assertions; Pint und `git diff --check` bestanden.
+
+## 2026-08-18 | Deutsche Silbentrennung im News-Detailtitel
+
+- Der native News-Hero kennzeichnet den Titel explizit mit `lang="de"` und einer eigenen CSS-Regel fuer automatische deutsche Silbentrennung.
+- `hyphens: auto` trennt gemaess Browser-Woerterbuch; `word-break: normal` verhindert willkuerliche Zeichenumbrueche. `overflow-wrap: break-word` verhindert nur bei unbekannten Extremwoertern einen horizontalen Ueberlauf.
+- Verifiziert: fokussierter News-Layout-Test 8 Tests/64 Assertions, komplette Unit-Suite 75 Tests/365 Assertions, Pint, Vite-Produktionsbuild und `git diff --check` bestanden.
+- Browser-Smoke-Test bei 390 px und 320 px: `lang=de`, `hyphens=auto`, `word-break=normal`; Titel- und Seitenbreite ohne horizontalen Ueberlauf.
+- Restrisiko: Die exakte sichtbare Silbentrennung richtet sich nach dem deutschen Trennwoerterbuch der jeweiligen Browser-Engine. Unabhaengig davon verhindert der Notfallumbruch ein Abschneiden des Titels.
