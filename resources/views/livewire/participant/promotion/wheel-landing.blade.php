@@ -77,7 +77,7 @@
                         <div class="mt-6 grid gap-3 sm:grid-cols-2">
                             @foreach ($socialProviders as $provider)
                                 <a href="{{ route('social.redirect', ['provider' => $provider, 'return_to' => '/gluecksrad']) }}" class="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition hover:border-[#0d9187]/50 hover:bg-[#f5fbfa] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0d9187]/20">
-                                    <span aria-hidden="true" class="text-lg">{{ $provider === 'google' ? 'G' : '' }}</span>
+                                    <x-social-provider-logo :provider="$provider" />
                                     Mit {{ ucfirst($provider) }}
                                 </a>
                             @endforeach

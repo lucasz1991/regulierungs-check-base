@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex,nofollow,noarchive">
     <meta name="referrer" content="no-referrer">
     <title>Glücksrad | Regulierungs-CHECK</title>
-    <link rel="icon" type="image/png" href="{{ asset('site-images/logo/logo-icon.png') }}">
+    <x-favicon-links />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>

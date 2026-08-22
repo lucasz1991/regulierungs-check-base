@@ -13,7 +13,7 @@
             <div class="mb-5 grid gap-3 sm:grid-cols-2">
                 @foreach ($socialProviders as $provider)
                     <a href="{{ route('social.redirect', ['provider' => $provider, 'return_to' => request()->query('return_to') === '/gluecksrad' ? '/gluecksrad' : '/dashboard']) }}" class="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition hover:border-primary/50 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20">
-                        <span aria-hidden="true" class="text-lg">{{ $provider === 'google' ? 'G' : '' }}</span>
+                        <x-social-provider-logo :provider="$provider" />
                         Mit {{ ucfirst($provider) }} registrieren
                     </a>
                 @endforeach

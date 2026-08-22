@@ -6,9 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>@yield('title') | Admin {{ config('app.name', 'MiniFinds') }}</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('site-images/favicon/apple-touch-icon.png') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('site-images/favicon/favicon-32x32.png') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('site-images/favicon/favicon-16x16.png') }}">
+        <x-favicon-links />
         
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
