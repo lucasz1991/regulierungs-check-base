@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'milan' => [
+        'user_daily_limit' => (int) env('MILAN_USER_DAILY_LIMIT', 20),
+        'guest_daily_limit' => (int) env('MILAN_GUEST_DAILY_LIMIT', 20),
+    ],
+
 ];

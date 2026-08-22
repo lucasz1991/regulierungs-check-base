@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Session;
 
 class RatingForm extends Component
 {
+    private const OPEN_FROM_MILAN_SESSION_KEY = 'milan.open_rating_form';
+
     public $types = [];
     public $insuranceTypeId = null;
     public $insuranceType;
@@ -201,6 +203,7 @@ class RatingForm extends Component
         $this->totalSteps = $this->questions->count();
 
         $this->answers = array_fill_keys($this->questions->pluck('title')->toArray(), null);
+        $this->showFormModal = Session::pull(self::OPEN_FROM_MILAN_SESSION_KEY, false) === true;
     }
 
     public function showFormModal()

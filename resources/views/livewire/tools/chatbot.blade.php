@@ -2,20 +2,19 @@
     x-data="{
         showChat: @entangle('showChat').live ?? false,
         messagefront: '',
-        message: @entangle('message'),
         isLoading: @entangle('isLoading'),
         chatHistory: @entangle('chatHistory'),
 
         sendMessage() {
-            if (this.messagefront.trim() === '') return;
+            const userMessage = this.messagefront.trim();
 
-            this.chatHistory.push({ role: 'user', content: this.messagefront });
+            if (userMessage === '') return;
+
+            this.chatHistory.push({ role: 'user', content: userMessage });
             this.isLoading = true;
-
-            this.message = this.messagefront;
-            Livewire.dispatch('sendMessage');
-
             this.messagefront = '';
+
+            $wire.sendMessage(userMessage);
         },
 
         lockBody() {
@@ -321,6 +320,7 @@
                 pr-28
             "
             rows="1"
+            maxlength="1200"
             placeholder="Frage stellen…"
         ></textarea>
 
