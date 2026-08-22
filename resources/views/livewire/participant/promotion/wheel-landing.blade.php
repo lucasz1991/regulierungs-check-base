@@ -76,10 +76,10 @@
                     @if ($socialProviders !== [])
                         <div class="mt-6 grid gap-3 sm:grid-cols-2">
                             @foreach ($socialProviders as $provider)
-                                <a href="{{ route('social.redirect', ['provider' => $provider, 'return_to' => '/gluecksrad']) }}" class="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition hover:border-[#0d9187]/50 hover:bg-[#f5fbfa] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0d9187]/20">
-                                    <x-social-provider-logo :provider="$provider" />
-                                    Mit {{ ucfirst($provider) }}
-                                </a>
+                                <x-social-provider-button
+                                    :provider="$provider"
+                                    :href="route('social.redirect', ['provider' => $provider, 'return_to' => '/gluecksrad'])"
+                                />
                             @endforeach
                         </div>
                         <div class="my-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-slate-400"><span class="h-px flex-1 bg-slate-200"></span>oder<span class="h-px flex-1 bg-slate-200"></span></div>

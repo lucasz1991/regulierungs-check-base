@@ -69,10 +69,17 @@ $pngTargets = [
     180 => $targetDirectory.'/apple-touch-icon.png',
 ];
 
+$outputs = [];
+
 foreach ($pngTargets as $size => $path) {
-    if (file_put_contents($path, squarePng($source, $size)) === false) {
-        throw new RuntimeException("Unable to write favicon: {$path}");
+    $png = squarePng($source, $size);
+    $dimensions = getimagesizefromstring($png);
+
+    if ($dimensions === false || $dimensions[0] !== $size || $dimensions[1] !== $size || $dimensions[2] !== IMAGETYPE_PNG) {
+        throw new RuntimeException("Generated favicon failed validation: {$path}");
     }
+
+    $outputs[$path] = $png;
 }
 
 $icoSizes = [16, 32, 48];
@@ -94,13 +101,86 @@ foreach ($icoImages as $size => $png) {
 }
 
 $icoPath = $projectRoot.'/public/favicon.ico';
+$ico = $icoHeader.$icoDirectory.$icoPayload;
 
-if (file_put_contents($icoPath, $icoHeader.$icoDirectory.$icoPayload) === false) {
-    throw new RuntimeException("Unable to write favicon: {$icoPath}");
+if (strlen($ico) <= 54 || unpack('vreserved/vtype/vcount', substr($ico, 0, 6)) !== [
+    'reserved' => 0,
+    'type' => 1,
+    'count' => count($icoImages),
+]) {
+    throw new RuntimeException('Generated ICO failed validation.');
 }
 
+$outputs[$icoPath] = $ico;
 imagedestroy($source);
 
-foreach ([...array_values($pngTargets), $icoPath] as $path) {
+/**
+ * Write every validated output to a temporary sibling first, then atomically
+ * replace the complete set. Existing files are restored if any commit fails.
+ */
+$temporaryFiles = [];
+$backups = [];
+$committedTargets = [];
+
+try {
+    foreach ($outputs as $path => $contents) {
+        $temporaryPath = $path.'.tmp-'.bin2hex(random_bytes(8));
+        $temporaryFiles[$path] = $temporaryPath;
+        $written = file_put_contents($temporaryPath, $contents, LOCK_EX);
+
+        if ($written !== strlen($contents)) {
+            throw new RuntimeException("Unable to stage favicon: {$path}");
+        }
+    }
+
+    foreach ($temporaryFiles as $path => $temporaryPath) {
+        if (is_file($path)) {
+            $backupPath = $path.'.bak-'.bin2hex(random_bytes(8));
+
+            if (! rename($path, $backupPath)) {
+                throw new RuntimeException("Unable to stage existing favicon for replacement: {$path}");
+            }
+
+            $backups[$path] = $backupPath;
+        }
+
+        if (! rename($temporaryPath, $path)) {
+            if (isset($backups[$path])) {
+                rename($backups[$path], $path);
+                unset($backups[$path]);
+            }
+
+            throw new RuntimeException("Unable to commit favicon: {$path}");
+        }
+
+        unset($temporaryFiles[$path]);
+        $committedTargets[] = $path;
+    }
+
+    foreach ($backups as $backupPath) {
+        @unlink($backupPath);
+    }
+} catch (Throwable $exception) {
+    foreach (array_reverse($committedTargets) as $path) {
+        if (is_file($path)) {
+            unlink($path);
+        }
+
+        if (isset($backups[$path]) && is_file($backups[$path])) {
+            rename($backups[$path], $path);
+            unset($backups[$path]);
+        }
+    }
+
+    foreach ($temporaryFiles as $temporaryPath) {
+        if (is_file($temporaryPath)) {
+            unlink($temporaryPath);
+        }
+    }
+
+    throw $exception;
+}
+
+foreach (array_keys($outputs) as $path) {
     echo str_replace($projectRoot.'/', '', $path).PHP_EOL;
 }

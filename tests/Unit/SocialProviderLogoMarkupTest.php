@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class SocialProviderLogoMarkupTest extends TestCase
 {
-    public function test_google_and_apple_logos_render_as_decorative_brand_svgs(): void
+    public function test_google_and_official_apple_logos_render_as_decorative_brand_svgs(): void
     {
         $google = Blade::render('<x-social-provider-logo provider="google" />');
         $apple = Blade::render('<x-social-provider-logo provider="apple" />');
@@ -18,6 +18,8 @@ class SocialProviderLogoMarkupTest extends TestCase
         $this->assertStringContainsString('fill="#FBBC05"', $google);
         $this->assertStringContainsString('fill="#EA4335"', $google);
         $this->assertStringContainsString('data-social-provider-logo="apple"', $apple);
+        $this->assertStringContainsString('viewBox="0 0 31 44"', $apple);
+        $this->assertStringContainsString('fill="#000000"', $apple);
 
         foreach ([$google, $apple] as $markup) {
             $this->assertStringContainsString('aria-hidden="true"', $markup);
@@ -25,7 +27,20 @@ class SocialProviderLogoMarkupTest extends TestCase
         }
     }
 
-    public function test_every_active_social_auth_surface_uses_the_shared_logo_component(): void
+    public function test_provider_buttons_use_approved_labels_and_provider_specific_styles(): void
+    {
+        $google = Blade::render('<x-social-provider-button provider="google" href="/google" intent="login" />');
+        $apple = Blade::render('<x-social-provider-button provider="apple" href="/apple" intent="register" />');
+
+        $this->assertStringContainsString('Mit Google anmelden', $google);
+        $this->assertStringContainsString('border-[#747775]', $google);
+        $this->assertStringContainsString('Roboto, Arial, sans-serif', $google);
+        $this->assertStringContainsString('Mit Apple registrieren', $apple);
+        $this->assertStringContainsString('border-black', $apple);
+        $this->assertStringContainsString('-apple-system', $apple);
+    }
+
+    public function test_every_active_social_auth_surface_uses_the_shared_button_component(): void
     {
         $views = [
             resource_path('views/livewire/auth/login.blade.php'),
@@ -37,7 +52,7 @@ class SocialProviderLogoMarkupTest extends TestCase
             $contents = file_get_contents($view);
 
             $this->assertIsString($contents);
-            $this->assertStringContainsString('<x-social-provider-logo :provider="$provider" />', $contents);
+            $this->assertStringContainsString('<x-social-provider-button', $contents);
             $this->assertStringNotContainsString("? 'G' : ''", $contents);
         }
     }
