@@ -18,6 +18,13 @@ if (! is_dir($targetDirectory) && ! mkdir($targetDirectory, 0775, true) && ! is_
     throw new RuntimeException("Unable to create favicon directory: {$targetDirectory}");
 }
 
+$lockPath = sys_get_temp_dir().'/regulierungs-check-favicons-'.hash('sha256', $projectRoot).'.lock';
+$lockHandle = fopen($lockPath, 'c');
+
+if ($lockHandle === false || ! flock($lockHandle, LOCK_EX)) {
+    throw new RuntimeException("Unable to acquire the favicon generation lock: {$lockPath}");
+}
+
 $source = imagecreatefrompng($sourcePath);
 
 if ($source === false) {
@@ -145,41 +152,65 @@ try {
         }
 
         if (! rename($temporaryPath, $path)) {
-            if (isset($backups[$path])) {
-                rename($backups[$path], $path);
-                unset($backups[$path]);
-            }
-
             throw new RuntimeException("Unable to commit favicon: {$path}");
         }
 
         unset($temporaryFiles[$path]);
-        $committedTargets[] = $path;
+        $committedTargets[$path] = true;
     }
 
+    $backupCleanupFailures = [];
     foreach ($backups as $backupPath) {
-        @unlink($backupPath);
+        if (! unlink($backupPath)) {
+            $backupCleanupFailures[] = $backupPath;
+        }
+    }
+
+    if ($backupCleanupFailures !== []) {
+        fwrite(STDERR, 'Favicon generation succeeded, but backups could not be removed: '.implode(', ', $backupCleanupFailures).PHP_EOL);
     }
 } catch (Throwable $exception) {
-    foreach (array_reverse($committedTargets) as $path) {
+    $rollbackFailures = [];
+
+    foreach (array_reverse(array_keys($committedTargets)) as $path) {
+        if (is_file($path) && ! unlink($path)) {
+            $rollbackFailures[] = "Unable to remove incomplete favicon: {$path}";
+        }
+    }
+
+    foreach ($backups as $path => $backupPath) {
         if (is_file($path)) {
-            unlink($path);
+            $rollbackFailures[] = "Unable to restore favicon while target still exists: {$path}";
+
+            continue;
         }
 
-        if (isset($backups[$path]) && is_file($backups[$path])) {
-            rename($backups[$path], $path);
+        if (! is_file($backupPath) || ! rename($backupPath, $path)) {
+            $rollbackFailures[] = "Unable to restore favicon backup: {$backupPath}";
+        } else {
             unset($backups[$path]);
         }
     }
 
     foreach ($temporaryFiles as $temporaryPath) {
-        if (is_file($temporaryPath)) {
-            unlink($temporaryPath);
+        if (is_file($temporaryPath) && ! unlink($temporaryPath)) {
+            $rollbackFailures[] = "Unable to remove staged favicon: {$temporaryPath}";
         }
+    }
+
+    if ($rollbackFailures !== []) {
+        throw new RuntimeException(
+            $exception->getMessage().' Rollback incomplete: '.implode(' ', $rollbackFailures),
+            0,
+            $exception,
+        );
     }
 
     throw $exception;
 }
+
+flock($lockHandle, LOCK_UN);
+fclose($lockHandle);
 
 foreach (array_keys($outputs) as $path) {
     echo str_replace($projectRoot.'/', '', $path).PHP_EOL;

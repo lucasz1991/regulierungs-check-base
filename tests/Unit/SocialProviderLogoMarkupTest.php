@@ -34,10 +34,16 @@ class SocialProviderLogoMarkupTest extends TestCase
 
         $this->assertStringContainsString('Mit Google anmelden', $google);
         $this->assertStringContainsString('border-[#747775]', $google);
+        $this->assertStringContainsString('gap-[10px]', $google);
+        $this->assertStringContainsString('px-3', $google);
         $this->assertStringContainsString('Roboto, Arial, sans-serif', $google);
         $this->assertStringContainsString('Mit Apple registrieren', $apple);
         $this->assertStringContainsString('border-black', $apple);
+        $this->assertStringContainsString('h-11', $apple);
+        $this->assertStringContainsString('text-[19px]', $apple);
         $this->assertStringContainsString('-apple-system', $apple);
+        $this->assertFileExists(public_path('fonts/Roboto-Medium-latin.woff2'));
+        $this->assertGreaterThan(20_000, filesize(public_path('fonts/Roboto-Medium-latin.woff2')));
     }
 
     public function test_every_active_social_auth_surface_uses_the_shared_button_component(): void
