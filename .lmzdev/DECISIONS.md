@@ -39,3 +39,16 @@ Record durable decisions with date, context, decision, and consequences.
 - Jede V2-Fachmutation schreibt synchron in derselben Transaktion einen HMAC-verketteten Snapshot. Die Verifikation indexiert letzte Snapshots linear; nachträgliche Änderungen an Participation, Ticket, Aufruf, Ergebnis, Mailstatus oder Kampagnenzustand verhindern den nächsten legitimen Übergang.
 - Nur neue Tickets und Scans benötigen eine aktuell öffentliche Kampagne. Bereits aktive Aufrufe bleiben nach Deaktivierung oder Kampagnenende freigebbar und abschließbar.
 - Der Betrieb benötigt keine Promotion-Commands, Jobs, Scheduler, Queue-Worker oder ENV-Konfiguration. Einstellungen und Social-Provider werden verschlüsselt und MAC-geschützt im Admin gepflegt.
+
+## 2026-08-19 | Rollenbezogene Glücksrad-Handbücher
+
+- Volladmins und Promotion-Mitarbeiter erhalten getrennte Anleitungen, damit Konfiguration, Rechte und Gegenbuchungen nicht mit der operativen Scannerbedienung vermischt werden.
+- Das Admin-Handbuch verwendet aktuelle Vektordiagramme statt veralteter Admin-Screenshots; im Mitarbeiter-Handbuch werden nur weiterhin zutreffende Teilnehmeransichten verwendet.
+- Beide Dokumente erklären den direkten Webablauf ohne Promotion-Commands, Jobs, Scheduler, Queue-Worker oder WebSockets.
+
+## 2026-08-21 | Apple-ID Einrichtung wird als einseitige Betreiber-Checkliste dokumentiert
+
+- Die Anleitung folgt dem tatsächlichen Adminpfad `Einstellungen > Social Login > Apple-Anmeldung` und verwendet ausschließlich die dort vorhandenen Felder.
+- Die im Admin angezeigte Rücksprungadresse wird unverändert in Apple eingetragen; für Produktion ist dies `https://www.regulierungs-check.de/auth/apple/callback`.
+- Die `.p8` wird nur im Speichervorgang gelesen und nicht abgelegt. Der Betreiber verwahrt das einmal herunterladbare Original sicher für die Erneuerung des 150 Tage gültigen Client-Secrets.
+- Die Dokumentation benötigt keine neue ENV-Konfiguration und ändert weder Anwendungscode noch Datenbankdaten.

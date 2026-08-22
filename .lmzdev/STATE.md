@@ -41,3 +41,17 @@
 - Verifiziert: fokussierter News-Layout-Test 8 Tests/64 Assertions, komplette Unit-Suite 75 Tests/365 Assertions, Pint, Vite-Produktionsbuild und `git diff --check` bestanden.
 - Browser-Smoke-Test bei 390 px und 320 px: `lang=de`, `hyphens=auto`, `word-break=normal`; Titel- und Seitenbreite ohne horizontalen Ueberlauf.
 - Restrisiko: Die exakte sichtbare Silbentrennung richtet sich nach dem deutschen Trennwoerterbuch der jeweiligen Browser-Engine. Unabhaengig davon verhindert der Notfallumbruch ein Abschneiden des Titels.
+
+## 2026-08-19 | Glücksrad-V2-Handbücher
+
+- Zwei getrennte, druckfertige A4-PDFs erklären den aktuellen V2-Ablauf für Volladmins und Promotion-Mitarbeiter.
+- Das Admin-Handbuch umfasst 10 Seiten; die Mitarbeiter-Anleitung 7 Seiten inklusive Prozessdiagrammen, Teilnehmeransichten, Kontingent-/Stickerlogik, Sonderfällen und Kurzreferenz.
+- Veraltete V1- und alte Admin-Screenshots wurden nicht als aktuelle Bedienoberfläche verwendet. Die Darstellung bildet die vereinfachte Pflege über Gewinnbezeichnung und Menge ab.
+- Beide PDFs wurden vollständig mit Poppler gerendert und visuell auf Layout, Überlagerungen, Seitenumbrüche und Lesbarkeit geprüft.
+
+## 2026-08-21 | Apple-ID Betreiber-Kurzanleitung
+
+- Eine einseitige, druckfertige A4-Anleitung erklärt dem Betreiber die vollständige Einrichtung von Sign in with Apple.
+- Die Anleitung ordnet Services ID, Team ID, Key ID, Rücksprungadresse und `.p8` exakt den aktuellen Adminfeldern zu.
+- Die Produktions-Rücksprungadresse, der einmalige `.p8`-Download, die 150-Tage-Erneuerung und der Test mit verborgener Apple-E-Mail sind hervorgehoben.
+- Die PDF wurde mit pypdf und Poppler geprüft, vollständig gerendert und visuell auf Lesbarkeit, Überlagerungen und Umbrüche kontrolliert.

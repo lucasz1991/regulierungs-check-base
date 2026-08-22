@@ -18,3 +18,5 @@
 | Glücksrad V2 Integration, Gesamtgate und Browser-Screenshots | Codex-root | in-progress | 2026-08-16T07:20:00Z |
 | Kampagnen-Veroeffentlichung domainweit an einen echten Gewinn mit positiver Menge binden | Codex-root | completed | 2026-08-17T06:08:08Z |
 | News-Detail: deutsche automatische Silbentrennung fuer beliebig lange Titel | Codex | completed | 2026-08-18 |
+| Zwei Glücksrad-V2-Erklärungs-PDFs für Volladmins und Promotion-Mitarbeiter erstellen | Codex-root | completed | 2026-08-19T12:23:39Z |
+| Einseitige Betreiber-Anleitung für Apple-ID Login und Registrierung erstellen | Codex-root | completed | 2026-08-21T20:13:55Z |
