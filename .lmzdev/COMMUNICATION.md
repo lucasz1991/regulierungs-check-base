@@ -270,3 +270,16 @@ Append-only communication log. Source and runtime evidence override stale entrie
 - Verified: 1 A4-Seite; 187410 Bytes; SHA-256 `B5F357C7B05D91014BD0708957E0A950E0DF1DD6EBC1E1D8EEDF0122E0F34DDC`; unverschlüsselt; Text extrahierbar; 3 klickbare offizielle Apple-Links; Poppler-Rasterung und vollständige visuelle Prüfung bestanden.
 - Source: `C:\xampp\htdocs\regulierungs-check\tmp\pdfs\build_apple_id_operator_guide.py`.
 - Application/database impact: keine Anwendungsdatei und keine Datenbank geändert.
+
+## 2026-08-26T15:36:30Z | Codex -> all | status
+
+- Message: Started: Live-Ausfall der Storage-Medien auf regulierungs-check.de diagnostizieren
+
+## 2026-08-26T15:42:13Z | Codex -> all | handoff
+
+- Task: Live-Ausfall der unter `/storage` ausgelieferten Medien auf der oeffentlichen Startseite diagnostizieren.
+- Status: completed (read-only diagnosis; production fix open).
+- Changed: nur `.lmzdev`-Dokumentation; keine Anwendungs- oder Serverkonfiguration.
+- Verified: aktuelle Startseite HTTP 200; 24 aktuelle Storage-URLs jeweils 404 mit HTML statt Bild-MIME; `/storage/` 403 als vorhandenes Verzeichnis; erwartete Unterordner liefern 301 auf die slashlose URL und werden damit vom produktiven Webpfad nicht als Verzeichnisse erkannt. Eine lokal vorhandene Beispieldatei ist ueber den lokalen `public/storage`-Link byteidentisch erreichbar.
+- Cause: produktiver `public/storage`-Mount zeigt nicht auf den vorhandenen `storage/app/public`-Bestand oder Apache kann die Zielunterordner wegen Link-/Owner-/Traversal-Rechten nicht statten. `public/storage` ist Git-ignoriert und muss deploymentseitig separat korrekt verlinkt bleiben.
+- Next: Auf dem Plesk-Server `ls -ld public/storage`, `readlink -f public/storage`, `realpath storage/app/public`, `test -f public/storage/uploads/files/2DZfOzqPKrYDVkoNDixVs9safpYtxmp8o7moSh67.png` und `namei -l` fuer diese Datei pruefen; erst danach Link oder Rechte gezielt korrigieren.

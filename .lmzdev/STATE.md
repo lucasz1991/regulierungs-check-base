@@ -2,6 +2,7 @@
 
 ## Confirmed
 
+- Live-Diagnose 2026-08-26: Alle 24 stichprobenartig aus der aktuellen Startseite extrahierten `/storage/...`-Medien liefern `404 text/html`. `/storage/` selbst ist fuer Apache ein vorhandenes Verzeichnis (`403` wegen deaktiviertem Listing), die erwarteten Unterordner `/storage/uploads/`, `/storage/uploads/files/` und `/storage/pagebuilder_images/` werden jedoch als nicht vorhandene Verzeichnisse behandelt und auf die slashlose URL umgeleitet. Damit zeigt der produktive `public/storage`-Pfad nicht auf den vorhandenen Medienbestand oder Apache darf dessen Unterordner nicht traversieren.
 - Das Bewertungsformular kompiliert wieder zu gueltigem PHP. Die SafeIcon-Zuweisung verwendet einen explizit abgeschlossenen `@php`/`@endphp`-Block; ein Regressionstest kompiliert das vollstaendige Blade-Template und prueft es auf `ParseError`.
 - Promotion-Kern ist auf direkten Webrequest-Betrieb reduziert: keine Promotion-Commands/Scheduler, keine Auditmail/Ankerfelder, kein separater Zugriffskontext. Einmal-QR, Transaktionen, Kontingent, RBAC und synchrone HMAC-Auditkette bleiben erhalten.
 - Alle gefundenen Raw-Ausgaben von `posts.body` laufen nun durch eine enge DOM-Allowlist. Dadurch ist auch unsicherer Blog-/News-Altbestand ohne Datenmigration renderseitig passiv, waehrend legitime Rich-HTML-Formatierung erhalten bleibt.
@@ -23,6 +24,7 @@
 
 ## Risks and blockers
 
+- Der Produktionsserver wurde nur per HTTP untersucht; ohne Server-/Plesk-Dateisystemzugriff ist noch offen, ob `public/storage` ein leeres echtes Verzeichnis, ein Link auf den falschen Release-Pfad oder ein korrektes Ziel mit fehlerhaften Traversal-/Besitzrechten ist. Anwendungsdateien und Produktion wurden nicht veraendert.
 - Lokale Entwicklungsdatenbank `regulierungs-check` wurde am 2026-08-13 gegen 18:35 UTC durch einen irrtuemlich mit `--env=testing` gestarteten Artisan-`migrate:fresh` geleert; mangels `.env.testing` nutzte Artisan die Standard-MySQL-Verbindung. Der Lauf brach nach dem Erstellen der Migrationstabelle vor den Anwendungs-Migrationen ab. Kein Restore wurde durch den verursachenden Agenten gestartet; Root-Agent ist informiert.
 - Kein offener Promotion-P0/P1 im geprueften Kernstand; Root-Agent uebernimmt abschliessende Admin-Integration und Testguard-Haertung.
 - Bekannte P2: Domaincode ist zwischen Base/Admin gespiegelt; Audit-Verify ist bewusst vollstaendig und damit mit wachsender Eventzahl linear; Schluesselrotation ist fail-closed und benoetigt einen geplanten Wartungspfad.

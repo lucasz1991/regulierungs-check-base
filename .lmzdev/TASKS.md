@@ -20,3 +20,4 @@
 | News-Detail: deutsche automatische Silbentrennung fuer beliebig lange Titel | Codex | completed | 2026-08-18 |
 | Zwei Glücksrad-V2-Erklärungs-PDFs für Volladmins und Promotion-Mitarbeiter erstellen | Codex-root | completed | 2026-08-19T12:23:39Z |
 | Einseitige Betreiber-Anleitung für Apple-ID Login und Registrierung erstellen | Codex-root | completed | 2026-08-21T20:13:55Z |
+| Live-Ausfall der Storage-Medien auf regulierungs-check.de diagnostizieren | Codex | completed | 2026-08-26T15:42:13Z |
