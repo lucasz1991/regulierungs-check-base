@@ -45,4 +45,9 @@ class PromotionPrize extends Model
     {
         return $this->hasMany(PromotionSpinResult::class, 'prize_id');
     }
+
+    public function giftCodes(): HasMany
+    {
+        return $this->hasMany(PromotionGiftCode::class, 'prize_id');
+    }
 }

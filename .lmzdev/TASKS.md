@@ -2,6 +2,7 @@
 
 | Task | Owner | Status | Updated (UTC) |
 |---|---|---|---|
+| Amazon-Code-Auslieferung, Profilpflicht und Test-Drehungen | Codex | completed | 2026-09-10T19:24:00Z |
 | Review project state | unassigned | open | - |
 | Promotion-Konfiguration vollstaendig aus env in MAC-geschuetzten DB-Singleton verlagern | Codex / promotion_db_settings_core | completed | 2026-08-13T17:10:00Z |
 | Testdatenbank fuer Promotion-Suite hart absichern | Codex | completed | 2026-08-12T21:50:00Z |
@@ -20,4 +21,5 @@
 | News-Detail: deutsche automatische Silbentrennung fuer beliebig lange Titel | Codex | completed | 2026-08-18 |
 | Zwei Glücksrad-V2-Erklärungs-PDFs für Volladmins und Promotion-Mitarbeiter erstellen | Codex-root | completed | 2026-08-19T12:23:39Z |
 | Einseitige Betreiber-Anleitung für Apple-ID Login und Registrierung erstellen | Codex-root | completed | 2026-08-21T20:13:55Z |
+| Mitarbeiter-Onboarding mit frei waehlbarem Team, direkter Passwortsetzung und synchroner Admin-Mail | Codex | completed | 2026-09-04T08:44:22Z |
 | Live-Ausfall der Storage-Medien auf regulierungs-check.de diagnostizieren | Codex | completed | 2026-08-26T15:42:13Z |

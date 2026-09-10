@@ -7,6 +7,7 @@ use App\Models\PromotionTicket;
 use App\Services\Auth\CustomerAccountService;
 use App\Services\Auth\SocialiteRuntimeConfigurator;
 use App\Services\Promotion\PromotionSettingsService;
+use App\Services\Promotion\PromotionDigitalDeliveryService;
 use App\Services\Promotion\PromotionTicketService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -233,6 +234,7 @@ class WheelLanding extends Component
     public function render(
         PromotionTicketService $tickets,
         PromotionSettingsService $promotionSettings,
+        PromotionDigitalDeliveryService $digitalDelivery,
         SocialiteRuntimeConfigurator $socialSettings,
     ) {
         $campaign = $this->campaignId
@@ -256,6 +258,7 @@ class WheelLanding extends Component
             'ticket' => $ticket,
             'promotionEnabled' => $promotionSettings->isEnabled(),
             'socialProviders' => $socialSettings->availableProviders(),
+            'digitalProfileComplete' => Auth::check() ? $digitalDelivery->profileComplete(Auth::user()) : false,
         ])->layout('layouts.promotion');
     }
 

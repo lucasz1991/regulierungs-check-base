@@ -3,6 +3,7 @@
 namespace App\Livewire\Profile;
 
 use App\Models\Customer;
+use App\Services\Promotion\PromotionDigitalDeliveryService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -36,7 +37,7 @@ class UpdateCustomerInformationForm extends Component
         }
     }
 
-    public function save()
+    public function save(PromotionDigitalDeliveryService $digitalDelivery)
     {
         $this->validate([
             'first_name' => 'required|string|max:255',
@@ -78,6 +79,10 @@ class UpdateCustomerInformationForm extends Component
                 'country' => $this->country,
             ]);
         }
+
+        // The direct delivery check is deliberately request-bound: no queue,
+        // scheduler or command is needed after the participant completes data.
+        $digitalDelivery->deliverEligibleForUser(Auth::user());
 
         $this->dispatch('saved');
         session()->flash('message', 'Customer information updated successfully!');

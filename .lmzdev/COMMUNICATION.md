@@ -283,3 +283,58 @@ Append-only communication log. Source and runtime evidence override stale entrie
 - Verified: aktuelle Startseite HTTP 200; 24 aktuelle Storage-URLs jeweils 404 mit HTML statt Bild-MIME; `/storage/` 403 als vorhandenes Verzeichnis; erwartete Unterordner liefern 301 auf die slashlose URL und werden damit vom produktiven Webpfad nicht als Verzeichnisse erkannt. Eine lokal vorhandene Beispieldatei ist ueber den lokalen `public/storage`-Link byteidentisch erreichbar.
 - Cause: produktiver `public/storage`-Mount zeigt nicht auf den vorhandenen `storage/app/public`-Bestand oder Apache kann die Zielunterordner wegen Link-/Owner-/Traversal-Rechten nicht statten. `public/storage` ist Git-ignoriert und muss deploymentseitig separat korrekt verlinkt bleiben.
 - Next: Auf dem Plesk-Server `ls -ld public/storage`, `readlink -f public/storage`, `realpath storage/app/public`, `test -f public/storage/uploads/files/2DZfOzqPKrYDVkoNDixVs9safpYtxmp8o7moSh67.png` und `namei -l` fuer diese Datei pruefen; erst danach Link oder Rechte gezielt korrigieren.
+
+## 2026-09-04T08:31:46Z | Codex -> all | status
+
+- Message: Started: Mitarbeiter-Onboarding mit freier Teamwahl und ohne E-Mail-Verifizierung
+
+## 2026-09-04T08:35:03Z | Codex -> all | start
+
+- Task: Promotion-feste Mitarbeitereinladung in allgemeines Team-Onboarding umstellen.
+- Status: in-progress
+- Scope: Admin-Anwendung; Base-Anwendung bleibt funktional unveraendert, da die gemeinsame Datenbankstruktur bereits `team_id` in `staff_invitations` enthaelt.
+- Decision: Mitarbeiter-Mails werden direkt im Admin-Webrequest versendet; keine Message, Jobs, Queue-Worker oder Cron-Abhaengigkeit.
+- Next: Admin-Implementierung und isolierte SQLite-Tests abschliessen.
+
+## 2026-09-04T08:44:22Z | Codex -> all | handoff
+
+- Task: Admin-Mitarbeiter-Onboarding mit freier Teamwahl und direkter Mail.
+- Status: completed.
+- Base impact: keine Laufzeitlogik, Migration, Message, Queue, Job oder Command; nur der vom Admin-Vite-Build synchronisierte Tailwind-Stand und LMZ-Handoff.
+- Verified: Admin 42 fokussierte Feature-Tests/263 Assertions und vollständiges Promotion-Gate 86/784, Pint, Vite-Produktionsbuild und beide Diff-Checks.
+
+## 2026-09-10T19:09:45Z | Codex -> all | status
+
+- Message: Start: Amazon-Code-Auslieferung, Profilpflicht und Test-Drehungen
+
+## 2026-09-10T19:24:00Z | Codex -> all | handoff
+
+- Task: Amazon-Code-Auslieferung, Profilpflicht und Test-Drehungen.
+- Status: completed.
+- Changed: additive Base-Migration für Code-Vorrat, Zustände, Benachrichtigungen und Test-Tickets; V2-QRs mit V1-Lesbarkeit; direkte Profil-Auslieferungsprüfung und Teilnehmerhinweise.
+- Runtime: ausschließlich synchrone Webrequests; keine Queue, Jobs, Scheduler oder Commands.
+- Verified: PHP-Lint und Promotion-Routen; keine lokale Migration gegen die nicht als Testdatenbank markierte Datenbank ausgeführt.
+
+## 2026-09-10T19:34:34Z | Codex -> all | status
+
+- Message: Start: Gewinnspiel-Mails erfassen und im Browser prüfen
+
+## 2026-09-10T19:39:00Z | Codex -> all | handoff
+
+- Task: Gewinnspiel-Mailarten und Vorlagen prüfen.
+- Result: Alle Vorlagen mit nicht gespeicherten Beispieldaten gerendert, ohne Versand oder Datenbankzugriff.
+- Browser: Lokale `data:`-Vorschau wurde durch die Browser-Sicherheitsrichtlinie blockiert; kein Umgehungsversuch vorgenommen.
+
+## 2026-09-10T19:42:00Z | Codex -> all | handoff
+
+- Browser-Vorschau: lokale HTML-Vorschau mit Gewinn-, Freigabe-, Profilhinweis- und Code-Mail erfolgreich unter `http://127.0.0.1:8765/promotion-mails.html` geöffnet.
+- Safety: ausschließlich fiktive Daten und ein ungültiger Muster-Code; kein Mailversand und keine Datenbankmutation.
+
+## 2026-09-10T19:42:28Z | Codex -> all | status
+
+- Message: Start: Teilnehmeransichten des Gluecksrads im Browser pruefen
+
+## 2026-09-10T19:47:00Z | Codex -> all | handoff
+
+- Browser-Vorschau: Teilnehmeransichten für Einstieg, E-Mail-Bestätigung, QR-Ticket, erfolgreichen Scan, Profilblockade und Code-Versand unter `http://127.0.0.1:8765/promotion-participant-views.html` geprüft.
+- Safety: ausschließlich fiktive Angaben; keine Anmeldung, Ticket-Erstellung, Mail oder Datenbankaktion ausgelöst.

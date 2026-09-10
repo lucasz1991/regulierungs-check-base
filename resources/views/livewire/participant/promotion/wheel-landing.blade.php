@@ -124,12 +124,15 @@
                     </div>
                 @elseif ($ticketStatus === 'ready')
                     <div class="text-center">
+                        @if (! $digitalProfileComplete)
+                            <p class="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-amber-900">Für einen möglichen digitalen Gewinn benötigen wir deinen vollständigen Namen und deine Anschrift. <a class="underline" href="{{ route('profile.show') }}">Profil vervollständigen</a></p>
+                        @endif
                         <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">Ticket bereit</p>
                         <h2 class="mt-2 text-2xl font-black tracking-tight text-[#0b3038]">Zeige diesen Code am Rad</h2>
                         <div class="mx-auto mt-5 aspect-square w-full max-w-[290px] rounded-[1.75rem] border border-[#0d9187]/20 bg-white p-4 shadow-inner">
-                            <img src="{{ route('promotion.ticket.qr', ['participation' => $ticket->participation->public_id]) }}" alt="Persönlicher QR-Code für dein Glücksrad-Ticket" class="h-full w-full">
+                            <img src="{{ route('promotion.ticket.qr.v2', ['ticket' => $ticket->public_id]) }}" alt="Persönlicher QR-Code für dein Glücksrad-Ticket" class="h-full w-full">
                         </div>
-                        <p class="mt-4 break-all font-mono text-xs font-bold tracking-wide text-slate-500">{{ $ticket->participation->public_id }}</p>
+                        <p class="mt-4 break-all font-mono text-xs font-bold tracking-wide text-slate-500">{{ $ticket->participation?->public_id ?? 'TEST-'.$ticket->public_id }}</p>
                         <p class="mt-3 text-sm leading-6 text-slate-600">Der Code verschwindet automatisch, sobald der Mitarbeiter ihn gescannt hat.</p>
                     </div>
                 @elseif ($ticketStatus === 'active')
@@ -144,6 +147,13 @@
                         <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full {{ $finalOutcome === 'no_win' ? 'bg-slate-100' : 'bg-[#f4c95d]' }} text-4xl">{{ $finalOutcome === 'no_win' ? '♡' : '★' }}</div>
                         <p class="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">Dein Ergebnis</p>
                         <h2 class="mt-2 text-3xl font-black tracking-tight text-[#0b3038]">{{ $finalOutcome === 'no_win' ? 'Diesmal leider kein Gewinn' : ($result?->label_snapshot ?: 'Glückwunsch!') }}</h2>
+                        @if (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'awaiting_profile')
+                            <p class="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-amber-900">Für die digitale Auslieferung fehlt noch dein vollständiges Profil. <a class="underline" href="{{ route('profile.show') }}">Jetzt vervollständigen</a></p>
+                        @elseif (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'awaiting_code')
+                            <p class="mt-3 rounded-xl bg-sky-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-sky-900">Dein Gewinn ist bestätigt. Der Versand startet automatisch, sobald der Code-Vorrat ergänzt wurde.</p>
+                        @elseif (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'sent')
+                            <p class="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-emerald-900">Dein digitaler Gewinn wurde an deine E-Mail-Adresse versendet.</p>
+                        @endif
                         @if ($mailStatus === 'sent')
                             <p class="mt-3 text-sm leading-6 text-slate-600">Das Ergebnis wurde deinem Konto zugeordnet und per E-Mail versendet.</p>
                         @elseif ($mailStatus === 'failed')

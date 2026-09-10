@@ -57,3 +57,8 @@
 - Die Anleitung ordnet Services ID, Team ID, Key ID, Rücksprungadresse und `.p8` exakt den aktuellen Adminfeldern zu.
 - Die Produktions-Rücksprungadresse, der einmalige `.p8`-Download, die 150-Tage-Erneuerung und der Test mit verborgener Apple-E-Mail sind hervorgehoben.
 - Die PDF wurde mit pypdf und Poppler geprüft, vollständig gerendert und visuell auf Lesbarkeit, Überlagerungen und Umbrüche kontrolliert.
+
+## 2026-09-04 | Admin-Mitarbeiter-Onboarding
+
+- Das Mitarbeiter-Onboarding wurde ausschließlich im Admin generalisiert; Base benötigt dafür keine Route, Queue, Job, Command, Migration oder Datenmodelländerung.
+- Die vom Admin-Build synchronisierte Tailwind-Datei enthält die Klassen der neuen teamneutralen Mitarbeiterverwaltung und Passwortsetzansicht.

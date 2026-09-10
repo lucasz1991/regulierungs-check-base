@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Participant\Promotion\TicketQrController;
+use App\Http\Controllers\Participant\Promotion\TicketV2QrController;
 use App\Http\Controllers\PublicFormController;
 use App\Http\Middleware\PromotionPrivacyHeaders;
 use App\Livewire\Articles\Blog\BlogList;
@@ -109,4 +110,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'account.active', 'promotion.enabled', PromotionPrivacyHeaders::class])->group(function () {
     Route::get('/gluecksrad/ticket/{participation:public_id}/qr.svg', TicketQrController::class)
         ->name('promotion.ticket.qr');
+    Route::get('/gluecksrad/ticket/qr/{ticket:public_id}.svg', TicketV2QrController::class)
+        ->name('promotion.ticket.qr.v2');
 });

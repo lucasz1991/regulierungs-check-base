@@ -52,3 +52,7 @@ Record durable decisions with date, context, decision, and consequences.
 - Die im Admin angezeigte Rücksprungadresse wird unverändert in Apple eingetragen; für Produktion ist dies `https://www.regulierungs-check.de/auth/apple/callback`.
 - Die `.p8` wird nur im Speichervorgang gelesen und nicht abgelegt. Der Betreiber verwahrt das einmal herunterladbare Original sicher für die Erneuerung des 150 Tage gültigen Client-Secrets.
 - Die Dokumentation benötigt keine neue ENV-Konfiguration und ändert weder Anwendungscode noch Datenbankdaten.
+
+## 2026-09-04 | Mitarbeiter-E-Mails bleiben im Admin
+
+- Mitarbeiter-Einrichtungs-E-Mails werden direkt und synchron im Admin versendet. Base-Message, Base-Jobs und Base-Queue werden für diesen Ablauf nicht verwendet.
