@@ -196,6 +196,25 @@ class WheelLanding extends Component
             : null;
         $campaign = $tickets->publicCampaign();
 
+        $pendingTestTicket = null;
+        if ($campaign && $user?->hasVerifiedEmail()) {
+            try {
+                $pendingTestTicket = $tickets->pendingTestTicketFor($user, $campaign);
+            } catch (Throwable $exception) {
+                Log::warning('Gluecksrad-Testticket konnte nicht geladen werden.', [
+                    'exception_class' => $exception::class,
+                ]);
+            }
+        }
+
+        if ($pendingTestTicket
+            && (! $currentTicket
+                || ((int) $currentTicket->getKey() !== (int) $pendingTestTicket->getKey()
+                    && $currentTicket->status->value !== 'active'))) {
+            $this->ticketId = (int) $pendingTestTicket->getKey();
+            $currentTicket = $pendingTestTicket;
+        }
+
         if ($currentTicket
             && $currentTicket->status->value === 'ready'
             && (! $user->isActive() || ! $user->hasVerifiedEmail())) {
@@ -220,7 +239,8 @@ class WheelLanding extends Component
 
         if ($campaign && $user?->hasVerifiedEmail() && $this->ticketId === null) {
             try {
-                $ticket = $tickets->ticketFor($user, $campaign)
+                $ticket = $tickets->pendingTestTicketFor($user, $campaign)
+                    ?? $tickets->ticketFor($user, $campaign)
                     ?? $tickets->ensureTicket($user, $campaign);
                 $this->ticketId = (int) $ticket->getKey();
             } catch (Throwable $exception) {

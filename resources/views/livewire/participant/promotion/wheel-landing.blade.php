@@ -1,5 +1,6 @@
 @php
     $ticketStatus = $ticket?->status instanceof \BackedEnum ? $ticket->status->value : (string) ($ticket?->status ?? '');
+    $isTestTicket = (bool) $ticket?->isTest();
     $result = $ticket?->effectiveResult;
     $activeResult = $ticket?->activeTurn?->results?->sortByDesc('sequence')?->first();
     $activeOutcome = $activeResult?->outcome_type_snapshot instanceof \BackedEnum
@@ -124,10 +125,15 @@
                     </div>
                 @elseif ($ticketStatus === 'ready')
                     <div class="text-center">
-                        @if (! $digitalProfileComplete)
+                        @if ($isTestTicket)
+                            <div class="mb-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-left text-sm leading-6 text-amber-950">
+                                <strong class="block font-black">Test-Ticket</strong>
+                                Dieses Ticket prüft den kompletten Ablauf. Gewinne, Kontingente, Gutscheincodes und Nachrichten bleiben unverändert.
+                            </div>
+                        @elseif (! $digitalProfileComplete)
                             <p class="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-amber-900">Für einen möglichen digitalen Gewinn benötigen wir deinen vollständigen Namen und deine Anschrift. <a class="underline" href="{{ route('profile.show') }}">Profil vervollständigen</a></p>
                         @endif
-                        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">Ticket bereit</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">{{ $isTestTicket ? 'Test-Ticket bereit' : 'Ticket bereit' }}</p>
                         <h2 class="mt-2 text-2xl font-black tracking-tight text-[#0b3038]">Zeige diesen Code am Rad</h2>
                         <div class="promotion-status-pulse mx-auto mt-5 aspect-square w-full max-w-[290px] rounded-[1.75rem] border border-[#0d9187]/20 bg-white p-4 shadow-[inset_0_0_0_1px_rgba(13,145,135,.06),0_20px_45px_-30px_rgba(8,47,53,.5)]">
                             <img src="{{ route('promotion.ticket.qr.v2', ['ticket' => $ticket->public_id]) }}" alt="Persönlicher QR-Code für dein Glücksrad-Ticket" class="h-full w-full">
@@ -137,6 +143,7 @@
                     </div>
                 @elseif ($ticketStatus === 'active')
                     <div class="py-8 text-center">
+                        @if ($isTestTicket)<span class="mb-6 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-amber-900">Testlauf</span>@endif
                         <div class="promotion-status-pulse relative mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#f4c95d] text-3xl text-[#0b3038] shadow-[0_0_0_12px_rgba(244,201,93,0.18)]"><span class="promotion-status-orbit absolute inset-2 rounded-full border border-dashed border-[#0b3038]/35"></span><i class="fal fa-sync-alt" aria-hidden="true"></i></div>
                         <p class="mt-7 text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">{{ $activeOutcome === 'retry' ? 'Zusatzdreh' : ($activeOutcome === 'quota_reroll' ? 'Bitte erneut drehen' : 'Scan erfolgreich') }}</p>
                         <h2 class="mt-2 text-4xl font-black leading-tight tracking-[-0.04em] text-[#0b3038]">Du bist dran.<br>Jetzt darfst du drehen!</h2>
@@ -145,9 +152,11 @@
                 @elseif ($ticketStatus === 'completed')
                     <div class="py-6 text-center">
                         <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full {{ $finalOutcome === 'no_win' ? 'bg-slate-100 text-slate-500' : 'promotion-status-pulse bg-[#f4c95d] text-[#0b3038]' }} text-3xl"><i class="fal {{ $finalOutcome === 'no_win' ? 'fa-heart' : 'fa-trophy-alt' }}" aria-hidden="true"></i></div>
-                        <p class="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">Dein Ergebnis</p>
+                        <p class="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">{{ $isTestTicket ? 'Testergebnis' : 'Dein Ergebnis' }}</p>
                         <h2 class="mt-2 text-3xl font-black tracking-tight text-[#0b3038]">{{ $finalOutcome === 'no_win' ? 'Diesmal leider kein Gewinn' : ($result?->label_snapshot ?: 'Glückwunsch!') }}</h2>
-                        @if (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'awaiting_profile')
+                        @if ($isTestTicket)
+                            <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-amber-950">Der Testlauf wurde vollständig gespeichert. Es wurde kein Kontingent verbraucht, kein Gutscheincode reserviert und keine E-Mail oder interne Nachricht versendet.</p>
+                        @elseif (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'awaiting_profile')
                             <p class="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-amber-900">Für die digitale Auslieferung fehlt noch dein vollständiges Profil. <a class="underline" href="{{ route('profile.show') }}">Jetzt vervollständigen</a></p>
                         @elseif (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'awaiting_code')
                             <p class="mt-3 rounded-xl bg-sky-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-sky-900">Dein Gewinn ist bestätigt. Der Versand startet automatisch, sobald der Code-Vorrat ergänzt wurde.</p>
