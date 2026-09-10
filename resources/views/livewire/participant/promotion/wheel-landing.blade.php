@@ -163,14 +163,16 @@
                         @elseif (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'sent')
                             <p class="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-left text-sm font-semibold leading-6 text-emerald-900">Dein digitaler Gewinn wurde an deine E-Mail-Adresse versendet.</p>
                         @endif
-                        @if ($mailStatus === 'sent')
-                            <p class="mt-3 text-sm leading-6 text-slate-600">Das Ergebnis wurde deinem Konto zugeordnet und per E-Mail versendet.</p>
-                        @elseif ($mailStatus === 'failed')
-                            <p class="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold leading-6 text-amber-900">Dein Ergebnis ist sicher gespeichert. Die E-Mail konnte nicht zugestellt werden; du findest das Ergebnis jederzeit in deinem Profil.</p>
-                        @elseif ($mailStatus === 'pending')
-                            <p class="mt-3 text-sm leading-6 text-slate-600">Das Ergebnis wurde deinem Konto zugeordnet und wird zusätzlich per E-Mail versendet.</p>
-                        @else
-                            <p class="mt-3 text-sm leading-6 text-slate-600">Das Ergebnis wurde deinem Konto zugeordnet und ist jederzeit in deinem Profil verfügbar.</p>
+                        @if (! $isTestTicket)
+                            @if ($mailStatus === 'sent')
+                                <p class="mt-3 text-sm leading-6 text-slate-600">Das Ergebnis wurde deinem Konto zugeordnet und per E-Mail versendet.</p>
+                            @elseif ($mailStatus === 'failed')
+                                <p class="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold leading-6 text-amber-900">Dein Ergebnis ist sicher gespeichert. Die E-Mail konnte nicht zugestellt werden; du findest das Ergebnis jederzeit in deinem Profil.</p>
+                            @elseif ($mailStatus === 'pending')
+                                <p class="mt-3 text-sm leading-6 text-slate-600">Das Ergebnis wurde deinem Konto zugeordnet und wird zusätzlich per E-Mail versendet.</p>
+                            @else
+                                <p class="mt-3 text-sm leading-6 text-slate-600">Das Ergebnis wurde deinem Konto zugeordnet und ist jederzeit in deinem Profil verfügbar.</p>
+                            @endif
                         @endif
                         <a href="{{ route('dashboard') }}" class="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-[#0b3038] px-5 py-3 font-black text-white">Im Profil ansehen</a>
                     </div>

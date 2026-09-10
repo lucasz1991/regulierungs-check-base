@@ -268,18 +268,23 @@ final class PromotionTicketService
             $admin = User::query()->lockForUpdate()->findOrFail($admin->getKey()); $this->assertGlobalAdmin($admin);
             $participant = User::query()->lockForUpdate()->findOrFail($participant->getKey()); $this->assertParticipant($participant);
             $campaign = PromotionCampaign::query()->lockForUpdate()->findOrFail($campaign->getKey()); $this->assertSelectedCampaign($campaign); $this->assertAuditIntegrity($campaign);
+            $prizes = $campaign->prizes()->orderBy('id')->lockForUpdate()->get();
             $runtimeState = PromotionCampaignState::query()->whereKey($campaign->getKey())->lockForUpdate()->first();
             if (! $runtimeState) {
+                $stickerRequired = $campaign->quota_exhaustion_policy === PromotionQuotaPolicy::StickerContinue
+                    && $prizes->contains(static fn ($prize): bool => $prize->is_active
+                        && $prize->outcome_type === PromotionOutcomeType::Prize
+                        && $prize->awarded_count >= $prize->quota);
                 PromotionCampaignState::query()->create([
                     'campaign_id' => $campaign->getKey(),
                     'active_turn_id' => null,
-                    'sticker_required' => false,
+                    'sticker_required' => $stickerRequired,
                     'sticker_acknowledged_at' => null,
                     'sticker_acknowledged_by' => null,
                 ]);
                 $this->audit->appendV2($campaign, 'campaign.runtime_initialized', null, $admin, [
                     'active_turn_id' => null,
-                    'sticker_required' => false,
+                    'sticker_required' => $stickerRequired,
                 ]);
                 $this->assertAuditIntegrity($campaign);
             }
