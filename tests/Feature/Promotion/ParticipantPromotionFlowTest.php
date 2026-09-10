@@ -146,6 +146,27 @@ class ParticipantPromotionFlowTest extends TestCase
         ), 'Bestehende Tickets duerfen beim Polling keine vollstaendige Auditverifikation ausloesen.');
     }
 
+    public function test_participant_sees_an_admin_issued_test_ticket_before_a_regular_ticket(): void
+    {
+        $user = $this->createPromotionParticipant();
+        $ticket = app(PromotionTicketService::class)->issueTestTicket($user, $this->campaign, $this->admin);
+
+        Livewire::actingAs($user)
+            ->test(WheelLanding::class)
+            ->assertSet('ticketId', $ticket->id)
+            ->assertSee('Test-Ticket bereit')
+            ->assertSee('Gewinne, Kontingente, Gutscheincodes und Nachrichten bleiben unverändert.')
+            ->assertSee('TEST-'.$ticket->public_id);
+
+        $this->actingAs($user)
+            ->get(route('promotion.ticket.qr.v2', ['ticket' => $ticket->public_id]))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/svg+xml')
+            ->assertHeader('Cache-Control', 'no-store, private');
+
+        $this->assertDatabaseMissing('participations', ['user_id' => $user->id]);
+    }
+
     public function test_integrated_registration_waits_for_email_verification_before_creating_ticket(): void
     {
         Mail::fake();
