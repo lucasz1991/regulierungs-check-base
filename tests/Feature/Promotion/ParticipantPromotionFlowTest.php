@@ -158,6 +158,13 @@ class ParticipantPromotionFlowTest extends TestCase
             ->assertSee('Gewinne, Kontingente, Gutscheincodes und Nachrichten bleiben unverändert.')
             ->assertSee('TEST-'.$ticket->public_id);
 
+        Livewire::actingAs($user)
+            ->test(Dashboard::class)
+            ->assertSee('Testlauf')
+            ->assertSee('TEST-'.strtoupper(substr((string) $ticket->public_id, 0, 8)))
+            ->assertSee('Dieser Probelauf hat keine reguläre Teilnahme-ID')
+            ->assertDontSee('Attempt to read property');
+
         $this->actingAs($user)
             ->get(route('promotion.ticket.qr.v2', ['ticket' => $ticket->public_id]))
             ->assertOk()

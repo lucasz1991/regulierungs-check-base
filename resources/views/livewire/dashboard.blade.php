@@ -91,6 +91,10 @@
                                             $ticketOutcome = $ticket->effectiveResult?->outcome_type_snapshot instanceof \BackedEnum
                                                 ? $ticket->effectiveResult->outcome_type_snapshot->value
                                                 : (string) ($ticket->effectiveResult?->outcome_type_snapshot ?? '');
+                                            $isTestTicket = $ticket->isTest();
+                                            $ticketReference = $isTestTicket
+                                                ? 'TEST-'.strtoupper(substr((string) $ticket->public_id, 0, 8))
+                                                : ($ticket->participation?->public_id ?? 'Teilnahme-ID nicht verfügbar');
                                             $ticketStatusLabel = [
                                                 'ready' => 'Ticket bereit',
                                                 'active' => 'Du bist dran',
@@ -102,6 +106,9 @@
                                             <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                                                 <div class="min-w-0">
                                                     <p class="text-sm text-slate-500">{{ $ticket->campaign->name }}</p>
+                                                    @if ($isTestTicket)
+                                                        <span class="mt-2 inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-900">Testlauf</span>
+                                                    @endif
                                                     <p class="mt-1 font-semibold text-slate-950">
                                                         @if ($ticketStatus !== 'completed')
                                                             {{ $ticketStatusLabel }}
@@ -111,7 +118,10 @@
                                                             {{ $ticket->effectiveResult?->label_snapshot ?: 'Gewinn' }}
                                                         @endif
                                                     </p>
-                                                    <p class="mt-3 break-all font-mono text-sm font-bold tracking-wide text-slate-800">{{ $ticket->participation->public_id }}</p>
+                                                    <p class="mt-3 break-all font-mono text-sm font-bold tracking-wide text-slate-800">{{ $ticketReference }}</p>
+                                                    @if ($isTestTicket)
+                                                        <p class="mt-2 text-xs leading-5 text-slate-500">Dieser Probelauf hat keine reguläre Teilnahme-ID und beeinflusst weder Gewinnkontingente noch Gutscheincodes.</p>
+                                                    @endif
                                                 </div>
                                                 <span class="inline-flex w-fit rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-inset ring-slate-200">{{ $ticketStatusLabel }}</span>
                                             </div>
