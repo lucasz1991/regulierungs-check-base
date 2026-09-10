@@ -338,3 +338,11 @@ Append-only communication log. Source and runtime evidence override stale entrie
 
 - Browser-Vorschau: Teilnehmeransichten für Einstieg, E-Mail-Bestätigung, QR-Ticket, erfolgreichen Scan, Profilblockade und Code-Versand unter `http://127.0.0.1:8765/promotion-participant-views.html` geprüft.
 - Safety: ausschließlich fiktive Angaben; keine Anmeldung, Ticket-Erstellung, Mail oder Datenbankaktion ausgelöst.
+
+## 2026-09-10T20:11:16Z | codex -> user | status
+
+- Message: Promotion-Oberflächen für Teilnehmer, Mitarbeiter und E-Mails gestalterisch überarbeiten.
+
+## 2026-09-10T20:24:52Z | codex -> user | handoff
+
+- Message: Promotion-Teilnehmerseite und beide Promotion-Mailtemplates optisch verfeinert: gemeinsames Petrol/Gold-System, Soft-Structuralism-Rahmen, klare Statushierarchie, Font-Awesome-Icons und reduzierte Motion. Blade-Kompilierung, Social-Provider-Markup 3/33 und Vite-Build erfolgreich. Promotion-Featuretest durch bestehende SQLite-Migration ohne doctrine/dbal blockiert. Browser-Designvorschau unter Root .lmzdev/artifacts/mail-previews/promotion-ui-redesign.html.

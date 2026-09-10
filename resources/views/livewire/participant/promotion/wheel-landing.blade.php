@@ -19,7 +19,7 @@
         );
 @endphp
 
-<div class="relative min-h-screen overflow-hidden"
+<div class="relative min-h-[100dvh] overflow-hidden"
     @if ($pollForLiveTurn) wire:poll.1000ms.visible="refreshState"
     @elseif ($pollForCorrection) wire:poll.2000ms.visible="refreshState"
     @endif>
@@ -39,7 +39,7 @@
     </header>
 
     <main class="relative z-10 mx-auto grid max-w-5xl gap-6 px-4 pb-14 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <section class="pt-4 sm:pt-10">
+        <section class="promotion-enter pt-4 sm:pt-10">
             <p class="inline-flex items-center gap-2 rounded-full border border-[#0d9187]/20 bg-white/80 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.17em] text-[#08776f] shadow-sm">
                 <span class="h-2 w-2 rounded-full bg-[#f4c95d]"></span>
                 Promotion-Glücksrad
@@ -53,7 +53,7 @@
 
             <ol class="mt-8 grid gap-3" aria-label="Ablauf">
                 @foreach ([['01', 'Anmelden', 'Ein Konto genügt für deine Teilnahme.'], ['02', 'Ticket zeigen', 'Der Mitarbeiter scannt deinen persönlichen QR-Code.'], ['03', 'Drehen', 'Du siehst das Ergebnis direkt auf deinem Handy.']] as [$number, $title, $copy])
-                    <li class="flex gap-4 rounded-2xl border border-white/80 bg-white/65 p-4 backdrop-blur">
+                    <li class="group flex gap-4 rounded-2xl border border-white/80 bg-white/65 p-4 backdrop-blur transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-white/90">
                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0b3038] text-xs font-black text-white">{{ $number }}</span>
                         <span><strong class="block text-sm text-[#0b3038]">{{ $title }}</strong><span class="mt-0.5 block text-sm text-slate-600">{{ $copy }}</span></span>
                     </li>
@@ -61,10 +61,10 @@
             </ol>
         </section>
 
-        <section class="rounded-[2rem] border border-white/90 bg-white/90 p-5 shadow-[0_24px_80px_-30px_rgba(11,48,56,0.35)] backdrop-blur sm:p-8">
+        <section class="promotion-bezel promotion-enter-delayed rounded-[2rem] border border-white/90 bg-white/90 p-5 shadow-[0_24px_80px_-30px_rgba(11,48,56,0.35)] backdrop-blur sm:p-8">
             @if ((! $promotionEnabled || ! $campaign) && ! in_array($ticketStatus, ['active', 'completed'], true))
                 <div class="py-10 text-center">
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-3xl">⌛</div>
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-2xl text-slate-500"><i class="fal fa-calendar-alt" aria-hidden="true"></i></div>
                     <h2 class="mt-5 text-2xl font-black tracking-tight text-[#0b3038]">Aktuell keine Aktion</h2>
                     <p class="mt-2 text-sm leading-6 text-slate-600">Sobald das nächste Glücksrad startet, kannst du dich hier anmelden.</p>
                 </div>
@@ -114,7 +114,7 @@
             @else
                 @if (! auth()->user()->hasVerifiedEmail() && ! in_array($ticketStatus, ['active', 'completed'], true))
                     <div class="py-4 text-center">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 text-3xl">✉</div>
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 text-2xl text-amber-800"><i class="fal fa-envelope-open-text" aria-hidden="true"></i></div>
                         <p class="mt-5 text-xs font-bold uppercase tracking-[0.16em] text-amber-700">Ein letzter Schritt</p>
                         <h2 class="mt-2 text-2xl font-black tracking-tight text-[#0b3038]">E-Mail bestätigen</h2>
                         <p class="mt-3 text-sm leading-6 text-slate-600">Wir haben den Bestätigungslink an <strong>{{ auth()->user()->email }}</strong> gesendet. Dein Ticket entsteht direkt nach der Bestätigung.</p>
@@ -129,7 +129,7 @@
                         @endif
                         <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">Ticket bereit</p>
                         <h2 class="mt-2 text-2xl font-black tracking-tight text-[#0b3038]">Zeige diesen Code am Rad</h2>
-                        <div class="mx-auto mt-5 aspect-square w-full max-w-[290px] rounded-[1.75rem] border border-[#0d9187]/20 bg-white p-4 shadow-inner">
+                        <div class="promotion-status-pulse mx-auto mt-5 aspect-square w-full max-w-[290px] rounded-[1.75rem] border border-[#0d9187]/20 bg-white p-4 shadow-[inset_0_0_0_1px_rgba(13,145,135,.06),0_20px_45px_-30px_rgba(8,47,53,.5)]">
                             <img src="{{ route('promotion.ticket.qr.v2', ['ticket' => $ticket->public_id]) }}" alt="Persönlicher QR-Code für dein Glücksrad-Ticket" class="h-full w-full">
                         </div>
                         <p class="mt-4 break-all font-mono text-xs font-bold tracking-wide text-slate-500">{{ $ticket->participation?->public_id ?? 'TEST-'.$ticket->public_id }}</p>
@@ -137,14 +137,14 @@
                     </div>
                 @elseif ($ticketStatus === 'active')
                     <div class="py-8 text-center">
-                        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#f4c95d] text-4xl shadow-[0_0_0_12px_rgba(244,201,93,0.18)]">↻</div>
+                        <div class="promotion-status-pulse relative mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#f4c95d] text-3xl text-[#0b3038] shadow-[0_0_0_12px_rgba(244,201,93,0.18)]"><span class="promotion-status-orbit absolute inset-2 rounded-full border border-dashed border-[#0b3038]/35"></span><i class="fal fa-sync-alt" aria-hidden="true"></i></div>
                         <p class="mt-7 text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">{{ $activeOutcome === 'retry' ? 'Zusatzdreh' : ($activeOutcome === 'quota_reroll' ? 'Bitte erneut drehen' : 'Scan erfolgreich') }}</p>
                         <h2 class="mt-2 text-4xl font-black leading-tight tracking-[-0.04em] text-[#0b3038]">Du bist dran.<br>Jetzt darfst du drehen!</h2>
                         <p class="mt-4 text-sm leading-6 text-slate-600">Der Mitarbeiter beobachtet das Ergebnis und trägt es direkt ein. Bitte halte diese Seite geöffnet.</p>
                     </div>
                 @elseif ($ticketStatus === 'completed')
                     <div class="py-6 text-center">
-                        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full {{ $finalOutcome === 'no_win' ? 'bg-slate-100' : 'bg-[#f4c95d]' }} text-4xl">{{ $finalOutcome === 'no_win' ? '♡' : '★' }}</div>
+                        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full {{ $finalOutcome === 'no_win' ? 'bg-slate-100 text-slate-500' : 'promotion-status-pulse bg-[#f4c95d] text-[#0b3038]' }} text-3xl"><i class="fal {{ $finalOutcome === 'no_win' ? 'fa-heart' : 'fa-trophy-alt' }}" aria-hidden="true"></i></div>
                         <p class="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-[#08776f]">Dein Ergebnis</p>
                         <h2 class="mt-2 text-3xl font-black tracking-tight text-[#0b3038]">{{ $finalOutcome === 'no_win' ? 'Diesmal leider kein Gewinn' : ($result?->label_snapshot ?: 'Glückwunsch!') }}</h2>
                         @if (($result?->digital_delivery_status instanceof \BackedEnum ? $result->digital_delivery_status->value : $result?->digital_delivery_status) === 'awaiting_profile')
