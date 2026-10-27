@@ -9,6 +9,7 @@ use App\Models\WebPage;
 
 class SearchModal extends Component
 {
+    public bool $showTrigger = true;
     public $openSearchMenu = false;
     public $query = '';
     public $searchType = 'all';

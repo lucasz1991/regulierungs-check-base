@@ -1,0 +1,12 @@
+{
+  "url": "http://127.0.0.1:8186/",
+  "scope": "Independent temporary headless Playwright session; user IAB untouched; no source edits or form submissions",
+  "viewports": [
+    {"width":390,"documentWidth":390,"sectionHeight":154,"controls":0,"scrollbarWidth":"none","webkitScrollbarDisplay":"none","titleClamp":"1","titleHeight":18.1875,"titleLineHeight":"18.2px","originalCount":6,"cloneCount":6,"playing":true,"displacementOver800ms":29},
+    {"width":320,"documentWidth":320,"sectionHeight":154,"controls":0,"scrollbarWidth":"none","webkitScrollbarDisplay":"none","titleClamp":"1","titleHeight":18.1875,"titleLineHeight":"18.2px","originalCount":6,"cloneCount":6,"playing":true,"displacementOver800ms":29}
+  ],
+  "focusPause": {"start":816,"endAfter500ms":816},
+  "loopBoundary": {"cycle":1704,"initialPosition":1699,"samplesEvery100ms":[1703,3,7,11,15,19,23,27,31,35,39,43]},
+  "reducedMotion": {"matches":true,"playing":false,"start":43,"endAfter800ms":43},
+  "screenshots": ["output/playwright/news-minimal-390.png","output/playwright/news-minimal-320.png"]
+}

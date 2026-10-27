@@ -1,79 +1,52 @@
-<div class="relative overflow-hidden py-20">
-    <div class="container mx-auto mb-12 px-5">
-            <h4 class="text-xl font-medium text-white md:text-2xl"><span class="border-b-2 border-secondary pb-1">Aktuelle Bewertungen</span></h4>
-            <p class="mt-4 font-medium text-white md:text-xl">Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.</p>
-    </div>
-    <div class="container px-5 mx-auto overflow-hidden">
-
-        <div x-data="{
-                showSwiperNavigation: false,
-                swiperclaimRatings: null,
-                initSwiperswiperclaimRatings() {
-                    this.swiperclaimRatings = new Swiper(this.$refs.swiperclaimRatings, {
-                        autoplay: {
-                            delay: 2500,
-                        },
-                        disableOnInteraction: true,
-                        speed: 500,
-                        effect: 'slide',
-                        pagination: {
-                            el: '.swiper-pagination-claimRatings',
-                            clickable: true,
-                        },
-                        navigation: {
-                            nextEl: '.swiper-button-next-claimRatings',
-                            prevEl: '.swiper-button-prev-claimRatings',
-                        },
-                        loop: true,
-                        loopAllowDuplicateSlides: true,
-                        loopAddBlankSlides: true,
-                        centeredSlides: false,
-                        slidesPerView: '1',
-                        spaceBetween: 20,
-                        breakpoints: {
-                            1000: {
-                                slidesPerView: 2,
-                            },
-                            1200: {
-                                slidesPerView: 3,
-                            },
-                            1400: {
-                                slidesPerView: 4,
-                            },
-                        },
-                        
-                    });
-                    this.swiperclaimRatings.slideNext();
-                },
-                stopSwiperswiperclaimRatings() {
-                    this.swiperclaimRatings.autoplay.stop();
-                    this.showSwiperNavigation = true;
-                },
-                startSwiperswiperclaimRatings() {
-                    this.swiperclaimRatings?.autoplay?.start();
-                    this.showSwiperNavigation = false;
-                }
-            }"
-            x-init="initSwiperswiperclaimRatings() "
-                x-on:click="stopSwiperswiperclaimRatings()"
-                x-on:click.away="startSwiperswiperclaimRatings()"
-                x-on:touchstart="stopSwiperswiperclaimRatings()"
-            class="relative w-full "
-            wire:ignore
-            wire:loading.class="hidden"
-        >
-            <div class="swiper w-full  overflow-visible" x-ref="swiperclaimRatings" >
-                <div  class="swiper-wrapper   transform-gpu">
-                    @foreach ($claimRatings as $claimRating)
-                        <div class="swiper-slide h-full px-4  transform-gpu">
-                            <x-claim-rating.claim-rating-card :rating="$claimRating" />
-                        </div>
-                    @endforeach
-                </div> 
-                <div x-show="showSwiperNavigation" x-cloak x-transition class="swiper-pagination swiper-pagination-claimRatings !-bottom-12"></div>
-                <div x-show="showSwiperNavigation" x-cloak x-transition class="swiper-button-next swiper-button-next-claimRatings"></div>
-                <div x-show="showSwiperNavigation" x-cloak x-transition class="swiper-button-prev swiper-button-prev-claimRatings"></div>
-            </div>
+<section class="section experience-section" id="erfahrungen" data-carousel aria-labelledby="experience-title">
+    <div class="experience-intro rail-content">
+        <div class="section-heading">
+            <h2 id="experience-title">Aktuelle Bewertungen</h2>
+            <p>Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.</p>
         </div>
     </div>
-</div>
+    @if ($claimRatings->isNotEmpty())
+        <div class="review-stack carousel-track" id="reviews-track" data-carousel-track role="list" aria-label="Aktuelle Bewertungen" tabindex="0">
+            @foreach ($claimRatings as $claimRating)
+                @php
+                    $ratingUser = $claimRating->user;
+                    $showName = $ratingUser && ! $ratingUser->isAdmin() && $ratingUser->isNameVisibleIn('ratings', auth()->user());
+                    $displayName = $showName ? $ratingUser->name : 'Anonym';
+                    $score = is_numeric($claimRating->rating_score) ? max(0, min(1, (float) $claimRating->rating_score)) * 5 : null;
+                    $summary = \App\Support\Text::utf8((string) data_get($claimRating->attachments, 'scorings.ai_overall_comment', ''));
+                @endphp
+                <article class="review-card" data-carousel-item data-review role="listitem" wire:key="homepage-review-{{ $claimRating->id }}">
+                    <div class="review-core">
+                        <div class="review-top">
+                            @if ($score !== null)
+                                <span class="stars stars-meter" aria-label="{{ number_format($score, 1, ',', '.') }} von 5 Sternen" style="--rating-fill: {{ $score * 20 }}%">★★★★★</span>
+                            @endif
+                            @if ($claimRating->created_at)
+                                <time class="review-date" datetime="{{ $claimRating->created_at->toDateString() }}">{{ $claimRating->created_at->format('d.m.Y') }}</time>
+                            @endif
+                        </div>
+                        @if ($summary !== '')
+                            <p class="review-summary">{{ $summary }}</p>
+                        @endif
+                        <div class="review-meta">
+                            <span class="review-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr($displayName, 0, 1)) }}</span>
+                            <div>
+                                <strong>{{ $displayName }}</strong>
+                                <span>{{ $claimRating->insurance?->name }}@if ($claimRating->insurance && $claimRating->insuranceSubtype) · @endif{{ $claimRating->insuranceSubtype?->name }}</span>
+                            </div>
+                        </div>
+                        <a class="review-link" href="{{ route('review.show', $claimRating->id) }}" wire:navigate>Bewertung ansehen <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+            @endforeach
+        </div>
+        <div class="carousel-footer rail-wide" data-carousel-controls>
+            <input class="carousel-scrollbar" type="range" min="0" max="1000" step="1" value="0" disabled data-carousel-progress aria-controls="reviews-track" aria-label="Bewertungen durchblättern">
+            <span class="carousel-status" data-carousel-status aria-live="off"></span>
+            <div class="carousel-buttons">
+                <button class="carousel-arrow" type="button" data-carousel-prev aria-controls="reviews-track" aria-label="Vorherige Bewertungen"><span aria-hidden="true">←</span></button>
+                <button class="carousel-arrow" type="button" data-carousel-next aria-controls="reviews-track" aria-label="Nächste Bewertungen"><span aria-hidden="true">→</span></button>
+            </div>
+        </div>
+    @endif
+</section>

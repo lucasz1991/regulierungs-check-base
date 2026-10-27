@@ -1,4 +1,11 @@
-<div x-data="{ openSearchMenu: false }" @keydown.window.escape="openSearchMenu = false"  class="h-full">
+<div
+    x-data="{ openSearchMenu: false }"
+    x-init="$watch('openSearchMenu', open => { $dispatch('homepage-search-state', { open }); if (open) $nextTick(() => document.getElementById('search-dropdown')?.focus()); })"
+    @homepage-search-open.window="openSearchMenu = true"
+    @keydown.window.escape="openSearchMenu = false"
+    class="h-full"
+>
+    @if($showTrigger)
     <div
         @click.prevent="openSearchMenu = !openSearchMenu"
         class="flex h-full w-12 items-center"
@@ -25,22 +32,31 @@
             </svg>
         </div>
     </div>
+    @endif
     <div>
         <template x-teleport="#megamenu">
             <!-- Such-Modal -->
-            <div id="Search-menü" class="relative z-20">
+            <div id="Search-menü" class="relative z-20"
+                :inert="!($store.nav.showNav && openSearchMenu)"
+                x-trap.inert.noscroll.noautofocus="$store.nav.showNav && openSearchMenu">
                 <div 
                     x-show="$store.nav.showNav && openSearchMenu"
                     @click="() => { openSearchMenu = !openSearchMenu; }"
                     x-transition.opacity
-                    x-trap.inert.noscroll="$store.nav.showNav && openSearchMenu"
                     class="fixed h-full w-full backdrop-blur"
                     x-cloak
                 ></div>
                 <div 
+                    role="dialog" aria-label="Suche" aria-modal="true"
+                    :aria-hidden="!($store.nav.showNav && openSearchMenu)"
                     :class="$store.nav.showNav && openSearchMenu ? '!translate-y-0' : ''"
                     class="fixed translate-y-[-200%]  w-full  px-3 py-3 md:py-6 md:px-8  transition-all duration-300 ease-in-out">
                     <div class="container mx-auto">
+                        @unless($showTrigger)
+                            <button type="button" class="homepage-search-close" @click="openSearchMenu = false" aria-label="Suche schließen">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        @endunless
                         <div class=""> 
                             <div class="flex relative" x-data="{ openSelectSearchTypeDropdown: false }" @click.away="openSelectSearchTypeDropdown = false">
                                 <!-- Dropdown-Button -->
@@ -99,6 +115,8 @@
                                     <input 
                                         type="search" 
                                         id="search-dropdown" 
+                                        x-ref="searchInput"
+                                        aria-label="Versicherungen und Informationen suchen"
                                         wire:model.live="query" 
                                         class="block p-2.5 w-full text-base  bg-white text-gray-900 bg-gray-50 rounded-e-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
                                         placeholder="Suchen..." 

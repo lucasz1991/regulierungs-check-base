@@ -1,0 +1,14 @@
+[    1524ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6666/storage/uploads/files/oeycWnhWZ2L1-allianz-direct-versicherung-logosvg.png:0
+[  166375ms] TypeError: Cannot read properties of undefined (reading 'focus')
+    at eval (eval at <anonymous> (http://127.0.0.1:6666/livewire/livewire.min.js?id=0f6341c0:5:743), <anonymous>:3:157)
+    at http://127.0.0.1:6666/livewire/livewire.min.js?id=0f6341c0:5:6573
+    at Dr (http://127.0.0.1:6666/livewire/livewire.min.js?id=0f6341c0:5:6630)
+    at http://127.0.0.1:6666/livewire/livewire.min.js?id=0f6341c0:5:12102
+[  303006ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6666/storage/uploads/news/dRUXXYNTEDmF-d0baf427-0f65-48ff-9f4e-b0d126ea40ca.png:0
+[  303296ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6666/storage/uploads/news/V18t4B5PBdKN-kfz-regionalklassen-9x16-klein.jpg:0
+[  303570ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6666/storage/uploads/news/rwh49tlYJnmS-brandschutzversicherung-9x16-klein.jpg:0
+[  303839ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6666/storage/uploads/news/kZtgEIZWJ1Dt-c0014a41-bff1-4b47-b3eb-5e94b50587c8.png:0
+[  304112ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6666/storage/uploads/news/u32TI8E6Pn2X-85bb3a23-0231-483d-9897-b946734640dd.png:0
+[  304383ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6666/storage/uploads/news/hlQLUgc5QvKG-b0318472-529b-427f-81c5-790f7e5d19db.png:0
+[  309282ms] [WARNING] The resource http://127.0.0.1:6666/homepage-redesign/assets/fonts/montserrat.ttf was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://127.0.0.1:6666/:0
+[  309283ms] [WARNING] The resource http://127.0.0.1:6666/build/assets/app-CdJn-w7t.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://127.0.0.1:6666/:0

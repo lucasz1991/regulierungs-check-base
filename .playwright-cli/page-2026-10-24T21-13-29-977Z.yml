@@ -1,0 +1,726 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - link [aria-hidden] [ref=f1e727] [cursor=pointer]:
+      - /url: "#homepage-content"
+      - text: Zum Inhalt
+    - banner [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - link "Regulierungs-CHECK Startseite" [ref=f1e6] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186
+        - navigation "Hauptnavigation" [ref=f1e9]:
+          - generic [ref=f1e728]:
+            - strong [ref=f1e729]: Menü
+            - button "Menü schließen" [active] [ref=f1e730] [cursor=pointer]: ×
+          - link "Home" [ref=f1e10] [cursor=pointer]:
+            - /url: http://127.0.0.1:8186
+          - group [ref=f1e13]:
+            - generic "Leistungs-CHECK" [ref=f1e14] [cursor=pointer]
+          - group [ref=f1e18]:
+            - generic "Ratgeber" [ref=f1e19] [cursor=pointer]
+          - link "News" [ref=f1e23] [cursor=pointer]:
+            - /url: http://127.0.0.1:8186/news
+          - group [ref=f1e26]:
+            - generic "Informationen" [ref=f1e27] [cursor=pointer]
+          - generic [ref=f1e731]:
+            - link "Anmelden" [ref=f1e732] [cursor=pointer]:
+              - /url: http://127.0.0.1:8186/login
+            - link "Registrieren" [ref=f1e736] [cursor=pointer]:
+              - /url: http://127.0.0.1:8186/register
+            - button "Zum dunklen Modus wechseln" [ref=f1e740] [cursor=pointer]:
+              - generic [ref=f1e742]: Darstellung
+        - generic [ref=f1e31]:
+          - button "Suche öffnen" [ref=f1e32] [cursor=pointer]
+          - button "Zum dunklen Modus wechseln" [ref=f1e34] [cursor=pointer]
+          - group [ref=f1e36]:
+            - generic "Konto öffnen" [ref=f1e37] [cursor=pointer]
+          - button "Menü schließen" [expanded] [ref=f1e743] [cursor=pointer]:
+            - generic [ref=f1e725]: Menü
+      - button [aria-hidden] [ref=f1e744]
+    - main [aria-hidden] [ref=f1e40]:
+      - generic [ref=f1e41]:
+        - region [ref=f1e745]:
+          - generic [ref=f1e43]:
+            - generic [ref=f1e44]:
+              - paragraph [ref=f1e45]: Regulierungs-CHECK
+              - heading [level=1] [ref=f1e746]: Du hattest schon mal einen Schadenfall?
+              - paragraph [ref=f1e49]:
+                - text: Hilf dabei,
+                - emphasis [ref=f1e50]: Transparenz
+                - text: zu schaffen.
+              - paragraph [ref=f1e51]: Damit jeder schon vor Vertragsabschluss weiß, was ihn im Schadenfall erwartet.
+              - generic [ref=f1e52]:
+                - button [ref=f1e747] [cursor=pointer]:
+                  - text: Erfahrung teilen
+                  - generic [aria-hidden] [ref=f1e54]: ↗
+                - link [ref=f1e748] [cursor=pointer]:
+                  - /url: "#versicherer"
+                  - text: Versicherer entdecken
+                  - generic [aria-hidden] [ref=f1e56]: →
+            - paragraph [ref=f1e59]:
+              - generic [ref=f1e63]:
+                - generic [ref=f1e64]: Ø-Regulierungsdauer von
+                - strong [ref=f1e65]:
+                  - generic [ref=f1e66]: "11"
+                  - text: Versicherern
+        - region [ref=f1e749]:
+          - generic [ref=f1e69]:
+            - generic [ref=f1e70]:
+              - heading [level=2] [ref=f1e750]: News & Ratgeber
+              - button [ref=f1e751] [cursor=pointer]: Pausieren
+              - link [ref=f1e752] [cursor=pointer]:
+                - /url: http://127.0.0.1:8186/news
+                - text: Alle News
+                - generic [aria-hidden] [ref=f1e74]: ↗
+            - list [ref=f1e753]:
+              - listitem [ref=f1e76]:
+                - link [ref=f1e754] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/photovoltaik-versichern-was-deine-police-abdecken-sollte
+                  - generic [ref=f1e78]:
+                    - generic [ref=f1e79]:
+                      - generic [ref=f1e80]: Ratgeber
+                      - time [ref=f1e81]: 24.09.2026
+                    - heading [level=3] [ref=f1e755]: "Photovoltaik versichern : Was deine Police abdecken sollte"
+                    - paragraph [ref=f1e83]: Eine Solaranlage ist teuer - doch nicht jeder Schaden ist automatisch versichert.
+                  - generic [aria-hidden] [ref=f1e84]: ↗
+              - listitem [ref=f1e85]:
+                - link [ref=f1e756] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/kfz-versicherung-2027-regionalklassen-andern-sich
+                  - generic [ref=f1e87]:
+                    - generic [ref=f1e88]:
+                      - generic [ref=f1e89]: Kfz
+                      - time [ref=f1e90]: 21.09.2026
+                    - heading [level=3] [ref=f1e757]: "Kfz-Versicherung 2027 : Regionalklassen ändern sich"
+                    - paragraph [ref=f1e92]: Für fast zehn Millionen Autofahrende ändern sich die Regionalklassen.
+                  - generic [aria-hidden] [ref=f1e93]: ↗
+              - listitem [ref=f1e94]:
+                - link [ref=f1e758] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/brandschutzversicherung-wann-der-versicherer-nicht-zahlen-muss
+                  - generic [ref=f1e96]:
+                    - generic [ref=f1e97]:
+                      - generic [ref=f1e98]: Urteil
+                      - time [ref=f1e99]: 20.09.2026
+                    - heading [level=3] [ref=f1e759]: "Brandschutzversicherung : Wann der Versicherer nicht zahlen muss"
+                    - paragraph [ref=f1e101]: Ein BGH-Urteil klärt einen wichtigen Risikoausschluss bei Brandschutzanlagen.
+                  - generic [aria-hidden] [ref=f1e102]: ↗
+              - listitem [ref=f1e103]:
+                - link [ref=f1e760] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/do-versicherung-wann-der-ausschluss-nicht-greift
+                  - generic [ref=f1e105]:
+                    - generic [ref=f1e106]:
+                      - generic [ref=f1e107]: Urteil
+                      - time [ref=f1e108]: 16.09.2026
+                    - heading [level=3] [ref=f1e761]: "D&O-Versicherung : Wann der Ausschluss nicht greift"
+                    - paragraph [ref=f1e110]: BGH stärkt den Versicherungsschutz von Unternehmensleitern.
+                  - generic [aria-hidden] [ref=f1e111]: ↗
+              - listitem [ref=f1e112]:
+                - link [ref=f1e762] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/lebensversicherer-zahlen-2025-fast-99-milliarden-euro-aus
+                  - generic [ref=f1e114]:
+                    - generic [ref=f1e115]:
+                      - generic [ref=f1e116]: Markt & Daten
+                      - time [ref=f1e117]: 15.09.2026
+                    - heading [level=3] [ref=f1e763]: Lebensversicherer zahlen 2025 fast 99 Milliarden Euro aus
+                    - paragraph [ref=f1e119]: Die Leistungen der Lebensversicherer erreichen einen neuen Höchsstand.
+                  - generic [aria-hidden] [ref=f1e120]: ↗
+              - listitem [ref=f1e121]:
+                - link [ref=f1e764] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/versicherer-zahlt-nicht-was-du-dagegen-tun-kannst
+                  - generic [ref=f1e123]:
+                    - generic [ref=f1e124]:
+                      - generic [ref=f1e125]: Ratgeber
+                      - time [ref=f1e126]: 13.09.2026
+                    - heading [level=3] [ref=f1e765]: "Versicherer zahlt nicht : Was du dagegen tun kannst"
+                    - paragraph [ref=f1e128]: Eine Ablehnung ist nicht immer das letzte Wort.
+                  - generic [aria-hidden] [ref=f1e129]: ↗
+              - listitem [aria-hidden] [ref=f1e766]:
+                - link [ref=f1e767] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/photovoltaik-versichern-was-deine-police-abdecken-sollte
+                  - generic [ref=f1e768]:
+                    - generic [ref=f1e769]:
+                      - generic [ref=f1e770]: Ratgeber
+                      - time [ref=f1e771]: 24.09.2026
+                    - heading [level=3] [ref=f1e772]: "Photovoltaik versichern : Was deine Police abdecken sollte"
+                    - paragraph [ref=f1e773]: Eine Solaranlage ist teuer - doch nicht jeder Schaden ist automatisch versichert.
+                  - generic [aria-hidden] [ref=f1e774]: ↗
+              - listitem [aria-hidden] [ref=f1e775]:
+                - link [ref=f1e776] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/kfz-versicherung-2027-regionalklassen-andern-sich
+                  - generic [ref=f1e777]:
+                    - generic [ref=f1e778]:
+                      - generic [ref=f1e779]: Kfz
+                      - time [ref=f1e780]: 21.09.2026
+                    - heading [level=3] [ref=f1e781]: "Kfz-Versicherung 2027 : Regionalklassen ändern sich"
+                    - paragraph [ref=f1e782]: Für fast zehn Millionen Autofahrende ändern sich die Regionalklassen.
+                  - generic [aria-hidden] [ref=f1e783]: ↗
+              - listitem [aria-hidden] [ref=f1e784]:
+                - link [ref=f1e785] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/brandschutzversicherung-wann-der-versicherer-nicht-zahlen-muss
+                  - generic [ref=f1e786]:
+                    - generic [ref=f1e787]:
+                      - generic [ref=f1e788]: Urteil
+                      - time [ref=f1e789]: 20.09.2026
+                    - heading [level=3] [ref=f1e790]: "Brandschutzversicherung : Wann der Versicherer nicht zahlen muss"
+                    - paragraph [ref=f1e791]: Ein BGH-Urteil klärt einen wichtigen Risikoausschluss bei Brandschutzanlagen.
+                  - generic [aria-hidden] [ref=f1e792]: ↗
+              - listitem [aria-hidden] [ref=f1e793]:
+                - link [ref=f1e794] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/do-versicherung-wann-der-ausschluss-nicht-greift
+                  - generic [ref=f1e795]:
+                    - generic [ref=f1e796]:
+                      - generic [ref=f1e797]: Urteil
+                      - time [ref=f1e798]: 16.09.2026
+                    - heading [level=3] [ref=f1e799]: "D&O-Versicherung : Wann der Ausschluss nicht greift"
+                    - paragraph [ref=f1e800]: BGH stärkt den Versicherungsschutz von Unternehmensleitern.
+                  - generic [aria-hidden] [ref=f1e801]: ↗
+              - listitem [aria-hidden] [ref=f1e802]:
+                - link [ref=f1e803] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/lebensversicherer-zahlen-2025-fast-99-milliarden-euro-aus
+                  - generic [ref=f1e804]:
+                    - generic [ref=f1e805]:
+                      - generic [ref=f1e806]: Markt & Daten
+                      - time [ref=f1e807]: 15.09.2026
+                    - heading [level=3] [ref=f1e808]: Lebensversicherer zahlen 2025 fast 99 Milliarden Euro aus
+                    - paragraph [ref=f1e809]: Die Leistungen der Lebensversicherer erreichen einen neuen Höchsstand.
+                  - generic [aria-hidden] [ref=f1e810]: ↗
+              - listitem [aria-hidden] [ref=f1e811]:
+                - link [ref=f1e812] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/news/versicherer-zahlt-nicht-was-du-dagegen-tun-kannst
+                  - generic [ref=f1e813]:
+                    - generic [ref=f1e814]:
+                      - generic [ref=f1e815]: Ratgeber
+                      - time [ref=f1e816]: 13.09.2026
+                    - heading [level=3] [ref=f1e817]: "Versicherer zahlt nicht : Was du dagegen tun kannst"
+                    - paragraph [ref=f1e818]: Eine Ablehnung ist nicht immer das letzte Wort.
+                  - generic [aria-hidden] [ref=f1e819]: ↗
+            - generic [ref=f1e184]:
+              - slider [ref=f1e820] [cursor=pointer]: "764"
+              - generic [ref=f1e186]: 4 / 6
+              - generic [ref=f1e187]:
+                - button [ref=f1e821] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f1e189]: ←
+                - button [ref=f1e822] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f1e191]: →
+            - status [ref=f1e192]
+        - region [ref=f1e823]:
+          - generic [ref=f1e194]:
+            - generic [ref=f1e196]:
+              - generic [ref=f1e197]: Versicherer im Vergleich
+              - heading [level=2] [ref=f1e824]: Welche Versicherung möchtest du vergleichen?
+            - group [ref=f1e825]:
+              - button [ref=f1e826] [cursor=pointer]:
+                - generic [ref=f1e202]: 
+                - generic [ref=f1e203]: Fahrzeug & Mobilität
+              - button [ref=f1e827] [cursor=pointer]:
+                - generic [ref=f1e207]: 
+                - generic [ref=f1e208]: Haftpflicht
+          - generic [ref=f1e210]:
+            - heading [level=3] [ref=f1e828]: Versicherer im Vergleich
+            - generic [ref=f1e212]:
+              - generic [ref=f1e213]:
+                - generic [ref=f1e215]: Versicherer suchen
+                - searchbox [ref=f1e829]
+              - link [ref=f1e830] [cursor=pointer]:
+                - /url: "#insurance-track"
+                - text: →
+            - status [ref=f1e218]: 11 Versicherer
+          - list [ref=f1e831]:
+            - listitem [ref=f1e220]:
+              - generic [ref=f1e221]:
+                - button [ref=f1e832] [cursor=pointer]
+                - heading [level=3] [ref=f1e833]: HUK-Coburg
+                - generic [ref=f1e229]:
+                  - generic [ref=f1e230]: Ø Regulierungsdauer
+                  - strong [ref=f1e231]: –
+                - generic [ref=f1e233]:
+                  - generic [ref=f1e834]: ★★★★★
+                  - generic [ref=f1e235]: 3 Bewertungen
+                - link [ref=f1e835] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/huk-coburg
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e238]: ↗
+            - listitem [ref=f1e239]:
+              - generic [ref=f1e240]:
+                - button [ref=f1e836] [cursor=pointer]
+                - heading [level=3] [ref=f1e837]: ADAC
+                - generic [ref=f1e248]:
+                  - generic [ref=f1e249]: Ø Regulierungsdauer
+                  - strong [ref=f1e250]: –
+                - generic [ref=f1e252]:
+                  - generic [ref=f1e838]: ★★★★★
+                  - generic [ref=f1e254]: 2 Bewertungen
+                - link [ref=f1e839] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/adac
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e257]: ↗
+            - listitem [ref=f1e258]:
+              - generic [ref=f1e259]:
+                - button [ref=f1e840] [cursor=pointer]
+                - heading [level=3] [ref=f1e841]: DA Direkt
+                - generic [ref=f1e267]:
+                  - generic [ref=f1e268]: Ø Regulierungsdauer
+                  - strong [ref=f1e269]: –
+                - generic [ref=f1e271]:
+                  - generic [ref=f1e842]: ★★★★★
+                  - generic [ref=f1e273]: 2 Bewertungen
+                - link [ref=f1e843] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/da-direkt
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e276]: ↗
+            - listitem [ref=f1e277]:
+              - generic [ref=f1e278]:
+                - button [ref=f1e844] [cursor=pointer]
+                - heading [level=3] [ref=f1e845]: Barmenia
+                - generic [ref=f1e286]:
+                  - generic [ref=f1e287]: Ø Regulierungsdauer
+                  - strong [ref=f1e288]: –
+                - generic [ref=f1e290]:
+                  - generic [ref=f1e846]: ★★★★★
+                  - generic [ref=f1e292]: 1 Bewertung
+                - link [ref=f1e847] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/barmenia
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e295]: ↗
+            - listitem [ref=f1e296]:
+              - generic [ref=f1e297]:
+                - button [ref=f1e848] [cursor=pointer]
+                - heading [level=3] [ref=f1e849]: Allianz Direct
+                - generic [ref=f1e305]:
+                  - generic [ref=f1e306]: Ø Regulierungsdauer
+                  - strong [ref=f1e307]: –
+                - generic [ref=f1e309]:
+                  - generic [ref=f1e850]: ★★★★★
+                  - generic [ref=f1e311]: 1 Bewertung
+                - link [ref=f1e851] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/allianz-direct
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e314]: ↗
+            - listitem [ref=f1e315]:
+              - generic [ref=f1e316]:
+                - button [ref=f1e852] [cursor=pointer]
+                - heading [level=3] [ref=f1e853]: ERGO Direkt
+                - generic [ref=f1e324]:
+                  - generic [ref=f1e325]: Ø Regulierungsdauer
+                  - strong [ref=f1e326]: –
+                - generic [ref=f1e328]:
+                  - generic [ref=f1e854]: ★★★★★
+                  - generic [ref=f1e330]: 1 Bewertung
+                - link [ref=f1e855] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/ergo-direkt
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e333]: ↗
+            - listitem [ref=f1e334]:
+              - generic [ref=f1e335]:
+                - button [ref=f1e856] [cursor=pointer]
+                - heading [level=3] [ref=f1e857]: Mannheimer Versicherung
+                - generic [ref=f1e343]:
+                  - generic [ref=f1e344]: Ø Regulierungsdauer
+                  - strong [ref=f1e345]: –
+                - generic [ref=f1e347]:
+                  - generic [ref=f1e858]: ★★★★★
+                  - generic [ref=f1e349]: 1 Bewertung
+                - link [ref=f1e859] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/mannheimer-versicherung-ag
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e352]: ↗
+            - listitem [ref=f1e353]:
+              - generic [ref=f1e354]:
+                - button [ref=f1e860] [cursor=pointer]
+                - heading [level=3] [ref=f1e861]: Allianz
+                - generic [ref=f1e362]:
+                  - generic [ref=f1e363]: Ø Regulierungsdauer
+                  - strong [ref=f1e364]: –
+                - generic [ref=f1e366]:
+                  - generic [ref=f1e862]: ★★★★★
+                  - generic [ref=f1e368]: 1 Bewertung
+                - link [ref=f1e863] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/allianz
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e371]: ↗
+            - listitem [ref=f1e372]:
+              - generic [ref=f1e373]:
+                - button [ref=f1e864] [cursor=pointer]
+                - heading [level=3] [ref=f1e865]: KRAVAG
+                - generic [ref=f1e381]:
+                  - generic [ref=f1e382]: Ø Regulierungsdauer
+                  - strong [ref=f1e383]: –
+                - generic [ref=f1e385]:
+                  - generic [ref=f1e866]: ★★★★★
+                  - generic [ref=f1e387]: 1 Bewertung
+                - link [ref=f1e867] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/kravag
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e390]: ↗
+            - listitem [ref=f1e391]:
+              - generic [ref=f1e392]:
+                - button [ref=f1e868] [cursor=pointer]
+                - heading [level=3] [ref=f1e869]: LVM Versicherung
+                - generic [ref=f1e400]:
+                  - generic [ref=f1e401]: Ø Regulierungsdauer
+                  - strong [ref=f1e402]: –
+                - generic [ref=f1e404]:
+                  - generic [ref=f1e870]: ★★★★★
+                  - generic [ref=f1e406]: 1 Bewertung
+                - link [ref=f1e871] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/lvm
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e409]: ↗
+            - listitem [ref=f1e410]:
+              - generic [ref=f1e411]:
+                - button [ref=f1e872] [cursor=pointer]
+                - heading [level=3] [ref=f1e873]: Itzehoer Versicherung
+                - generic [ref=f1e419]:
+                  - generic [ref=f1e420]: Ø Regulierungsdauer
+                  - strong [ref=f1e421]: –
+                - generic [ref=f1e423]:
+                  - generic [ref=f1e874]: ★★★★★
+                  - generic [ref=f1e425]: 1 Bewertung
+                - link [ref=f1e875] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurance/itzehoer-versicherungen
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e428]: ↗
+            - listitem [ref=f1e429]:
+              - generic [ref=f1e430]:
+                - generic [aria-hidden] [ref=f1e431]: ↗
+                - heading [level=3] [ref=f1e876]: Weitere Anbieter vergleichen
+                - link [ref=f1e877] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/insurances
+                  - text: Versicherer ansehen
+                  - generic [aria-hidden] [ref=f1e434]: →
+          - generic [ref=f1e435]:
+            - slider [ref=f1e878] [cursor=pointer]: "0"
+            - generic [ref=f1e437]: 1 / 12
+            - generic [ref=f1e438]:
+              - button [disabled] [ref=f1e879]:
+                - generic [aria-hidden] [ref=f1e440]: ←
+              - button [ref=f1e880] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f1e442]: →
+          - status [ref=f1e443]
+        - region [ref=f1e881]:
+          - generic [ref=f1e446]:
+            - heading [level=2] [ref=f1e882]: Aktuelle Bewertungen
+            - paragraph [ref=f1e448]: Hier findest du eine zufällige Auswahl an aktuellen Bewertungen.
+          - list [ref=f1e883]:
+            - listitem [ref=f1e450]:
+              - generic [ref=f1e451]:
+                - generic [ref=f1e452]:
+                  - generic [ref=f1e884]: ★★★★★
+                  - time [ref=f1e454]: 04.10.2025
+                - paragraph [ref=f1e455]: Die Schadenregulierung erfolgte zeitgerecht im erwarteten Rahmen. Jedoch bestand kein direkter Kontakt zum Kundenservice, der das Anliegen selbst betreut hat, sondern die Kommunikation lief ausschließlich über einen Anwalt. Die Entschädigungssumme wurde als zu gering empfunden. Insgesamt wurde die Fairness der Entscheidung mittelmäßig bewertet, Transparenz und Service ließen zu wünschen übrig.
+                - generic [ref=f1e456]:
+                  - generic [aria-hidden] [ref=f1e457]: A
+                  - generic [ref=f1e458]:
+                    - strong [ref=f1e459]: Anonym
+                    - generic [ref=f1e460]: DA Direkt · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e885] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/381
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e462]: ↗
+            - listitem [ref=f1e463]:
+              - generic [ref=f1e464]:
+                - generic [ref=f1e465]:
+                  - generic [ref=f1e886]: ★★★★★
+                  - time [ref=f1e467]: 22.11.2025
+                - paragraph [ref=f1e468]: Die Schadenregulierung verlief etwas langsamer als der Durchschnitt und dauerte 36 Tage statt 30. Die Entscheidung wurde als überwiegend fair eingeschätzt, obwohl ein kleiner Abzug von etwa 500 Euro gemacht wurde. Die Bearbeitung wurde weitgehend als vollständig bewertet. Insgesamt zeigt die Regulierung ein ausgewogenes Bild mit kleinen Abzügen und moderater Geschwindigkeit.
+                - generic [ref=f1e469]:
+                  - generic [aria-hidden] [ref=f1e470]: A
+                  - generic [ref=f1e471]:
+                    - strong [ref=f1e472]: Anonym
+                    - generic [ref=f1e473]: Allianz Direct · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e887] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/622
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e475]: ↗
+            - listitem [ref=f1e476]:
+              - generic [ref=f1e477]:
+                - generic [ref=f1e478]:
+                  - generic [ref=f1e888]: ★★★★★
+                  - time [ref=f1e480]: 26.10.2025
+                - paragraph [ref=f1e481]: Die Schadenregulierung dauerte etwas länger als der Durchschnitt, was zu einer moderaten Bewertung der Geschwindigkeit führte. Die Entschädigung wurde als zu niedrig empfunden, obwohl alle Nachweise erbracht wurden, was zu Unzufriedenheit mit der Fairness führte. Zudem wird eine mangelhafte Kommunikation und eine emotionale Belastung durch den Prozess beschrieben. Insgesamt zeigt sich ein eher kritisches Bild der Regulierung.
+                - generic [ref=f1e482]:
+                  - generic [aria-hidden] [ref=f1e483]: A
+                  - generic [ref=f1e484]:
+                    - strong [ref=f1e485]: Anonym
+                    - generic [ref=f1e486]: Allianz · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e889] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/560
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e488]: ↗
+            - listitem [ref=f1e489]:
+              - generic [ref=f1e490]:
+                - generic [ref=f1e491]:
+                  - generic [ref=f1e890]: ★★★★★
+                  - time [ref=f1e493]: 10.08.2026
+                - paragraph [ref=f1e494]: Die Schadenregulierung verlief insgesamt zügig und strukturiert, mit gut erreichbaren und höflichen Ansprechpartnern. Die Kürzungen wurden nachvollziehbar erläutert und der Prozess wirkte kompetent und transparent, auch wenn die erste Rückmeldung etwas schneller hätte erfolgen können.
+                - generic [ref=f1e495]:
+                  - generic [aria-hidden] [ref=f1e496]: K
+                  - generic [ref=f1e497]:
+                    - strong [ref=f1e498]: k_khmc7w
+                    - generic [ref=f1e499]: ADAC · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e891] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/2191
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e501]: ↗
+            - listitem [ref=f1e502]:
+              - generic [ref=f1e503]:
+                - generic [ref=f1e504]:
+                  - generic [ref=f1e892]: ★★★★★
+                  - time [ref=f1e506]: 07.10.2026
+                - paragraph [ref=f1e507]: Der Schaden wurde in üblicher Zeitspanne bearbeitet, der Kunde empfindet die Reaktionszeiten per E-Mail aber als eher langsam. Die Entschädigung wird aufgrund der Kürzungen und der nur teilweise übernommenen Kosten als wenig fair und nicht vollständig nachvollziehbar bewertet. Kommunikation und Erläuterungen zu Abzügen und Werkstattoptionen waren aus Kundensicht zu knapp und wenig transparent.
+                - generic [ref=f1e508]:
+                  - generic [aria-hidden] [ref=f1e509]: F
+                  - generic [ref=f1e510]:
+                    - strong [ref=f1e511]: froher.segler
+                    - generic [ref=f1e512]: LVM Versicherung · Kfz-Teilkasko Versicherung
+                - link [ref=f1e893] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/3599
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e514]: ↗
+            - listitem [ref=f1e515]:
+              - generic [ref=f1e516]:
+                - generic [ref=f1e517]:
+                  - generic [ref=f1e894]: ★★★★★
+                  - time [ref=f1e519]: 21.09.2025
+                - paragraph [ref=f1e520]: Die Schadensregulierung verzögert sich mit einer Bearbeitungsdauer von 310 Tagen deutlich über dem Durchschnitt von 30 Tagen. Der Kundenservice ist nur über einen Anwalt erreichbar, was auf erhebliche Kommunikationsprobleme und Unzufriedenheit hinweist. Die Entscheidung wird als sehr unfair empfunden. Insgesamt zeigt sich eine konfliktbehaftete und langwierige Abwicklung des Schadenfalls.
+                - generic [ref=f1e521]:
+                  - generic [aria-hidden] [ref=f1e522]: A
+                  - generic [ref=f1e523]:
+                    - strong [ref=f1e524]: Anonym
+                    - generic [ref=f1e525]: HUK-Coburg · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e895] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/257
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e527]: ↗
+            - listitem [ref=f1e528]:
+              - generic [ref=f1e529]:
+                - generic [ref=f1e530]:
+                  - generic [ref=f1e896]: ★★★★★
+                  - time [ref=f1e532]: 05.10.2026
+                - paragraph [ref=f1e533]: Der Schaden wurde insgesamt nachvollziehbar und mit überwiegend fairer Entschädigung reguliert, allerdings nur als Teilzahlung. Die Bearbeitungsdauer von knapp vier Wochen ist noch im Rahmen, wirkte für den Kunden aber zäh, da er mehrfach selbst nachhaken musste. Kommunikation und Erklärungen waren formal und im Kern verständlich, jedoch ohne aktive Information über Zwischenschritte und nicht in allen Punkten überzeugend begründet.
+                - generic [ref=f1e534]:
+                  - generic [aria-hidden] [ref=f1e535]: B
+                  - generic [ref=f1e536]:
+                    - strong [ref=f1e537]: banane-oder
+                    - generic [ref=f1e538]: KRAVAG · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e897] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/3463
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e540]: ↗
+            - listitem [ref=f1e541]:
+              - generic [ref=f1e542]:
+                - generic [ref=f1e543]:
+                  - generic [ref=f1e898]: ★★★★★
+                  - time [ref=f1e545]: 20.10.2025
+                - paragraph [ref=f1e546]: Die Schadensregulierung dauerte mit 44 Tagen länger als der Durchschnitt von 30 Tagen, was als verzögert empfunden werden kann. Die teilweise Anerkennung der Schäden wird als fair bewertet, jedoch wurden nicht alle Ansprüche akzeptiert. Insgesamt ist die Kommunikation und Transparenz etwas verbesserungswürdig. Die Bewertung spiegelt eine moderate Zufriedenheit wider.
+                - generic [ref=f1e547]:
+                  - generic [aria-hidden] [ref=f1e548]: A
+                  - generic [ref=f1e549]:
+                    - strong [ref=f1e550]: Anonym
+                    - generic [ref=f1e551]: HUK-Coburg · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e899] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/524
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e553]: ↗
+            - listitem [ref=f1e554]:
+              - generic [ref=f1e555]:
+                - generic [ref=f1e556]:
+                  - generic [ref=f1e900]: ★★★★★
+                  - time [ref=f1e558]: 09.07.2026
+                - paragraph [ref=f1e559]: "Die Schadenregulierung verlief insgesamt sehr positiv: Der Ablauf war zügig, der Kundenservice freundlich und gut organisiert, und die Kürzungen wurden nachvollziehbar und transparent erläutert."
+                - generic [ref=f1e560]:
+                  - generic [aria-hidden] [ref=f1e561]: W
+                  - generic [ref=f1e562]:
+                    - strong [ref=f1e563]: Waltraud1432
+                    - generic [ref=f1e564]: Barmenia · Kfz-Vollkasko Versicherung
+                - link [ref=f1e901] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/1571
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e566]: ↗
+            - listitem [ref=f1e567]:
+              - generic [ref=f1e568]:
+                - generic [ref=f1e569]:
+                  - generic [ref=f1e902]: ★★★★★
+                  - time [ref=f1e571]: 14.07.2026
+                - paragraph [ref=f1e572]: Die Regulierung des Berufshaftpflichtschadens erfolgte in einem nachvollziehbaren Zeitraum mit überwiegend zuverlässigem und sachlichem Kundenservice. Die Kommunikation war transparent, Zwischenschritte und Ablehnungen wurden verständlich und schriftlich begründet. Die Entschädigung wurde im Kern als vertretbar empfunden, auch wenn sich der Kunde eine etwas großzügigere Auslegung einzelner Positionen gewünscht hätte.
+                - generic [ref=f1e573]:
+                  - generic [aria-hidden] [ref=f1e574]: F
+                  - generic [ref=f1e575]:
+                    - strong [ref=f1e576]: fuchsbochu16
+                    - generic [ref=f1e577]: Mannheimer Versicherung · Berufshaftpflichtversicherung
+                - link [ref=f1e903] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/1773
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e579]: ↗
+            - listitem [ref=f1e580]:
+              - generic [ref=f1e581]:
+                - generic [ref=f1e582]:
+                  - generic [ref=f1e904]: ★★★★★
+                  - time [ref=f1e584]: 11.10.2026
+                - paragraph [ref=f1e585]: "Die Regulierung verlief insgesamt mittelmäßig positiv: Die Erreichbarkeit und Sachlichkeit der Mitarbeiter waren gut, die Entscheidung wurde nachvollziehbar erläutert und als im Ergebnis fair empfunden. Allerdings zog sich die Abstimmung mit der Gegenseite hin und die Kommunikation wirkte teils zäh und wenig proaktiv."
+                - generic [ref=f1e586]:
+                  - generic [aria-hidden] [ref=f1e587]: H
+                  - generic [ref=f1e588]:
+                    - strong [ref=f1e589]: heitererlesefreund
+                    - generic [ref=f1e590]: DA Direkt · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e905] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/3980
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e592]: ↗
+            - listitem [ref=f1e593]:
+              - generic [ref=f1e594]:
+                - generic [ref=f1e595]:
+                  - generic [ref=f1e906]: ★★★★★
+                  - time [ref=f1e597]: 16.03.2026
+                - paragraph [ref=f1e598]: Die Schadenregulierung dauerte mit 217 Tagen deutlich länger als der Durchschnitt von 30 Tagen, was zu einer deutlichen Verzögerung führte. Die Entscheidung wird vom Kunden als nicht fair wahrgenommen, da die Auszahlung erheblich unter dem gemeldeten Schadenswert lag. Insgesamt wurde der Prozess als belastend empfunden, und der Kunde beklagt eine geringe Entschädigung und lange Wartezeiten.
+                - generic [ref=f1e599]:
+                  - generic [aria-hidden] [ref=f1e600]: A
+                  - generic [ref=f1e601]:
+                    - strong [ref=f1e602]: Anonym
+                    - generic [ref=f1e603]: HUK-Coburg · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e907] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/823
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e605]: ↗
+            - listitem [ref=f1e606]:
+              - generic [ref=f1e607]:
+                - generic [ref=f1e608]:
+                  - generic [ref=f1e908]: ★★★★★
+                  - time [ref=f1e610]: 07.11.2025
+                - paragraph [ref=f1e611]: Die Schadensregulierung erfolgte deutlich schneller als der Durchschnitt, binnen etwa zwei Wochen. Die Entschädigung wurde als fair und angemessen bewertet. Der Kundenservice wird als sehr freundlich und hilfreich wahrgenommen. Zudem wurde die Kommunikation als transparent und verständlich erlebt. Insgesamt zeigt sich eine sehr positive Erfahrung mit der Versicherung.
+                - generic [ref=f1e612]:
+                  - generic [aria-hidden] [ref=f1e613]: A
+                  - generic [ref=f1e614]:
+                    - strong [ref=f1e615]: Anonym
+                    - generic [ref=f1e616]: ADAC · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e909] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/586
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e618]: ↗
+            - listitem [ref=f1e619]:
+              - generic [ref=f1e620]:
+                - generic [ref=f1e621]:
+                  - generic [ref=f1e910]: ★★★★★
+                  - time [ref=f1e623]: 02.09.2026
+                - paragraph [ref=f1e624]: Die Regulierung des überschaubaren Blechschadens erfolgte zügig und grundsätzlich nachvollziehbar, mit überwiegend positiv erlebtem, gut organisiertem Service. Leichte Kritik gilt der eher knappen schriftlichen Begründung für die vorgenommenen Kürzungen.
+                - generic [ref=f1e625]:
+                  - generic [aria-hidden] [ref=f1e626]: Z
+                  - generic [ref=f1e627]:
+                    - strong [ref=f1e628]: Zenon
+                    - generic [ref=f1e629]: ERGO Direkt · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e911] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/2446
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e631]: ↗
+            - listitem [ref=f1e632]:
+              - generic [ref=f1e633]:
+                - generic [ref=f1e634]:
+                  - generic [ref=f1e912]: ★★★★★
+                  - time [ref=f1e636]: 08.10.2026
+                - paragraph [ref=f1e637]: Die Regulierung dauerte etwas länger als erwartet und wurde als zäh erlebt. Der Kundenservice reagierte teils verspätet, mit widersprüchlichen Aussagen und eher knappen Begründungen. Die Teilzahlung und die Kürzung einzelner Schadenspositionen wurden als wenig fair und nur bedingt nachvollziehbar empfunden.
+                - generic [ref=f1e638]:
+                  - generic [aria-hidden] [ref=f1e639]: L
+                  - generic [ref=f1e640]:
+                    - strong [ref=f1e641]: leiserfalkems
+                    - generic [ref=f1e642]: Itzehoer Versicherung · Kfz-Haftpflicht Versicherung
+                - link [ref=f1e913] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8186/review/3796
+                  - text: Bewertung ansehen
+                  - generic [aria-hidden] [ref=f1e644]: ↗
+          - generic [ref=f1e645]:
+            - slider [ref=f1e914] [cursor=pointer]: "0"
+            - generic [ref=f1e647]: 1 / 15
+            - generic [ref=f1e648]:
+              - button [disabled] [ref=f1e915]:
+                - generic [aria-hidden] [ref=f1e650]: ←
+              - button [ref=f1e916] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f1e652]: →
+          - status [ref=f1e653]
+        - region [ref=f1e917]:
+          - generic [ref=f1e655]:
+            - generic [ref=f1e656]:
+              - generic [ref=f1e657]: Erfahrung teilen
+              - heading [level=2] [ref=f1e918]: So funktioniert’s
+              - button [ref=f1e919] [cursor=pointer]:
+                - text: Jetzt bewerten
+                - generic [aria-hidden] [ref=f1e660]: ↗
+            - generic [ref=f1e661]:
+              - article [ref=f1e662]:
+                - generic [ref=f1e663]: "01"
+                - heading [level=3] [ref=f1e920]: Versicherung auswählen
+              - article [ref=f1e667]:
+                - generic [ref=f1e668]: "02"
+                - heading [level=3] [ref=f1e921]: Regulierung bewerten
+              - article [ref=f1e672]:
+                - generic [ref=f1e673]: "03"
+                - heading [level=3] [ref=f1e922]: Erfahrungen teilen
+        - region [ref=f1e923]:
+          - generic [ref=f1e680]:
+            - generic [ref=f1e681]: Über die Plattform
+            - heading [level=2] [ref=f1e924]: Was ist Regulierungs-CHECK?
+          - generic [ref=f1e685]:
+            - paragraph [ref=f1e686]: Regulierungs-CHECK ist die erste unabhängige Plattform in Deutschland, auf der Versicherte ihre Erfahrungen mit der Schadensregulierung teilen – strukturiert, transparent und nach Versicherungssparte gegliedert.
+            - heading [level=3] [ref=f1e926]: "Fokus: Schadenfall – nicht Werbeversprechen"
+            - paragraph [ref=f1e688]: "Ob Kfz-, Hausrat-, Haftpflicht- oder andere Versicherungen: Erfahrungsberichte machen Abläufe und wiederkehrende Muster in der Regulierungspraxis sichtbar. So entsteht eine neue Vergleichsbasis – gestützt auf echte Schadensfälle."
+            - paragraph [ref=f1e689]: "Der Fokus liegt auf dem Moment, der wirklich zählt: dem Schadenfall – ein Leistungs-CHECK auf Basis echter Schadenerfahrungen."
+            - link [ref=f1e927] [cursor=pointer]:
+              - /url: /insurances
+              - text: Versicherungen ansehen
+              - generic [aria-hidden] [ref=f1e691]: ↗
+        - region [ref=f1e928]:
+          - generic [ref=f1e693]: Newsletter
+          - heading [level=2] [ref=f1e929]: Bleibe informiert – mit unserem Regulierungs-CHECK Newsletter!
+          - paragraph [ref=f1e695]: Erhalte regelmäßig wertvolle Einblicke, Tipps zur Schadensregulierung und aktuelle Erfahrungsberichte aus erster Hand. Jetzt anmelden und keine wichtigen Updates mehr verpassen.
+          - link [ref=f1e930] [cursor=pointer]:
+            - /url: https://www.regulierungs-check.de/#i6vil
+            - text: anmelden
+            - generic [aria-hidden] [ref=f1e697]: ↗
+  - contentinfo [aria-hidden] [ref=f1e698]:
+    - generic [ref=f1e699]:
+      - generic [ref=f1e700]:
+        - link [ref=f1e931] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186
+        - paragraph [ref=f1e702]: Leistungs-CHECK auf Basis echter Schadenerfahrungen.
+      - navigation [ref=f1e932]:
+        - heading [level=3] [ref=f1e933]: Funktionen
+        - link [ref=f1e934] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/insurances
+          - text: Versicherungen
+        - link [ref=f1e935] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/reviews
+          - text: Bewertungen
+      - navigation [ref=f1e936]:
+        - heading [level=3] [ref=f1e937]: Unternehmen
+        - link [ref=f1e938] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/aboutus
+          - text: Über uns
+        - link [ref=f1e939] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/howto
+          - text: So funktionierts
+      - navigation [ref=f1e940]:
+        - heading [level=3] [ref=f1e941]: Informationen
+        - link [ref=f1e942] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/abos
+          - text: Abonnements
+        - link [ref=f1e943] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/faqs
+          - text: FAQ
+        - link [ref=f1e944] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/contact
+          - text: Kontakt
+    - generic [ref=f1e716]:
+      - generic [ref=f1e717]: © 2026 Regulierungs-CHECK. Alle Rechte vorbehalten.
+      - generic [ref=f1e718]:
+        - link [ref=f1e945] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/termsandconditions
+          - text: AGB's
+        - link [ref=f1e946] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/privacypolicy
+          - text: Datenschutz
+        - link [ref=f1e947] [cursor=pointer]:
+          - /url: http://127.0.0.1:8186/imprint
+          - text: Impressum
+        - link [ref=f1e948] [cursor=pointer]:
+          - /url: https://www.instagram.com/regulierungs_check?igsh=MWV2MWI5NTk0NWtscQ%3D%3D&utm_source=qr
+          - text: Instagram Link
+      - link [ref=f1e949] [cursor=pointer]:
+        - /url: "#main"
+        - text: ↑

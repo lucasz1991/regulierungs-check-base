@@ -346,3 +346,181 @@ Append-only communication log. Source and runtime evidence override stale entrie
 ## 2026-09-10T20:24:52Z | codex -> user | handoff
 
 - Message: Promotion-Teilnehmerseite und beide Promotion-Mailtemplates optisch verfeinert: gemeinsames Petrol/Gold-System, Soft-Structuralism-Rahmen, klare Statushierarchie, Font-Awesome-Icons und reduzierte Motion. Blade-Kompilierung, Social-Provider-Markup 3/33 und Vite-Build erfolgreich. Promotion-Featuretest durch bestehende SQLite-Migration ohne doctrine/dbal blockiert. Browser-Designvorschau unter Root .lmzdev/artifacts/mail-previews/promotion-ui-redesign.html.
+
+## 2026-10-24T19:15:33Z | Codex -> all | status
+
+- Message: Started: integrate approved Regulierungs-CHECK homepage redesign into local Base and serve on port 6666; preserve native data and Livewire contracts.
+
+## 2026-10-24T19:18:13Z | Codex component_cards -> all | status
+
+- Message: Started: integrate dynamic homepage news, insurance and review banners; preserve public visibility and privacy contracts.
+
+## 2026-10-24T19:19:27.7778972Z | Codex -> all | status
+
+- User authorized local Base integration and terminal server on port 6666.
+- Ownership: root Welcome/layout/scoped assets/runtime launcher; component_navigation home-only header/footer/native search hook; component_cards three homepage banners; find_redesign_html isolated runtime fixture and read-only local DB diagnosis.
+- Existing checkout clean before task. Existing local MySQL contains no app tables; preview must use a separate SQLite file and process-only configuration.
+
+
+## 2026-10-24T19:25:13Z | Codex component_cards -> all | handoff
+
+- Message: Homepage banner integration complete: three native Blade banners use existing dynamic news/review/provider queries and route targets. Provider HAVING replaced with portable EXISTS/whereHas; constrained ratings eager-loaded, aggregates restored after Livewire hydration. Score normalization 0..1 to 0..5, missing duration remains unavailable, user-name privacy and sanitized icons preserved. Focused SQLite in-memory PHPUnit: 20 tests/101 assertions passed; Pint, PHP lint and scoped diff-check passed. Root owns browser integration, asset lifecycle and final delivery; no migrations or application data writes.
+
+## 2026-10-24T19:41:33.5101176Z | Codex -> all | handoff
+
+- Completed: approved homepage design in local Base, native header/search/auth/footer, dynamic news/insurer/review banners, original hero/process/CMS fallbacks, home-scoped CSS and lifecycle-safe slider integration.
+- Runtime: .lmzdev/scripts/Start-HomepagePreview.ps1; verified isolated SQLite/file sessions/array mailer with dedicated configcache path. Terminal servers retained on 6666 and 8186.
+- Verified: npm build; PHP/JS syntax; focused PHPUnit 38 tests/167 assertions; real HTTP200; browser 320..1440 widths, search/filter/reset/ranges/native rating open, navigation/auth contracts, pause/scroll preservation after Morph, no homepage errors.
+- Known: Preview is partial snapshot with empty questionnaire scaffolds and missing separate News-upload images. Existing HomepageAosTest HTTP fixture gap and unused nav-link global view-cache failure recorded separately.
+- Report: artifacts/reports/homepage-redesign-local-2026-10-24.md. No production deployment.
+
+## 2026-10-24T21:10:25Z | Codex -> all | status
+
+- Message: Started: remove local notice and refine homepage visual quality with requested high-end-visual-design; preserve native data and interactions.
+
+## 2026-10-24T21:21:51.8087546Z | Codex -> all | handoff
+
+- Completed: remove visible local notice; refine homepage in actual Base with requested high-end-visual-design. Header at 1180 px, two-line desktop hero, readable mobile process, tray/core content cards, calmer about/newsletter/footer, restrained reduced-motion-aware entry animations.
+- Native contracts retained. RatingForm now closes on Escape and restores trigger focus.
+- Verified: production build app-RwVPZZje.js; focused PHPUnit 13/110; browser 320–1440 px without horizontal overflow; native search/filter/ranges and reduced motion; direct user IAB confirmation on 8186.
+- Runtime remains safely isolated and running on 6666/8186; no DB or deployment changes.
+- Report: artifacts/reports/homepage-polish-2026-10-24.md; final screenshot artifacts/screenshots/homepage-polish-2026-10-24/homepage-polish-desktop.png.
+
+## 2026-10-25T02:43:32Z | Codex -> all | status
+
+- Message: Started: restore compact continuous homepage news ticker without controls or scrollbars.
+
+## 2026-10-25T02:47:24.1604364Z | Codex -> all | handoff
+
+- Completed: user-requested compact homepage news ribbon, continuous36px/s; no playback/slider controls or scrollbars. Native links, focus pause, reduced motion and Livewire lifecycle retained.
+- Changed: homepage-news-teaser-banner.blade.php, news-only components-refinement.css rules, existing HomepageNewsTickerSpacingTest contract.
+- Verified: PHPUnit8/59, Pint, diffcheck, HTTP200, actual user IAB screenshot and motion; independent320/390px no overflow/controls, seamless loop, focus/reduced-motion pause.
+- Report: artifacts/reports/news-minimal-2026-10-25.md and news-minimal-audit-2026-10-25.json. Servers6666/8186 retained; no deployment or database changes.
+
+## 2026-10-25T03:44:18Z | Codex -> all | status
+
+- Message: Started: consolidate homepage in existing native files and remove redesign file naming.
+
+## 2026-10-25T03:49:59.3516723Z | Codex -> all | handoff
+
+- Consolidated homepage into existing app.css, app.js and homepage-news-ticker.js; reused identical original assets, kept normal Blade components and behavior tests. Removed duplicate public asset/style folder, extra JS modules, separate config file and import script. Preview CMS image reference now uses existing original image.
+- Verified production build, 13 tests / 112 assertions, Pint, HTTP 200 and direct user browser proof. Application sources contain no redesign naming.
+- User additionally authorized normal local MySQL migration for 6565. Agent verified local target and empty starting schema, then all 76 migrations completed; 57 tables and 0 pending. No source repair or new dependency needed.
+- Local 6565 now renders with no missing sessions / SQLSTATE, images loaded and no page overflow. Kept running preview servers. No deployment, reset or separate seed.
+
+- Independent consolidation audit: 248 delivered local HTML/CSS resource URLs return HTTP 200. Desktop 1237 px news remains 154 px with no controls/scrollbar; no broken images or console errors. Theme, dropdown, native search and insurer textfilter/reset verified. Separate audit browser disconnected before repeating mobile/category checks; their implementation stayed unchanged and prior responsive proof remains recorded above.
+
+## 2026-10-25T04:45:43Z | Codex -> all | status
+
+- Message: Started: back up and import user-supplied live dump into verified local MySQL for local testing.
+
+## 2026-10-25T04:56:35.8681815Z | Codex -> all | handoff
+
+- Completed: explicit user-authorized live ZIP import into verified local MySQL regulierungs-check. Original ZIP SHA256 e1f14dd4fd228dda9e4bcf46938737f6feb780c86164588970119e4a17d5320e; SQL SHA256 21331ec02b4093927d17f8158ad58b4a52a21549ae2101cffd24901e86e53908. Only first MariaDB sandbox header omitted in memory; no source archive changes.
+- Backup: private E:/projekte/regulierungscheck/regulierungs-check_lokal_vor_import_2026-10-25_04-48-58Z.sql.zip, CRC OK, SHA256 d14440fc0246d1dc14f40985e13dc32030711c9d8b8bad147b46d13aca35368a; includes pre-import DB and .env. No private dump/row content in repository.
+- Verified exact snapshot counts before web activity: 57 tables, 125680 rows, 46 nonempty, 76 migrations, 2 triggers; 3629 users / 632 insurers / 4325 ratings / 39 posts. Normal migrate finds nothing pending.
+- Existing .env only: local URL6565 and array mailer; database queue kept, no workers/schedulers. App cache cleared. Existing server reloaded environment. No application source changes or dependency installs.
+- Browser/HTTP proof: 6565 returns200; real public aggregate192, categories and Livewire filter/reset work, news continues without controls, no page overflow; all20 local homepage storage images exist. Independent mail/queue/CMS safety and row checks passed. Current proof overwrites existing local-homepage.png.
+- No production deployment/data changes. No further required work.
+
+## 2026-10-25T05:12:05Z | Codex -> all | status
+
+- Message: Started: remove news heading, refine Hero and restore compact insurance category selector in existing source files.
+
+## 2026-10-25T05:24:49.1041558Z | Codex -> all | handoff
+
+- Completed all three user UI comments in existing source files: remove visible news header; refine Hero typography/art/statistic; compact insurance explorer into inline tabs and native extra-category disclosure.
+- Root owns app.css/Welcome/news Blade; compact_insurance updated insurer Blade only; hero_review supplied specificity/font audit. No extra files, assets, frameworks or variant names introduced.
+- Verified build app-BRBRi0gH.css, focused PHPUnit 9/63, Pint, diffcheck and HTTP200. Real browser sizes1387/1024/980/390/320 have no page/headline overflow, bounded artwork, caption belowart and44px categories. Newsheight110px; compact desktop intro~102px.
+- Tested keyboard disclosure, extra-category Livewire filter/reset, six news clones only, dark/light mobile and reduced motion. Temporary test tab closed after clearing emulation; main6565 dark desktop retained.
+- Updated existing local-homepage.png. No business data edits or deployment.
+
+## 2026-10-25T05:50:59Z | Codex -> all | status
+
+- Message: Started: continue minimalist homepage refinement with lower-content and CMS consistency audit.
+
+## 2026-10-25T06:09:13.9248378Z | Codex -> all | handoff
+
+- Continued user-requested minimalist optimization with actual CMS evidence: duplicate About fallback removed, real footer newsletter kept, Home-only heading/brand presentation normalized while raw CMS, form, CSRF and JS remain unchanged.
+- Root styled existing app.css; lower_page_audit owned Welcome/layout/module view and existing tests; layout_quality_audit corrected footer labels. No new source files, variants or reports.
+- Unified lower section gutters/headings, calmer reviews, smaller process markers and mobile padding, native CMS About/Newsletter colors and form, readable footer touch targets. Mobile Hero shortened to fit content at320x900.
+- Verified build app-Drtb7ryW.css;17 tests/164 assertions;Pint/diffcheck. Browser sizes1387/1024/768/390/320: no overflow, exactly oneH1/About, real form/CSRF/required email preserved, unbroken newsletter brand, dark/light focus/colors. No form submission or external mail/AI calls.
+- Existing proof local-homepage.png updated. Main6565 remains open in original light preference; temporary test browser closed after emulation cleanup. No production or business data changes.
+
+## 2026-10-25T06:18:20Z | Codex -> all | status
+
+- Message: Started: research/install Product Design plugin and create three visual directions before implementing selected direction.
+
+## 2026-10-25 | Codex -> all | visual selection pending
+
+- Product Design 0.1.56 installed/enabled and verified through CLI plus fresh plugin catalog. Official Product Design/Figma/MagicPath sources compared; Product Design selected for direct visual exploration of the existing Laravel homepage.
+- Three independent generated images completed and displayed in chat, using the inspected current homepage, original logo assets and genuine public aggregate figures. Image results are stored in the standard Codex generated_images directory, not as new repo variants. Never infer option numbers from generation submission order.
+- Awaiting the required user choice under product-design/0.1.56/skills/ideate/SKILL.md before image-to-code implementation. Homepage source and local database unchanged in this stage. Continue with the selected displayed image in existing files, then responsive/dark-mode/keyboard and functional verification.
+
+## 2026-10-25T07:35:12Z | Codex -> all | status
+
+- Message: Started: revise rejected visual concepts while locking all existing homepage content, assets, section order and functions.
+
+## 2026-10-25 | Codex -> all | revised visual selection pending
+
+- User rejected the entire first concept set and explicitly requires existing content. Root and content_lock_audit verified current screenshot/templates without source edits. Existing reference screenshot updated; exact source copy, illustration, logos, data and section order attached/locked in all three new ImageGen prompts.
+- Exactly three independent revised images were displayed in this verified order. These numbers apply to the NEW set only:
+  1. Klarer Weissraum: C:/Users/L. Zacharias/.codex/generated_images/01a155ef-d01b-7b20-bc4f-68a5477ab280/exec-2d37d551-2aa1-4318-8448-ed2e37194792.png
+  2. Ruhige Markenflaeche: C:/Users/L. Zacharias/.codex/generated_images/01a155ef-d01b-7b20-bc4f-68a5477ab280/exec-bc9de213-bad6-41c3-bf5e-496e8be9a4fa.png
+  3. Kompakt und praezise: C:/Users/L. Zacharias/.codex/generated_images/01a155ef-d01b-7b20-bc4f-68a5477ab280/exec-1d61d6d2-a567-474f-988f-3620b841cec3.png
+- Next: user visual selection, then product-design image-to-code in the existing Laravel source, preserving all real content and native behavior. No app code, DB or production changes this round; no source tests/build warranted. Current6565 stays open; no additional browser tabs created.
+
+## 2026-10-25T07:41:01Z | Codex -> all | status
+
+- Message: Started: implement selected NEW option 1 in existing homepage sources, strict existing content lock.
+
+## 2026-10-25 | Codex -> all | selected option 1 completed locally
+
+- Implemented user-selected NEW option1 (exec-2d37d551-2aa1-4318-8448-ed2e37194792.png) exclusively in existing resources/css/app.css. White/open hero, original illustration, compact single-surface provider cards with facts side-by-side, readable titleless continuous news. Content/order/assets/labels/data/routes/forms/JS unchanged.
+- Removed354 conflicting legacy Hero/provider selectors while preserving shared review rules; one canonical component group now, native rail geometry retained. No new source/asset/variant/report files. Existing screenshot overwritten with actual final render.
+- Design QA: same1490x1055/DPR1 source+implementation combined comparison, first spacing/size findings fixed then recaptured/recompared; root and selected_layout_review passed five fidelity surfaces with noP0/P1/P2. Accepted originalasset/nativecontrol differences documented inSTATE.
+- Build app-BZk7m2lF.css;17focusedTests/164Assertions;diffcheck. Eleven widths320–1490: no page/title/caption overflow, oneH1/form; dark390; real category/Reset/search/modalEscape/carousels/news/reduced-motion verified. No submits or business-data mutations. Existing Usercentrics local-domain allowlist error separated from app checks.
+- Original user IABtab1 refreshed on6565 with currentCSS/lightmode and markedDeliverable; temporarytab/emulation cleaned up. No production change, commit, push or deployment.
+
+## 2026-10-25T08:54:01Z | Codex -> all | status
+
+- Message: Started: scoped polish of annotated category controls, provider search and result count; preserve chosen homepage design and content.
+
+## 2026-10-25 | Codex -> all | annotated controls polish complete
+
+- Root changed only existing app.css; controls_detail_review audited read-only. Fixed actual category-label9px/7px-margin inheritance defect, aligned icons/text and44pxcontrols, clearer selected/focus states,44pxsearchgo, simple search outline and13px dynamic count with responsive divider/spacing.
+- Original content/functions and all surrounding design preserved. Build app-CACTgb6b.css/diffcheck; browser six widths320–1490, dark/light, keyboard2pxfocus, realcategory/Reset, search2/0/20states all verified. No new test/source/variant/report files and no submits/data writes.
+- Existing screenshot now1350x490 detail crop of actual rendered controls. OriginalIAB6565 refreshed with currentCSS/lightmode, temporarytab closed/emulation cleaned. No deployment.
+
+## 2026-10-25T09:49:17Z | Codex -> all | status
+
+- Message: Started: modernize annotated landingpage with coordinated motion, original content and native lifecycle/reduced-motion behavior.
+
+## 2026-10-25 | Codex -> all | animated landingpage completed locally
+
+- Root changed existing app.css; homepage_motion changed existing app.js, root added keyboard-focus cancellation. No Blade/text/data/asset/library changes or new files. Hero spacing, metric surface, typography, simple provider cards and precise facts rows refined; original native functionality retained.
+- Integrated staggered WAAPI entrances, once-only section/card reveals, visible-only7pxfloat and fine-pointer3degtilt. ReducedMotion/hidden/offscreen/navigation/morph/disconnect lifecycle handled without duplicate bootstraps or permanently hidden content. Nine isolated agent lifecycle checks passed.
+- Browser actual transforms/tilt/offscreenpause/reducedcancel/resume verified. Ten widths320–1490 had no overflow or factsoverlap after narrowcardfix; dark390, realfilter/reset/search/modal, providerroute/back, oneNewsTrack/sixclones verified. Cached prior native modal restored onhistoryreturn; closed with existingCancel, no submit/component changes. No new appJSerror; existing localCMPerror retained.
+- Build app-mqbN8rVf.css/app-CL5lDAqb.js;17focusedTests/164Assertions, nodeSyntax/diffcheck passed. Independent visualreview found noP0/P1/P2. Current actual proof1490x1280 overwrites existing local-homepage.png.
+- OriginalIAB6565 refreshed/currentassets/lightmode markedDeliverable. Temporarytab closed and emulation removed. No deployment, production change, queueworker or scheduler.
+
+## 2026-10-25T11:51:36Z | Codex -> all | status
+
+- Message: Started: subtle scroll-linked curved-line background in existing homepage layout/CSS, static reduced-motion fallback.
+
+## 2026-10-25 | Codex -> all | subtle scroll background completed
+
+- Root changed existing app.blade.php/app.css only; background_motion_review audited stacking read-only. Home-only decorative SVG curves, two layers/sixpaths, mutedpetrol/gold, fixednegativez/isolatedbody, aria-hidden/focusablefalse/pointereventsnone. No new files/dependencies/JSlisteners or content changes.
+- Native scrollTimeline verified by actualtransform endpoints; staticCSS fallback and immediate ReducedMotion shutdown verified. Light/dark/mobilevisual checks; sixwidths320–1490 no overflow and exactlyonebackdrop. Native dialog/search unobstructed; providerpage haszero layers, Back exactlyone. Existing cachedmodalstate closed through nativeCancel as before.
+- Build app-Bq_iUgwn.css/diffcheck passed; no new tests for decorative-only change. Existing proof1490x1280 overwritten. OriginalIAB6565 refreshed attop/light/activeTimeline, temporarytab/emulation cleaned. No production/data/deployment change.
+
+## 2026-10-25T12:45:16Z | Codex -> all | status
+
+- Message: Started: increase curved-background visibility and strengthen load/scroll choreography in existing homepage files.
+
+## 2026-10-25 | Codex -> all | stronger load/scroll choreography completed
+
+- Root changed existing app.css: clearer line opacity/width, larger native scroll travel with safe overscan. stronger_page_motion changed existing app.js: background/header/headline/news/chips/CTA-icon and stronger card entrances within original controller. No new files/dependencies, layout/content/data changes or numeric animations.
+- Responsive heading history, computed background opacity, focus-before-observer and existing cleanup/reduced-motion guards retained. Agent19 lifecycle checks plus focused-before-callback case passed; root syntax/diffcheck and build app-CXLHywpa.css/app-BWoRyZ1V.js passed.
+- Browser verified initial/intermediate/end animation states, actual stronger scroll endpoints, six widths320–1490 without overflow, dark/light/reduced-motion, immediate keyboard visibility, stable resetcards/chips, search2→20 and oneNewsTrack/sixclones. No new appconsole errors beyond existinglocalCMP notice.
+- Existing proof1490x1280 overwritten; temporarytab/emulation removed. OriginalIAB6565 receives fresh loading sequence at final handoff. No production/deployment/business-data change.

@@ -1,417 +1,278 @@
-const TICKER_SELECTOR = '[data-homepage-news-ticker]';
-const TRACK_SELECTOR = '.homepage-news-ticker__track';
-const DRAG_THRESHOLD = 8;
-const CLICK_SUPPRESSION_MS = 800;
-const AUTOPLAY_RESTART_DELAY_MS = 2000;
-const MOMENTUM_FRAME_MS = 1000 / 60;
-const MOMENTUM_FRICTION_PER_FRAME = 0.94;
-const MOMENTUM_STOP_VELOCITY = 0.02;
-const MAX_MOMENTUM_VELOCITY = 2.4;
-const MAX_MOMENTUM_DURATION_MS = 1800;
-const RELEASE_VELOCITY_IDLE_MS = 120;
-const tickerStates = new WeakMap();
+export function createHomepageNewsTickers(scope = document) {
 
-// Muss vor Livewires wire:navigate-Listener laufen: Einige Touch-Browser
-// erzeugen den Click erst deutlich nach pointerup. In der Capture-Phase am
-// Fenster kann genau dieser Drag-Click gestoppt werden, bevor Livewire ihn als
-// Navigation verarbeitet.
-const suppressDraggedClick = (event) => {
-    const ticker = event.target?.closest?.(TICKER_SELECTOR);
-    const state = ticker ? tickerStates.get(ticker) : null;
+  function createTicker(root) {
+    const track = root.querySelector('[data-carousel-track]');
+    const originals = track ? [...track.querySelectorAll('[data-carousel-item]')] : [];
+    if (!track || !originals.length) return null;
+    const previous = root.querySelector('[data-carousel-prev]');
+    const next = root.querySelector('[data-carousel-next]');
+    const range = root.querySelector('[data-carousel-progress]');
+    const status = root.querySelector('[data-carousel-status]');
+    const toggle = root.querySelector('[data-news-toggle]');
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const announcer = document.createElement('span');
+    announcer.className = 'sr-only';
+    announcer.setAttribute('role', 'status');
+    announcer.setAttribute('aria-live', 'polite');
+    root.append(announcer);
+    status?.setAttribute('aria-live', 'off');
 
-    if (!state?.suppressNextClick) {
-        return;
+    const cleanups = [];
+    let clones = [];
+    let cycle = 0, starts = [], position = 0;
+    let frame = 0, lastTime = 0, lastUI = 0;
+    let resumeTimer = 0, resizeFrame = 0, clickTimer = 0, focusTimer = 0;
+    let alive = true, userPaused = false, hovered = false, focused = false;
+    let pointer = null, pointerHeld = false, cooling = false, suppressClick = false;
+    let inView = typeof IntersectionObserver !== 'function', windowFocused = true;
+    const speed = 36;
+    const modulo = value => cycle > 0 ? ((value % cycle) + cycle) % cycle : 0;
+    const listen = (target, event, handler, options) => {
+      target?.addEventListener(event, handler, options);
+      cleanups.push(() => target?.removeEventListener(event, handler, options));
+    };
+
+    function running() {
+      return alive && originals.length > 1 && cycle > 0 && !userPaused && !motion.matches &&
+        !hovered && !focused && !pointerHeld && !cooling && inView && windowFocused && !document.hidden;
+    }
+    function paintPosition(value) {
+      position = modulo(value);
+      track.scrollLeft = position;
+    }
+    function currentIndex() {
+      return Math.max(0, starts.findLastIndex(start => start <= position + 2));
+    }
+    function updateUI(announce = false) {
+      const index = currentIndex();
+      if (status) status.textContent = `${index + 1} / ${originals.length}`;
+      if (range) {
+        const lastStart = starts.at(-1) || 1;
+        range.disabled = originals.length < 2 || !cycle;
+        range.value = String(Math.round(Math.min(position / lastStart, 1) * 1000));
+        range.setAttribute('aria-valuetext', `Nachricht ${index + 1} von ${originals.length}`);
+        range.style.setProperty('--carousel-thumb-size', `${Math.max(28, range.clientWidth * Math.min(1, track.clientWidth / Math.max(1, cycle)))}px`);
+      }
+      if (previous) previous.disabled = originals.length < 2;
+      if (next) next.disabled = originals.length < 2;
+      if (announce) announcer.textContent = `Nachricht ${index + 1} von ${originals.length}`;
+    }
+    function updateToggle() {
+      if (!toggle) return;
+      toggle.disabled = motion.matches || originals.length < 2;
+      toggle.setAttribute('aria-pressed', String(userPaused || motion.matches));
+      toggle.setAttribute('aria-label', motion.matches ? 'Automatischer Newslauf bei reduzierter Bewegung deaktiviert' : userPaused ? 'News automatisch abspielen' : 'Automatischen Newslauf pausieren');
+      toggle.textContent = motion.matches ? 'Manuell' : userPaused ? 'Abspielen' : 'Pausieren';
+    }
+    function tick(time) {
+      frame = 0;
+      if (!running()) return;
+      if (lastTime) paintPosition(position + Math.min(64, time - lastTime) * speed / 1000);
+      lastTime = time;
+      if (time - lastUI >= 100) { updateUI(); lastUI = time; }
+      frame = requestAnimationFrame(tick);
+    }
+    function sync() {
+      if (!alive) return;
+      root.classList.toggle('news-is-playing', running());
+      if (running()) {
+        if (!frame) { lastTime = 0; frame = requestAnimationFrame(tick); }
+      } else {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        lastTime = 0;
+        position = modulo(track.scrollLeft);
+      }
+    }
+    function manualPause() {
+      cooling = true;
+      clearTimeout(resumeTimer);
+      sync();
+      resumeTimer = setTimeout(() => { cooling = false; sync(); }, 5000);
+    }
+    function rebuild() {
+      if (!alive) return;
+      const fraction = cycle ? modulo(track.scrollLeft) / cycle : 0;
+      clones.forEach(clone => clone.remove());
+      clones = [];
+      const appendSequence = () => {
+        originals.forEach((item, index) => {
+          const clone = item.cloneNode(true);
+          clone.removeAttribute('id');
+          clone.removeAttribute('data-carousel-item');
+          clone.setAttribute('data-news-clone', String(index));
+          clone.setAttribute('aria-hidden', 'true');
+          clone.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+          clone.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach(element => element.setAttribute('tabindex', '-1'));
+          track.append(clone);
+          clones.push(clone);
+        });
+      };
+      appendSequence();
+      const origin = originals[0].offsetLeft;
+      cycle = clones[0].offsetLeft - origin;
+      starts = originals.map(item => item.offsetLeft - origin);
+      if (cycle > 0) {
+        // Enough repeated content to cover the widest viewport throughout a loop.
+        const additional = Math.max(0, Math.ceil(track.clientWidth / cycle) - 1);
+        for (let index = 0; index < additional; index++) appendSequence();
+      }
+      paintPosition(fraction * cycle);
+      updateUI();
+      updateToggle();
+      sync();
+    }
+    function resize() {
+      if (resizeFrame) return;
+      resizeFrame = requestAnimationFrame(() => { resizeFrame = 0; rebuild(); });
+    }
+    function navigate(direction) {
+      manualPause();
+      let index = currentIndex();
+      if (direction === 'first') index = 0;
+      else if (direction === 'last') index = originals.length - 1;
+      else if (direction < 0 && position > starts[index] + 2) { /* Return to the visible card's start. */ }
+      else index = (index + direction + originals.length) % originals.length;
+      paintPosition(starts[index] || 0);
+      updateUI(true);
+    }
+    function onKeydown(event) {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (event.target !== track && event.target !== range) return;
+      const direction = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -1, ArrowDown: 1, Home: 'first', End: 'last', PageUp: -1, PageDown: 1 }[event.key];
+      if (direction === undefined) return;
+      event.preventDefault();
+      navigate(direction);
+    }
+    function onFocus(event) {
+      const clone = event.target.closest?.('[data-news-clone]');
+      if (clone) {
+        // Allow a native pointer click to finish before relocating its target.
+        // Mouse focus is prevented below; this also covers touch/programmatic focus.
+        clearTimeout(focusTimer);
+        focusTimer = setTimeout(() => {
+          if (!alive || !clone.contains(document.activeElement)) return;
+          const index = Number(clone.getAttribute('data-news-clone'));
+          manualPause();
+          paintPosition(starts[index] || 0);
+          originals[index]?.querySelector('a[href]')?.focus({ preventScroll: true });
+          updateUI();
+        }, 0);
+      }
+      focused = root.contains(document.activeElement) && document.activeElement !== toggle;
+      sync();
+    }
+    function endPointer() {
+      if (!pointerHeld && !pointer) return;
+      const ended = pointer;
+      pointer = null;
+      pointerHeld = false;
+      if (ended?.dragging) {
+        suppressClick = true;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { suppressClick = false; }, 350);
+        try { if (track.hasPointerCapture?.(ended.id)) track.releasePointerCapture(ended.id); } catch (_) { /* Already released. */ }
+      }
+      root.classList.remove('is-dragging');
+      manualPause();
     }
 
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    state.suppressNextClick = false;
-    window.clearTimeout(state.suppressionTimer);
-    state.suppressionTimer = null;
+    listen(previous, 'click', () => navigate(-1));
+    listen(next, 'click', () => navigate(1));
+    listen(toggle, 'click', () => { userPaused = !userPaused; updateToggle(); sync(); });
+    listen(root, 'pointerenter', event => { if (event.pointerType !== 'touch') { hovered = true; sync(); } });
+    listen(root, 'pointerleave', () => { hovered = false; sync(); });
+    listen(root, 'focusin', onFocus);
+    listen(root, 'focusout', () => queueMicrotask(() => { if (!alive) return; focused = root.contains(document.activeElement) && document.activeElement !== toggle; sync(); }));
+    listen(track, 'keydown', onKeydown);
+    listen(range, 'keydown', onKeydown);
+    listen(range, 'input', () => {
+      manualPause();
+      paintPosition((Number(range.value) || 0) / 1000 * (starts.at(-1) || 0));
+      updateUI();
+    });
+    listen(range, 'change', () => updateUI(true));
+    listen(track, 'wheel', manualPause, { passive: true });
+    listen(track, 'scroll', () => {
+      if (running()) return;
+      const left = track.scrollLeft;
+      position = modulo(left);
+      if (left >= cycle && cycle > 0) track.scrollLeft = position;
+      updateUI();
+    }, { passive: true });
+    listen(track, 'mousedown', event => {
+      // Cancel only duplicate-link focus, never its normal click/navigation.
+      if (event.button === 0 && event.target.closest?.('[data-news-clone]')) event.preventDefault();
+    });
+    listen(track, 'pointerdown', event => {
+      if (event.button !== 0 && event.pointerType === 'mouse') return;
+      pointerHeld = true;
+      sync();
+      if (event.pointerType === 'mouse') pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, left: position, dragging: false };
+    }, { passive: true });
+    listen(track, 'pointermove', event => {
+      if (!pointer || pointer.id !== event.pointerId) return;
+      const dx = event.clientX - pointer.x, dy = event.clientY - pointer.y;
+      if (!pointer.dragging) {
+        if (Math.abs(dy) > 6 && Math.abs(dy) >= Math.abs(dx)) { pointer = null; return; }
+        if (Math.abs(dx) < 7) return;
+        pointer.dragging = true;
+        root.classList.add('is-dragging');
+        try { track.setPointerCapture?.(pointer.id); } catch (_) { /* Pointer was already released. */ }
+      }
+      event.preventDefault();
+      paintPosition(pointer.left - dx);
+      updateUI();
+    });
+    listen(track, 'dragstart', event => { if (pointer) event.preventDefault(); });
+    listen(track, 'click', event => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
+    listen(window, 'pointerup', endPointer);
+    listen(window, 'pointercancel', endPointer);
+    listen(track, 'lostpointercapture', endPointer);
+    listen(window, 'blur', () => { windowFocused = false; endPointer(); sync(); });
+    listen(window, 'focus', () => { windowFocused = true; sync(); });
+    listen(document, 'visibilitychange', sync);
+    listen(window, 'resize', resize);
+    const onMotion = () => { updateToggle(); sync(); };
+    if (motion.addEventListener) listen(motion, 'change', onMotion);
+    else { motion.addListener(onMotion); cleanups.push(() => motion.removeListener(onMotion)); }
+    const visibility = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+      inView = entries.some(entry => entry.isIntersecting);
+      sync();
+    }, { threshold: .05 }) : null;
+    visibility?.observe(root);
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null;
+    observer?.observe(track);
+    observer?.observe(originals[0]);
+    document.fonts?.ready.then(() => { if (alive) resize(); });
+    root.classList.add('news-ticker-ready');
+    rebuild();
 
-    if (!state.dragging) {
-        ticker.classList.remove('is-drag-suppressing');
-    }
-};
-
-window.addEventListener('click', suppressDraggedClick, true);
-
-const translateX = (track) => {
-    const transform = window.getComputedStyle(track).transform;
-
-    if (!transform || transform === 'none') {
-        return 0;
-    }
-
-    const is3d = transform.startsWith('matrix3d(');
-    const values = transform
-        .slice(is3d ? 9 : 7, -1)
-        .split(',')
-        .map(Number);
-    const value = values[is3d ? 12 : 4];
-
-    return Number.isFinite(value) ? value : 0;
-};
-
-const initializeTicker = (ticker) => {
-    if (ticker.dataset.homepageNewsTickerReady === 'true') {
-        return;
-    }
-
-    const track = ticker.querySelector(TRACK_SELECTOR);
-
-    if (!track) {
-        return;
-    }
-
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const state = {
-        pointerId: null,
-        axis: null,
-        startX: 0,
-        startY: 0,
-        originX: 0,
-        currentX: 0,
-        lastPointerX: 0,
-        lastPointerTime: 0,
-        velocityX: 0,
-        dragging: false,
-        momentumFrame: null,
-        restartTimer: null,
-        suppressNextClick: false,
-        suppressionTimer: null,
+    return {
+      destroy() {
+        alive = false;
+        cancelAnimationFrame(frame);
+        cancelAnimationFrame(resizeFrame);
+        clearTimeout(resumeTimer);
+        clearTimeout(clickTimer);
+        clearTimeout(focusTimer);
+        visibility?.disconnect();
+        observer?.disconnect();
+        cleanups.forEach(cleanup => cleanup());
+        clones.forEach(clone => clone.remove());
+        announcer.remove();
+        root.classList.remove('news-ticker-ready', 'news-is-playing', 'is-dragging');
+        if (range) range.disabled = true;
+      }
     };
-    tickerStates.set(ticker, state);
-
-    const cycleWidth = () => track.scrollWidth / 2;
-    const normalizeX = (value) => {
-        const width = cycleWidth();
-
-        if (!width) {
-            return 0;
-        }
-
-        let normalized = value % width;
-
-        if (normalized > 0) {
-            normalized -= width;
-        }
-
-        return normalized;
-    };
-
-    const removeWindowListeners = () => {
-        window.removeEventListener('pointermove', moveDrag);
-        window.removeEventListener('pointerup', finishDrag);
-        window.removeEventListener('pointercancel', finishDrag);
-        window.removeEventListener('blur', finishDrag);
-        window.removeEventListener('touchmove', blockLockedTouchScroll);
-    };
-
-    const setMotionState = (motion) => {
-        ticker.dataset.homepageNewsTickerMotion = motion;
-    };
-
-    const stopManualMotion = () => {
-        if (state.momentumFrame !== null) {
-            window.cancelAnimationFrame(state.momentumFrame);
-            state.momentumFrame = null;
-        }
-
-        if (state.restartTimer !== null) {
-            window.clearTimeout(state.restartTimer);
-            state.restartTimer = null;
-        }
-
-        ticker.classList.remove('is-coasting', 'is-restart-pending');
-    };
-
-    const setTrackPosition = (value) => {
-        state.currentX = normalizeX(value);
-        track.style.transform = `translate3d(${state.currentX}px, 0, 0)`;
-    };
-
-    const resumeTicker = () => {
-        stopManualMotion();
-
-        const width = cycleWidth();
-
-        if (reducedMotion.matches || !width) {
-            track.style.removeProperty('animation-delay');
-            track.style.removeProperty('animation-name');
-            track.style.removeProperty('animation-play-state');
-            track.style.removeProperty('transform');
-            setMotionState('native-scroll');
-
-            return;
-        }
-
-        state.currentX = normalizeX(state.currentX);
-
-        const duration = Number.parseFloat(
-            window.getComputedStyle(ticker)
-                .getPropertyValue('--homepage-news-ticker-duration')
-        ) || 60;
-        const progress = Math.min(1, Math.max(0, -state.currentX / width));
-
-        // Der negative Delay setzt die CSS-Animation auf die gezogene
-        // Position, bevor die automatische Bewegung nahtlos weiterlaeuft.
-        track.style.animationDelay = `${-(duration * progress)}s`;
-        track.style.removeProperty('animation-name');
-        track.style.removeProperty('animation-play-state');
-        track.style.removeProperty('transform');
-        setMotionState('autoplay');
-    };
-
-    const queueAutoplayRestart = () => {
-        if (state.momentumFrame !== null) {
-            window.cancelAnimationFrame(state.momentumFrame);
-            state.momentumFrame = null;
-        }
-
-        state.velocityX = 0;
-        ticker.classList.remove('is-coasting');
-        ticker.classList.add('is-restart-pending');
-        setMotionState('waiting');
-
-        if (state.restartTimer !== null) {
-            window.clearTimeout(state.restartTimer);
-        }
-
-        // Erst wenn der Auslauf wirklich beendet ist, beginnt die
-        // zweisekuendige Ruhephase. Danach uebernimmt die lineare
-        // CSS-Laufschrift wieder.
-        state.restartTimer = window.setTimeout(() => {
-            state.restartTimer = null;
-            resumeTicker();
-        }, AUTOPLAY_RESTART_DELAY_MS);
-    };
-
-    const startMomentum = () => {
-        const startedAt = window.performance.now();
-        const idleTime = Math.max(0, startedAt - state.lastPointerTime);
-        const idleFactor = Math.max(0, 1 - (idleTime / RELEASE_VELOCITY_IDLE_MS));
-        let velocity = Math.max(
-            -MAX_MOMENTUM_VELOCITY,
-            Math.min(MAX_MOMENTUM_VELOCITY, state.velocityX * idleFactor)
-        );
-
-        if (Math.abs(velocity) <= MOMENTUM_STOP_VELOCITY) {
-            queueAutoplayRestart();
-
-            return;
-        }
-
-        ticker.classList.add('is-coasting');
-        setMotionState('coasting');
-
-        let previousFrame = startedAt;
-        const step = (timestamp) => {
-            const elapsed = Math.min(34, Math.max(0, timestamp - previousFrame));
-            const decay = Math.pow(
-                MOMENTUM_FRICTION_PER_FRAME,
-                elapsed / MOMENTUM_FRAME_MS
-            );
-            const nextVelocity = velocity * decay;
-            const averageVelocity = (velocity + nextVelocity) / 2;
-
-            setTrackPosition(state.currentX + (averageVelocity * elapsed));
-            velocity = nextVelocity;
-            state.velocityX = velocity;
-            previousFrame = timestamp;
-
-            if (
-                Math.abs(velocity) <= MOMENTUM_STOP_VELOCITY
-                || timestamp - startedAt >= MAX_MOMENTUM_DURATION_MS
-            ) {
-                state.momentumFrame = null;
-                queueAutoplayRestart();
-
-                return;
-            }
-
-            state.momentumFrame = window.requestAnimationFrame(step);
-        };
-
-        state.momentumFrame = window.requestAnimationFrame(step);
-    };
-
-    function finishDrag(event) {
-        if (
-            state.pointerId === null
-            || (event?.pointerId !== undefined && event.pointerId !== state.pointerId)
-        ) {
-            return;
-        }
-
-        const wasDragging = state.dragging;
-        const shouldCoast = event?.type === 'pointerup';
-
-        state.pointerId = null;
-        state.axis = null;
-        state.dragging = false;
-        ticker.classList.remove('is-dragging');
-        removeWindowListeners();
-
-        if (wasDragging) {
-            // Touch-Browser erzeugen den Click teilweise deutlich verzoegert
-            // nach pointerup. Genau dieser naechste Click wird abgefangen.
-            // Bleibt er aus, endet die Sperre nach einem kurzen Fenster.
-            state.suppressNextClick = true;
-            window.clearTimeout(state.suppressionTimer);
-            state.suppressionTimer = window.setTimeout(() => {
-                state.suppressionTimer = null;
-                state.suppressNextClick = false;
-
-                if (!state.dragging) {
-                    ticker.classList.remove('is-drag-suppressing');
-                }
-            }, CLICK_SUPPRESSION_MS);
-
-            if (shouldCoast) {
-                startMomentum();
-            } else {
-                queueAutoplayRestart();
-            }
-
-            return;
-        }
-
-        resumeTicker();
-    }
-
-    function blockLockedTouchScroll(event) {
-        if (
-            state.axis !== 'x'
-            || !state.dragging
-            || (event.touches?.length ?? 0) > 1
-        ) {
-            return;
-        }
-
-        if (event.cancelable) {
-            event.preventDefault();
-        }
-    }
-
-    function moveDrag(event) {
-        if (state.pointerId === null || event.pointerId !== state.pointerId) {
-            return;
-        }
-
-        const now = window.performance.now();
-        const deltaX = event.clientX - state.startX;
-        const deltaY = event.clientY - state.startY;
-
-        if (!state.dragging) {
-            if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < DRAG_THRESHOLD) {
-                return;
-            }
-
-            if (Math.abs(deltaY) >= Math.abs(deltaX)) {
-                state.axis = 'y';
-                finishDrag(event);
-
-                return;
-            }
-
-            state.axis = 'x';
-            state.dragging = true;
-            window.clearTimeout(state.suppressionTimer);
-            state.suppressionTimer = null;
-            ticker.classList.add('is-dragging');
-            ticker.classList.add('is-drag-suppressing');
-            setMotionState('dragging');
-
-            // Ein Link kann beim Pointerdown Fokus erhalten. Nach einem Drag
-            // darf :focus-within den spaeteren Autostart nicht festhalten.
-            const activeElement = document.activeElement;
-
-            if (activeElement instanceof HTMLElement && ticker.contains(activeElement)) {
-                activeElement.blur();
-            }
-
-            window.addEventListener('touchmove', blockLockedTouchScroll, { passive: false });
-        }
-
-        if (event.cancelable) {
-            event.preventDefault();
-        }
-
-        const elapsed = Math.max(1, now - state.lastPointerTime);
-        const instantVelocity = Math.max(
-            -MAX_MOMENTUM_VELOCITY,
-            Math.min(
-                MAX_MOMENTUM_VELOCITY,
-                (event.clientX - state.lastPointerX) / elapsed
-            )
-        );
-
-        state.velocityX = state.velocityX === 0 || elapsed >= RELEASE_VELOCITY_IDLE_MS
-            ? instantVelocity
-            : (state.velocityX * 0.35) + (instantVelocity * 0.65);
-        state.lastPointerX = event.clientX;
-        state.lastPointerTime = now;
-
-        setTrackPosition(state.originX + deltaX);
-    }
-
-    const startDrag = (event) => {
-        if (
-            event.isPrimary === false
-            || (event.pointerType === 'mouse' && event.button !== 0)
-        ) {
-            return;
-        }
-
-        if (state.pointerId !== null || reducedMotion.matches) {
-            return;
-        }
-
-        stopManualMotion();
-        state.pointerId = event.pointerId;
-        state.axis = null;
-        state.startX = event.clientX;
-        state.startY = event.clientY;
-        state.lastPointerX = event.clientX;
-        state.lastPointerTime = window.performance.now();
-        state.velocityX = 0;
-        track.style.animationPlayState = 'paused';
-        state.originX = translateX(track);
-        setTrackPosition(state.originX);
-        track.style.animationName = 'none';
-        setMotionState('pointer-down');
-
-        window.addEventListener('pointermove', moveDrag, { passive: false });
-        window.addEventListener('pointerup', finishDrag);
-        window.addEventListener('pointercancel', finishDrag);
-        window.addEventListener('blur', finishDrag);
-    };
-
-    ticker.addEventListener('pointerdown', startDrag);
-    ticker.addEventListener('dragstart', (event) => event.preventDefault());
-    ticker.dataset.homepageNewsTickerReady = 'true';
-    setMotionState(reducedMotion.matches ? 'native-scroll' : 'autoplay');
-};
-
-export const initializeHomepageNewsTickers = (root = document) => {
-    const tickers = [];
-
-    if (root instanceof Element && root.matches(TICKER_SELECTOR)) {
-        tickers.push(root);
-    }
-
-    root.querySelectorAll?.(TICKER_SELECTOR).forEach((ticker) => tickers.push(ticker));
-    tickers.forEach(initializeTicker);
-};
-
-const bootHomepageNewsTickers = () => initializeHomepageNewsTickers(document);
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bootHomepageNewsTickers, { once: true });
-} else {
-    bootHomepageNewsTickers();
+  }
+
+  const roots = scope.matches?.('[data-news-ticker]') ? [scope] : [...scope.querySelectorAll('[data-news-ticker]')];
+  const controllers = roots.map(createTicker).filter(Boolean);
+  return () => controllers.forEach(controller => controller.destroy());
 }
-
-document.addEventListener('livewire:initialized', bootHomepageNewsTickers);
-document.addEventListener('livewire:navigated', bootHomepageNewsTickers);

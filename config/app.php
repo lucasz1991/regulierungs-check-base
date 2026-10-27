@@ -18,6 +18,8 @@ return [
 
     'name' => env('APP_NAME', 'MiniFinds'),
 
+    'homepage_preview' => (bool) env('HOMEPAGE_PREVIEW', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

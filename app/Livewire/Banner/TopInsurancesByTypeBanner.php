@@ -6,6 +6,7 @@ use App\Models\ClaimRating;
 use App\Models\Insurance;
 use App\Models\InsuranceType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
@@ -13,14 +14,20 @@ use Livewire\Component;
 class TopInsurancesByTypeBanner extends Component
 {
     public Collection $types;
+
     public Collection $insurances;
 
     public ?int $selectedInsuranceTypeId = null;
+
     public array $selectedSubtypeIds = [];
+
     public bool $showAllInsuranceTypes = false;
 
     public int $limit = 20;
+
     public int $minPublishedCount = 1;
+
+    private bool $insurancesLoaded = false;
 
     public function mount(): void
     {
@@ -42,19 +49,20 @@ class TopInsurancesByTypeBanner extends Component
 
     protected function loadTypes(): void
     {
+        $publishedRatings = ClaimRating::query()
+            ->join('insurance_type_insurance_subtype as itis', 'itis.insurance_subtype_id', '=', 'claim_ratings.insurance_subtype_id')
+            ->join('insurances as i', 'i.id', '=', 'claim_ratings.insurance_id')
+            ->whereColumn('itis.insurance_type_id', 'insurance_types.id')
+            ->where('i.is_active', true)
+            ->where('claim_ratings.is_public', true)
+            ->whereIn('claim_ratings.status', ClaimRating::publicVisibleStatuses());
+
         $query = InsuranceType::query()
             ->where('insurance_types.is_active', true)
             ->addSelect([
-                'published_ratings_count' => ClaimRating::query()
-                    ->selectRaw('COUNT(*)')
-                    ->join('insurance_type_insurance_subtype as itis', 'itis.insurance_subtype_id', '=', 'claim_ratings.insurance_subtype_id')
-                    ->join('insurances as i', 'i.id', '=', 'claim_ratings.insurance_id')
-                    ->whereColumn('itis.insurance_type_id', 'insurance_types.id')
-                    ->where('i.is_active', true)
-                    ->where('claim_ratings.is_public', true)
-                    ->whereIn('claim_ratings.status', ClaimRating::publicVisibleStatuses()),
+                'published_ratings_count' => (clone $publishedRatings)->selectRaw('COUNT(*)'),
             ])
-            ->having('published_ratings_count', '>', 0)
+            ->whereExists((clone $publishedRatings)->selectRaw('1'))
             ->orderByDesc('published_ratings_count');
 
         if (Schema::hasColumn('insurance_types', 'order_id')) {
@@ -91,7 +99,11 @@ class TopInsurancesByTypeBanner extends Component
             ->where('is_active', true)
             ->whereHas('claimRatings', function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
                 $this->applyRatingFilter($query, $selectedTypeId, $selectedSubtypeIds);
-            })
+            }, '>=', max(1, $this->minPublishedCount))
+            ->with(['claimRatings' => function (HasMany $query) use ($selectedTypeId, $selectedSubtypeIds) {
+                $this->applyRatingFilter($query->getQuery(), $selectedTypeId, $selectedSubtypeIds);
+                $query->select(['id', 'insurance_id', 'answers']);
+            }])
             ->withCount([
                 'claimRatings as published_count' => function ($query) use ($selectedTypeId, $selectedSubtypeIds) {
                     $this->applyRatingFilter($query, $selectedTypeId, $selectedSubtypeIds);
@@ -102,26 +114,27 @@ class TopInsurancesByTypeBanner extends Component
                     $this->applyRatingFilter($query, $selectedTypeId, $selectedSubtypeIds);
                 },
             ], 'rating_score')
-            ->having('published_count', '>=', $this->minPublishedCount)
             ->orderByDesc('published_count')
             ->orderByDesc('published_avg')
             ->orderBy('insurances.id')
             ->take($this->limit)
             ->get();
+
+        $this->insurancesLoaded = true;
     }
 
     private function applyRatingFilter(Builder $query, ?int $typeId, array $subtypeIds): void
     {
         $query->publiclyVisible();
 
-        if (!$typeId) {
+        if (! $typeId) {
             return;
         }
 
         $query->where(function (Builder $filterQuery) use ($typeId, $subtypeIds) {
             $filterQuery->where('insurance_type_id', $typeId);
 
-            if (!empty($subtypeIds)) {
+            if (! empty($subtypeIds)) {
                 $filterQuery->orWhereIn('insurance_subtype_id', $subtypeIds);
             }
         });
@@ -129,6 +142,14 @@ class TopInsurancesByTypeBanner extends Component
 
     public function render()
     {
+        // Livewire restores model identities, not aggregate columns or the
+        // constraints on an eager-loaded relation. Rebuild these server-side
+        // after hydration so a refresh cannot read unfiltered claim ratings.
+        if (! $this->insurancesLoaded) {
+            $this->loadTypes();
+            $this->loadInsurances();
+        }
+
         return view('livewire.banner.top-insurances-by-type-banner');
     }
 }

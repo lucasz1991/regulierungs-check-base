@@ -5,6 +5,7 @@
      insuranceTypeId: @entangle('insuranceTypeId'),
      insuranceSubTypeId: @entangle('insuranceSubTypeId'),
     }"
+    x-on:keydown.escape.window="if (modalIsOpen) { modalIsOpen = false; $event.preventDefault(); $event.stopPropagation(); }"
     x-init="() => {
         $watch('step', () => { 
             $nextTick(() => {

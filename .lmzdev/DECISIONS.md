@@ -56,3 +56,29 @@ Record durable decisions with date, context, decision, and consequences.
 ## 2026-09-04 | Mitarbeiter-E-Mails bleiben im Admin
 
 - Mitarbeiter-Einrichtungs-E-Mails werden direkt und synchron im Admin versendet. Base-Message, Base-Jobs und Base-Queue werden für diesen Ablauf nicht verwendet.
+
+## 2026-10-24 | Autorisierte Integration des externen Entwurfs in Base
+
+- Der neue Nutzerauftrag erweitert den frueher getrennten Workshop ausdruecklich auf die lokale Laravel-Startseite.
+- Styles bleiben Home-begrenzt, dynamische Inhalte verwenden native Daten und bestehende CMS-Positionen. Unbekannte Werte werden nicht erfunden.
+- Leere lokale MySQL wird nicht migriert oder befuellt; eine neue isolierte SQLite traegt die markierte Preview-Teilmenge.
+- Port 6666 bleibt angeforderter Server; 8186 dient dem normalen Browserzugang wegen Chromes Port-Sperre.
+
+## 2026-10-25 | Native Dateien statt separater Varianten
+
+- Nutzer verlangt die Umsetzung direkt in vorhandenen Projektdateien ohne Redesign-Bezeichnungen oder unnoetige Zusatzdateien.
+- Startseiten-CSS steht in resources/css/app.css, Navigation/Slider-Lifecycle in resources/js/app.js und Newslogik in der vorhandenen homepage-news-ticker.js. Originale Bilder/Logos/Fonts werden wiederverwendet; doppelter Public-Ordner und Importskript entfallen.
+- Normale Blade-Komponenten fuer Header/Footer und fachliche Tests bleiben wegen ihrer eigenen Render-/Funktionsverantwortung erhalten. Keine neuen Varianten, Berichte oder Hilfsdateien fuer diese Bereinigung.
+- Neuer Nutzerauftrag erlaubt die normalen ausstehenden Migrationen der lokalen MySQL regulierungs-check fuer Port 6565. Keine Fresh-/Reset-/Seed-Kommandos und kein Zugriff auf produktive Datenbanken.
+
+## 2026-10-25 | Freigegebener lokaler Live-Datenimport
+
+- Neuer expliziter Nutzerauftrag erlaubt das Ersetzen der zuvor frisch migrierten lokalen MySQL durch den bereitgestellten Live-Dump fuer lokale Tests.
+- Importziel vor jeder Mutation auf MySQL / 127.0.0.1:3306 / regulierungs-check geprueft; Originalarchiv unveraendert, vorherige DB und .env gesichert. Keine Produktionsverbindung, kein Seed-/Fresh-/Reset-Kommando.
+- Lokaler E-Mail-Transport bleibt array, Queue-Worker und Scheduler laufen nicht. Keine automatische Ausfuehrung importierter oder neu erzeugter Jobs.
+
+## 2026-10-25 | Bestehender Content als verbindliche Designgrundlage
+
+- Nutzer lehnt alle drei ersten Product-Design-Entwuerfe ab und verlangt ausdruecklich den vorhandenen Inhalt. Keine neuen Claims, Statistiken, numerischen Scores oder Features; Originaltexte, Originalillustration/Logos, Kennzahlen, Abschnittsreihenfolge und native Funktionen erhalten.
+- Neue Entwuerfe sind behutsame visuelle Verfeinerungen derselben Startseite. Aenderungsspielraum: Typografie, Abstaende, Ausrichtung, Flaechen und einfachere Kartenrahmen. Keine suchzentrierte Neuordnung oder redaktionelle/dunkle Neukonzeption aus der abgelehnten Runde.
+- Bei spaeterer Umsetzung dynamische Werte aus dem bestehenden Backend lesen; niemals Zahlen, Logos oder Text aus generierten Bildern festschreiben. Aktuelle Kennzahlbeschriftung nicht beilaufig unter diesem Content-Lock umschreiben.
