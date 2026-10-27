@@ -11,7 +11,7 @@
 @endphp
 
 <div
-    class="min-h-screen w-full bg-white text-slate-900"
+    class="min-h-screen w-full bg-white text-slate-900 app-background-canvas"
     :style="`margin-top: -${$store.nav.height}px`"
 >
     <article>

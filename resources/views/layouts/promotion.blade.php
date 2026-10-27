@@ -25,7 +25,8 @@
         @media (prefers-reduced-motion:reduce) { .promotion-enter,.promotion-enter-delayed,.promotion-status-orbit,.promotion-status-pulse { animation:none!important; } }
     </style>
 </head>
-<body class="promotion-shell min-h-[100dvh] text-slate-950 antialiased">
+<body class="promotion-shell min-h-[100dvh] text-slate-950 antialiased has-app-background">
+    <x-app-background />
     {{ $slot }}
     @livewireScripts
 </body>

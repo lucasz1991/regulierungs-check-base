@@ -615,6 +615,82 @@ const heroMotion = new Map();
 let observer;
 let motionRoot;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let appBackgroundMotion;
+
+function createAppBackgroundMotion(root) {
+    const layers = [...root.querySelectorAll('.app-background-layer')];
+    const properties = ['--background-x', '--background-y', '--background-rotate'];
+    const originals = layers.map(layer => properties.map(name => [name, layer.style.getPropertyValue(name), layer.style.getPropertyPriority(name)]));
+    let frame = 0;
+    let destroyed = false;
+    let current = window.scrollY || 0;
+    let target = current;
+    let lastTime = 0;
+
+    const paint = position => {
+        layers.forEach(layer => {
+            const far = layer.classList.contains('app-background-layer-far');
+            const x = far ? -Math.sin(position / 900) * 35 : Math.sin(position / 820) * 44;
+            const y = far ? Math.sin(position / 1150) * 58 : -Math.sin(position / 1050) * 76;
+            const rotation = Math.sin(position / 1500) * (far ? -.45 : .6);
+            layer.style.setProperty('--background-x', `${x.toFixed(2)}px`);
+            layer.style.setProperty('--background-y', `${y.toFixed(2)}px`);
+            layer.style.setProperty('--background-rotate', `${rotation.toFixed(3)}deg`);
+        });
+    };
+    const tick = time => {
+        frame = 0;
+        if (destroyed) return;
+        if (!root.isConnected) { destroy(); return; }
+        const delta = lastTime ? Math.min(time - lastTime, 50) : 16;
+        lastTime = time;
+        current += (target - current) * (1 - Math.exp(-delta / 140));
+        if (Math.abs(target - current) < .1) current = target;
+        paint(current);
+        if (current !== target) frame = requestAnimationFrame(tick);
+        else { root.classList.remove('is-scrolling'); lastTime = 0; }
+    };
+    const update = event => {
+        // Only the document scroll drives the canvas, never carousels or dialogs.
+        if (destroyed || (event?.type === 'scroll' && event.target !== document)) return;
+        target = Math.max(0, window.scrollY || 0);
+        if (!frame && target !== current) {
+            root.classList.add('is-scrolling');
+            frame = requestAnimationFrame(tick);
+        }
+    };
+    function destroy() {
+        if (destroyed) return;
+        destroyed = true;
+        cancelAnimationFrame(frame);
+        root.classList.remove('is-scrolling');
+        document.removeEventListener('scroll', update);
+        window.removeEventListener('resize', update);
+        layers.forEach((layer, index) => originals[index].forEach(([name, value, priority]) => {
+            if (value) layer.style.setProperty(name, value, priority);
+            else layer.style.removeProperty(name);
+        }));
+    }
+    paint(current);
+    document.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    return { root, destroy, get destroyed() { return destroyed; } };
+}
+
+function stopAppBackgroundMotion() {
+    appBackgroundMotion?.destroy();
+    appBackgroundMotion = undefined;
+}
+
+function refreshAppBackgroundMotion() {
+    const root = document.querySelector('.app-background');
+    document.documentElement.classList.toggle('app-background-paused', document.hidden);
+    if (root && appBackgroundMotion?.root === root && !appBackgroundMotion.destroyed && !reducedMotion.matches && !document.hidden) return;
+    stopAppBackgroundMotion();
+    if (root && !reducedMotion.matches && !document.hidden) appBackgroundMotion = createAppBackgroundMotion(root);
+}
+
+document.addEventListener('visibilitychange', refreshAppBackgroundMotion);
 
 function stopHomepageMotion(resetHistory = false) {
     observer?.disconnect();
@@ -662,22 +738,20 @@ function revealHomepageElement(element) {
     }
     if (element.contains(document.activeElement)) return;
     const delay = revealDelay(element);
-    const background = element.matches('.homepage-background');
     const header = element.matches('.site-header .header-inner');
     const icon = element.matches('.hero-actions .button-icon');
     const visual = element.matches('.hero-visual');
     const cards = element.matches('.insurer-card, .review-card, #ablauf .steps article');
-    const targetOpacity = background ? Number.parseFloat(getComputedStyle(element).opacity) : 1;
-    const duration = (background ? 1500 : header ? 800 : element.closest('.hero') ? 940 : 880) + delay;
+    const targetOpacity = 1;
+    const duration = (header ? 800 : element.closest('.hero') ? 940 : 880) + delay;
     let transform = 'translate3d(0, 32px, 0)';
-    if (background) transform = 'translate3d(0, 44px, 0)';
-    else if (header) transform = 'translate3d(0, -14px, 0)';
+    if (header) transform = 'translate3d(0, -14px, 0)';
     else if (icon) transform = 'translate3d(-4px, 4px, 0) rotate(-12deg) scale(.86)';
     else if (visual) transform = 'translate3d(30px, 18px, 0) scale(.97)';
     else if (cards) transform = 'translate3d(0, 32px, 0) scale(.975)';
     else if (element.matches('.filter')) transform = 'translate3d(0, 16px, 0)';
     const start = {
-        opacity: background ? 0 : icon ? .6 : visual ? 1 : .08,
+        opacity: icon ? .6 : visual ? 1 : .08,
         transform,
     };
     const frames = [{ ...start, offset: 0 }];
@@ -827,7 +901,7 @@ function refreshHomepageMotion() {
     const headline = document.querySelector('.hero h1');
     const headlineLines = headline ? [...headline.querySelectorAll('.hero-title-line')] : [];
     const splitHeadline = headlineLines.length > 1 && headlineLines.every(line => getComputedStyle(line).display === 'block');
-    document.querySelectorAll('.homepage-background, .site-header .header-inner, .hero .eyebrow, .hero h1, .hero-title-line, .hero-subtitle, .hero-lead, .hero-actions, .hero-actions .button-icon, .hero-visual, .hero-count, #wissen, .explorer-heading, #versicherer .filter, .insurance-toolbar, .insurer-card, .experience-intro, .review-card, #ablauf .process-intro, #ablauf .steps article, #plattform > div, #newsletter, .homepage-cms-content, .homepage-cms-footer').forEach(element => {
+    document.querySelectorAll('.site-header .header-inner, .hero .eyebrow, .hero h1, .hero-title-line, .hero-subtitle, .hero-lead, .hero-actions, .hero-actions .button-icon, .hero-visual, .hero-count, #wissen, .explorer-heading, #versicherer .filter, .insurance-toolbar, .insurer-card, .experience-intro, .review-card, #ablauf .process-intro, #ablauf .steps article, #plattform > div, #newsletter, .homepage-cms-content, .homepage-cms-footer').forEach(element => {
         if (element === headline && splitHeadline) return;
         if (headlineLines.includes(element) && !splitHeadline) return;
         const key = revealKey(element);
@@ -842,6 +916,7 @@ function refreshHomepageMotion() {
 }
 
 const onHomepageMotionChange = () => {
+    refreshAppBackgroundMotion();
     stopHomepageMotion();
     refreshHomepageMotion();
 };
@@ -906,6 +981,7 @@ function initializeSearch() {
 }
 
 function synchronizeHomepage() {
+    refreshAppBackgroundMotion();
     stopSearch();
     const home = document.body.classList.contains('rc-home');
     document.documentElement.toggleAttribute('data-homepage', home);
@@ -951,8 +1027,12 @@ document.addEventListener('livewire:navigating', () => {
     stopSearch();
     stopSliders();
     stopHomepageMotion(true);
+    stopAppBackgroundMotion();
 });
-window.addEventListener('pagehide', () => { stopSearch(); stopSliders(); stopHomepageMotion(true); });
+window.addEventListener('pagehide', () => {
+    stopSearch(); stopSliders(); stopHomepageMotion(true); stopAppBackgroundMotion();
+    document.documentElement.classList.add('app-background-paused');
+});
 window.addEventListener('pageshow', event => { if (event.persisted) scheduleRefresh(); });
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleRefresh, { once: true });
 else scheduleRefresh();

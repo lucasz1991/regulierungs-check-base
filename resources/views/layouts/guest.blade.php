@@ -19,10 +19,11 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased has-app-background" data-app-surface="muted">
+        <x-app-background />
         <x-banner />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 app-background-canvas">
         @livewire('user-navigation-menu')
             <!-- Page Heading -->
             @if (isset($header))

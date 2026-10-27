@@ -1,4 +1,4 @@
-<section class="min-h-screen w-full bg-white">
+<section class="min-h-screen w-full bg-white app-background-canvas">
     <div class="container mx-auto px-3 pb-12 pt-3 sm:pb-16 sm:pt-5">
         <div class="w-full">
         @if($isAdminPreview)

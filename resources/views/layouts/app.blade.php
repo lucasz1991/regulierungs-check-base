@@ -61,21 +61,8 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="antialiased bg-main{{ $disableAosOnCurrentRoute ? ' homepage-without-aos rc-home homepage' : '' }}">
-        @if($disableAosOnCurrentRoute)
-            <div class="homepage-background" aria-hidden="true" wire:ignore>
-                <svg class="homepage-background-lines homepage-background-lines-near" viewBox="0 0 1600 1200" preserveAspectRatio="none" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M-120-80C340 100-180 260 170 470S400 850 40 1280" />
-                    <path d="M-160-60C300 130-220 300 130 510S360 890 0 1320" />
-                    <path d="M-200-40C260 160-260 340 90 550S320 930-40 1360" />
-                </svg>
-                <svg class="homepage-background-lines homepage-background-lines-far" viewBox="0 0 1600 1200" preserveAspectRatio="none" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1710-120C1110 70 1720 300 1390 530S1180 960 1650 1350" />
-                    <path d="M1750-80C1150 110 1760 340 1430 570S1220 1000 1690 1390" />
-                    <path class="homepage-background-line-warm" d="M1790-40C1190 150 1800 380 1470 610S1260 1040 1730 1430" />
-                </svg>
-            </div>
-        @endif
+    <body class="antialiased bg-main has-app-background{{ $disableAosOnCurrentRoute ? ' homepage-without-aos rc-home homepage' : '' }}" @if(request()->routeIs('home', 'news.index', 'news.show')) data-app-surface="paper" @endif>
+        <x-app-background />
         <div id="main" >
             @livewire('user-alert')
             @if($disableAosOnCurrentRoute)
