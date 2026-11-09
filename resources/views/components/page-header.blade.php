@@ -1,14 +1,14 @@
     @if ($isWebPage && $showHeader)
-        <header class="relative" >
+        <header class="app-page-header{{ request()->routeIs('aboutus', 'howto', 'guidance', 'contact', 'faqs', 'abos', 'sitemap', 'imprint', 'terms', 'privacypolicy', 'blog.index', 'post.show', 'news.index', 'news.show', 'login', 'register', 'password.*') ? ' is-compact' : '' }}" >
             
-            <div class="relative container mx-auto px-4  py-8 text-2xl  space-x-6 flex justify-start  items-center">
+            <div class="app-shell app-page-header-inner">
                 <x-back-button />
-                <h1 class=" text-xl text-white/80 leading-tight flex items-center">
+                <h1 class="app-page-title">
                     {{ $title }}
                     @if (!empty($safeIcon))
-                        <div class="pageheader-icon w-12 aspect-square text-white ml-10  inline opacity-10 md:opacity-30 max-md:absolute  max-md:right-0  max-md:top-3">
+                        <span class="pageheader-icon" aria-hidden="true">
                             {!! $safeIcon !!}
-                        </div>
+                        </span>
                     @endif
                 </h1>
             </div>

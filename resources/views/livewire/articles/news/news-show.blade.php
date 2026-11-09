@@ -11,16 +11,20 @@
 @endphp
 
 <div
-    class="min-h-screen w-full bg-white text-slate-900 app-background-canvas"
-    :style="`margin-top: -${$store.nav.height}px`"
+    class="min-h-screen w-full bg-white text-[var(--ink)] app-background-canvas app-news-page app-news-detail"
 >
     <article>
-        <header class="relative isolate flex min-h-[22rem] w-full overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary sm:min-h-[27rem] lg:min-h-[31rem]">
+        <header class="app-news-hero relative isolate flex min-h-[22rem] w-full overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary sm:min-h-[27rem] lg:min-h-[31rem]">
             @if($heroImage)
                 <img
                     src="{{ $heroImage['url'] }}"
                     alt="{{ $heroImage['alt'] ?? $post->title }}"
                     class="absolute inset-0 h-full w-full object-cover"
+                    x-data="{ imageFailed: false }"
+                    x-show="!imageFailed"
+                    x-init="$nextTick(() => { if ($el.complete && !$el.naturalWidth) imageFailed = true; })"
+                    x-on:error="imageFailed = true"
+                    x-on:load="imageFailed = false"
                 >
             @else
                 <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-primary to-secondary" aria-hidden="true"></div>
@@ -35,7 +39,7 @@
             <div
                 data-news-hero-actions
                 class="container absolute inset-x-0 top-0 z-20 mx-auto flex w-full items-start justify-between gap-2 px-3"
-                :style="`padding-top: ${$store.nav.height + 16}px`"
+                style="padding-top: 20px"
             >
                 <a
                     href="{{ route('news.index') }}"
@@ -90,7 +94,7 @@
             </div>
         </header>
 
-        <section class="bg-white">
+        <section class="app-news-body bg-white">
             @if($project && $pagebuilderHtml !== '')
                 <div id="news-pagebuilder-{{ $project->id }}" class="news-pagebuilder-content w-full" wire:ignore>
                     @if($pagebuilderHasContainer)
@@ -121,12 +125,12 @@
 
                             <div class="min-w-0">
                                 @if($post->excerpt)
-                                    <p class="mb-7 text-lg font-medium leading-relaxed text-slate-700 sm:text-xl">
+                                    <p class="mb-7 text-lg font-medium leading-relaxed text-[var(--ink)] sm:text-xl">
                                         {{ $post->excerpt }}
                                     </p>
                                 @endif
 
-                                <div class="default-format-text blog-content w-full">
+                                <div class="default-format-text blog-content app-prose w-full">
                                     {!! \App\Support\BlogHtmlSanitizer::sanitize((string) $post->body) !!}
                                 </div>
                             </div>
@@ -141,7 +145,7 @@
         </section>
 
         @if($relatedPosts->isNotEmpty())
-            <section class="bg-white pb-10 sm:pb-14" aria-labelledby="related-news-heading">
+            <section class="app-news-related bg-white pb-10 sm:pb-14" aria-labelledby="related-news-heading">
                 <div class="container mx-auto w-full border-t border-slate-200 px-3 pt-7 sm:pt-8">
                     <div class="flex items-center justify-between gap-4">
                         <h2 id="related-news-heading" class="text-xs font-bold uppercase tracking-[0.1em] text-secondary sm:text-sm">
@@ -163,20 +167,23 @@
                             <a
                                 href="{{ route('news.show', $related) }}"
                                 wire:navigate
-                                class="group grid min-w-0 grid-cols-[6rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_8px_24px_-18px_rgba(15,23,42,0.55)] transition hover:-translate-y-0.5 hover:border-secondary/40 hover:shadow-[0_14px_30px_-18px_rgba(15,23,42,0.55)] md:grid-cols-1"
+                                class="app-news-related-card group grid min-w-0 grid-cols-[6rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_8px_24px_-18px_rgba(15,23,42,0.55)] transition hover:-translate-y-0.5 hover:border-secondary/40 hover:shadow-[0_14px_30px_-18px_rgba(15,23,42,0.55)] md:grid-cols-1"
                             >
-                                <div class="relative min-h-28 overflow-hidden bg-slate-100 md:h-32 md:min-h-0">
+                                <div class="relative min-h-28 overflow-hidden bg-slate-100 md:h-32 md:min-h-0" x-data="{ imageFailed: false }">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary via-primary-light to-secondary text-2xl text-white/80" aria-hidden="true">
+                                        <i class="fal fa-newspaper" aria-hidden="true"></i>
+                                    </div>
                                     @if($relatedImage)
                                         <img
                                             src="{{ $relatedImage['url'] }}"
                                             alt="{{ $relatedImage['alt'] ?? $related->title }}"
                                             class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                             loading="lazy"
+                                            x-show="!imageFailed"
+                                            x-init="$nextTick(() => { if ($el.complete && !$el.naturalWidth) imageFailed = true; })"
+                                            x-on:error="imageFailed = true"
+                                            x-on:load="imageFailed = false"
                                         >
-                                    @else
-                                        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary via-primary-light to-secondary text-2xl text-white/80">
-                                            <i class="fal fa-newspaper" aria-hidden="true"></i>
-                                        </div>
                                     @endif
                                 </div>
 
@@ -189,14 +196,14 @@
                                     </span>
 
                                     @if($related->published_at)
-                                        <time class="mt-2 block text-[0.68rem] text-slate-500" datetime="{{ $related->published_at->toDateString() }}">
+                                        <time class="mt-2 block text-[0.68rem] text-[var(--muted)]" datetime="{{ $related->published_at->toDateString() }}">
                                             {{ $related->published_at->translatedFormat('j. F Y') }}
                                         </time>
                                     @else
                                         <span class="mt-2 inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[0.55rem] font-bold uppercase tracking-wide text-amber-900">Entwurf</span>
                                     @endif
 
-                                    <h3 class="mt-1.5 line-clamp-3 text-sm font-bold leading-snug text-slate-900 transition group-hover:text-primary sm:text-base">
+                                    <h3 class="mt-1.5 line-clamp-3 text-sm font-bold leading-snug text-[var(--ink)] transition group-hover:text-primary sm:text-base">
                                         {{ strip_tags((string) $related->title) }}
                                     </h3>
                                 </div>

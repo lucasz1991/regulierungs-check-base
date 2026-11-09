@@ -18,7 +18,7 @@
                 />
             @endforeach
         </div>
-        <div class="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-slate-400"><span class="h-px flex-1 bg-slate-200"></span>oder<span class="h-px flex-1 bg-slate-200"></span></div>
+        <div class="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-[var(--muted)]"><span class="h-px flex-1 bg-slate-200"></span>oder<span class="h-px flex-1 bg-slate-200"></span></div>
     @endif
 
     <x-input-error for="social" class="mb-5" />
@@ -37,7 +37,7 @@
                 autofocus
                 autocomplete="username"
                 placeholder="name@beispiel.de"
-                class="mt-1 block w-full rounded-xl border-gray-300 p-3
+                class="mt-1 block w-full rounded-xl border-[var(--line)] p-3
                        focus:ring-2 focus:ring-primary focus:border-primary"
             />
             <x-input-error for="email" class="mt-2" />
@@ -45,7 +45,7 @@
 
         {{-- Passwort --}}
         <div x-data="{ show: false }">
-            <label for="password" class="block text-sm font-medium text-gray-700">
+            <label for="password" class="block text-sm font-medium text-[var(--ink)]">
                 Passwort
             </label>
 
@@ -54,9 +54,10 @@
                     :type="show ? 'text' : 'password'"
                     id="password"
                     wire:model="password"
+                    autocomplete="current-password"
                     required
                     placeholder="••••••••"
-                    class="w-full rounded-xl border-gray-300 p-3 pr-12
+                    class="app-control w-full rounded-xl border-[var(--line)] p-3 pr-12
                            focus:ring-2 focus:ring-primary focus:border-primary"
                 />
 
@@ -64,8 +65,10 @@
                     type="button"
                     @click="show = !show"
                     class="absolute inset-y-0 right-0 px-4 flex items-center
-                           text-gray-500 hover:text-gray-800 transition"
+                           text-[var(--muted)] hover:text-[var(--ink)] transition"
                     title="Passwort anzeigen"
+                    :aria-label="show ? 'Passwort verbergen' : 'Passwort anzeigen'"
+                    :aria-pressed="String(show)"
                 >
                     <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
                 </button>
@@ -75,7 +78,7 @@
         </div>
 
 {{-- Remember --}}
-<div class="flex items-center justify-between gap-4">
+<div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
 
     <label for="remember_me" class="flex items-center gap-3 cursor-pointer select-none">
         <!-- Toggle -->
@@ -94,14 +97,14 @@
                        peer-checked:bg-primary
                        after:content-['']
                        after:absolute after:top-[2px] after:left-[2px]
-                       after:h-4 after:w-4 after:bg-white
-                       after:border after:border-gray-300
+                       after:h-4 after:w-4 after:bg-[var(--surface)]
+                       after:border after:border-[var(--line)]
                        after:rounded-full after:transition-all
                        peer-checked:after:translate-x-full"
             ></div>
         </div>
 
-        <span class="text-sm text-gray-700">
+        <span class="text-sm text-[var(--ink)]">
             Angemeldet bleiben
         </span>
     </label>
@@ -120,7 +123,7 @@
             <x-buttons.button-basic
                 mode="layoutprimary"
                 size="lg"
-                class="w-full justify-center"
+                class="app-button w-full justify-center"
                 wire:click.prevent="login"
             >
                 Einloggen
@@ -129,7 +132,7 @@
             <x-buttons.button-basic
                 mode="layoutsecondary"
                 href="{{ route('register') }}"
-                class="w-full justify-center"
+                class="app-button-secondary w-full justify-center"
             >
                 Registrieren
             </x-buttons.button-basic>

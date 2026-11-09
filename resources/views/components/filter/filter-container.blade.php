@@ -1,199 +1,64 @@
 <div
+    x-id="['app-filter-panel']"
     x-data="{
-        showFilters: $persist(false),
-        __openedByUser: false,
-
-        // fixe Panelbreite (damit Fixed/Sticky nicht springt)
-        panelWidth: 320, // px
-
-        // dynamische Offsets je nach Nav-Zustand
-        get offsetTop() {
-            return $store.nav.showNav ? 100 : 20;
-        },
-        get lockThreshold() {
-            return $store.nav.showNav ? 100 : 20;
-        },
-
-        isLocked: false,
-        originalTop: null,
-
+        showFilters: false,
         init() {
-            this.$watch('showFilters', (val) => {
-                if (val && !$store.nav.isScreenXl) this.scrollToPanel();
-                this.emitFilterPanelState(val);
-            });
-
+            this.$watch('showFilters', () => this.emitFilterPanelState());
             this.$watch(() => $store.nav.isScreenXl, () => {
-                this.emitFilterPanelState(this.showFilters);
+                if ($store.nav.isScreenXl) this.showFilters = false;
+                this.emitFilterPanelState();
             });
-
-            this.$nextTick(() => {
-                this.emitFilterPanelState(this.showFilters);
-            });
-
-            // falls die Nav ein/ausblendet während locked -> top nachziehen
-            this.$watch(() => $store.nav.showNav, () => {
-                if (this.isLocked) this.applyLockedStyles();
-            });
-
-            window.addEventListener('scroll', () => {
-                if (!$store.nav.isScreenXl) return;
-                this.handleStickyScroll();
-            }, { passive: true });
+            this.$nextTick(() => this.emitFilterPanelState());
         },
-
-        toggleFilters() {
-            this.__openedByUser = true;
-            this.showFilters = !this.showFilters;
-
-            if (this.showFilters && !$store.nav.isScreenXl) this.scrollToPanel();
-        },
-
-        closeFilters() {
-            this.showFilters = false;
-        },
-
-        emitFilterPanelState(open = this.showFilters) {
+        toggleFilters() { this.showFilters = !this.showFilters; },
+        closeFilters() { this.showFilters = false; },
+        emitFilterPanelState() {
             window.dispatchEvent(new CustomEvent('filter-panel-state', {
-                detail: {
-                    open: !!open,
-                    isDesktop: $store.nav.isScreenXl,
-                },
+                detail: { open: this.showFilters, isDesktop: $store.nav.isScreenXl }
             }));
-        },
-
-        scrollToPanel() {
-            this.$nextTick(() => {
-                setTimeout(() => {
-                    const el = this.$refs.filterPanel;
-                    if (!el) return;
-
-                    const rect = el.getBoundingClientRect();
-                    const top = window.scrollY + rect.top - this.offsetTop;
-
-                    window.scrollTo({
-                        top: Math.max(0, top),
-                        behavior: 'smooth',
-                    });
-                }, 80);
-            });
-        },
-
-        applyLockedStyles() {
-            const el = this.$refs.filterPanel;
-            if (!el) return;
-
-            el.style.position = 'fixed';
-            el.style.top = `${this.offsetTop}px`;
-
-            // Breite fix (kommt hier aus Layout / panelWidth)
-            el.style.width = `${this.panelWidth}px`;
-
-            el.style.zIndex = 40;
-        },
-
-        clearLockedStyles() {
-            const el = this.$refs.filterPanel;
-            if (!el) return;
-
-            el.style.position = '';
-            el.style.top = '';
-            el.style.width = '';
-            el.style.zIndex = '';
-        },
-
-        handleStickyScroll() {
-            const el = this.$refs.filterPanel;
-            if (!el) return;
-
-            const rect = el.getBoundingClientRect();
-
-            if (this.originalTop === null) {
-                this.originalTop = rect.top + window.scrollY;
-            }
-
-            // LOCK: sobald Panel oben <= threshold
-            if (!this.isLocked && rect.top <= this.lockThreshold) {
-                this.isLocked = true;
-                this.applyLockedStyles();
-            }
-
-            // UNLOCK: wenn wieder oberhalb der ursprünglichen Position
-            if (this.isLocked && (window.scrollY + this.offsetTop) < this.originalTop) {
-                this.isLocked = false;
-                this.clearLockedStyles();
-            }
         }
     }"
-    {{ $attributes->merge(['class' => '']) }}
+    @keydown.escape.window="if (showFilters) { closeFilters(); $refs.filterToggle.focus(); }"
+    {{ $attributes->merge(['class' => 'app-filter-layout']) }}
 >
-    <div class="pt-2 pb-8">
-
-        <!-- Mobile Filter Button -->
-        <div x-show="!$store.nav.isScreenXl" x-cloak class="mb-4 max-xl:flex max-xl:justify-end">
-            <button @click="toggleFilters()" class="text-sm text-primary hover:underline p-2 rounded-xl bg-rcgold mr-3 flex items-center justify-center shadow-xl shadow-gray-900/5 border border-rcgold-light">
-                <svg :class="{ 'xl:rotate-180 max-xl:rotate-0': !showFilters, 'max-xl:rotate-180 xl:rotate-0': showFilters }"
-                    xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary transform transition-all  mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    <div class="pb-8">
+        <div x-show="!$store.nav.isScreenXl" x-cloak class="mb-5 flex justify-end">
+            <button type="button" x-ref="filterToggle" @click="toggleFilters()" :aria-expanded="String(showFilters)" :aria-controls="$id('app-filter-panel')"
+                class="app-button-secondary inline-flex min-h-11 items-center justify-center gap-3 px-5">
+                <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" /><circle cx="9" cy="6" r="2" fill="var(--surface)" /><circle cx="15" cy="12" r="2" fill="var(--surface)" /><circle cx="9" cy="18" r="2" fill="var(--surface)" />
                 </svg>
-                <span class=" mr-3">Filter</span>
-                <svg class="h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg"  fill="currentColor" viewBox="0 0 40.2299 36.2069"><path  d="M0,6.0345V2.0115H7.8921v4.023Zm12.0742,0V2.0115H40.2299v4.023ZM0,20.115V16.092H27.88961v4.023Zm32.6158,0V16.092h7.6141v4.023ZM0,34.1955v-4.023H18.02461v4.023Zm22.39561,0v-4.023H40.2299v4.023Z"/><circle  cx="10.0575" cy="4.023" r="4.023"/><circle  cx="30.1724" cy="18.1035" r="4.023"/><path  d="M20.115,28.161a4.023,4.023,0,1,1-4.023,4.023A4.0229,4.0229,0,0,1,20.115,28.161Z"/></svg>                           
+                Filter
             </button>
         </div>
 
-        <!-- XL Layout: Flex, fixe Sidebar-Breite, Content nimmt Rest -->
-        <div class="relative xl:flex xl:gap-6">
-
-            <!-- Sidebar (fixe Breite auf XL) -->
-            <div
+        <div class="relative min-[1180px]:flex min-[1180px]:items-start min-[1180px]:gap-7">
+            <aside
+                :id="$id('app-filter-panel')"
                 x-show="showFilters || $store.nav.isScreenXl"
                 x-cloak
-                class="z-40 md:z-10 relative
-                       xl:shrink-0"
-                :style="$store.nav.isScreenXl ? `width:${panelWidth}px;` : ''"
+                class="app-filter-sidebar min-[1180px]:sticky min-[1180px]:top-24 min-[1180px]:w-[280px] min-[1180px]:shrink-0 max-[1179px]:fixed max-[1179px]:inset-0 max-[1179px]:z-[150] max-[1179px]:flex max-[1179px]:items-end max-[1179px]:justify-center"
+                :role="$store.nav.isScreenXl ? 'complementary' : 'dialog'"
+                :aria-modal="$store.nav.isScreenXl ? null : 'true'"
+                aria-label="Filter"
+                x-trap.inert.noscroll="showFilters && !$store.nav.isScreenXl"
             >
-                <!-- Backdrop Mobile -->
+                <div x-show="showFilters && !$store.nav.isScreenXl" x-cloak x-transition.opacity @click="closeFilters()"
+                    class="fixed inset-0 bg-[#051b23]/35 backdrop-blur-sm min-[1180px]:hidden" aria-hidden="true"></div>
                 <div
-                    x-show="showFilters && !$store.nav.isScreenXl"
-                    x-cloak
-                    x-transition.opacity
-                    class="max-xl:fixed xl:hidden inset-0 z-20"
-                    @click="closeFilters()"
-                >
-                    <div class="absolute inset-0 bg-black/20 backdrop-blur-md"></div>
-                </div>
-
-                <!-- Filter Panel -->
-                <div
-                    x-show="showFilters || $store.nav.isScreenXl"
-                    x-cloak
-                    x-transition
+                    class="app-filter-panel relative w-full rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 text-[var(--ink)] max-[1179px]:m-3 max-[1179px]:max-h-[calc(100dvh-24px)] max-[1179px]:max-w-md max-[1179px]:overflow-y-auto min-[1180px]:max-h-[calc(100dvh-120px)] min-[1180px]:overflow-y-auto"
                     x-ref="filterPanel"
-                    class="relative flex flex-col rounded-xl bg-white p-2 text-gray-700 shadow-xl shadow-gray-900/5
-                           max-xl:absolute max-xl:right-4 max-xl:top-0 max-xl:w-[20rem]"
-                    :style="$store.nav.isScreenXl
-                        ? `width:${panelWidth}px; max-height: calc(100vh - ${offsetTop}px - 16px);`
-                        : ' z-index: 40;'"
                 >
-                    <div class="xl:hidden flex justify-between pb-2">
-                        <span class="font-semibold">Filter</span>
-                        <button class="text-xs border px-2 py-1 rounded" @click="closeFilters()">Schließen</button>
+                    <div class="mb-3 flex items-center justify-between gap-4 border-b border-[var(--line)] px-2 pb-4">
+                        <span class="text-sm font-semibold">Filter</span>
+                        <button type="button" x-show="!$store.nav.isScreenXl" @click="closeFilters()" class="app-button-secondary min-h-11 px-4 min-[1180px]:hidden">Schließen</button>
                     </div>
-
                     {{ $filters }}
                 </div>
-            </div>
-
-            <!-- Content: nimmt Restbreite -->
-            <div
-                class="filter-sidebar"
-                :class="(showFilters || !$store.nav.isMobile) ? 'xl:flex-1' : 'xl:w-full'"
-                x-cloak
-                x-transition
-            >
+            </aside>
+            <div class="filter-sidebar min-w-0 flex-1">
                 {{ $listContent }}
             </div>
-
         </div>
     </div>
 </div>

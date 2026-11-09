@@ -298,6 +298,121 @@ class HomepageBannerDataTest extends TestCase
         $this->assertStringContainsString($brandWithNbsp, $content);
     }
 
+    public function test_opt_in_pagebuilder_heading_normalization_keeps_raw_text_attributes_and_source_intact(): void
+    {
+        $moduleHtml = '<section data-example="<h1>attribute</h1>"><!-- <h1>comment</h1> --><script>const example = "<h1>script</h1>";</script><style>.example::before{content:"<h1>style</h1>"}</style><H1 id="page-module-title" class="native">Titel <em>mit Formatierung</em></H1><textarea><h1>textarea</h1></textarea><title><h1>title</h1></title><p>Regulierungs-CHECK&nbsp;Newsletter</p></section>';
+        $module = (object) ['id' => 71, 'cleaned_html' => $moduleHtml, 'css' => '.native { color: inherit; }', 'js' => 'window.moduleMarker = "<h1>unchanged</h1>";'];
+        $data = ['position' => 'page', 'modules' => collect([$module])];
+
+        $normalized = view('components.pagebuilder-module', $data + ['normalizeHeadings' => true])->render();
+
+        $this->assertStringContainsString('<h2 id="page-module-title" class="native">Titel <em>mit Formatierung</em></h2>', $normalized);
+        foreach ([
+            'data-example="<h1>attribute</h1>"',
+            '<!-- <h1>comment</h1> -->',
+            '<script>const example = "<h1>script</h1>";</script>',
+            '<style>.example::before{content:"<h1>style</h1>"}</style>',
+            '<textarea><h1>textarea</h1></textarea>',
+            '<title><h1>title</h1></title>',
+            '<p>Regulierungs-CHECK&nbsp;Newsletter</p>',
+            '.native { color: inherit; }',
+            'window.moduleMarker = "<h1>unchanged</h1>";',
+        ] as $unchanged) {
+            $this->assertStringContainsString($unchanged, $normalized);
+        }
+        $this->assertStringNotContainsString('newsletter-brand', $normalized);
+        $this->assertSame($moduleHtml, $module->cleaned_html);
+        $this->assertStringContainsString($moduleHtml, view('components.pagebuilder-module', $data)->render());
+    }
+
+    public function test_pagebuilder_component_normalization_is_opt_in_and_does_not_persist_content_changes(): void
+    {
+        $this->createPagebuilderSchema();
+        $moduleHtml = '<section><h1 id="stored-page-title">Gespeicherter Titel</h1><p>Originalinhalt</p></section>';
+        DB::table('pagebuilder_projects')->insert([
+            'id' => 72,
+            'page' => json_encode(['aboutus']),
+            'position' => json_encode(['page']),
+            'status' => 1,
+            'cleaned_html' => $moduleHtml,
+            'css' => '',
+            'js' => '',
+        ]);
+
+        $default = Blade::render('<x-pagebuilder-module page="aboutus" />');
+        $normalized = Blade::render('<x-pagebuilder-module page="aboutus" :normalize-headings="true" />');
+
+        $this->assertStringContainsString('<h1 id="stored-page-title">Gespeicherter Titel</h1>', $default);
+        $this->assertStringContainsString('<h2 id="stored-page-title">Gespeicherter Titel</h2>', $normalized);
+        $this->assertSame($moduleHtml, DB::table('pagebuilder_projects')->where('id', 72)->value('cleaned_html'));
+    }
+
+    public function test_footer_modules_normalize_headings_without_homepage_brand_rewriting(): void
+    {
+        $moduleHtml = '<section><h1 id="shared-footer-title">Regulierungs-CHECK&nbsp;Newsletter</h1><script>const title = "<h1>literal</h1>";</script></section>';
+        $module = (object) ['id' => 73, 'cleaned_html' => $moduleHtml, 'css' => '', 'js' => ''];
+
+        $footer = view('components.pagebuilder-module', ['position' => 'footer', 'modules' => collect([$module])])->render();
+
+        $this->assertStringContainsString('<h2 id="shared-footer-title">Regulierungs-CHECK&nbsp;Newsletter</h2>', $footer);
+        $this->assertStringContainsString('<script>const title = "<h1>literal</h1>";</script>', $footer);
+        $this->assertStringNotContainsString('newsletter-brand', $footer);
+        $this->assertSame($moduleHtml, $module->cleaned_html);
+    }
+
+    public function test_empty_pagebuilder_positions_do_not_create_app_surface_or_spacing_hooks(): void
+    {
+        $originalRequest = $this->app->make('request');
+        $this->app->instance('request', \Illuminate\Http\Request::create('/aboutus', 'GET'));
+
+        try {
+            foreach (['page', 'footer'] as $position) {
+                foreach ([null, [], collect()] as $modules) {
+                    $empty = view('components.pagebuilder-module', compact('position', 'modules'))->render();
+
+                    $this->assertStringContainsString('class="'.$position.'"', $empty);
+                    $this->assertStringNotContainsString('app-cms', $empty);
+                    $this->assertStringNotContainsString('id="module-', $empty);
+                }
+
+                $module = (object) ['id' => 74, 'cleaned_html' => '<p>Bestehender Modulinhalt</p>', 'css' => '', 'js' => ''];
+                $populated = view('components.pagebuilder-module', ['position' => $position, 'modules' => collect([$module])])->render();
+
+                $this->assertStringContainsString('app-cms app-cms-'.$position, $populated);
+                $this->assertStringContainsString('id="module-74"', $populated);
+                $this->assertStringContainsString('<p>Bestehender Modulinhalt</p>', $populated);
+
+                foreach ([
+                    '<div id="itix"></div>',
+                    '<div id="blank-spacing">&nbsp;&#160;'."\u{00A0}".'</div>',
+                    '<div><style>.example{color:inherit}</style><script>/* Unveraenderter Quelltext */</script><template><p>Inaktiver Inhalt</p><img src="/template-only.png"></template></div>',
+                ] as $blankHtml) {
+                    $blankModule = (object) ['id' => 75, 'cleaned_html' => $blankHtml, 'css' => '#itix{margin:0;padding:0}', 'js' => ''];
+                    $blank = view('components.pagebuilder-module', ['position' => $position, 'modules' => collect([$blankModule])])->render();
+
+                    $this->assertStringNotContainsString('app-cms', $blank);
+                    $this->assertStringContainsString('id="module-75"', $blank);
+                    $this->assertStringContainsString($blankHtml, $blank);
+                    $this->assertStringContainsString('#itix{margin:0;padding:0}', $blank);
+                    $this->assertSame($blankHtml, $blankModule->cleaned_html);
+                }
+
+                foreach ([
+                    (object) ['id' => 76, 'cleaned_html' => '<div><img src="/existing-image.png" alt="Bestehendes Bild"></div>', 'css' => '', 'js' => ''],
+                    (object) ['id' => 77, 'cleaned_html' => '<div id="dynamic-module"></div>', 'css' => '', 'js' => 'document.getElementById("dynamic-module").textContent = "Bestehender Inhalt";'],
+                ] as $functionalModule) {
+                    $functional = view('components.pagebuilder-module', ['position' => $position, 'modules' => collect([$functionalModule])])->render();
+
+                    $this->assertStringContainsString('app-cms app-cms-'.$position, $functional);
+                    $this->assertStringContainsString($functionalModule->cleaned_html, $functional);
+                    $this->assertStringContainsString('<script>'.$functionalModule->js.'</script>', $functional);
+                }
+            }
+        } finally {
+            $this->app->instance('request', $originalRequest);
+        }
+    }
+
     private function createPagebuilderSchema(): void
     {
         Schema::create('pagebuilder_projects', function (Blueprint $table): void {

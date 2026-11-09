@@ -18,14 +18,14 @@
             {{-- Vorname --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-user text-gray-400"></i>
+                    <i class="fal fa-user text-[var(--muted)]"></i>
                     <x-label for="first_name" value="{{ __('Vorname') }}" />
                 </div>
 
                 <x-input
                     id="first_name"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="first_name"
                     required
@@ -38,14 +38,14 @@
             {{-- Nachname --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-user text-gray-400"></i>
+                    <i class="fal fa-user text-[var(--muted)]"></i>
                     <x-label for="last_name" value="{{ __('Nachname') }}" />
                 </div>
 
                 <x-input
                     id="last_name"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="last_name"
                     required
@@ -58,14 +58,14 @@
             {{-- Telefonnummer --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-phone text-gray-400"></i>
+                    <i class="fal fa-phone text-[var(--muted)]"></i>
                     <x-label for="phone_number" value="{{ __('Telefonnummer') }}" />
                 </div>
 
                 <x-input
                     id="phone_number"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="phone_number"
                     autocomplete="tel"
@@ -77,14 +77,14 @@
             {{-- Straße --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-road text-gray-400"></i>
+                    <i class="fal fa-road text-[var(--muted)]"></i>
                     <x-label for="street" value="{{ __('Straße') }}" />
                 </div>
 
                 <x-input
                     id="street"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="street"
                     autocomplete="street-address"
@@ -96,14 +96,14 @@
             {{-- Stadt --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-city text-gray-400"></i>
+                    <i class="fal fa-city text-[var(--muted)]"></i>
                     <x-label for="city" value="{{ __('Stadt') }}" />
                 </div>
 
                 <x-input
                     id="city"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="city"
                 />
@@ -114,14 +114,14 @@
             {{-- Bundesland --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-map text-gray-400"></i>
+                    <i class="fal fa-map text-[var(--muted)]"></i>
                     <x-label for="state" value="{{ __('Bundesland') }}" />
                 </div>
 
                 <x-input
                     id="state"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="state"
                 />
@@ -132,14 +132,14 @@
             {{-- Postleitzahl --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-mailbox text-gray-400"></i>
+                    <i class="fal fa-mailbox text-[var(--muted)]"></i>
                     <x-label for="postal_code" value="{{ __('Postleitzahl') }}" />
                 </div>
 
                 <x-input
                     id="postal_code"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="postal_code"
                 />
@@ -150,14 +150,14 @@
             {{-- Land --}}
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <i class="fal fa-globe-europe text-gray-400"></i>
+                    <i class="fal fa-globe-europe text-[var(--muted)]"></i>
                     <x-label for="country" value="{{ __('Land') }}" />
                 </div>
 
                 <x-input
                     id="country"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="country"
                 />

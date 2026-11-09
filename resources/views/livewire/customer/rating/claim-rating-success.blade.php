@@ -1,6 +1,6 @@
-<div class=" flex items-center justify-center  px-4 min-h-[50vh]">
+<div class="app-shell app-page app-account flex min-h-[55dvh] items-center justify-center py-12">
     <div
-        class="w-full max-w-2xl rounded-2xl bg-white/20 backdrop-blur-xl border border-white/30 shadow-2xl px-6 py-10 text-center"
+        class="app-panel w-full max-w-2xl px-6 py-10 text-center sm:p-10"
         x-data="{ claimHash: $persist(null) }"
         x-init="
             @if (!$claimRating->user_id)
@@ -8,55 +8,33 @@
             @endif
         "
     >
-
-        <!-- Headline -->
-        <h1 class="text-2xl font-semibold text-white mb-3">
-            Vielen Dank für deine Bewertung
-        </h1>
-
-        <p class="text-sm text-blue-200 mb-8">
+        <span class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface-soft)] text-[var(--accent)]" aria-hidden="true">
+            <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m6 12 4 4 8-8" /><circle cx="12" cy="12" r="10" /></svg>
+        </span>
+        <h1 class="app-heading mb-4 text-[var(--ink)]">Vielen Dank für deine Bewertung</h1>
+        <p class="app-muted mb-8 text-sm leading-7">
             Dein Feedback hilft anderen bei einer fairen und transparenten Entscheidung.
         </p>
 
         @if (!$claimRating->user_id)
-            <!-- Hinweisbox -->
-            <div class="flex gap-3 rounded-xl bg-white/10 border border-white/30 p-4 text-left mb-8">
-                <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-400"
-                     xmlns="http://www.w3.org/2000/svg" fill="none"
-                     viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 9v2m0 4h.01M12 5.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15z" />
+            <div class="mb-8 flex gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 p-5 text-left">
+                <svg class="mt-0.5 h-5 w-5 shrink-0 text-[var(--ink)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" /><path stroke-linecap="round" d="M12 7v6m0 4h.01" />
                 </svg>
-
                 <div>
-                    <p class="text-sm font-medium text-amber-200">
-                        Verifizierung erforderlich
-                    </p>
-                    <p class="text-sm text-white/80 mt-1">
+                    <p class="text-sm font-semibold text-[var(--ink)]">Verifizierung erforderlich</p>
+                    <p class="app-muted mt-2 text-sm leading-7">
                         Ohne Registrierung oder Login bleibt deine Bewertung gespeichert,
-                        wird jedoch <span class="font-medium text-white">nicht anonym veröffentlicht</span>
+                        wird jedoch <span class="font-medium text-[var(--ink)]">nicht anonym veröffentlicht</span>
                         und fließt nicht in die Auswertung ein.
                     </p>
                 </div>
             </div>
-
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <a href="{{ route('register') }}"
-                   class="inline-flex items-center justify-center rounded-lg px-5 py-2.5
-                          bg-blue-600 hover:bg-blue-500 text-white font-medium transition">
-                    Jetzt registrieren
-                </a>
-
-                <a href="{{ route('login') }}"
-                   class="inline-flex items-center justify-center rounded-lg px-5 py-2.5
-                          border border-white/30 text-white hover:bg-white/10 transition">
-                    Zum Login
-                </a>
+            <div class="flex flex-col justify-center gap-3 sm:flex-row">
+                <a href="{{ route('register') }}" class="app-button">Jetzt registrieren</a>
+                <a href="{{ route('login') }}" class="app-button-secondary">Zum Login</a>
             </div>
-
-            <!-- Vertrauen -->
-            <p class="mt-6 text-xs text-white">
+            <p class="app-muted mt-7 text-xs leading-6">
                 ✔ Deine Bewertung bleibt anonym<br>
                 ✔ Keine Weitergabe personenbezogener Daten
             </p>

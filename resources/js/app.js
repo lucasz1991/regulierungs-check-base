@@ -867,7 +867,7 @@ function createHeroMotion(stage) {
 }
 
 function refreshHomepageMotion() {
-    if (!document.body.classList.contains('rc-home') || reducedMotion.matches ||
+    if (!document.body.classList.contains('homepage') || reducedMotion.matches ||
         !window.IntersectionObserver || !window.Element?.prototype.animate) {
         stopHomepageMotion();
         return;
@@ -892,7 +892,7 @@ function refreshHomepageMotion() {
                 const element = entry.target;
                 revealObserver.unobserve(element);
                 pendingReveals.delete(element);
-                if (reducedMotion.matches || !element.isConnected || !document.body.classList.contains('rc-home')) return;
+                if (reducedMotion.matches || !element.isConnected || !document.body.classList.contains('homepage')) return;
                 revealHomepageElement(element);
             });
         }, { threshold: .08 });
@@ -983,13 +983,12 @@ function initializeSearch() {
 function synchronizeHomepage() {
     refreshAppBackgroundMotion();
     stopSearch();
-    const home = document.body.classList.contains('rc-home');
+    const home = document.body.classList.contains('homepage');
     document.documentElement.toggleAttribute('data-homepage', home);
     stopSearch = () => {};
     if (!home) {
         stopSliders();
         stopHomepageMotion(true);
-        document.documentElement.style.colorScheme = '';
         return;
     }
     refreshSliders();

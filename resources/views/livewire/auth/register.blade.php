@@ -19,7 +19,7 @@
                     />
                 @endforeach
             </div>
-            <div class="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-slate-400"><span class="h-px flex-1 bg-slate-200"></span>oder<span class="h-px flex-1 bg-slate-200"></span></div>
+            <div class="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-[var(--muted)]"><span class="h-px flex-1 bg-slate-200"></span>oder<span class="h-px flex-1 bg-slate-200"></span></div>
         @endif
 
         <x-input-error for="social" class="mb-5" />
@@ -30,11 +30,11 @@
 
             {{-- ACCOUNT --}}
             <div>
-                <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <h3 class="text-sm font-semibold text-[var(--ink)] flex items-center gap-2">
                     <i class="fal fa-user-circle text-primary"></i>
                     <span>Konto</span>
                 </h3>
-                <p class="text-sm text-gray-600 mt-1">E-Mail & Benutzername für deinen Login.</p>
+                <p class="text-sm text-[var(--muted)] mt-1">E-Mail & Benutzername für deinen Login.</p>
 
                 <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -45,7 +45,7 @@
                             wire:model="email"
                             autocomplete="username"
                             placeholder="name@beispiel.de"
-                            class="mt-1 block w-full rounded-xl border-gray-300 p-3
+                            class="mt-1 block w-full rounded-xl border-[var(--line)] p-3
                                    focus:ring-2 focus:ring-primary focus:border-primary"
                         />
                         <x-input-error for="email" class="mt-2" />
@@ -58,7 +58,7 @@
                             type="text"
                             wire:model="username"
                             placeholder="z. B. MaxMustermann"
-                            class="mt-1 block w-full rounded-xl border-gray-300 p-3
+                            class="mt-1 block w-full rounded-xl border-[var(--line)] p-3
                                    focus:ring-2 focus:ring-primary focus:border-primary"
                         />
                         <x-input-error for="username" class="mt-2" />
@@ -66,15 +66,15 @@
                 </div>
             </div>
 
-            <div class="border-t border-gray-200"></div>
+            <div class="border-t border-[var(--line)]"></div>
 
             {{-- PASSWORD --}}
             <div>
-                <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <h3 class="text-sm font-semibold text-[var(--ink)] flex items-center gap-2">
                     <i class="fal fa-lock text-primary"></i>
                     <span>Sicherheit</span>
                 </h3>
-                <p class="text-sm text-gray-600 mt-1">Wähle ein sicheres Passwort.</p>
+                <p class="text-sm text-[var(--muted)] mt-1">Wähle ein sicheres Passwort.</p>
 
                 <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div x-data="{ show: false }">
@@ -84,16 +84,19 @@
                                 :type="show ? 'text' : 'password'"
                                 id="password"
                                 wire:model="password"
+                                autocomplete="new-password"
                                 placeholder="••••••••"
-                                class="w-full rounded-xl border-gray-300 p-3 pr-12
+                                class="app-control w-full rounded-xl border-[var(--line)] p-3 pr-12
                                        focus:ring-2 focus:ring-primary focus:border-primary"
                             />
                             <button
                                 type="button"
                                 @click="show = !show"
                                 class="absolute inset-y-0 right-0 px-4 flex items-center
-                                       text-gray-500 hover:text-gray-800 transition"
+                                       text-[var(--muted)] hover:text-[var(--ink)] transition"
                                 title="Passwort anzeigen"
+                    :aria-label="show ? 'Passwort verbergen' : 'Passwort anzeigen'"
+                    :aria-pressed="String(show)"
                             >
                                 <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
                             </button>
@@ -108,16 +111,19 @@
                                 :type="show ? 'text' : 'password'"
                                 id="password_confirmation"
                                 wire:model="password_confirmation"
+                                autocomplete="new-password"
                                 placeholder="••••••••"
-                                class="w-full rounded-xl border-gray-300 p-3 pr-12
+                                class="app-control w-full rounded-xl border-[var(--line)] p-3 pr-12
                                        focus:ring-2 focus:ring-primary focus:border-primary"
                             />
                             <button
                                 type="button"
                                 @click="show = !show"
                                 class="absolute inset-y-0 right-0 px-4 flex items-center
-                                       text-gray-500 hover:text-gray-800 transition"
+                                       text-[var(--muted)] hover:text-[var(--ink)] transition"
                                 title="Passwort anzeigen"
+                    :aria-label="show ? 'Passwort verbergen' : 'Passwort anzeigen'"
+                    :aria-pressed="String(show)"
                             >
                                 <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
                             </button>
@@ -126,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-200"></div>
+            <div class="border-t border-[var(--line)]"></div>
 
 {{-- TERMS --}}
 <div class="space-y-3">
@@ -147,15 +153,15 @@
                        peer-checked:bg-primary
                        after:content-['']
                        after:absolute after:top-[2px] after:left-[2px]
-                       after:h-4 after:w-4 after:bg-white
-                       after:border after:border-gray-300
+                       after:h-4 after:w-4 after:bg-[var(--surface)]
+                       after:border after:border-[var(--line)]
                        after:rounded-full after:transition-all
                        peer-checked:after:translate-x-full"
             ></div>
         </div>
 
         <!-- Text -->
-        <span class="text-sm text-gray-700 leading-relaxed">
+        <span class="text-sm text-[var(--ink)] leading-relaxed">
             Mit der Erstellung eines Kontos stimme ich den
             <a href="/termsandconditions" wire:navigate class="text-primary underline">
                 Allgemeinen Geschäftsbedingungen
@@ -174,11 +180,11 @@
 
             {{-- ACTIONS --}}
             <div class="pt-2 space-y-3">
-                <x-buttons.button-basic type="submit" mode="layoutprimary" size="lg" class="w-full justify-center">
+                <x-buttons.button-basic type="submit" mode="layoutprimary" size="lg" class="app-button w-full justify-center">
                     Registrieren
                 </x-buttons.button-basic>
 
-                <div class="text-sm text-gray-600 text-center">
+                <div class="text-sm text-[var(--muted)] text-center">
                     Du hast schon ein Konto?
                     <a href="/login" wire:navigate class="text-primary underline">Einloggen</a>.
                 </div>

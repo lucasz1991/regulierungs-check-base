@@ -7,7 +7,7 @@
     </x-slot>
 
     <x-slot name="description">
-        <span class="text-gray-600">
+        <span class="text-[var(--muted)]">
             {{ __('Erhöhe die Sicherheit deines Kontos, indem du eine zusätzliche Bestätigung beim Login aktivierst.') }}
         </span>
     </x-slot>
@@ -22,7 +22,7 @@
             @endif
 
             <div class="min-w-0">
-                <h3 class="text-lg font-semibold text-gray-900">
+                <h3 class="text-lg font-semibold text-[var(--ink)]">
                     @if ($this->enabled)
                         @if ($showingConfirmation)
                             {{ __('Beende die Aktivierung der Zwei-Faktor-Authentifizierung') }}
@@ -34,7 +34,7 @@
                     @endif
                 </h3>
 
-                <p class="mt-2 text-sm text-gray-600 max-w-xl">
+                <p class="mt-2 text-sm text-[var(--muted)] max-w-xl">
                     {{ __('Bei aktivierter Zwei-Faktor-Authentifizierung wirst du beim Login nach einem zusätzlichen Sicherheitscode gefragt, der z. B. über eine Authenticator-App generiert wird.') }}
                 </p>
             </div>
@@ -44,8 +44,8 @@
         @if ($this->enabled && $showingQrCode)
             <div class="mt-6 space-y-4">
 
-                <div class="text-sm text-gray-700 max-w-xl">
-                    <p class="font-medium text-gray-900">
+                <div class="text-sm text-[var(--ink)] max-w-xl">
+                    <p class="font-medium text-[var(--ink)]">
                         @if ($showingConfirmation)
                             {{ __('Scanne den QR-Code mit deiner Authenticator-App und gib anschließend den generierten Code ein, um die Einrichtung abzuschließen.') }}
                         @else
@@ -55,14 +55,14 @@
                 </div>
 
                 {{-- QR Code (bewusst weiß) --}}
-                <div class="inline-block rounded-xl bg-white p-3 shadow border border-gray-200">
+                <div class="inline-block rounded-xl bg-[var(--surface)] p-3 shadow border border-[var(--line)]">
                     {!! $this->user->twoFactorQrCodeSvg() !!}
                 </div>
 
                 {{-- Setup Key --}}
-                <div class="text-sm text-gray-700">
-                    <span class="font-semibold text-gray-900 inline-flex items-center gap-2">
-                        <i class="fal fa-key text-gray-400"></i>
+                <div class="text-sm text-[var(--ink)]">
+                    <span class="font-semibold text-[var(--ink)] inline-flex items-center gap-2">
+                        <i class="fal fa-key text-[var(--muted)]"></i>
                         {{ __('Setup-Schlüssel') }}:
                     </span>
                     <span class="font-mono text-emerald-700 break-all">
@@ -73,8 +73,8 @@
                 {{-- Confirmation Code --}}
                 @if ($showingConfirmation)
                     <div class="mt-4 max-w-xs">
-                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                            <i class="fal fa-key text-gray-400"></i>
+                        <label class="flex items-center gap-2 text-sm font-medium text-[var(--ink)] mb-1">
+                            <i class="fal fa-key text-[var(--muted)]"></i>
                             {{ __('Bestätigungscode') }}
                         </label>
 
@@ -86,7 +86,7 @@
                             autofocus
                             wire:model="code"
                             wire:keydown.enter="confirmTwoFactorAuthentication"
-                            class="block w-full rounded-xl border-gray-300 p-3
+                            class="block w-full rounded-xl border-[var(--line)] p-3
                                    focus:ring-2 focus:ring-primary focus:border-primary"
                         />
 
@@ -99,12 +99,12 @@
         {{-- Recovery Codes --}}
         @if ($this->enabled && $showingRecoveryCodes)
             <div class="mt-6">
-                <p class="text-sm text-gray-900 font-semibold mb-3">
+                <p class="text-sm text-[var(--ink)] font-semibold mb-3">
                     {{ __('Bewahre diese Wiederherstellungscodes sicher auf. Sie werden benötigt, falls du den Zugriff auf dein Authenticator-Gerät verlierst.') }}
                 </p>
 
                 <div class="grid gap-1 max-w-xl px-4 py-4 font-mono text-sm
-                            rounded-xl bg-gray-50 border border-gray-200 text-gray-800">
+                            rounded-xl bg-[var(--surface-soft)] border border-[var(--line)] text-[var(--ink)]">
                     @foreach (json_decode(decrypt($this->user->two_factor_recovery_codes), true) as $code)
                         <div>{{ $code }}</div>
                     @endforeach

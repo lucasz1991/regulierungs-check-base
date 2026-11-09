@@ -1,6 +1,7 @@
-@php($disableAosOnCurrentRoute = request()->routeIs('home'))
+@php($isHomepage = request()->routeIs('home'))
+@php($appPageHeader = new \App\View\Components\PageHeader)
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="user-select:none;" class="scroll-smooth" @if($disableAosOnCurrentRoute) data-homepage @endif>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth" data-app-design @if($isHomepage) data-homepage @endif>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +22,6 @@
         <script src="{{ URL::asset('adminresources/choices.js/public/assets/scripts/choices.min.js') }}"></script>
         <script src="{{ URL::asset('adminresources/flatpickr/flatpickr.min.js') }}"></script>
         <script src="{{ URL::asset('adminresources/flatpickr/l10n/de.js') }}"></script>
-        <link href="{{ URL::asset('adminresources/aos/aos.css') }}" rel="stylesheet">
                 <link rel="stylesheet" href="{{ asset('adminresources/fontawesome6/css/all.min.css') }}">
 
         @unless(config('app.homepage_preview'))
@@ -38,7 +38,6 @@
             >
         @endif
         @vite(['resources/css/app.css'])
-        @if($disableAosOnCurrentRoute)
             <script>
 (() => {
   'use strict';
@@ -56,46 +55,38 @@
 })();
             </script>
             <link rel="preload" href="{{ asset('fonts/Montserrat-VariableFont_wght.ttf') }}" as="font" type="font/ttf" crossorigin>
-        @endif
 
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="antialiased bg-main has-app-background{{ $disableAosOnCurrentRoute ? ' homepage-without-aos rc-home homepage' : '' }}" @if(request()->routeIs('home', 'news.index', 'news.show')) data-app-surface="paper" @endif>
+    <body class="antialiased bg-main has-app-background homepage-without-aos rc-home{{ $isHomepage ? ' homepage' : ' rc-app' }}" data-app-surface="paper">
         <x-app-background />
         <div id="main" >
             @livewire('user-alert')
-            @if($disableAosOnCurrentRoute)
-                <a class="skip-link" href="#homepage-content">Zum Inhalt</a>
-                <x-homepage.header />
-            @else
-                <header wire:ignore>
-                    @livewire('user-navigation-menu')
-                </header>
-            @endif
+            <a class="skip-link" href="#{{ $isHomepage ? 'homepage-content' : 'app-content' }}">Zum Inhalt</a>
+            <x-homepage.header />
             <!-- Page Heading -->
-            <x-page-header />
-            <x-pagebuilder-module :position="'top_banner'"/>
-            <x-pagebuilder-module :position="'banner'"/>
-            <x-pagebuilder-module :position="'bottom_banner'"/>
+            @include('components.page-header', ['isWebPage' => $appPageHeader->isWebPage, 'showHeader' => $appPageHeader->showHeader, 'title' => $appPageHeader->title, 'safeIcon' => $appPageHeader->safeIcon])
+            <x-pagebuilder-module :position="'top_banner'" :normalize-headings="!$isHomepage && $appPageHeader->showHeader"/>
+            <x-pagebuilder-module :position="'banner'" :normalize-headings="!$isHomepage && $appPageHeader->showHeader"/>
+            <x-pagebuilder-module :position="'bottom_banner'" :normalize-headings="!$isHomepage && $appPageHeader->showHeader"/>
             <!-- Page Content -->
-            <main @if($disableAosOnCurrentRoute) id="homepage-content" @endif>
-                <x-pagebuilder-module/>
-                <x-pagebuilder-module :position="'above_content'"/>
+            <main id="{{ $isHomepage ? 'homepage-content' : 'app-content' }}" @unless($isHomepage) class="app-content" @endunless>
+                <x-pagebuilder-module :normalize-headings="!$isHomepage && $appPageHeader->showHeader"/>
+                <x-pagebuilder-module :position="'above_content'" :normalize-headings="!$isHomepage && $appPageHeader->showHeader"/>
                 {{ $slot }}
-                <x-pagebuilder-module :position="'content'"/>
+                <x-pagebuilder-module :position="'content'" :normalize-headings="!$isHomepage && $appPageHeader->showHeader"/>
             </main>
         </div>
-        @if($disableAosOnCurrentRoute)
+        @if($isHomepage)
             @php($homepageFooterModule = new \App\View\Components\PagebuilderModule(position: 'footer'))
             @if($homepageFooterModule->modules->isNotEmpty())
                 @include('components.pagebuilder-module', ['position' => $homepageFooterModule->position, 'modules' => $homepageFooterModule->modules, 'homepageModuleContext' => 'footer'])
             @endif
-            <x-homepage.footer />
         @else
             <x-pagebuilder-module :position="'footer'"/>
-            @livewire('footer')
         @endif
+        <x-homepage.footer />
         @livewire('tools.chatbot')
         <x-share-link-handler />
         

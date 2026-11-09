@@ -1,1 +1,1 @@
-<div></div>
+<div class="app-content-placeholder"></div>

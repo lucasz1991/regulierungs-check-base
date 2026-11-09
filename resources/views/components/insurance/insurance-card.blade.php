@@ -57,11 +57,6 @@
     $avgDurationDisplay = is_null($avgDuration) ? '-' : round($avgDuration);
     $reviewCountDisplay = number_format((int) $ratingsCount, 0, ',', '.');
     $hasRank = !is_null($rank);
-    $rankBadgeClasses = match (true) {
-        $rank === 1, $rank === 2, $rank === 3 => 'bg-gradient-to-b from-[#269ab2] to-[#17798f] text-white shadow-[0_10px_24px_rgba(23,121,143,0.28)]',
-        default => 'bg-[#ffc53a] text-[#0f3654] shadow-[0_10px_24px_rgba(255,197,58,0.28)]',
-    };
-
     $filterQuery = [];
 
     if ($hasTypeFilter) {
@@ -78,81 +73,58 @@
     ));
 @endphp
 
-<a href="{{ $insuranceUrl }}" class="block">
-    <div class="relative">
-
-
-        <article class="group relative overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]">
-            <div class="absolute right-0 top-3 z-[5] w-32 rounded-l-[24px] border border-r-0 border-[#d8e7e5] bg-gradient-to-br from-[#f1fbf8] to-[#e3f1ef] px-3 py-1 text-right shadow-[0_8px_20px_rgba(15,23,42,0.08)]">
-                <div class="text-xs font-medium tracking-tight text-slate-600">Ø Regulierung</div>
-                @if ($avgDurationDisplay === '-')
-                    <div class="mt-0.5 text-base font-semibold leading-none text-[#0f4e69]">-</div>
-                @else
-                    <div class="mt-0.5 text-[1.55rem] font-medium leading-none text-[#0f4e69]">
-                        {{ $avgDurationDisplay }}
-                        <span class="text-sm font-medium">Tage</span>
-                    </div>
-                @endif
-            </div>
-
-            <div class="flex flex-col gap-2 px-5 pb-2.5 pt-2.5 sm:px-7 sm:pb-2.5 sm:pt-2.5">
-                <div class="relative flex items-start">
-                    <div class="min-w-0 flex-1 pr-32 {{ $hasRank ? 'pl-9 sm:pl-11' : '' }}">
-                        <x-insurance.insurance-name
-                            :insurance="$insurance"
-                            size="xl"
-                            wrapperClass="flex min-w-0 max-w-full items-center gap-2"
-                            disclaimerButtonClass="text-slate-400 transition-colors hover:text-slate-600 focus:outline-none"
-                        />
-
-                        <div class="mt-1 flex min-w-0 items-center overflow-hidden">
-                            <div class="origin-left scale-[0.84] sm:scale-100">
-                                <x-insurance.insurance-rating-stars :score="$avgScore" :size="'lg'" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="{{ $hasRank ? 'pl-9 sm:pl-11' : '' }}">
-                    <div class="grid grid-cols-3 gap-x-3 text-[12px] leading-tight text-slate-700 sm:gap-x-5 sm:text-[13px]">
-                        @foreach ($summaryItems as $item)
-                            @php
-                                $percentage = $barTotal > 0 ? round(($item['count'] / $barTotal) * 100) : 0;
-                            @endphp
-
-                            <div class="flex min-w-0 items-center gap-1 whitespace-nowrap">
-                                <span class="min-w-0 truncate font-semibold">{{ $item['label'] }}:</span>
-                                <span class="shrink-0">{{ $percentage }} %</span>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <div class="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[#e7ebf1]">
-                        <div class="flex h-full w-full">
-                            @forelse ($progressItems as $item)
-                                @php
-                                    $width = $barTotal > 0 ? round(($item['count'] / $barTotal) * 100, 2) : 0;
-                                @endphp
-
-                                @if ($width > 0)
-                                    <span class="block h-full" style="width: {{ $width }}%; background-color: {{ $item['color'] }};"></span>
-                                @endif
-                            @empty
-                                <span class="block h-full w-full bg-[#e7ebf1]"></span>
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <div class="mt-1 text-[15px] font-medium text-slate-500">
-                        {{ $reviewCountDisplay }} Bewertungen
-                    </div>
-                </div>
-            </div>
-        </article>
-        @if ($hasRank)
-            <div class="absolute left-0 top-3  -translate-x-[15%] rounded-r-2xl rounded-l-xl px-4 py-2.5 text-2xl font-semibold leading-none {{ $rankBadgeClasses }}">
-                {{ $rank }}
-            </div>
+<article class="app-insurance-card flex h-full flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 text-[var(--ink)] transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(20,59,71,0.06)] sm:p-6">
+    <header class="flex items-start justify-between gap-4">
+        <div class="min-w-0 flex-1">
+            <x-insurance.insurance-name
+                :insurance="$insurance"
+                size="lg"
+                wrapperClass="mb-4 flex min-w-0 max-w-full items-center"
+                disclaimerButtonClass="text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
+            />
+            <a href="{{ $insuranceUrl }}" class="inline-block text-base font-semibold leading-snug text-[var(--ink)] hover:text-[var(--accent)]">
+                {{ $insurance->name }}
+            </a>
+        </div>
+        @if($hasRank)
+            <span class="inline-flex h-8 min-w-8 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-2 text-xs font-semibold text-[var(--accent)]">{{ $rank }}</span>
         @endif
+    </header>
+
+    <div class="my-4 flex flex-wrap items-end justify-between gap-x-5 gap-y-3 border-y border-[var(--line)] py-4">
+        <div>
+            <div class="mb-1 text-[11px] text-[var(--muted)]">Ø Regulierung</div>
+            <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-semibold leading-none tracking-tight">{{ $avgDurationDisplay }}</span>
+                @if($avgDurationDisplay !== '-')<span class="text-xs text-[var(--muted)]">Tage</span>@endif
+            </div>
+        </div>
+        <div>
+            <x-insurance.insurance-rating-stars :score="$avgScore" :size="'sm'" />
+            <div class="mt-2 text-xs text-[var(--muted)]">{{ $reviewCountDisplay }} Bewertungen</div>
+        </div>
     </div>
-</a>
+
+    <div class="h-1.5 w-full overflow-hidden rounded-full bg-[var(--surface-soft)]" aria-hidden="true">
+        <div class="flex h-full w-full">
+            @forelse($progressItems as $item)
+                @php($width = $barTotal > 0 ? round(($item['count'] / $barTotal) * 100, 2) : 0)
+                @if($width > 0)<span class="block h-full" style="width: {{ $width }}%; background-color: {{ $item['color'] }};"></span>@endif
+            @empty
+                <span class="block h-full w-full bg-[var(--surface-soft)]"></span>
+            @endforelse
+        </div>
+    </div>
+    <dl class="mt-3 grid grid-cols-3 gap-3">
+        @foreach($summaryItems as $item)
+            @php($percentage = $barTotal > 0 ? round(($item['count'] / $barTotal) * 100) : 0)
+            <div class="min-w-0">
+                <dt class="text-[10px] leading-relaxed text-[var(--muted)]">{{ $item['label'] }}</dt>
+                <dd class="mt-1 text-sm font-medium">{{ $percentage }} %</dd>
+            </div>
+        @endforeach
+    </dl>
+    <a href="{{ $insuranceUrl }}" class="mt-5 inline-flex min-h-10 items-center justify-between gap-4 border-t border-[var(--line)] pt-4 text-xs font-semibold text-[var(--accent)]">
+        <span>Versicherer ansehen</span><span aria-hidden="true">↗</span>
+    </a>
+</article>

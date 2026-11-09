@@ -21,7 +21,7 @@
      ×
     </button>
    </div>
-   <a @click="closeMenu(false)" aria-current="page" href="{{ route('home') }}" wire:navigate="">
+   <a @click="closeMenu(false)" @if(request()->routeIs('home')) aria-current="page" @endif href="{{ route('home') }}" wire:navigate="">
     <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
      <path d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
      </path>
@@ -30,7 +30,7 @@
      Home
     </span>
    </a>
-   <details @toggle="submenuChanged($event)" class="nav-submenu">
+   <details @toggle="submenuChanged($event)" class="nav-submenu" @if(request()->routeIs('insurances', 'reviews', 'ranking', 'insurance.*', 'review.show')) data-current="true" @endif>
     <summary @keydown.arrow-down.prevent="focusSubmenu($event, false)" @keydown.arrow-up.prevent="focusSubmenu($event, true)">
      <svg aria-hidden="true" class="nav-icon" fill="currentColor" focusable="false" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M7 10H3v10h4V10zm7-6h-4v16h4V4zm7 10h-4v6h4v-6z">
@@ -45,7 +45,7 @@
      </svg>
     </summary>
     <div class="nav-submenu-list">
-     <a @click="closeMenu(false)" href="{{ route('insurances') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('insurances') }}" wire:navigate="" @if(request()->routeIs('insurances')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
        <polygon points="12 2 2 7 12 12 22 7 12 2">
        </polygon>
@@ -58,7 +58,7 @@
        Versicherungs Anbieter
       </span>
      </a>
-     <a @click="closeMenu(false)" href="{{ route('reviews') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('reviews') }}" wire:navigate="" @if(request()->routeIs('reviews')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="currentColor" focusable="false" viewbox="0 0 101.5483 81.854" xmlns="http://www.w3.org/2000/svg">
        <path d="M12.5401,81.854a2.62509,2.62509,0,0,1-2.6233-2.6214V67.041H6.5149A6.52214,6.52214,0,0,1,0,60.5269V6.4994A6.50622,6.50622,0,0,1,6.4988,0H95.7456a5.80957,5.80957,0,0,1,5.8027,5.8034V60.5269a6.51332,6.51332,0,0,1-6.4987,6.5141H31.2L14.2168,81.2431A2.61867,2.61867,0,0,1,12.5401,81.854ZM6.4988,4.1437a2.358,2.358,0,0,0-2.355,2.3557V60.5269a2.37385,2.37385,0,0,0,2.3711,2.3706h5.4736a2.07185,2.07185,0,0,1,2.0719,2.0718v11.003L29.1188,63.3797a2.07035,2.07035,0,0,1,1.3286-.4822H95.0496a2.36537,2.36537,0,0,0,2.3552-2.3706V5.8034a1.66148,1.66148,0,0,0-1.6592-1.6597Z">
        </path>
@@ -75,7 +75,7 @@
      </a>
     </div>
    </details>
-   <details @toggle="submenuChanged($event)" class="nav-submenu">
+   <details @toggle="submenuChanged($event)" class="nav-submenu" @if(request()->routeIs('guidance', 'faqs', 'blog.index', 'post.show')) data-current="true" @endif>
     <summary @keydown.arrow-down.prevent="focusSubmenu($event, false)" @keydown.arrow-up.prevent="focusSubmenu($event, true)">
      <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
@@ -90,7 +90,7 @@
      </svg>
     </summary>
     <div class="nav-submenu-list">
-     <a @click="closeMenu(false)" href="{{ route('guidance') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('guidance') }}" wire:navigate="" @if(request()->routeIs('guidance')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
        <path d="M12 15.5c2.485 0 4.5-2.015 4.5-4.5S14.485 6.5 12 6.5 7.5 8.515 7.5 11s2.015 4.5 4.5 4.5Zm0 0v2.25m-6.75 2.25a7.5 7.5 0 1 1 13.5 0" stroke-linecap="round" stroke-linejoin="round">
        </path>
@@ -99,7 +99,7 @@
        Beratung
       </span>
      </a>
-     <a @click="closeMenu(false)" href="{{ route('faqs') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('faqs') }}" wire:navigate="" @if(request()->routeIs('faqs')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
        <path d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
        </path>
@@ -111,7 +111,7 @@
     </div>
    </details>
    @if(\App\Models\Setting::enabled('webcontent', 'blog_enabled', false))
-   <a @click="closeMenu(false)" href="{{ route('blog.index') }}" wire:navigate="">
+   <a @click="closeMenu(false)" href="{{ route('blog.index') }}" wire:navigate="" @if(request()->routeIs('blog.index')) aria-current="page" @endif>
     <svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z">
      </path>
@@ -124,7 +124,7 @@
    </a>
    @endif
    @if(\App\Models\Setting::enabled('webcontent', 'news_enabled', false) || app(\App\Support\NewsPreviewAccess::class)->isActive(request()))
-   <a @click="closeMenu(false)" href="{{ route('news.index') }}" wire:navigate="">
+   <a @click="closeMenu(false)" href="{{ route('news.index') }}" wire:navigate="" @if(request()->routeIs('news.index')) aria-current="page" @endif>
     <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
      <path d="M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3V5Z">
      </path>
@@ -140,7 +140,7 @@
     </span>
    </a>
    @endif
-   <details @toggle="submenuChanged($event)" class="nav-submenu">
+   <details @toggle="submenuChanged($event)" class="nav-submenu" @if(request()->routeIs('aboutus', 'howto', 'abos', 'contact', 'imprint', 'terms', 'privacypolicy', 'sitemap')) data-current="true" @endif>
     <summary @keydown.arrow-down.prevent="focusSubmenu($event, false)" @keydown.arrow-up.prevent="focusSubmenu($event, true)">
      <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
@@ -155,7 +155,7 @@
      </svg>
     </summary>
     <div class="nav-submenu-list">
-     <a @click="closeMenu(false)" href="{{ route('aboutus') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('aboutus') }}" wire:navigate="" @if(request()->routeIs('aboutus')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
        <path d="M6 12c.263 0 .524-.06.767-.175a2 2 0 0 0 .65-.491c.186-.21.333-.46.433-.734.1-.274.15-.568.15-.864a2.4 2.4 0 0 0 .586 1.591c.375.422.884.659 1.414.659.53 0 1.04-.237 1.414-.659A2.4 2.4 0 0 0 12 9.736a2.4 2.4 0 0 0 .586 1.591c.375.422.884.659 1.414.659.53 0 1.04-.237 1.414-.659A2.4 2.4 0 0 0 16 9.736c0 .295.052.588.152.861s.248.521.434.73a2 2 0 0 0 .649.488 1.809 1.809 0 0 0 1.53 0 2.03 2.03 0 0 0 .65-.488c.185-.209.332-.457.433-.73.1-.273.152-.566.152-.861 0-.974-1.108-3.85-1.618-5.121A.983.983 0 0 0 17.466 4H6.456a.986.986 0 0 0-.93.645C5.045 5.962 4 8.905 4 9.736c.023.59.241 1.148.611 1.567.37.418.865.667 1.389.697Zm0 0c.328 0 .651-.091.94-.266A2.1 2.1 0 0 0 7.66 11h.681a2.1 2.1 0 0 0 .718.734c.29.175.613.266.942.266.328 0 .651-.091.94-.266.29-.174.537-.427.719-.734h.681a2.1 2.1 0 0 0 .719.734c.289.175.612.266.94.266.329 0 .652-.091.942-.266.29-.174.536-.427.718-.734h.681c.183.307.43.56.719.734.29.174.613.266.941.266a1.819 1.819 0 0 0 1.06-.351M6 12a1.766 1.766 0 0 1-1.163-.476M5 12v7a1 1 0 0 0 1 1h2v-5h3v5h7a1 1 0 0 0 1-1v-7m-5 3v2h2v-2h-2Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
        </path>
@@ -164,7 +164,7 @@
        Unternehmen
       </span>
      </a>
-     <a @click="closeMenu(false)" href="{{ route('howto') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('howto') }}" wire:navigate="" @if(request()->routeIs('howto')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
        <path d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
        </path>
@@ -173,7 +173,7 @@
        So funktionierts
       </span>
      </a>
-     <a @click="closeMenu(false)" href="{{ route('abos') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('abos') }}" wire:navigate="" @if(request()->routeIs('abos')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
        </polygon>
@@ -182,7 +182,7 @@
        Abonnements
       </span>
      </a>
-     <a @click="closeMenu(false)" href="{{ route('contact') }}" wire:navigate="">
+     <a @click="closeMenu(false)" href="{{ route('contact') }}" wire:navigate="" @if(request()->routeIs('contact')) aria-current="page" @endif>
       <svg aria-hidden="true" class="nav-icon" fill="none" focusable="false" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
        <path d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" stroke="currentColor" stroke-linecap="round" stroke-width="1.5">
        </path>

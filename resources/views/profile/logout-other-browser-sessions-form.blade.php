@@ -7,28 +7,28 @@
     </x-slot>
 
     <x-slot name="description">
-        <span class="text-gray-600">
+        <span class="text-[var(--muted)]">
             {{ __('Verwalte und melde dich von deinen aktiven Sitzungen in anderen Browsern und Geräten ab.') }}
         </span>
     </x-slot>
 
     <x-slot name="content">
-        <div class="text-sm text-gray-600 max-w-2xl">
+        <div class="text-sm text-[var(--muted)] max-w-2xl">
             {{ __('Falls erforderlich, kannst du dich von allen deinen anderen Browsersitzungen auf allen Geräten abmelden. Einige deiner letzten Sitzungen sind unten aufgeführt; diese Liste ist jedoch möglicherweise nicht vollständig. Wenn du glaubst, dass dein Konto kompromittiert wurde, solltest du auch dein Passwort ändern.') }}
         </div>
 
         @if (count($this->sessions) > 0)
             <div class="mt-6 space-y-4">
                 @foreach ($this->sessions as $session)
-                    <div class="flex items-start gap-4 rounded-xl bg-gray-50 border border-gray-200 p-4">
+                    <div class="flex items-start gap-4 rounded-xl bg-[var(--surface-soft)] border border-[var(--line)] p-4">
 
                         {{-- Device Icon --}}
                         <div class="shrink-0">
-                            <div class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-lg bg-[var(--surface)] border border-[var(--line)] flex items-center justify-center">
                                 @if ($session->agent->isDesktop())
-                                    <i class="fal fa-desktop text-gray-500"></i>
+                                    <i class="fal fa-desktop text-[var(--muted)]"></i>
                                 @else
-                                    <i class="fal fa-mobile-alt text-gray-500"></i>
+                                    <i class="fal fa-mobile-alt text-[var(--muted)]"></i>
                                 @endif
                             </div>
                         </div>
@@ -37,14 +37,14 @@
                         <div class="min-w-0 flex-1">
                             <div class="flex items-start justify-between gap-3">
                                 <div class="min-w-0">
-                                    <div class="text-sm font-semibold text-gray-900 truncate">
+                                    <div class="text-sm font-semibold text-[var(--ink)] truncate">
                                         {{ $session->agent->platform() ?: __('Unbekannt') }}
-                                        <span class="text-gray-400">•</span>
+                                        <span class="text-[var(--muted)]">•</span>
                                         {{ $session->agent->browser() ?: __('Unbekannt') }}
                                     </div>
 
-                                    <div class="mt-1 text-xs text-gray-500 flex items-center gap-1">
-                                        <i class="fal fa-location-dot text-gray-400"></i>
+                                    <div class="mt-1 text-xs text-[var(--muted)] flex items-center gap-1">
+                                        <i class="fal fa-location-dot text-[var(--muted)]"></i>
                                         {{ $session->ip_address }}
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@
                                         </span>
                                     @else
                                         <span class="inline-flex items-center gap-2 rounded-full
-                                                     bg-gray-100 text-gray-600
+                                                     bg-[var(--surface-soft)] text-[var(--muted)]
                                                      px-3 py-1 text-xs font-medium">
                                             <i class="fal fa-clock"></i>
                                             {{ __('Zuletzt aktiv') }} {{ $session->last_active }}
@@ -81,7 +81,7 @@
                 {{ __('Von anderen Browsersitzungen abmelden') }}
             </x-button>
 
-            <x-action-message class="ms-1 text-gray-600" on="loggedOut">
+            <x-action-message class="ms-1 text-[var(--muted)]" on="loggedOut">
                 <span class="inline-flex items-center gap-2">
                     <i class="fal fa-check"></i>
                     {{ __('Erledigt.') }}
@@ -99,20 +99,20 @@
             </x-slot>
 
             <x-slot name="content">
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-[var(--ink)]">
                     {{ __('Bitte gib dein Passwort ein, um zu bestätigen, dass du dich von deinen anderen Browsersitzungen auf allen Geräten abmelden möchtest.') }}
                 </p>
 
                 <div class="mt-4" x-data="{}"
                      x-on:confirming-logout-other-browser-sessions.window="setTimeout(() => $refs.password.focus(), 250)">
-                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                        <i class="fal fa-lock text-gray-400"></i>
+                    <label class="flex items-center gap-2 text-sm font-medium text-[var(--ink)] mb-1">
+                        <i class="fal fa-lock text-[var(--muted)]"></i>
                         {{ __('Passwort') }}
                     </label>
 
                     <x-input
                         type="password"
-                        class="block w-full rounded-xl border-gray-300 p-3
+                        class="block w-full rounded-xl border-[var(--line)] p-3
                                focus:ring-2 focus:ring-primary focus:border-primary"
                         autocomplete="current-password"
                         placeholder="{{ __('Passwort') }}"

@@ -1,5 +1,5 @@
 <div
-    class="min-h-screen "
+    class="app-page app-insurance-detail"
     x-data="{
         loading: false,
         filterPanelOpen: false,
@@ -61,13 +61,13 @@
     x-on:filter-panel-state.window="handleFilterPanelState($event.detail)"
     x-on:active-evaluation-filter-alert.window="handleActiveEvaluationFilterAlert($event.detail)"
 >
-    <div class="container mx-auto px-4 pb-8">
+    <div class="app-shell pb-8">
         <div class="">
             <div class="md:flex items-start gap-4">
                 <div class="shrink-0 max-md:mb-6">
                     @if ($insurance->logo)
                         <div class="flex items-center space-x-2 relative">
-                            <div class="bg-white p-2  rounded-2xl">
+                            <div class="bg-white p-2 rounded-2xl">
                                 <img src="{{ asset('storage/' . $insurance->logo) }}"
                                      alt="Logo Versicherungs Anbieter"
                                      class="h-10 md:h-12 object-contain" loading="lazy">
@@ -82,7 +82,8 @@
                     @endif
                 </div>
                 <div class="min-w-0">
-                    <p class="mt-2 text-sm md:text-base text-white">
+                    <h2 class="app-heading text-[var(--ink)]">{{ $insurance->name }}</h2>
+                    <p class="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--muted)] md:text-base">
                         {{ $insurance->description }}
                     </p>
                 </div>
@@ -91,10 +92,10 @@
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     
                     {{-- KPI 1: Ø Bearbeitungsdauer --}}
-                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-5">
+                    <div class="app-panel rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5">
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <p class="text-sm text-gray-700 white flex items-center gap-2">
+                                <p class="text-sm text-[var(--ink)] flex items-center gap-2">
                                     <i class="fal fa-clock  text-primary fa-2x"></i>
                                     <span>Ø Regulierungsdauer </span>
                                 </p>
@@ -102,24 +103,24 @@
     
                             {{-- Kreis --}}
                             <div class="relative w-20 h-20 shrink-0">
-                                <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                <div class="absolute inset-0 rounded-full bg-[var(--surface-soft)]"></div>
                                 <div
                                     class="absolute inset-0 rounded-full"
-                                    style="background: conic-gradient(#2563eb {{ $daysPct }}%, #e5e7eb 0);"
+                                    style="background: conic-gradient(var(--accent) {{ $daysPct }}%, var(--tray) 0);"
                                 ></div>
-                                <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center text-center">
-                                    <div class="text-lg font-semibold text-gray-900 leading-none">{{ $days }}</div>
-                                    <div class="text-[10px] text-gray-500 leading-none mt-1">Tage</div>
+                                <div class="absolute inset-[6px] rounded-full bg-[var(--surface)] flex flex-col items-center justify-center text-center">
+                                    <div class="text-lg font-semibold text-[var(--ink)] leading-none">{{ $days }}</div>
+                                    <div class="text-[10px] text-[var(--muted)] leading-none mt-1">Tage</div>
                                 </div>
                             </div>
                         </div>
                     </div>
     
                     {{-- KPI 2: Gesamtbewertung --}}
-                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-5">
+                    <div class="app-panel rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5">
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <p class="text-sm text-gray-700 flex items-center gap-2">
+                                <p class="text-sm text-[var(--ink)] flex items-center gap-2">
                                     <i class="fal fa-star text-primary fa-2x"></i>
                                     <span>Gesamtbewertung</span>
                                 </p>
@@ -127,35 +128,35 @@
     
                             {{-- Kreis --}}
                             <div class="relative w-20 h-20 shrink-0">
-                                <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                <div class="absolute inset-0 rounded-full bg-[var(--surface-soft)]"></div>
                                 <div
                                     class="absolute inset-0 rounded-full"
-                                    style="background: conic-gradient(#f59e0b {{ $scorePct }}%, #e5e7eb 0);"
+                                    style="background: conic-gradient(var(--gold) {{ $scorePct }}%, var(--tray) 0);"
                                 ></div>
-                                <div class="absolute inset-[6px] rounded-full bg-white flex  items-center justify-center text-center">
-                                    <div class="text-lg font-semibold text-gray-900 leading-none">
+                                <div class="absolute inset-[6px] rounded-full bg-[var(--surface)] flex  items-center justify-center text-center">
+                                    <div class="text-lg font-semibold text-[var(--ink)] leading-none">
                                         {{ $score5 !== null ? number_format($score5, 1, ',', '.') : '–' }}
                                     </div>
-                                    <div class="text-[10px] text-gray-500 leading-none mt-1">/ 5</div>
+                                    <div class="text-[10px] text-[var(--muted)] leading-none mt-1">/ 5</div>
                                 </div>
                             </div>
                         </div>
                     </div>
     
                     {{-- KPI 3: Bewertungen --}}
-                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-5">
+                    <div class="app-panel rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5">
                         <div class="flex items-start justify-between gap-4">
                             <div class="space-y-2">
-                                <p class="text-sm text-gray-700 flex items-center gap-2">
+                                <p class="text-sm text-[var(--ink)] flex items-center gap-2">
                                     <i class="fal fa-comments  text-primary fa-2x"></i>
                                     <span>Bewertungen</span>
                                 </p>
 
-                                <div class="space-y-1 text-xs text-gray-600">
+                                <div class="space-y-1 text-xs text-[var(--muted)]">
                                     @foreach ($regulationTypeLegend as $entry)
                                         <div class="flex items-center gap-2">
                                             <span class="inline-block h-2.5 w-2.5 rounded-full" style="background-color: {{ $entry['color'] }};"></span>
-                                            <span><span class="font-semibold text-gray-900">{{ $entry['count'] }}</span> {{ $entry['label'] }}</span>
+                                            <span><span class="font-semibold text-[var(--ink)]">{{ $entry['count'] }}</span> {{ $entry['label'] }}</span>
                                         </div>
                                     @endforeach
                                 </div>
@@ -163,14 +164,14 @@
     
                             {{-- Kreis --}}
                             <div class="relative w-20 h-20 shrink-0">
-                                <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                <div class="absolute inset-0 rounded-full bg-[var(--surface-soft)]"></div>
                                 <div
                                     class="absolute inset-0 rounded-full"
                                     style="background: {{ $countDonutGradient }};"
                                 ></div>
-                                <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center text-center">
-                                    <div class="text-lg font-semibold text-gray-900 leading-none">{{ $count }}</div>
-                                    <div class="text-[10px] text-gray-500 leading-none mt-1">gesamt</div>
+                                <div class="absolute inset-[6px] rounded-full bg-[var(--surface)] flex flex-col items-center justify-center text-center">
+                                    <div class="text-lg font-semibold text-[var(--ink)] leading-none">{{ $count }}</div>
+                                    <div class="text-[10px] text-[var(--muted)] leading-none mt-1">gesamt</div>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +185,7 @@
                     @if($hasDetailInsuranceRatings)
                         <div class="">
                             {{-- große Card links (2/3) --}}
-                            <div class="lg:col-span-2 rounded-2xl bg-white/80 border border-white/30 shadow p-5">
+                            <div class="lg:col-span-2 rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-5">
                                 <x-insurance.insurance-detail-insurance-ratings
                                     :detailInsuranceRating="$detailInsuranceRating"
                                     :insurance="$insurance"
@@ -309,10 +310,10 @@
                             {{-- SLIDE 1: KPIs (ALLE 3 in EINEM Slide) --}}
                             {{-- ===================================================== --}}
                             <div class="swiper-slide">
-                                <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+                                <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-3">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                                            <i class="fal fa-chart-line text-blue-600"></i>
+                                        <h3 class="text-sm font-semibold text-[var(--ink)] flex items-center gap-2">
+                                            <i class="fal fa-chart-line text-[var(--accent)]"></i>
                                             <span>Übersicht</span>
                                         </h3>
                                         <div x-data="{ show: false }" class="relative">
@@ -323,7 +324,7 @@
                                                 @click.away="show = false"
                                                 @click.prevent="show = true"
                                                 x-ref="anchor"
-                                                class="text-gray-400 hover:text-gray-600 focus:outline-none -mt-4"
+                                                class="text-[var(--muted)] hover:text-gray-600 focus:outline-none -mt-4"
                                                 aria-label="Hinweis zur Logo-Nutzung"
                                                 type="button"
                                             >
@@ -337,7 +338,7 @@
                                                 x-transition
                                                 x-anchor.offset.10="$refs.anchor"
                                                 x-cloak
-                                                class="w-64 z-50 bg-gray-100 text-sm text-gray-800 rounded shadow-lg p-3"
+                                                class="w-64 z-50 bg-[var(--surface-soft)] text-sm text-[var(--ink)] rounded shadow-lg p-3"
                                             >
                                                 <p class="leading-snug">
                                                 Angezeigt ist der Gesamtwert aller Sparten.
@@ -349,42 +350,42 @@
 
                                     <div class="grid grid-cols-1 gap-2">
                                         {{-- KPI 1 --}}
-                                        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-2">
+                                        <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-2">
                                             <div class="flex items-start justify-between gap-4">
-                                                <p class="text-sm text-gray-700 flex items-center gap-2">
+                                                <p class="text-sm text-[var(--ink)] flex items-center gap-2">
                                                     <i class="fal fa-clock text-primary fa-lg"></i>
                                                     Ø Regulierungsdauer 
                                                 </p>
 
                                                 <div class="relative w-[70px] h-[70px]  shrink-0">
-                                                    <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                                    <div class="absolute inset-0 rounded-full bg-[var(--surface-soft)]"></div>
                                                     <div
                                                         class="absolute inset-0 rounded-full"
-                                                        style="background: conic-gradient(#2563eb {{ $daysPct }}%, #e5e7eb 0);"
+                                                        style="background: conic-gradient(var(--accent) {{ $daysPct }}%, var(--tray) 0);"
                                                     ></div>
-                                                    <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center">
+                                                    <div class="absolute inset-[6px] rounded-full bg-[var(--surface)] flex flex-col items-center justify-center">
                                                         <div class="text-lg font-semibold">{{ $days }}</div>
-                                                        <div class="text-[10px] text-gray-500">Tage</div>
+                                                        <div class="text-[10px] text-[var(--muted)]">Tage</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {{-- KPI 2 --}}
-                                        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-2">
+                                        <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-2">
                                             <div class="flex items-start justify-between gap-4">
-                                                <p class="text-sm text-gray-700 flex items-center gap-2">
+                                                <p class="text-sm text-[var(--ink)] flex items-center gap-2">
                                                     <i class="fal fa-star text-amber-500 fa-lg"></i>
                                                     Gesamtbewertung
                                                 </p>
 
                                                 <div class="relative  w-[70px] h-[70px]  shrink-0">
-                                                    <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                                    <div class="absolute inset-0 rounded-full bg-[var(--surface-soft)]"></div>
                                                     <div
                                                         class="absolute inset-0 rounded-full"
-                                                        style="background: conic-gradient(#f59e0b {{ $scorePct }}%, #e5e7eb 0);"
+                                                        style="background: conic-gradient(var(--gold) {{ $scorePct }}%, var(--tray) 0);"
                                                     ></div>
-                                                    <div class="absolute inset-[6px] rounded-full bg-white flex items-center justify-center">
+                                                    <div class="absolute inset-[6px] rounded-full bg-[var(--surface)] flex items-center justify-center">
                                                         <div class="text-lg font-semibold">
                                                             {{ $score5 !== null ? number_format($score5, 1, ',', '.') : '–' }}
                                                         </div>
@@ -394,33 +395,33 @@
                                         </div>
 
                                         {{-- KPI 3 --}}
-                                        <div class="rounded-2xl bg-white/95 border border-white/10 shadow p-2">
+                                        <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-2">
                                             <div class="flex items-start justify-between gap-4">
                                                 <div class="space-y-1">
-                                                    <p class="text-sm text-gray-700 flex items-center gap-2">
+                                                    <p class="text-sm text-[var(--ink)] flex items-center gap-2">
                                                         <i class="fal fa-comments text-emerald-500 fa-lg"></i>
                                                         Bewertungen
                                                     </p>
 
-                                                    <div class="space-y-0.5 text-[11px] text-gray-600">
+                                                    <div class="space-y-0.5 text-[11px] text-[var(--muted)]">
                                                         @foreach ($regulationTypeLegend as $entry)
                                                             <div class="flex items-center gap-2 leading-none">
                                                                 <span class="inline-block h-2 w-2 rounded-full" style="background-color: {{ $entry['color'] }};"></span>
-                                                                <span><span class="font-semibold text-gray-900">{{ $entry['count'] }}</span> {{ $entry['label'] }}</span>
+                                                                <span><span class="font-semibold text-[var(--ink)]">{{ $entry['count'] }}</span> {{ $entry['label'] }}</span>
                                                             </div>
                                                         @endforeach
                                                     </div>
                                                 </div>
 
                                                 <div class="relative  w-[70px] h-[70px]  shrink-0">
-                                                    <div class="absolute inset-0 rounded-full bg-gray-100"></div>
+                                                    <div class="absolute inset-0 rounded-full bg-[var(--surface-soft)]"></div>
                                                     <div
                                                         class="absolute inset-0 rounded-full"
                                                         style="background: {{ $countDonutGradient }};"
                                                     ></div>
-                                                    <div class="absolute inset-[6px] rounded-full bg-white flex flex-col items-center justify-center">
+                                                    <div class="absolute inset-[6px] rounded-full bg-[var(--surface)] flex flex-col items-center justify-center">
                                                         <div class="text-lg font-semibold">{{ $count }}</div>
-                                                        <div class="text-[10px] text-gray-500">gesamt</div>
+                                                        <div class="text-[10px] text-[var(--muted)]">gesamt</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -434,10 +435,10 @@
                             {{-- ===================================================== --}}
                             <div class="swiper-slide">
                                 <div class="">
-                                    <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3  flex flex-col">
+                                    <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-3  flex flex-col">
                                         <div class="flex items-center gap-2 mb-3">
-                                            <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
-                                                <i class="fal fa-list-check text-blue-600"></i>
+                                            <h3 class="text-xs font-semibold text-[var(--ink)] flex items-center gap-2">
+                                                <i class="fal fa-list-check text-[var(--accent)]"></i>
                                                 Kompakte Auswertung
                                             </h3>
                                         </div>
@@ -445,7 +446,7 @@
                                         <div class=" p-3.5 flex-1">
                                             <ul class="space-y-2.5">
                                                 @foreach ($autoSummaryItems as $item)
-                                                    <li class="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed rounded-lg border border-slate-100 bg-slate-50/80 p-2">
+                                                    <li class="flex items-start gap-2.5 text-xs text-[var(--ink)] leading-relaxed rounded-lg border border-[var(--line)] bg-slate-50/80 p-2">
                                                         <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-600 text-white">
                                                             <i class="fal {{ $item['icon'] ?? 'fa-check' }} text-[10px]"></i>
                                                         </span>
@@ -465,45 +466,45 @@
                                 <div class="">
 
                                     @if($hasDetailInsuranceRatings)
-                                        <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3 pb-5">
+                                        <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-3 pb-5">
                                             <div class="flex items-center justify-between mb-3">
-                                                <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
-                                                    <i class="fal fa-chart-bar text-blue-600"></i>
+                                                <h3 class="text-xs font-semibold text-[var(--ink)] flex items-center gap-2">
+                                                    <i class="fal fa-chart-bar text-[var(--accent)]"></i>
                                                     Scorings
                                                 </h3>
-                                                <span class="text-[10px] text-gray-500 rounded-full bg-gray-100 px-2 py-0.5">
+                                                <span class="text-[10px] text-[var(--muted)] rounded-full bg-[var(--surface-soft)] px-2 py-0.5">
                                                     Ø / 5
                                                 </span>
                                             </div>
 
                                             <div class="space-y-6 my-3">
                                                 {{-- Scoring --}}
-                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
-                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                <div class="rounded-xl bg-[var(--surface)] p-2.5 shadow-sm border border-[var(--line)] flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-[var(--ink)] flex items-center gap-2">
                                                         <i class="fal fa-clock text-primary "></i>
                                                                 <span>Dauer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                     </span>
                                                     <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->speed" :size="'md'"/>
                                                 </div>
 
-                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
-                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                <div class="rounded-xl bg-[var(--surface)] p-2.5 shadow-sm border border-[var(--line)] flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-[var(--ink)] flex items-center gap-2">
                                                         <i class="fal fa-headset text-primary "></i>
                                                         Kundenservice
                                                     </span>
                                                     <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->communication" :size="'md'"/>
                                                 </div>
 
-                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
-                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                <div class="rounded-xl bg-[var(--surface)] p-2.5 shadow-sm border border-[var(--line)] flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-[var(--ink)] flex items-center gap-2">
                                                         <i class="fal fa-balance-scale text-primary "></i>
                                                                 <span>Fairness&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                     </span>
                                                     <x-insurance.insurance-rating-stars :score="$detailInsuranceRating->fairness" :size="'md'"/>
                                                 </div>
 
-                                                <div class="rounded-xl bg-white p-2.5 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between">
-                                                    <span class="text-xs text-gray-700 flex items-center gap-2">
+                                                <div class="rounded-xl bg-[var(--surface)] p-2.5 shadow-sm border border-[var(--line)] flex flex-wrap items-center justify-between">
+                                                    <span class="text-xs text-[var(--ink)] flex items-center gap-2">
                                                         <i class="fal fa-eye text-primary "></i>
                                                                 <span>Transparenz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                     </span>
@@ -533,15 +534,15 @@
                                 <div class="">
 
                                     @if($hasDetailInsuranceRatings)
-                                        <div class="rounded-2xl bg-white/80 border border-white/10 shadow p-3">
+                                        <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-3">
                                             <div class="flex items-center gap-2 mb-3">
-                                                <h3 class="text-xs font-semibold text-gray-900 flex items-center gap-2">
-                                                    <i class="fal fa-comment-alt text-blue-600"></i>
+                                                <h3 class="text-xs font-semibold text-[var(--ink)] flex items-center gap-2">
+                                                    <i class="fal fa-comment-alt text-[var(--accent)]"></i>
                                                     KI-Kommentar
                                                 </h3>
                                             </div>
 
-                                            <div class="rounded-xl bg-white p-3 shadow-sm border border-gray-100 text-sm text-gray-700 leading-relaxed">
+                                            <div class="rounded-xl bg-[var(--surface)] p-3 shadow-sm border border-[var(--line)] text-sm text-[var(--ink)] leading-relaxed">
                                                 <x-ui.read-more-typewriter
                                                     :text="$detailInsuranceRating->ai_comment ?: 'Kein Kommentar vorhanden.'"
                                                     limitPx="200"
@@ -568,7 +569,7 @@
                     </div>
 
                     {{-- Pagination --}}
-                    <div x-ref="pagination" class="bg-white/80 rounded-xl swiper-pagination mt-4 !relative !bottom-0 !w-[70px] mx-auto"></div>
+                    <div x-ref="pagination" class="bg-[var(--surface)] rounded-xl swiper-pagination mt-4 !relative !bottom-0 !w-[70px] mx-auto"></div>
 
                 </div>
             </div>
@@ -576,11 +577,11 @@
     </div>
 
      <div class="mt-6">
-        <div class="container mx-auto px-4 pt-6 py-6 ">
+        <div class="app-shell py-6">
             @if($publishedRatingsCount > 0)
-                <h2 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                    <span class="w-max text-white">Bewertungen</span>
-                    <span class="ml-2 bg-white text-sky-600 text-xs shadow border border-sky-200 font-bold aspect-square px-2 py-1 flex items-center justify-center rounded-full h-7 leading-none">
+                <h2 class="text-sm font-semibold text-[var(--ink)] flex items-center gap-2">
+                    <span class="w-max text-[var(--ink)]">Bewertungen</span>
+                    <span class="ml-2 bg-[var(--surface)] text-[var(--accent)] text-xs shadow border border-[var(--line)] font-bold aspect-square px-2 py-1 flex items-center justify-center rounded-full h-7 leading-none">
                         {{ $publishedRatingsCount }}
                     </span>
                 </h2>
@@ -590,7 +591,7 @@
                             <x-filter.filter-search-field wire:model.live="search" :label="'Suche'"/>
                         </div>
                         <div class="p-2 mb-2">
-                            <label class="text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
+                            <label class="text-sm text-[var(--muted)] px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
                                 <svg class="w-4 stroke-current stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M7 12h10M10 18h4" />
                                 </svg>
@@ -599,7 +600,7 @@
                             <x-filter.filter-dropdown-checkbox wire:model.live="selectedInsuranceTypefilter" :options="$insuranceTypes" />
                         </div>
                         <div class="p-2 mb-2">
-                            <label class="text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
+                            <label class="text-sm text-[var(--muted)] px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
                                 <svg class="w-4 stroke-current stroke-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50">
                                     <path d="M 20 3 C 18.355469 3 17 4.355469 17 6 L 17 9 L 3 9 C 1.355469 9 0 10.355469 0 12 L 0 26.8125 C -0.0078125 26.875 -0.0078125 26.9375 0 27 L 0 44 C 0 45.644531 1.355469 47 3 47 L 47 47 C 48.644531 47 50 45.644531 50 44 L 50 12 C 50 10.355469 48.644531 9 47 9 L 33 9 L 33 6 C 33 4.355469 31.644531 3 30 3 Z M 20 5 L 30 5 C 30.5625 5 31 5.4375 31 6 L 31 9 L 19 9 L 19 6 C 19 5.4375 19.4375 5 20 5 Z M 3 11 L 47 11 C 47.5625 11 48 11.4375 48 12 L 48 26.84375 C 48 26.875 48 26.90625 48 26.9375 L 48 27 C 48 27.5625 47.5625 28 47 28 L 3 28 C 2.4375 28 2 27.5625 2 27 C 2.007813 26.9375 2.007813 26.875 2 26.8125 L 2 12 C 2 11.4375 2.4375 11 3 11 Z M 25 22 C 23.894531 22 23 22.894531 23 24 C 23 25.105469 23.894531 26 25 26 C 26.105469 26 27 25.105469 27 24 C 27 22.894531 26.105469 22 25 22 Z M 2 29.8125 C 2.316406 29.925781 2.648438 30 3 30 L 47 30 C 47.351563 30 47.683594 29.925781 48 29.8125 L 48 44 C 48 44.5625 47.5625 45 47 45 L 3 45 C 2.4375 45 2 44.5625 2 44 Z"></path>
                                 </svg>                                
@@ -610,7 +611,7 @@
                             </div>
                         </div>
                         <div class="p-2 mb-2">
-                            <label class=" text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
+                            <label class=" text-sm text-[var(--muted)] px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
                                 <svg class="w-4 h-4 stroke-current stroke-2" viewBox="0 0 20 20">
                                     <path class="stroke-current" fill="none" stroke="1" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.176 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.049 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z"/>
                                 </svg>
@@ -619,7 +620,7 @@
                                 </span>
                             </label>
                             <select wire:model.live="minAvgScore"
-                                    class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
+                                    class="app-control min-h-12 w-full rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--ink)]">
                                 <option value="">Keine Auswahl</option>
                                 <option value=".1">0,5+</option>
                                 <option value=".2">1+</option>
@@ -630,12 +631,12 @@
                             </select>
                         </div>
                         <div class="p-2 mb-2">
-                            <label class="text-sm text-gray-400 px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
+                            <label class="text-sm text-[var(--muted)] px-2  mb-1 flex justify-left space-x-2 align-middle content-center">
                                 <svg class="w-4 h-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.2299 34.1955"><polygon  points="8.046 6.034 8.046 34.195 4.023 34.195 4.023 6.034 0 6.034 6.034 0 12.069 6.034 8.046 6.034"/><path  d="M14.0804,4.023V0H40.2299V4.023Zm0,10.0575v-4.023h20.115v4.023Zm0,20.115v-4.023h8.046v4.023Zm0-10.0575V20.115H28.1609v4.023Z"/></svg>
                                 <span>Sortierung</span>
                             </label>
                             <select wire:model.live="sort"
-                                    class="w-full px-3 py-2 pr-8 border rounded-md text-sm border-blue-200">
+                                    class="app-control min-h-12 w-full rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 pr-8 text-sm text-[var(--ink)]">
                                 <option value="score_desc">Ø Sterne ↓</option>
                                 <option value="score_asc">
                                     Ø Sterne ↑
@@ -645,14 +646,14 @@
                             </select>
                         </div>
                         <div class="p-2">
-                            <x-buttons.button-basic wire:click="resetFilters" class="mt-4 text-sm text-blue-600 w-full">
+                            <x-buttons.button-basic wire:click="resetFilters" class="app-button-secondary mt-4 w-full text-sm">
                                 Filter zurücksetzen
                             </x-buttons.button-basic>
                         </div>
                     </x-slot>
                     <x-slot name="listContent">
                         @if($this->isFiltered)
-                            <div class="mb-4 text-sm text-white">
+                            <div class="mb-4 text-sm text-[var(--muted)]">
                                 {{ $claimRatings->total() }} Bewertungen gefunden.
                             </div>
                         @endif
@@ -665,9 +666,7 @@
                             <div class="mt-6 text-center" wire:ignore>
                                 <button
                                     type="button"
-                                    class="px-4 py-2 rounded-lg border bg-white"
-                                    tabindex="-1"
-                                    onmousedown="event.preventDefault()"
+                                    class="app-button-secondary min-h-12 px-6"
                                     x-on:click.prevent="loadMore()"
                                     :disabled="loading"
                                 >

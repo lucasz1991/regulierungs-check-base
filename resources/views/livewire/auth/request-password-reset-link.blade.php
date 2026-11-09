@@ -48,18 +48,18 @@
                         autofocus
                         autocomplete="username"
                         placeholder="name@beispiel.de"
-                        class="mt-1 block w-full rounded-xl border-gray-300 p-3
+                        class="mt-1 block w-full rounded-xl border-[var(--line)] p-3
                                focus:ring-2 focus:ring-primary focus:border-primary"
                     />
                     @error('email') <span class="text-red-600 text-sm mt-2 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="pt-2 space-y-3">
-                    <x-buttons.button-basic mode="layoutprimary" size="lg" class="w-full justify-center" wire:click.prevent="sendResetLink">
+                    <x-buttons.button-basic mode="layoutprimary" size="lg" class="app-button w-full justify-center" wire:click.prevent="sendResetLink">
                         Link anfordern
                     </x-buttons.button-basic>
 
-                    <div class="text-sm text-gray-600 text-center">
+                    <div class="text-sm text-[var(--muted)] text-center">
                         Doch wieder eingefallen?
                         <a href="{{ route('login') }}" wire:navigate class="text-primary underline">
                             Einloggen

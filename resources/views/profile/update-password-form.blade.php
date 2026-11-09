@@ -17,8 +17,8 @@
 
             {{-- Aktuelles Passwort --}}
             <div x-data="{ show: false }">
-                <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                    <i class="fal fa-key text-gray-400"></i>
+                <label class="flex items-center gap-2 text-sm font-medium text-[var(--ink)] mb-1">
+                    <i class="fal fa-key text-[var(--muted)]"></i>
                     {{ __('Aktuelles Passwort') }}
                 </label>
 
@@ -28,7 +28,7 @@
                         id="current_password"
                         wire:model="state.current_password"
                         autocomplete="current-password"
-                        class="block w-full rounded-xl border-gray-300 p-3 pr-12
+                        class="block w-full rounded-xl border-[var(--line)] p-3 pr-12
                                focus:ring-2 focus:ring-primary focus:border-primary"
                     />
 
@@ -36,7 +36,7 @@
                         type="button"
                         @click="show = !show"
                         class="absolute inset-y-0 right-0 px-4 flex items-center
-                               text-gray-500 hover:text-gray-800 transition"
+                               text-[var(--muted)] hover:text-[var(--ink)] transition"
                         title="Passwort anzeigen"
                     >
                         <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
@@ -48,8 +48,8 @@
 
             {{-- Neues Passwort --}}
             <div x-data="{ show: false }">
-                <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                    <i class="fal fa-lock text-gray-400"></i>
+                <label class="flex items-center gap-2 text-sm font-medium text-[var(--ink)] mb-1">
+                    <i class="fal fa-lock text-[var(--muted)]"></i>
                     {{ __('Neues Passwort') }}
                 </label>
 
@@ -59,7 +59,7 @@
                         id="password"
                         wire:model="state.password"
                         autocomplete="new-password"
-                        class="block w-full rounded-xl border-gray-300 p-3 pr-12
+                        class="block w-full rounded-xl border-[var(--line)] p-3 pr-12
                                focus:ring-2 focus:ring-primary focus:border-primary"
                     />
 
@@ -67,7 +67,7 @@
                         type="button"
                         @click="show = !show"
                         class="absolute inset-y-0 right-0 px-4 flex items-center
-                               text-gray-500 hover:text-gray-800 transition"
+                               text-[var(--muted)] hover:text-[var(--ink)] transition"
                         title="Passwort anzeigen"
                     >
                         <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
@@ -79,8 +79,8 @@
 
             {{-- Passwort bestätigen --}}
             <div x-data="{ show: false }">
-                <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                    <i class="fal fa-lock-alt text-gray-400"></i>
+                <label class="flex items-center gap-2 text-sm font-medium text-[var(--ink)] mb-1">
+                    <i class="fal fa-lock-alt text-[var(--muted)]"></i>
                     {{ __('Passwort bestätigen') }}
                 </label>
 
@@ -90,7 +90,7 @@
                         id="password_confirmation"
                         wire:model="state.password_confirmation"
                         autocomplete="new-password"
-                        class="block w-full rounded-xl border-gray-300 p-3 pr-12
+                        class="block w-full rounded-xl border-[var(--line)] p-3 pr-12
                                focus:ring-2 focus:ring-primary focus:border-primary"
                     />
 
@@ -98,7 +98,7 @@
                         type="button"
                         @click="show = !show"
                         class="absolute inset-y-0 right-0 px-4 flex items-center
-                               text-gray-500 hover:text-gray-800 transition"
+                               text-[var(--muted)] hover:text-[var(--ink)] transition"
                         title="Passwort anzeigen"
                     >
                         <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>

@@ -1,139 +1,35 @@
-<div class="antialiased relative" wire:loading.class="cursor-wait">
-    <div class="mx-auto px-5 pb-12 container">
+<div class="app-page app-faq-page" wire:loading.class="cursor-wait">
+    <div class="app-shell">
+        <div class="mx-auto max-w-4xl">
+            <div class="app-faq-search relative mb-8 flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2 pl-5 focus-within:border-[var(--accent)] focus-within:ring-4 focus-within:ring-[var(--surface-soft)]">
+                <svg class="h-5 w-5 shrink-0 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path stroke-linecap="round" d="m15.5 15.5 4.5 4.5" /></svg>
+                <input type="search" wire:model.live.debounce.250ms="search" aria-label="Fragen und Antworten durchsuchen" placeholder="Frage oder Stichwort eingeben …" class="min-w-0 flex-1 border-0 bg-transparent py-3 text-base text-[var(--ink)] shadow-none placeholder:text-[var(--muted)] focus:ring-0" />
+                <button type="button" wire:click="$set('search', '')" x-show="$wire.search.length > 0" x-cloak class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--ink)]" aria-label="Suche löschen" title="Suche löschen">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18" /></svg>
+                </button>
+            </div>
 
-<!-- Suchfeld -->
-<div class="mb-10">
-    <div
-        class="
-            relative
-            flex items-center
-            rounded-2xl
-            bg-white/90
-            border border-gray-200
-            shadow-sm
-            transition
-            focus-within:ring-2
-            focus-within:ring-primary/40
-            focus-within:border-primary
-        "
-    >
-        <!-- Search Icon -->
-        <span class="absolute left-4 text-gray-400 pointer-events-none">
-            <i class="fal fa-search"></i>
-        </span>
-
-        <!-- Input -->
-        <input
-            type="text"
-            wire:model.live.debounce.250ms="search"
-            placeholder="Frage oder Stichwort eingeben …"
-            class="
-                w-full
-                bg-transparent
-                border-0
-                pl-11 pr-14 py-3
-                rounded-2xl
-                text-base
-                text-primary
-                placeholder-gray-400
-                focus:outline-none
-                focus:ring-0
-            "
-        />
-
-        <!-- Loader -->
-        <div
-            wire:loading
-            class="absolute right-4 text-gray-400 animate-spin"
-        >
-            <i class="fal fa-circle-notch"></i>
-        </div>
-
-        <!-- Clear Button -->
-        <button
-            type="button"
-            wire:click="$set('search', '')"
-            x-show="$wire.search && !$wire.__instance.loading"
-            x-cloak
-            class="
-                absolute right-4
-                text-gray-400
-                hover:text-gray-600
-                transition
-            "
-            title="Suche löschen"
-        >
-            <i class="fal fa-times-circle"></i>
-        </button>
-    </div>
-</div>
-
-
-        <!-- FAQ Liste -->
-        <div class="space-y-4">
-            @foreach($faqs as $faq)
-                <div
-                    x-data="{ open: false }"
-                    @click.away="open = false"
-                    class="bg-white/80 rounded-xl shadow-md transition hover:shadow-lg"
-                >
-                    <!-- Frage -->
-                    <button
-                        type="button"
-                        x-on:click="open = !open"
-                        class="w-full flex items-center gap-4 px-2 md:px-6 py-4
-                               text-left text-base md:text-lg font-semibold text-primary"
-                    >
-                        <!-- Icon links -->
-                        <span
-                            class="
-                                flex items-center justify-center
-                                w-9 h-9 rounded-full
-                                border border-primary/30
-                                transition-all duration-300
-                            "
-                            :class="open
-                                ? 'bg-primary text-white scale-105 shadow-md'
-                                : 'bg-white text-primary'"
-                        >
-                            <svg
-                                class="w-4 h-4 transition-transform duration-300"
-                                :class="open ? 'rotate-180' : 'rotate-0'"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                      d="m19 9-7 7-7-7" />
-                            </svg>
-                        </span>
-
-                        <!-- Titel -->
-                        <span class="flex-1">
-                            {{ $faq->key }}
-                        </span>
-                    </button>
-
-                    <!-- Antwort -->
-                    <div
-                        x-show="open"
-                        x-cloak
-                        x-collapse
-                    >
-                        <div class="px-2 md:px-6 pb-4">
-                            <div class="pt-2">
-                                <p class="text-primary text-base md:text-lg leading-relaxed
-                                          w-full bg-white rounded-lg px-4 py-5">
-                                    {!! $faq->value !!}
-                                </p>
-                            </div>
+            <div class="space-y-3">
+                @forelse($faqs as $faq)
+                    <section wire:key="faq-{{ $faq->id }}" x-data="{ open: false }" @click.away="open = false" class="app-faq-item overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
+                        <h2 class="!m-0 !text-base">
+                            <button type="button" x-on:click="open = !open" :aria-expanded="String(open)" aria-controls="faq-answer-{{ $faq->id }}" class="flex min-h-20 w-full items-center gap-5 px-5 py-5 text-left font-semibold text-[var(--ink)] sm:px-7">
+                                <span class="flex-1">{{ $faq->key }}</span>
+                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--surface-soft)] text-[var(--accent)]" aria-hidden="true">
+                                    <svg class="h-4 w-4 transition-transform duration-300" :class="{ 'rotate-180': open }" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg>
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="faq-answer-{{ $faq->id }}" x-show="open" x-cloak x-collapse>
+                            <div class="app-prose border-t border-[var(--line)] px-5 py-6 text-sm leading-relaxed sm:px-7">{!! $faq->value !!}</div>
                         </div>
+                    </section>
+                @empty
+                    <div class="app-panel py-10 text-center" role="status">
+                        <p class="text-sm font-medium text-[var(--ink)]">Keine passenden Fragen gefunden.</p>
                     </div>
-
-                </div>
-            @endforeach
+                @endforelse
+            </div>
         </div>
-
     </div>
 </div>

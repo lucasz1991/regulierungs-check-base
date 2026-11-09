@@ -1,10 +1,10 @@
-<div class="px-4 py-4  bg-white ">
+<div class="app-section-title border-b border-[var(--line)] px-5 py-6 sm:px-7">
     <div class="">
-        <h3 class="text-lg font-medium text-primary">{{ $title }}</h3>
+        <h3 class="text-lg font-semibold text-[var(--ink)]">{{ $title }}</h3>
 
-        <p class="mt-1 text-sm text-primary">
+        <div class="app-muted mt-2 text-sm leading-7">
             {{ $description }}
-        </p>
+        </div>
     </div>
 
     <div class="">

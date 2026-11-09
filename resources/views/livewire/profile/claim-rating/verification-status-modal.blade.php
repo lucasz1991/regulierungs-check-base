@@ -126,7 +126,7 @@
 
             {{-- Statusanzeige (Badges) --}}
             <div class="mb-4">
-                <p class="text-sm text-gray-600 mb-1">
+                <p class="text-sm text-[var(--muted)] mb-1">
                     Aktueller Verifikationsstatus:
                 </p>
                 @if($v['state'] === 'pending')
@@ -142,7 +142,7 @@
                         Abgelehnt
                     </span>
                 @else
-                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-[var(--surface-soft)] text-[var(--muted)]">
                         Keine Verifikation hinterlegt
                     </span>
                 @endif
@@ -150,7 +150,7 @@
 
             {{-- Fallnummer --}}
             <div class="mb-4">
-                <label for="caseNumber" class="block text-sm font-medium text-gray-700">
+                <label for="caseNumber" class="block text-sm font-medium text-[var(--ink)]">
                     Fallnummer <span class="text-red-500">*</span>
                 </label>
                 <input
@@ -159,9 +159,9 @@
                     wire:model.defer="caseNumber"
                     class="mt-1 block w-full rounded-md shadow-sm text-sm
                         @if($locked)
-                            bg-gray-100 border-amber-400 text-gray-500 cursor-not-allowed
+                            bg-[var(--surface-soft)] border-amber-400 text-[var(--muted)] cursor-not-allowed
                         @else
-                            border-gray-300
+                            border-[var(--line)]
                         @endif"
                     placeholder="z. B. Schaden-Nr. 12345678"
                     @if($locked) disabled @endif
@@ -178,15 +178,15 @@
 
             {{-- bereits hochgeladene Falldokumente --}}
             @if($verificationFiles->count() > 0)
-                <div class="mb-4 border border-gray-200 rounded-md p-3 bg-gray-50">
-                    <p class="text-xs font-medium text-gray-600 mb-2">
+                <div class="mb-4 border border-[var(--line)] rounded-md p-3 bg-[var(--surface-soft)]">
+                    <p class="text-xs font-medium text-[var(--muted)] mb-2">
                         Bereits hochgeladene Falldokumente:
                     </p>
-                    <ul class="space-y-1 text-sm text-gray-700">
+                    <ul class="space-y-1 text-sm text-[var(--ink)]">
                         @foreach($verificationFiles as $file)
                             <li class="flex items-center justify-between">
                                 <span>{{ $file->name_with_extension }}</span>
-                                <span class="text-xs text-gray-500">{{ $file->size_formatted }}</span>
+                                <span class="text-xs text-[var(--muted)]">{{ $file->size_formatted }}</span>
 
                             </li>
                         @endforeach
@@ -196,7 +196,7 @@
         @if(!$locked)
             {{-- neue Datei(en) hochladen --}}
             <div class="mb-2">
-                <label for="newFiles" class="block text-sm font-medium text-gray-700">
+                <label for="newFiles" class="block text-sm font-medium text-[var(--ink)]">
                     Falldokument(e) hochladen
                 </label>
                 <input
@@ -206,20 +206,20 @@
                     wire:model="newFiles"
                     class="mt-1 block w-full text-sm
                         @if($locked)
-                            bg-gray-100 text-gray-500 cursor-not-allowed
+                            bg-[var(--surface-soft)] text-[var(--muted)] cursor-not-allowed
                         @else
-                            text-gray-700
+                            text-[var(--ink)]
                         @endif"
                     @if($locked) disabled @endif
                 >
-                <p class="mt-1 text-xs text-gray-500">
+                <p class="mt-1 text-xs text-[var(--muted)]">
                     Erlaubte Formate: PDF, Bilddateien · max. 10&nbsp;MB pro Datei
                 </p>
                 @error('newFiles.*')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
 
-                <div wire:loading wire:target="newFiles" class="mt-2 text-xs text-gray-500">
+                <div wire:loading wire:target="newFiles" class="mt-2 text-xs text-[var(--muted)]">
                     Dateien werden hochgeladen …
                 </div>
 

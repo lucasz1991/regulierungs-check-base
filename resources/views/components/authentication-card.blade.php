@@ -1,7 +1,5 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 app-background-canvas">
-    
-
-    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+<div class="app-shell app-page app-account flex min-h-[65dvh] items-center justify-center py-12">
+    <div class="app-panel w-full max-w-lg p-6 sm:p-8">
         {{ $slot }}
     </div>
 </div>

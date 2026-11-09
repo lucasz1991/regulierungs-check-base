@@ -14,14 +14,14 @@
         }
     }"
 >
-    <section class="">
+    <section class="app-catalog-page app-page">
         <div
             x-data="{
                 showFilters: $persist(false),
                 __openedByUser: false
             }"
         >
-            <div class="container mx-auto px-4 pb-8">
+            <div class="app-shell pb-8">
 
                                 <x-filter.filter-container>
                     <x-slot name="filters">
@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="p-2 mb-2">
-                                <label class="text-sm text-gray-400 px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
+                                <label class="text-sm text-[var(--muted)] px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
                                     <span>Typen:</span>
                                 </label>
                                 <x-filter.filter-dropdown-checkbox
@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="p-2 mb-2">
-                                <label class="text-sm text-gray-400 px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
+                                <label class="text-sm text-[var(--muted)] px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
                                     <span>Unterarten:</span>
                                 </label>
                                 <div wire:key="insurance-list-subtype-filter-{{ $insuranceSubTypes->pluck('id')->implode('-') }}">
@@ -52,11 +52,11 @@
                             </div>
 
                             <div class="p-2 mb-2">
-                                <label class="text-sm text-gray-400 px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
+                                <label class="text-sm text-[var(--muted)] px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
                                     <span>Mind. Ø Sterne</span>
                                 </label>
 
-                                <select wire:model.live="minAvgScore" class="w-full px-3 py-2 border rounded-md text-sm border-blue-200">
+                                <select wire:model.live="minAvgScore" class="app-control min-h-12 w-full rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--ink)]">
                                     <option value="">Keine Auswahl</option>
                                     <option value=".1">0,5+</option>
                                     <option value=".2">1+</option>
@@ -68,11 +68,11 @@
                             </div>
 
                             <div class="p-2 mb-2">
-                                <label class="text-sm text-gray-400 px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
+                                <label class="text-sm text-[var(--muted)] px-2 mb-1 flex justify-left space-x-2 align-middle content-center">
                                     <span>Sortierung</span>
                                 </label>
 
-                                <select wire:model.live="sort" class="w-full px-3 py-2 pr-8 border rounded-md text-sm border-blue-200">
+                                <select wire:model.live="sort" class="app-control min-h-12 w-full rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 pr-8 text-sm text-[var(--ink)]">
                                     <option value="score_desc">Ø Sterne ↓</option>
                                     <option value="score_asc">Ø Sterne ↑</option>
                                     <option value="count_desc">Bewertungen ↓</option>
@@ -81,19 +81,19 @@
                             </div>
 
                             <div class="p-2">
-                                <x-buttons.button-basic wire:click="resetFilters" class="mt-4 text-sm text-blue-600 w-full" type="button">
+                                <x-buttons.button-basic wire:click="resetFilters" class="app-button-secondary mt-4 w-full text-sm" type="button">
                                     Filter zurücksetzen
                                 </x-buttons.button-basic>
                             </div>
                     </x-slot>
                     <x-slot name="listContent">
                         @if($this->isFiltered)
-                            <div class="mb-4 text-sm text-white">
+                            <div class="mb-4 text-sm text-[var(--ink)]">
                                 {{ $insurances->count() }} Anbieter geladen.
                             </div>
                         @endif
 
-                        <div wire:key="insurances-list" class="mx-auto grid max-w-6xl grid-cols-1 gap-5 lg:grid-cols-2">
+                        <div wire:key="insurances-list" class="mx-auto grid grid-cols-1 gap-5 lg:grid-cols-2">
                             @foreach($insurances as $insurance)
                                 <div wire:key="insurance-{{ $insurance->id }}">
 
@@ -111,7 +111,7 @@
                         </div>
 
                         @if(!$insurances->count())
-                            <div class="text-center py-10 text-white">
+                            <div class="text-center py-10 text-[var(--ink)]">
                                 Keine Versicherungen gefunden.
                             </div>
                         @endif
@@ -121,9 +121,7 @@
                             <div class="mt-6 text-center" wire:ignore>
                                 <button
                                     type="button"
-                                    class="px-4 py-2 rounded-lg border bg-white"
-                                    tabindex="-1"
-                                    onmousedown="event.preventDefault()"
+                                    class="app-button-secondary min-h-12 px-6"
                                     x-on:click.prevent="loadMore()"
                                     :disabled="loading"
                                 >

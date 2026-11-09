@@ -1,102 +1,56 @@
 @props(['options'])
 
-@php
-    $model = $attributes->wire('model')->value();
-@endphp
+@php($model = $attributes->wire('model')->value())
 
-
-<div x-data="dropdownFilter(@json($options->pluck('id')), @entangle($model).live)" class="relative inline-block w-full max-w-md text-left">
-<!-- Trigger -->
-    <div @click="toggle" class="cursor-pointer rounded-md bg-white border border-blue-200 px-4 py-2.5 text-sm text-gray-700 flex items-center justify-between">
-        <div class="flex items-center gap-2">
+<div
+    x-data="{
+        open: false,
+        selected: @entangle($model).live,
+        all: @js($options->pluck('id')->values()),
+        search: '',
+        isAllSelected() { return this.selected.length === this.all.length; },
+        toggleAll() { this.selected = this.isAllSelected() ? [] : [...this.all]; },
+        close() { this.open = false; }
+    }"
+    @keydown.escape.stop="if (open) { close(); $refs.trigger.focus(); }"
+    class="app-filter-dropdown relative w-full text-left"
+>
+    <button type="button" x-ref="trigger" @click="open = !open" :aria-expanded="String(open)"
+        class="app-control flex min-h-12 w-full items-center justify-between gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-left text-sm text-[var(--ink)]">
+        <span class="flex min-w-0 items-center gap-2">
             <template x-if="selected.length && selected.length < all.length">
                 <span class="inline-flex items-center gap-2">
-                    <span class="inline-flex items-center justify-center text-xs font-semibold bg-secondary/80  text-white rounded-full min-w-6 h-6 px-1">
-                        <span x-text="selected.length"></span>
-                    </span>
+                    <span class="inline-flex min-h-6 min-w-6 items-center justify-center rounded-md bg-[var(--surface-soft)] px-1 text-xs font-semibold text-[var(--accent)]" x-text="selected.length"></span>
                     <span>ausgewählt</span>
                 </span>
             </template>
-            <template x-if="!selected.length || isAllSelected()">
-                <span>Alle ausgewählt</span>
-            </template>
+            <template x-if="!selected.length || isAllSelected()"><span>Alle ausgewählt</span></template>
+        </span>
+        <svg aria-hidden="true" class="h-4 w-4 shrink-0 transition-transform" :class="{ 'rotate-180': open }" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg>
+    </button>
+
+    <input type="hidden" x-model="selected" :value="JSON.stringify(selected)" {{ $attributes->merge(['class' => '']) }}>
+
+    <div x-show="open" @click.outside="close()" x-transition.opacity x-cloak
+        class="relative z-10 mt-2 w-full overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)]">
+        <div class="border-b border-[var(--line)] bg-[var(--surface-soft)] px-3 py-2">
+            <button type="button" @click="toggleAll()" class="min-h-10 text-left text-xs font-medium text-[var(--accent)]"
+                x-text="isAllSelected() ? 'Alle entfernen' : 'Alle auswählen'"></button>
         </div>
-        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-    </div>
-
-    <input type="hidden" 
-       x-model="selected" 
-       :value="JSON.stringify(selected)" 
-       {!! $attributes->merge(['class' => '']) !!}>
-
-    <!-- Dropdown -->
-    <div x-show="open" @click.outside="close" x-transition x-cloak
-         class="absolute z-10 mt-2 max-xl:right-0 xl:left-0 w-max max-w-xs md:max-w-md bg-white border border-gray-300 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-in-out">
-        <div class="">
-            <!-- Toggle-All-Bereich -->
-            <div class="px-4 py-2 border-b bg-gray-200">
-                <template x-if="isAllSelected()">
-                    <div @click="toggleAll"
-                         class="flex items-center space-x-2   text-red-600 cursor-pointer hover:underline">
-                        <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        <span>Alle entfernen</span>
-                    </div>
-                </template>
-
-                <template x-if="!isAllSelected()">
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" @change="toggleAll" :checked="false" class="text-base form-checkbox text-secondary rounded-full">
-                        <span>Alle auswählen</span>
-                    </label>
-                </template>
-            </div>
-            <template x-if="all.length > 10">
-                <div class="px-4 py-2  border-b border-gray-300">
-                    <input type="text"
-                        x-model="search"
-                        placeholder="Suche..."
-                        class="w-full border border-blue-200 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-400"
-                    >
-                </div>
-            </template>
-    
-            <!-- Optionen -->
-            <div class="px-4 py-2 bg-primary-100/50  divide-y divide-gray-200 max-h-[40dvh] overflow-y-auto scroll-container scroll-smooth" >
-                @foreach($options as $option)
-                    <label class="flex items-start space-x-2 py-2" x-show="!search || '{{ strtolower($option->name) }}'.includes(search.toLowerCase())">
-                        <input type="checkbox" :value="{{ $option->id }}" x-model="selected" class="form-checkbox text-secondary rounded-full mt-1">
-                        <span>{{ strlen($option->name) > 25 ? substr($option->name, 0, 25) . '...' : $option->name }}</span>
-                    </label>
-                @endforeach
-            </div>
+        <template x-if="all.length > 10">
+            <label class="block border-b border-[var(--line)] p-3">
+                <span class="sr-only">Optionen durchsuchen</span>
+                <input type="search" x-model="search" placeholder="Suche..." class="app-control min-h-11 w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--ink)]">
+            </label>
+        </template>
+        <div class="max-h-[35dvh] overflow-y-auto p-2">
+            @foreach($options as $option)
+                <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg px-2 py-3 text-xs leading-relaxed hover:bg-[var(--surface-soft)]"
+                    x-show="!search || @js(mb_strtolower($option->name)).includes(search.toLowerCase())">
+                    <input type="checkbox" :value="{{ $option->id }}" x-model="selected" class="mt-0.5 h-4 w-4 shrink-0 rounded border-[var(--line)] text-[var(--accent)] focus:ring-[var(--accent)]">
+                    <span>{{ $option->name }}</span>
+                </label>
+            @endforeach
         </div>
     </div>
-
-    <!-- Alpine.js Logic -->
-    <script>
-        function dropdownFilter(optionIds, modelBinding) {
-            return {
-                open: false,
-                selected: modelBinding,
-                all: optionIds,
-                search: '',
-                toggle() {
-                    this.open = !this.open;
-                },
-                close() {
-                    this.open = false;
-                },
-                isAllSelected() {
-                    return this.selected.length === this.all.length;
-                },
-                toggleAll() {
-                    this.selected = this.isAllSelected() ? [] : [...this.all];
-                }
-            }
-        }
-    </script>
 </div>

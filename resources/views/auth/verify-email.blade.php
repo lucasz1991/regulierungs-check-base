@@ -1,7 +1,7 @@
 <x-app-layout>
     @php($promotionVerification = str_ends_with((string) session('url.intended'), '/gluecksrad'))
     <div class="mx-auto flex min-h-[68vh] max-w-3xl items-center px-4 py-12 sm:px-6">
-        <section class="w-full overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_24px_80px_-36px_rgba(11,48,56,0.38)]">
+        <section class="w-full overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_24px_80px_-36px_rgba(11,48,56,0.38)]">
             <div class="bg-[#0b3038] px-6 py-7 text-white sm:px-10">
                 <div class="flex items-center gap-4">
                     <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0d9187] text-2xl" aria-hidden="true">✉</span>
@@ -13,8 +13,8 @@
             </div>
 
             <div class="px-6 py-8 sm:px-10">
-                <p class="text-base leading-7 text-slate-600">
-                    Wir haben einen persönlichen Bestätigungslink an <strong class="text-slate-900">{{ auth()->user()->email }}</strong> gesendet.
+                <p class="text-base leading-7 text-[var(--muted)]">
+                    Wir haben einen persönlichen Bestätigungslink an <strong class="text-[var(--ink)]">{{ auth()->user()->email }}</strong> gesendet.
                     @if($promotionVerification)
                         Danach wird dein Glücksrad-Ticket automatisch bereitgestellt.
                     @else
@@ -36,15 +36,15 @@
                         </button>
                     </form>
                     @if($promotionVerification)
-                        <a href="{{ route('promotion.wheel') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-200 px-5 py-3 font-bold text-[#0b3038] hover:bg-slate-50">Zurück zum Glücksrad</a>
+                        <a href="{{ route('promotion.wheel') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--line)] px-5 py-3 font-bold text-[#0b3038] hover:bg-[var(--surface-soft)]">Zurück zum Glücksrad</a>
                     @else
-                        <a href="{{ route('profile.show') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-200 px-5 py-3 font-bold text-[#0b3038] hover:bg-slate-50">E-Mail im Profil ändern</a>
+                        <a href="{{ route('profile.show') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--line)] px-5 py-3 font-bold text-[#0b3038] hover:bg-[var(--surface-soft)]">E-Mail im Profil ändern</a>
                     @endif
                 </div>
 
                 <form method="POST" action="{{ route('logout') }}" class="mt-5 text-center">
                     @csrf
-                    <button type="submit" class="text-sm font-semibold text-slate-500 underline underline-offset-4 hover:text-slate-900">Mit einem anderen Konto anmelden</button>
+                    <button type="submit" class="text-sm font-semibold text-[var(--muted)] underline underline-offset-4 hover:text-[var(--ink)]">Mit einem anderen Konto anmelden</button>
                 </form>
             </div>
         </section>

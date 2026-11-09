@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-app-design>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -11,8 +11,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <style>
-        :root { --promotion-ink:#082f35; --promotion-teal:#0d9187; --promotion-gold:#f4c95d; --promotion-mist:#eef7f5; }
-        .promotion-shell { background-color:var(--promotion-mist); background-image:radial-gradient(circle at 10% 8%,rgba(13,145,135,.12),transparent 28rem),radial-gradient(circle at 92% 4%,rgba(244,201,93,.17),transparent 24rem),linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px); background-size:auto,auto,32px 32px,32px 32px; }
+        :root { --promotion-ink:#143b47; --promotion-teal:#167668; --promotion-gold:#f9b029; --promotion-mist:#edf3f0; }
+        .promotion-shell { background:var(--bg);color:var(--ink); }
         .promotion-enter { animation:promotion-enter .65s cubic-bezier(.22,1,.36,1) both; }
         .promotion-enter-delayed { animation:promotion-enter .65s .12s cubic-bezier(.22,1,.36,1) both; }
         .promotion-bezel { position:relative; isolation:isolate; }

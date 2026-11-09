@@ -32,7 +32,7 @@
                         type="email"
                         autocomplete="username"
                         placeholder="name@beispiel.de"
-                        class="mt-1 block w-full rounded-xl border-gray-300 p-3
+                        class="mt-1 block w-full rounded-xl border-[var(--line)] p-3
                                focus:ring-2 focus:ring-primary focus:border-primary"
                     />
                     @error('email') <span class="text-red-600 text-sm mt-2 block">{{ $message }}</span> @enderror
@@ -49,7 +49,7 @@
                             id="password"
                             autocomplete="new-password"
                             placeholder="••••••••"
-                            class="w-full rounded-xl border-gray-300 p-3 pr-12
+                            class="app-control w-full rounded-xl border-[var(--line)] p-3 pr-12
                                    focus:ring-2 focus:ring-primary focus:border-primary"
                         />
 
@@ -57,8 +57,10 @@
                             type="button"
                             @click="show = !show"
                             class="absolute inset-y-0 right-0 px-4 flex items-center
-                                   text-gray-500 hover:text-gray-800 transition"
+                                   text-[var(--muted)] hover:text-[var(--ink)] transition"
                             title="Passwort anzeigen"
+                    :aria-label="show ? 'Passwort verbergen' : 'Passwort anzeigen'"
+                    :aria-pressed="String(show)"
                         >
                             <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
                         </button>
@@ -78,7 +80,7 @@
                             id="password_confirmation"
                             autocomplete="new-password"
                             placeholder="••••••••"
-                            class="w-full rounded-xl border-gray-300 p-3 pr-12
+                            class="app-control w-full rounded-xl border-[var(--line)] p-3 pr-12
                                    focus:ring-2 focus:ring-primary focus:border-primary"
                         />
 
@@ -86,8 +88,10 @@
                             type="button"
                             @click="show = !show"
                             class="absolute inset-y-0 right-0 px-4 flex items-center
-                                   text-gray-500 hover:text-gray-800 transition"
+                                   text-[var(--muted)] hover:text-[var(--ink)] transition"
                             title="Passwort anzeigen"
+                    :aria-label="show ? 'Passwort verbergen' : 'Passwort anzeigen'"
+                    :aria-pressed="String(show)"
                         >
                             <i class="fal" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
                         </button>
@@ -96,11 +100,11 @@
 
                 {{-- Action --}}
                 <div class="pt-2 space-y-3">
-                    <x-buttons.button-basic mode="layoutprimary" size="lg" class="w-full justify-center" wire:click.prevent="resetPassword">
+                    <x-buttons.button-basic mode="layoutprimary" size="lg" class="app-button w-full justify-center" wire:click.prevent="resetPassword">
                         Passwort zurücksetzen
                     </x-buttons.button-basic>
 
-                    <div class="text-sm text-gray-600 text-center">
+                    <div class="text-sm text-[var(--muted)] text-center">
                         Zurück zum
                         <a href="{{ route('login') }}" wire:navigate class="text-primary underline">
                             Login

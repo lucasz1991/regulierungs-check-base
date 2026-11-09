@@ -1,180 +1,64 @@
-<div>
-    <section class="pb-12">
-        <div class="container mx-auto px-4">
-
-            <div class="
-                rounded-2xl
-                bg-white/70
-                border border-slate-200
-                shadow-xl
-                p-6 md:p-8
-            ">
-
-                {{-- Header --}}
-                <div class="flex items-start gap-4">
-                    <div class="shrink-0">
-                        <div class="h-12 w-12 rounded-xl
-                                    bg-primary/10 text-primary  shrink-0 
-                                    flex items-center justify-center">
-                            <i class="fal fa-layer-group text-xl"></i>
-                        </div>
+<div class="app-page app-premium-page">
+    <div class="app-shell app-stack">
+        <section class="app-panel !p-6 sm:!p-8 lg:!p-10">
+            <div class="grid gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
+                <div>
+                    <div class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--surface-soft)] text-[var(--accent)]" aria-hidden="true">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linejoin="round" d="m12 3 9 5-9 5-9-5 9-5Z" /><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 9 5 9-5M3 16l9 5 9-5" /></svg>
                     </div>
-
-                    <div>
-                        <h2 class="text-xl md:text-2xl font-semibold text-slate-900">
-                            Abonnements – in Vorbereitung
-                        </h2>
-                        <p class="mt-2 text-slate-600 leading-relaxed max-w-3xl">
-                            Regulierungs-CHECK befindet sich aktuell noch in der Aufbau- und Testphase.
-                            Professionelle Abonnements folgen, sobald eine solide Datenbasis vorhanden ist.
-                        </p>
-                    </div>
-                </div>
-
-                {{-- Content --}}
-                <div class="mt-6 space-y-4 text-slate-700 leading-relaxed">
-
-                    <p>
+                    <h2 class="app-heading">Abonnements – in Vorbereitung</h2>
+                    <p class="app-muted mt-4 text-base leading-relaxed">
+                        Regulierungs-CHECK befindet sich aktuell noch in der Aufbau- und Testphase.
+                        Professionelle Abonnements folgen, sobald eine solide Datenbasis vorhanden ist.
+                    </p>
+                    <p class="app-muted mt-5 text-sm leading-relaxed">
                         Mit zunehmender Anzahl echter Bewertungen werden erweiterte Funktionen verfügbar:
-                        <strong>vertiefte Auswertungen</strong>, <strong>professionelle Filter</strong> und
-                        <strong>branchenweite Vergleichsdaten</strong>.
+                        <strong class="text-[var(--ink)]">vertiefte Auswertungen</strong>, <strong class="text-[var(--ink)]">professionelle Filter</strong> und
+                        <strong class="text-[var(--ink)]">branchenweite Vergleichsdaten</strong>.
                     </p>
-
-                    {{-- Zielgruppen --}}
-                    <div class="rounded-xl bg-slate-50 border border-slate-200 p-5">
-                        <div class="flex items-start gap-3">
-                            <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                                <i class="fal fa-briefcase"></i>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-slate-900">
-                                    Für professionelle Anwender
-                                </p>
-                                <p class="mt-1 text-slate-600">
-                                    Versicherungsmakler, Anwälte und Gutachter erhalten später Zugriff auf
-                                    spezialisierte Analyse- & Sichtbarkeitsfunktionen.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p>
-                        Wir bitten noch um etwas Geduld – jede abgegebene Bewertung hilft,
-                        diese Funktionen schneller freizuschalten.
-                    </p>
-
-                    {{-- Actions --}}
-                    <div class="pt-4 flex flex-wrap gap-3">
-                        <a href="/"
-                           class="inline-flex items-center gap-2
-                                  rounded-xl bg-primary px-5 py-2.5
-                                  text-sm font-semibold text-white shadow
-                                  hover:opacity-90 transition">
-                            <i class="fal fa-star"></i>
-                            Bewertung abgeben
-                        </a>
-
-                        <a href="/insurances"
-                           class="inline-flex items-center gap-2
-                                  rounded-xl border border-slate-300
-                                  px-5 py-2.5 text-sm font-semibold bg-slate-50
-                                  text-slate-700 hover:bg-slate-100 transition">
-                            <i class="fal fa-shield-alt"></i>
-                            Versicherungen ansehen
-                        </a>
-                    </div>
                 </div>
 
-                {{-- Voranmeldung --}}
-                <div class="mt-10 pt-8 border-t border-slate-200">
-
-                    <div class="flex items-start gap-4 mb-6">
-                        <div class="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                            <i class="fal fa-envelope-open-text text-lg"></i>
-                        </div>
-
-                        <div>
-                            <h3 class="text-lg font-semibold text-slate-900">
-                                Unverbindlich voranmelden
-                            </h3>
-                            <p class="mt-1 text-sm text-slate-600 max-w-2xl">
-                                Lass dich benachrichtigen, sobald professionelle Abonnements verfügbar sind.
-                                Keine Verpflichtung, kein Spam.
-                            </p>
-                        </div>
-                    </div>
-
-<form wire:submit.prevent="submit" class="grid grid-cols-1 md:grid-cols-12 gap-4">
-    {{-- E-Mail --}}
-    <div class="md:col-span-5">
-        <label class="block text-xs font-semibold text-slate-600 mb-1">
-            E-Mail-Adresse
-        </label>
-
-        <input
-            type="email"
-            wire:model.defer="email"
-            placeholder="name@firma.de"
-            class="w-full rounded-xl border border-slate-300 bg-white/80 px-4 py-2.5 text-sm text-slate-800
-                   focus:outline-none focus:ring-2 focus:ring-primary/40"
-        />
-
-        @error('email')
-            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-        @enderror
-    </div>
-
-    {{-- Rolle --}}
-    <div class="md:col-span-4">
-        <label class="block text-xs font-semibold text-slate-600 mb-1">
-            Berufsgruppe (optional)
-        </label>
-
-        <select
-            wire:model.defer="role"
-            class="w-full rounded-xl border border-slate-300 bg-white/80 px-4 py-2.5 text-sm text-slate-800
-                   focus:outline-none focus:ring-2 focus:ring-primary/40"
-        >
-            <option value="">Bitte auswählen</option>
-            <option value="Versicherungsmakler">Versicherungsmakler</option>
-            <option value="Anwalt / Kanzlei">Anwalt / Kanzlei</option>
-            <option value="Gutachter">Gutachter</option>
-            <option value="Unternehmen">Unternehmen</option>
-            <option value="Sonstiges">Sonstiges</option>
-        </select>
-
-        @error('role')
-            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-        @enderror
-    </div>
-
-    {{-- Submit --}}
-    <div class="md:col-span-3 flex items-end">
-        <button
-            type="submit"
-            wire:loading.attr="disabled"
-            class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5
-                   text-sm font-semibold text-white shadow hover:opacity-90 transition
-                   disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-            <span wire:loading.remove>
-                <i class="fal fa-paper-plane"></i>
-                Voranmelden
-            </span>
-
-            <span wire:loading>
-                <i class="fal fa-spinner-third fa-spin"></i>
-                Senden...
-            </span>
-        </button>
-    </div>
-</form>
-
-
-                </div>
-
+                <aside class="rounded-2xl bg-[var(--surface-soft)] p-6 lg:p-7">
+                    <h3 class="text-lg font-semibold text-[var(--ink)]">Für professionelle Anwender</h3>
+                    <p class="app-muted mt-3 text-sm leading-relaxed">Versicherungsmakler, Anwälte und Gutachter erhalten später Zugriff auf spezialisierte Analyse- &amp; Sichtbarkeitsfunktionen.</p>
+                    <p class="app-muted mt-5 border-t border-[var(--line)] pt-5 text-sm leading-relaxed">Wir bitten noch um etwas Geduld – jede abgegebene Bewertung hilft, diese Funktionen schneller freizuschalten.</p>
+                </aside>
             </div>
 
-        </div>
-    </section>
+            <div class="mt-8 flex flex-wrap gap-3">
+                <a href="/" class="app-button">Bewertung abgeben <span aria-hidden="true">↗</span></a>
+                <a href="/insurances" class="app-button-secondary">Versicherungen ansehen <span aria-hidden="true">→</span></a>
+            </div>
+        </section>
+
+        <section class="app-panel !p-6 sm:!p-8 lg:!p-10">
+            <h2 class="app-heading">Unverbindlich voranmelden</h2>
+            <p class="app-muted mt-3 max-w-2xl text-sm leading-relaxed">Lass dich benachrichtigen, sobald professionelle Abonnements verfügbar sind. Keine Verpflichtung, kein Spam.</p>
+
+            <form wire:submit.prevent="submit" class="mt-7 grid grid-cols-1 items-end gap-5 lg:grid-cols-[1fr_1fr_auto]">
+                <div>
+                    <label for="premium-email" class="mb-2 block text-sm font-medium text-[var(--ink)]">E-Mail-Adresse</label>
+                    <input id="premium-email" type="email" wire:model.defer="email" placeholder="name@firma.de" autocomplete="email" class="app-control w-full" />
+                    @error('email') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label for="premium-role" class="mb-2 block text-sm font-medium text-[var(--ink)]">Berufsgruppe (optional)</label>
+                    <select id="premium-role" wire:model.defer="role" class="app-control w-full">
+                        <option value="">Bitte auswählen</option>
+                        <option value="Versicherungsmakler">Versicherungsmakler</option>
+                        <option value="Anwalt / Kanzlei">Anwalt / Kanzlei</option>
+                        <option value="Gutachter">Gutachter</option>
+                        <option value="Unternehmen">Unternehmen</option>
+                        <option value="Sonstiges">Sonstiges</option>
+                    </select>
+                    @error('role') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                </div>
+                <button type="submit" wire:loading.attr="disabled" class="app-button">
+                    <span wire:loading.remove>Voranmelden</span>
+                    <span wire:loading>Senden...</span>
+                    <span aria-hidden="true">→</span>
+                </button>
+            </form>
+        </section>
+    </div>
 </div>

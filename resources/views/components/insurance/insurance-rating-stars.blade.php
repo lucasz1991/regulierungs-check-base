@@ -1,6 +1,6 @@
-@php  
+@php
     $scoreZeroToFive = $score > 0 ? $score * 5 : 0;
-    $size = $size ?? 'xs'; 
+    $size = $size ?? 'xs';
     $sizeClasses = [
         'xs' => 'w-5 h-5',
         'sm' => 'w-5 h-5',
@@ -16,8 +16,8 @@
         'xl' => 'text-lg',
     ];
 @endphp
- 
-<div class="flex items-center justify-center">
+
+<div class="inline-flex items-center justify-center" role="img" aria-label="{{ number_format($scoreZeroToFive, 1, ',', '.') }} von 5 Sternen">
     @for ($i = 0; $i < 5; $i++)
         @php
             $starPercentage = min(max($scoreZeroToFive - $i, 0), 1) * 100;
@@ -35,7 +35,7 @@
             </svg>
         </div>
     @endfor
-    <div class="{{ $fontSizeClasses[$size] ?? '' }} ml-2 @if($size != 'xs') text-gray-400 @else text-white @endif font-medium">{{ number_format($scoreZeroToFive, 1) }} @if($size != 'xs') / 5 @endif</div>
+    <div class="{{ $fontSizeClasses[$size] ?? '' }} ml-2 text-[var(--muted)] font-medium">{{ number_format($scoreZeroToFive, 1) }} @if($size != 'xs') / 5 @endif</div>
 </div>
 
 

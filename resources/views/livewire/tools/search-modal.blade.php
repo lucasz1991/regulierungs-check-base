@@ -1,186 +1,192 @@
 <div
-    x-data="{ openSearchMenu: false }"
+    x-data="{
+        openSearchMenu: false,
+        moveSearchFocus(event, direction) {
+            const panel = event.target.closest('[role=dialog]');
+            const results = Array.from(panel.querySelectorAll('[data-search-result]'));
+            if (!results.length) return;
+            const index = results.indexOf(document.activeElement);
+            if (index === 0 && direction < 0) {
+                panel.querySelector('#search-dropdown').focus();
+                return;
+            }
+            results[(index + direction + results.length) % results.length].focus();
+        }
+    }"
     x-init="$watch('openSearchMenu', open => { $dispatch('homepage-search-state', { open }); if (open) $nextTick(() => document.getElementById('search-dropdown')?.focus()); })"
     @homepage-search-open.window="openSearchMenu = true"
     @keydown.window.escape="openSearchMenu = false"
     class="h-full"
 >
     @if($showTrigger)
-    <div
-        @click.prevent="openSearchMenu = !openSearchMenu"
-        class="flex h-full w-12 items-center"
-    >
-        <div
-            x-cloak
-            class="flex  p-2 mr-2 rounded-full absolute h-min 
-                   bg-gray-100 text-gray-500
-                   transition-colors duration-200 ease-in-out
-                   border border-transparent"
-            :class="openSearchMenu
-                ? 'text-secondary bg-gray-200 border-gray-300'
-                : 'hover:text-gray-700 hover:bg-gray-150'"
+        <button
+            type="button"
+            @click.prevent="openSearchMenu = !openSearchMenu"
+            class="rc-search-trigger"
+            aria-label="Suche öffnen"
+            aria-controls="Search-menü"
+            :aria-expanded="String(openSearchMenu)"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 cursor-pointer"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 18a8 8 0 100-16 8 8 0 000 16zm8-2l4 4"/>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="10.5" cy="10.5" r="6.5" />
+                <path stroke-linecap="round" d="m15.5 15.5 4.5 4.5" />
             </svg>
-        </div>
-    </div>
+        </button>
     @endif
-    <div>
-        <template x-teleport="#megamenu">
-            <!-- Such-Modal -->
-            <div id="Search-menü" class="relative z-20"
-                :inert="!($store.nav.showNav && openSearchMenu)"
-                x-trap.inert.noscroll.noautofocus="$store.nav.showNav && openSearchMenu">
-                <div 
-                    x-show="$store.nav.showNav && openSearchMenu"
-                    @click="() => { openSearchMenu = !openSearchMenu; }"
-                    x-transition.opacity
-                    class="fixed h-full w-full backdrop-blur"
-                    x-cloak
-                ></div>
-                <div 
-                    role="dialog" aria-label="Suche" aria-modal="true"
-                    :aria-hidden="!($store.nav.showNav && openSearchMenu)"
-                    :class="$store.nav.showNav && openSearchMenu ? '!translate-y-0' : ''"
-                    class="fixed translate-y-[-200%]  w-full  px-3 py-3 md:py-6 md:px-8  transition-all duration-300 ease-in-out">
-                    <div class="container mx-auto">
-                        @unless($showTrigger)
-                            <button type="button" class="homepage-search-close" @click="openSearchMenu = false" aria-label="Suche schließen">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        @endunless
-                        <div class=""> 
-                            <div class="flex relative" x-data="{ openSelectSearchTypeDropdown: false }" @click.away="openSelectSearchTypeDropdown = false">
-                                <!-- Dropdown-Button -->
-                                <button 
-                                    type="button" 
-                                    @click.prevent="openSelectSearchTypeDropdown = !openSelectSearchTypeDropdown" 
-                                    class="shrink-0 z-20 inline-flex items-center py-2.5 px-4 text-sm font-medium text-primary bg-rcgold border border-rcgold rounded-s-lg hover:bg-rcgold focus:outline-none"
-                                >
-                                    @if($searchType == 'insurances')
-                                        Versicher.
-                                    @elseif($searchType == 'types')
-                                        Branchen
-                                    @elseif($searchType == 'infos')
-                                        Info's
-                                    @else
-                                        Alles
-                                    @endif
-                                    <svg class="w-2.5 h-2.5 ms-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
-    
-                                <!-- Dropdown-Menü -->
-                                <div 
-                                    x-show="openSelectSearchTypeDropdown" 
-                                    x-transition:enter="transition ease-out duration-100" 
-                                    x-transition:enter-start="opacity-0 scale-95" 
-                                    x-transition:enter-end="opacity-100 scale-100" 
-                                    x-transition:leave="transition ease-in duration-75" 
-                                    x-transition:leave-start="opacity-100 scale-100" 
-                                    x-transition:leave-end="opacity-0 scale-95"
-                                    class="absolute top-full left-0 mt-1 z-30 bg-white border border-gray-200 rounded-lg shadow-md w-44"
-                                    x-cloak
-                                >
-                                    <ul class="py-2 text-sm text-gray-700 ">
-                                        @if($searchType != 'all')
-                                            <li>
-                                                <button type="button" wire:click="selectSearchType('all')" @click.prevent="openSelectSearchTypeDropdown = false"  class="w-full px-4 py-2 text-left text-primary-600 bg-gray-100 hover:bg-gray-200 ">Alle Kategorien</button>
-                                            </li>
-                                        @endif
-                                        @if($searchType != 'infos')
-                                            <li>
-                                                <button type="button" wire:click="selectSearchType('infos')" @click.prevent="openSelectSearchTypeDropdown = false" class="w-full px-4 py-2 text-left hover:bg-gray-100 ">Informationen</button>
-                                            </li>
-                                        @endif
-                                        @if($searchType != 'insurances')
-                                            <li>
-                                                <button type="button" wire:click="selectSearchType('insurances')" @click.prevent="openSelectSearchTypeDropdown = false" class="w-full px-4 py-2 text-left hover:bg-gray-100 ">Versicherungen</button>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-    
-                                <!-- Suchfeld -->
-                                <div class="relative w-full z-10">
-                                    <input 
-                                        type="search" 
-                                        id="search-dropdown" 
-                                        x-ref="searchInput"
-                                        aria-label="Versicherungen und Informationen suchen"
-                                        wire:model.live="query" 
-                                        class="block p-2.5 w-full text-base  bg-white text-gray-900 bg-gray-50 rounded-e-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
-                                        placeholder="Suchen..." 
-                                        required 
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        @if(count($resultsInsurances) || count($resultsTypes) || count($resultsInfos))
-                        <div class="bg-white rounded-xl ">
-                            <ul class=" max-h-[60vh] overflow-y-auto divide-y transition-all duration-300 ease-in-out divide-gray-200 p-2 mt-4 ">
-                                @if(count($resultsInsurances))
-                                    <li class="py-2  mt-4 rounded">
-                                        <h3 class="text-base font-bold uppercase text-gray-400 ">Versicherungen</h3>
-                                    </li>
-                                    @foreach($resultsInsurances as $insurance)
-                                    <li class="pl-3 py-2 cursor-pointer hover:bg-gray-100 px-2 rounded"
-                                        wire:click="selectResult({{ $insurance['id'] }} , 'insurances')">
-                                        {{ $insurance['name'] }}
-                                    </li>
-                                    @endforeach
-                                @endif
-    
-                                @if(count($resultsTypes))
-                                    <li class="py-2  mt-4 rounded">
-                                        <h3 class="text-base font-bold uppercase text-gray-400 ">Branchen</h3>
-                                    </li>
-                                    @foreach($resultsTypes as $type)
-                                        <li class="pl-3 py-2 cursor-pointer hover:bg-gray-100 px-2 rounded"
-                                            wire:click="selectResult({{ $type['id'] }} , 'types')">
-                                            {{ $type['name'] }}
-                                        </li>
-                                    @endforeach
-                                @endif
-    
-                                @if(count($resultsInfos))
-                                    <li class="py-2  mt-4 rounded">
-                                        <h3 class="text-base font-bold uppercase text-gray-400 ">Informationen</h3>
-                                    </li>
-                                    @foreach($resultsInfos as $info)
-                                        <li class="pl-3 py-2 cursor-pointer hover:bg-gray-100 px-2 rounded"
-                                            wire:click="selectResult({{ $info['id'] }} , 'infos')">
-                                            {{ $info['title'] }}
-                                        </li>
-                                    @endforeach
-                                @endif
-                            </ul>
-                        @elseif(strlen($query) >= 2)
-                            <div class="flex items-center justify-center h-32">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V7h2v2z"/>
-                                </svg>
-                                <span class="text-gray-400 text-sm">Keine Ergebnisse gefunden</span>
-                            </div>
-                        @endif    
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+    <template x-teleport="#megamenu">
+        <div
+            id="Search-menü"
+            class="rc-search-overlay"
+            :inert="!($store.nav.showNav && openSearchMenu)"
+            x-trap.inert.noscroll.noautofocus="$store.nav.showNav && openSearchMenu"
+        >
             <div
-                    x-show="$store.nav.showNav && openSearchMenu"
-                    class="h-20"
-                    x-cloak 
+                class="rc-search-backdrop"
+                x-show="$store.nav.showNav && openSearchMenu"
+                x-transition.opacity.duration.200ms
+                @click="openSearchMenu = false"
+                aria-hidden="true"
+                x-cloak
             ></div>
-        </template>
-    </div>
+
+            <section
+                role="dialog"
+                aria-label="Suche"
+                aria-modal="true"
+                aria-describedby="rc-search-hint"
+                :aria-hidden="!($store.nav.showNav && openSearchMenu)"
+                class="rc-search-panel"
+                x-show="$store.nav.showNav && openSearchMenu"
+                x-transition:enter="rc-search-enter"
+                x-transition:enter-start="rc-search-hidden"
+                x-transition:enter-end="rc-search-visible"
+                x-transition:leave="rc-search-leave"
+                x-transition:leave-start="rc-search-visible"
+                x-transition:leave-end="rc-search-hidden"
+                x-cloak
+            >
+                <header class="rc-search-heading">
+                    <div>
+                        <span class="rc-search-eyebrow">REGULIERUNGS-CHECK</span>
+                        <h2>Was möchtest du finden?</h2>
+                    </div>
+                    <button type="button" class="rc-search-close" @click="openSearchMenu = false" aria-label="Suche schließen">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" d="m6 6 12 12M18 6 6 18" />
+                        </svg>
+                    </button>
+                </header>
+
+                <div class="rc-search-field">
+                    <svg class="rc-search-magnifier" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                        <circle cx="10.5" cy="10.5" r="6.5" />
+                        <path stroke-linecap="round" d="m15.5 15.5 4.5 4.5" />
+                    </svg>
+                    <input
+                        type="search"
+                        id="search-dropdown"
+                        x-ref="searchInput"
+                        aria-label="Versicherungen und Informationen suchen"
+                        aria-describedby="rc-search-hint"
+                        aria-controls="rc-search-results"
+                        wire:model.live="query"
+                        placeholder="Versicherer oder Information suchen …"
+                        autocomplete="off"
+                        spellcheck="false"
+                        @keydown.arrow-down.prevent="moveSearchFocus($event, 1)"
+                    >
+                    <button
+                        type="button"
+                        class="rc-search-clear"
+                        aria-label="Suchbegriff löschen"
+                        wire:click="$set('query', '')"
+                        @click="$refs.searchInput.focus()"
+                        x-show="$wire.query.length > 0"
+                        x-cloak
+                    >
+                        <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" d="m6 6 8 8M14 6l-8 8" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="rc-search-filters" role="group" aria-label="Suche eingrenzen">
+                    @foreach(['all' => 'Alle', 'insurances' => 'Versicherungen', 'infos' => 'Informationen'] as $type => $label)
+                        <button
+                            type="button"
+                            wire:key="search-filter-{{ $type }}"
+                            wire:click="selectSearchType('{{ $type }}')"
+                            aria-pressed="{{ $searchType === $type ? 'true' : 'false' }}"
+                        >{{ $label }}</button>
+                    @endforeach
+                </div>
+
+                <div class="rc-search-content" id="rc-search-results" data-search-results
+                    wire:loading.class="is-searching" wire:target="query,selectSearchType"
+                    @keydown.arrow-down.prevent="moveSearchFocus($event, 1)"
+                    @keydown.arrow-up.prevent="moveSearchFocus($event, -1)"
+                >
+                    @php($resultCount = count($resultsInsurances) + count($resultsTypes) + count($resultsInfos))
+                    @if($resultCount)
+                        @foreach([
+                            ['label' => 'Versicherungen', 'type' => 'insurances', 'items' => $resultsInsurances, 'field' => 'name'],
+                            ['label' => 'Branchen', 'type' => 'types', 'items' => $resultsTypes, 'field' => 'name'],
+                            ['label' => 'Informationen', 'type' => 'infos', 'items' => $resultsInfos, 'field' => 'title'],
+                        ] as $group)
+                            @if(count($group['items']))
+                                <section class="rc-search-group" aria-label="{{ $group['label'] }}">
+                                    <h3>{{ $group['label'] }} <span>{{ count($group['items']) }}</span></h3>
+                                    <ul>
+                                        @foreach($group['items'] as $result)
+                                            <li wire:key="search-result-{{ $group['type'] }}-{{ $result['id'] }}">
+                                                <button type="button" class="rc-search-result" data-search-result
+                                                    wire:click="selectResult({{ $result['id'] }}, '{{ $group['type'] }}')"
+                                                >
+                                                    <span class="rc-search-result-icon" aria-hidden="true">
+                                                        @if($group['type'] === 'insurances')
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linejoin="round" d="m12 3 8 3v6c0 4-4 7-8 9-4-2-8-5-8-9V6l8-3Z" /><path stroke-linecap="round" stroke-linejoin="round" d="m8.5 11.5 2.5 2.5 4.5-5" /></svg>
+                                                        @else
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linejoin="round" d="M6 3h9l4 4v14H6V3Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5M9 12h7m-7 4h5" /></svg>
+                                                        @endif
+                                                    </span>
+                                                    <span class="rc-search-result-name">{{ $result[$group['field']] }}</span>
+                                                    <svg class="rc-search-result-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-5-5 5 5-5 5" /></svg>
+                                                </button>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </section>
+                            @endif
+                        @endforeach
+                    @else
+                        <div class="rc-search-empty">
+                            <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="14" cy="14" r="9" /><path stroke-linecap="round" d="m21 21 6 6" /></svg>
+                            @if(strlen($query) >= 2)
+                                <p>Keine Ergebnisse gefunden.</p>
+                                <span>Versuche einen anderen Suchbegriff oder eine andere Kategorie.</span>
+                            @else
+                                <p>Versicherer und Informationen an einem Ort.</p>
+                                <span>Gib einen Namen oder ein Stichwort ein.</span>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
+                <footer class="rc-search-footer">
+                    <p id="rc-search-hint" role="status" aria-live="polite">
+                        <span wire:loading.remove wire:target="query,selectSearchType">
+                            @if(strlen($query) < 2)
+                                Mindestens 2 Zeichen eingeben.
+                            @else
+                                {{ $resultCount }} {{ $resultCount === 1 ? 'Ergebnis' : 'Ergebnisse' }} gefunden
+                            @endif
+                        </span>
+                        <span wire:loading.delay wire:target="query,selectSearchType" class="rc-search-loading"><span aria-hidden="true"></span> Suche läuft …</span>
+                    </p>
+                    <span class="rc-search-key-hint"><kbd>Esc</kbd> Schließen</span>
+                </footer>
+            </section>
+        </div>
+    </template>
 </div>

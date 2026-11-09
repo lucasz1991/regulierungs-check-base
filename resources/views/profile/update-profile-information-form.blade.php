@@ -55,7 +55,7 @@
                         reader.readAsDataURL(file);
                     }
                 }"
-                class="col-span-6 pb-6 border-b border-gray-200"
+                class="col-span-6 pb-6 border-b border-[var(--line)]"
             >
                 {{-- Hidden input (dein Handling bleibt) --}}
                 <input
@@ -78,13 +78,13 @@
                     <div class="min-w-0 text-primary">
                         <x-label for="photo" value="{{ __('Foto') }}" />
 
-                        <p class="mt-1 text-sm text-gray-600">
+                        <p class="mt-1 text-sm text-[var(--muted)]">
                             Lade ein quadratisches Profilbild hoch.
                         </p>
 
                         <template x-if="photoName">
-                            <p class="mt-2 text-xs text-gray-500 truncate">
-                                <i class="fal fa-image mr-1 text-gray-400"></i>
+                            <p class="mt-2 text-xs text-[var(--muted)] truncate">
+                                <i class="fal fa-image mr-1 text-[var(--muted)]"></i>
                                 <span x-text="photoName"></span>
                             </p>
                         </template>
@@ -144,7 +144,7 @@
         @endif
 
         {{-- Benutzername --}}
-        <div class="col-span-6 py-6 border-b border-gray-200">
+        <div class="col-span-6 py-6 border-b border-[var(--line)]">
             <div class="flex items-center gap-2 mb-2">
                 <i class="fal fa-user text-primary"></i>
                 <x-label for="name" value="{{ __('Benutzername') }}" />
@@ -155,7 +155,7 @@
                 <x-input
                     id="name"
                     type="text"
-                    class="block w-full rounded-xl border-gray-300 p-3 pl-11
+                    class="block w-full rounded-xl border-[var(--line)] p-3 pl-11
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="state.name"
                     required
@@ -176,7 +176,7 @@
                         <x-label for="email" value="{{ __('E-Mail') }}" />
                     </div>
 
-                    <p class="mt-1 text-sm text-gray-600">
+                    <p class="mt-1 text-sm text-[var(--muted)]">
                         Deine E-Mail wird für Login & Benachrichtigungen genutzt.
                     </p>
                 </div>
@@ -198,12 +198,12 @@
             </div>
 
             <div class="relative mt-3">
-                <i class="fal fa-at absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <i class="fal fa-at absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]"></i>
 
                 <x-input
                     id="email"
                     type="email"
-                    class="block w-full rounded-xl border-gray-300 p-3 pl-11
+                    class="block w-full rounded-xl border-[var(--line)] p-3 pl-11
                            focus:ring-2 focus:ring-primary focus:border-primary
                            {{ $this->user->hasVerifiedEmail() ? 'ring-1 ring-emerald-200' : 'ring-1 ring-amber-200' }}"
                     wire:model="state.email"

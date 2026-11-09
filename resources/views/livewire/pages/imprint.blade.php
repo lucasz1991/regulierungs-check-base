@@ -1,3 +1,3 @@
-<div class="" wire:loading.class="cursor-wait">
+<div class="app-content-placeholder" wire:loading.class="cursor-wait">
 
 </div>

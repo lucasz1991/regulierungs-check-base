@@ -1,5 +1,5 @@
-<div @if($hasActiveRating) wire:poll.3s @endif class="min-h-screen">
-    <div class="container mx-auto px-4 pb-10 space-y-6">
+<div @if($hasActiveRating) wire:poll.3s @endif class="app-account app-page min-h-screen">
+    <div class="app-shell pb-10 space-y-6">
 
         {{-- FLASH / ALERTS --}}
         @if(session()->has('message'))
@@ -9,20 +9,20 @@
         @endif
 
         {{-- TOP BAR (wie neues Layout) --}}
-        <div class="rounded-3xl bg-white/90 border border-white/10 shadow-2xl p-5 md:p-6">
+        <div class="rounded-3xl bg-[var(--surface)] border border-[var(--line)]  p-5 md:p-6">
             <div class="flex items-start justify-between gap-4">
 
                 <div class="min-w-0">
                     <div class="flex flex-wrap items-center gap-2">
                         <x-user.public-info :user="$claimRating->user" context="ratings" />
 
-                        <span class="text-sm text-gray-700">
+                        <span class="text-sm text-[var(--ink)]">
                             · Erstellt am {{ \Carbon\Carbon::parse($claimRating->created_at)->format('d.m.Y') }}
                         </span>
 
                         {{-- Public/Private Badge --}}
                         <span class="ml-1 inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold
-                            {{ $claimRating->is_public ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-700' }}">
+                            {{ $claimRating->is_public ? 'bg-emerald-50 text-emerald-700' : 'bg-[var(--surface-soft)] text-[var(--ink)]' }}">
                             <i class="fal {{ $claimRating->is_public ? 'fa-globe-europe' : 'fa-lock' }} mr-1.5"></i>
                             {{ $claimRating->is_public ? 'Öffentlich' : 'Privat' }}
                         </span>
@@ -46,8 +46,8 @@
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center gap-2 rounded-xl px-3 py-2
-                                       bg-white/95 border border-white/10 shadow
-                                       text-gray-900 hover:bg-white transition"
+                                       bg-[var(--surface)] border border-[var(--line)] shadow
+                                       text-[var(--ink)] hover:bg-[var(--surface)] transition"
                                 type="button"
                             >
                                 <i class="fal fa-ellipsis-v"></i>
@@ -107,12 +107,12 @@
         {{-- VERIFIKATIONS HINWEISE (optisch angepasst) --}}
         @if($requiresVerification && ! $canBePublished)
             @if($verification['state'] === 'pending')
-                <div class="rounded-2xl bg-white/85 border border-white/10 shadow p-5">
+                <div class="rounded-2xl bg-white/85 border border-[var(--line)] shadow p-5">
                     <div class="flex items-start gap-3">
                         <div class="h-11 w-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
                             <i class="fal fa-hourglass-half"></i>
                         </div>
-                        <div class="text-sm text-gray-700 leading-relaxed">
+                        <div class="text-sm text-[var(--ink)] leading-relaxed">
                             Diese Bewertung ist eine Mehrfachbewertung. Deine Falldaten wurden eingereicht und befinden sich aktuell in der Prüfung.
                             Solange die Verifikation läuft, kann die Bewertung nicht veröffentlicht werden.
                             Sobald die Prüfung abgeschlossen ist, informieren wir dich automatisch und die Bewertung wird, falls alles korrekt ist, direkt veröffentlicht.
@@ -120,24 +120,24 @@
                     </div>
                 </div>
             @elseif($verification['state'] === 'rejected')
-                <div class="rounded-2xl bg-white/85 border border-white/10 shadow p-5">
+                <div class="rounded-2xl bg-white/85 border border-[var(--line)] shadow p-5">
                     <div class="flex items-start gap-3">
                         <div class="h-11 w-11 rounded-xl bg-red-100 text-red-700 flex items-center justify-center shrink-0">
                             <i class="fal fa-times-circle"></i>
                         </div>
-                        <div class="text-sm text-gray-700 leading-relaxed">
+                        <div class="text-sm text-[var(--ink)] leading-relaxed">
                             Die Verifikation dieser Bewertung wurde abgelehnt. Bitte überprüfe deine Fallnummer und Falldokumente
                             und reiche sie über den Verifikationsbereich (Kreis-Symbol neben dem Status) erneut ein.
                         </div>
                     </div>
                 </div>
             @else
-                <div class="rounded-2xl bg-white/85 border border-white/10 shadow p-5">
+                <div class="rounded-2xl bg-white/85 border border-[var(--line)] shadow p-5">
                     <div class="flex items-start gap-3">
                         <div class="h-11 w-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
                             <i class="fal fa-exclamation-triangle"></i>
                         </div>
-                        <div class="text-sm text-gray-700 leading-relaxed">
+                        <div class="text-sm text-[var(--ink)] leading-relaxed">
                             Für diese Mehrfachbewertung ist eine Fall-Verifikation erforderlich.
                             Bitte hinterlege eine gültige Fallnummer und lade mindestens ein Falldokument über den Verifikationsbereich
                             (Kreis-Symbol neben dem Status) hoch, damit die Bewertung veröffentlicht werden kann.
@@ -151,20 +151,20 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             {{-- Versicherung --}}
-            <div class="rounded-2xl bg-white/90 border border-white/10 shadow p-6 w-full">
-                <p class="text-xs text-gray-500 mb-2 flex items-center gap-2">
-                    <i class="fal fa-shield-check text-gray-400"></i>
+            <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-6 w-full">
+                <p class="text-xs text-[var(--muted)] mb-2 flex items-center gap-2">
+                    <i class="fal fa-shield-check text-[var(--muted)]"></i>
                     <span>Versicherung</span>
                 </p>
 
                 <x-insurance.insurance-name-button :insurance="$claimRating->insurance" />
 
-                <div class="mt-4 space-y-1 text-sm text-gray-700">
-                    <p class="text-gray-600">
+                <div class="mt-4 space-y-1 text-sm text-[var(--ink)]">
+                    <p class="text-[var(--muted)]">
                         Versicherungs-art:
                         <strong>{{ $claimRating->insuranceType->name ?? 'Keine Angabe' }}</strong>
                     </p>
-                    <p class="text-gray-600">
+                    <p class="text-[var(--muted)]">
                         Versicherungs-typ:
                         <strong>{{ $claimRating->insuranceSubtype->name ?? 'Keine Angabe' }}</strong>
                     </p>
@@ -172,13 +172,13 @@
             </div>
 
             {{-- Meta / Details (dein neuer Style mit Icons) --}}
-            <div class="rounded-2xl bg-white/90 border border-white/10 shadow p-6 w-full space-y-4">
+            <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-6 w-full space-y-4">
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-4 text-sm">
 
                     <div class="flex items-center justify-between gap-3">
-                        <span class="inline-flex items-center gap-2 text-gray-500 font-medium">
-                            <i class="fal fa-file-invoice text-gray-400"></i>
+                        <span class="inline-flex items-center gap-2 text-[var(--muted)] font-medium">
+                            <i class="fal fa-file-invoice text-[var(--muted)]"></i>
                             <span>Regulierungsart</span>
                         </span>
                         <span class="inline-flex items-center rounded-full bg-blue-50 text-blue-700 px-3 py-1 text-xs font-semibold">
@@ -187,8 +187,8 @@
                     </div>
 
                     <div class="flex items-center justify-between gap-3">
-                        <span class="inline-flex items-center gap-2 text-gray-500 font-medium">
-                            <i class="fal fa-check-circle text-gray-400"></i>
+                        <span class="inline-flex items-center gap-2 text-[var(--muted)] font-medium">
+                            <i class="fal fa-check-circle text-[var(--muted)]"></i>
                             <span>Abgeschlossen</span>
                         </span>
                         <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold
@@ -198,8 +198,8 @@
                     </div>
 
                     <div class="flex items-center justify-between gap-3">
-                        <span class="inline-flex items-center gap-2 text-gray-500 font-medium">
-                            <i class="fal fa-calendar-alt text-gray-400"></i>
+                        <span class="inline-flex items-center gap-2 text-[var(--muted)] font-medium">
+                            <i class="fal fa-calendar-alt text-[var(--muted)]"></i>
                             <span>Beginn</span>
                         </span>
                         <span class="inline-flex items-center rounded-full bg-blue-50 text-blue-700 px-3 py-1 text-xs font-semibold">
@@ -209,8 +209,8 @@
 
                     @if($claimRating->answers['is_closed'])
                         <div class="flex items-center justify-between gap-3">
-                            <span class="inline-flex items-center gap-2 text-gray-500 font-medium">
-                                <i class="fal fa-calendar-check text-gray-400"></i>
+                            <span class="inline-flex items-center gap-2 text-[var(--muted)] font-medium">
+                                <i class="fal fa-calendar-check text-[var(--muted)]"></i>
                                 <span>Beendet</span>
                             </span>
                             <span class="inline-flex items-center rounded-full bg-blue-50 text-blue-700 px-3 py-1 text-xs font-semibold">
@@ -221,10 +221,10 @@
 
                 </div>
 
-                <div class="border-t border-gray-200 pt-4">
-                    <div class="flex items-start justify-between gap-4 text-sm text-gray-700">
-                        <span class="inline-flex items-center gap-2 font-medium text-gray-500 shrink-0">
-                            <i class="fal fa-info-circle text-gray-400 mt-0.5"></i>
+                <div class="border-t border-[var(--line)] pt-4">
+                    <div class="flex items-start justify-between gap-4 text-sm text-[var(--ink)]">
+                        <span class="inline-flex items-center gap-2 font-medium text-[var(--muted)] shrink-0">
+                            <i class="fal fa-info-circle text-[var(--muted)] mt-0.5"></i>
                             <span>Details</span>
                         </span>
 
@@ -236,7 +236,7 @@
                     </div>
 
                     @if(data_get($claimRating->answers, 'regulationDetail.textarea_value'))
-                        <p class="text-sm text-gray-700 mt-3">
+                        <p class="text-sm text-[var(--ink)] mt-3">
                             <strong>Kommentar:</strong> {{ $claimRating->answers['regulationDetail']['textarea_value'] ?? '' }}
                         </p>
                     @endif
@@ -251,7 +251,7 @@
             <div class="mt-2">
                 <div class="py-2 flex items-center justify-between">
                     <h2 class="text-lg md:text-xl font-semibold text-white flex items-center gap-2">
-                        <i class="fal fa-chart-line text-blue-200/80"></i>
+                        <i class="fal fa-chart-line text-[var(--accent)]"></i>
                         <span>Auswertung</span>
                     </h2>
                 </div>
@@ -261,15 +261,15 @@
                     {{-- Variable Fragen --}}
                     <div class="space-y-3">
                         @forelse($claimRating->attachments['scorings']['questions'] as $question)
-                            <div class="rounded-xl border border-white/80 bg-white/90 p-4">
-                                <p class="text-sm text-gray-600">
+                            <div class="rounded-xl border border-white/80 bg-[var(--surface)] p-4">
+                                <p class="text-sm text-[var(--muted)]">
                                     <strong>Frage:</strong> {{ $question['question_title'] }}
                                 </p>
-                                <p class="text-sm text-gray-600 mt-1">
+                                <p class="text-sm text-[var(--muted)] mt-1">
                                     <strong>Beschreibung:</strong> {{ $question['question_text'] }}
                                 </p>
 
-                                <p class="text-sm text-gray-700 mt-2">
+                                <p class="text-sm text-[var(--ink)] mt-2">
                                     <strong>Antwort:</strong> {{ $question['answer'] }}
                                 </p>
 
@@ -283,17 +283,17 @@
                                     <div class="mt-2">
                                         <x-insurance.insurance-rating-stars-review-overview :score="$question['ai_score']" />
                                     </div>
-                                    <p class="text-sm text-gray-700 mt-2">
+                                    <p class="text-sm text-[var(--ink)] mt-2">
                                         <strong>Kommentar:</strong> {{ $question['ai_comment'] }}
                                     </p>
                                 @endif
                             </div>
                         @empty
-                            <div class="text-sm text-gray-500">Keine variablen Fragen gefunden.</div>
+                            <div class="text-sm text-[var(--muted)]">Keine variablen Fragen gefunden.</div>
                         @endforelse
 
-                        <div class="rounded-xl border border-white/80 bg-white/90 p-4">
-                            <p class="text-sm text-gray-700">
+                        <div class="rounded-xl border border-white/80 bg-[var(--surface)] p-4">
+                            <p class="text-sm text-[var(--ink)]">
                                 <strong>Scoring variable Fragen:</strong>
                                 @if($claimRating->attachments['scorings']['variable_questions'] != null)
                                     <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['variable_questions']" />
@@ -303,8 +303,8 @@
                     </div>
 
                     {{-- KOMMENTAR + SCORINGS (dein Referenz-Layout) --}}
-                    <div class="rounded-2xl border-white/80 bg-white/90 p-4 md:p-6">
-                        <div class="mb-4 text-sm text-gray-700">
+                    <div class="rounded-2xl border-white/80 bg-[var(--surface)] p-4 md:p-6">
+                        <div class="mb-4 text-sm text-[var(--ink)]">
                             <strong class="mr-2">Gesamt Scoring:</strong>
                             <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->score()" />
                         </div>
@@ -318,53 +318,53 @@
                                         <span>Zusammenfassung</span>
                                     </h2>
 
-                                    <p class="text-gray-700 leading-relaxed">
+                                    <p class="text-[var(--ink)] leading-relaxed">
                                         {{ $claimRating->comment() ?: 'Kein Kommentar vorhanden.' }}
                                     </p>
                                 </div>
                             </div>
 
                             {{-- Scorings --}}
-                            <div class="bg-white/95 border border-white/10 shadow rounded-2xl w-full lg:w-1/3 p-5 lg:mt-4 order-1 lg:order-2">
+                            <div class="bg-[var(--surface)] border border-[var(--line)] shadow rounded-2xl w-full lg:w-1/3 p-5 lg:mt-4 order-1 lg:order-2">
                                 <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                                    <h3 class="text-sm font-semibold text-[var(--ink)] flex items-center gap-2">
                                         <i class="fal fa-chart-bar text-blue-600"></i>
                                         <span>Scorings</span>
                                     </h3>
-                                    <span class="text-xs text-gray-500 rounded-full bg-gray-100 px-2 py-1">Ø / 5</span>
+                                    <span class="text-xs text-[var(--muted)] rounded-full bg-[var(--surface-soft)] px-2 py-1">Ø / 5</span>
                                 </div>
 
                                 <div class="space-y-3 text-sm">
                                     <div class="grid grid-cols-[1fr_auto] items-center gap-3">
-                                        <span class="text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-clock text-gray-400"></i><span>Dauer</span>
+                                        <span class="text-[var(--ink)] inline-flex items-center gap-2">
+                                            <i class="fal fa-clock text-[var(--muted)]"></i><span>Dauer</span>
                                         </span>
                                         <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['regulation_speed']" />
                                     </div>
 
                                     <div class="grid grid-cols-[1fr_auto] items-center gap-3">
-                                        <span class="text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-headset text-gray-400"></i><span>Kundenservice</span>
+                                        <span class="text-[var(--ink)] inline-flex items-center gap-2">
+                                            <i class="fal fa-headset text-[var(--muted)]"></i><span>Kundenservice</span>
                                         </span>
                                         <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['customer_service']" />
                                     </div>
 
                                     <div class="grid grid-cols-[1fr_auto] items-center gap-3">
-                                        <span class="text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-balance-scale text-gray-400"></i><span>Fairness</span>
+                                        <span class="text-[var(--ink)] inline-flex items-center gap-2">
+                                            <i class="fal fa-balance-scale text-[var(--muted)]"></i><span>Fairness</span>
                                         </span>
                                         <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['fairness']" />
                                     </div>
 
                                     <div class="grid grid-cols-[1fr_auto] items-center gap-3">
-                                        <span class="text-gray-700 inline-flex items-center gap-2">
-                                            <i class="fal fa-eye text-gray-400"></i><span>Transparenz</span>
+                                        <span class="text-[var(--ink)] inline-flex items-center gap-2">
+                                            <i class="fal fa-eye text-[var(--muted)]"></i><span>Transparenz</span>
                                         </span>
                                         <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->attachments['scorings']['transparency']" />
                                     </div>
 
                                     {{-- Tags --}}
-                                    <div class="pt-3 border-t border-gray-200">
+                                    <div class="pt-3 border-t border-[var(--line)]">
                                         <div class="flex flex-wrap gap-2 mt-2">
                                             @foreach ($claimRating->tags() as $tag)
                                                 <x-profile.claim-rating.claim-rating-tag-badge :tag="$tag" />
@@ -382,15 +382,15 @@
             </div>
 
         @else
-            <div class="rounded-2xl bg-white/90 border border-white/10 shadow p-6">
-                <h2 class="text-lg md:text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-6">
+                <h2 class="text-lg md:text-xl font-semibold text-[var(--ink)] mb-3 flex items-center gap-2">
                     <i class="fal fa-chart-line text-blue-600"></i>
                     <span>Auswertung</span>
                 </h2>
-                <p class="text-sm text-gray-700 mb-2">
+                <p class="text-sm text-[var(--ink)] mb-2">
                     Die Auswertung wird durchgeführt, sobald die Prüfung abgeschlossen ist.
                 </p>
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-[var(--ink)]">
                     Derzeit befindet sich die Regulierung in der Prüfung. Bitte warten Sie, bis die Prüfung abgeschlossen ist, um die Auswertung zu sehen.
                 </p>
             </div>

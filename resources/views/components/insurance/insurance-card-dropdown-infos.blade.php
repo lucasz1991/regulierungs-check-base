@@ -1,10 +1,10 @@
 @props(['insurance', 'isSubTypeFilter', 'subTypeFilterSubType'])
 <div class="">
-    <div class="px-4 py-2  bg-white border-b border-blue-200 flex items-center justify-between shadow" >
+    <div class="px-4 py-2  bg-[var(--surface)] border-b border-[var(--line)] flex items-center justify-between shadow" >
         @if($isSubTypeFilter)
             <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-blue-500 w-max opacity-80 ">Auswertung für {{ $subTypeFilterSubType->name }}</span>
         @else
-            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 ">Allgemeine Auswertung</span>
+            <span class="bg-[var(--surface-soft)] text-[var(--ink)] text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-gray-500 w-max opacity-60 ">Allgemeine Auswertung</span>
         @endif
         <div class="flex items-center gap-1">
             <!-- Merkliste
@@ -26,16 +26,16 @@
         </div>
     </div>
     <div class="px-4 pb-2 inset-shadow-xs">
-        <div class="flex items-center justify-between gap-2 mt-2 border-b border-gray-300 pb-2">
+        <div class="flex items-center justify-between gap-2 mt-2 border-b border-[var(--line)] pb-2">
             <div>
-                <span class="text-gray-500 text-sm">Bewertungen: {{ $insurance->claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}</span>
+                <span class="text-[var(--muted)] text-sm">Bewertungen: {{ $insurance->claimRatingsCountBySubtype($subTypeFilterSubType?->id) }}</span>
                 @if($insurance->claim_ratings_count > 0)
                     <x-insurance.insurance-rating-stars :score="$insurance->claim_ratings_avg_rating_score" />
                 @else
-                    <span class="text-gray-500">Keine Bewertungen</span>
+                    <span class="text-[var(--muted)]">Keine Bewertungen</span>
                 @endif
             </div>
-            <span class="text-sm text-gray-700 py-0.5 px-1 bg-white border border-gray-300 rounded-lg">Ø Dauer: {{ $insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id) }} Tage</span>
+            <span class="text-sm text-[var(--ink)] py-0.5 px-1 bg-[var(--surface)] border border-[var(--line)] rounded-lg">Ø Dauer: {{ $insurance->avgRatingDurationBySubtype($subTypeFilterSubType?->id) }} Tage</span>
         </div>
         <div class="mt-4 p-2 bg-yellow-50 border border-yellow-500 text-yellow-800 rounded-lg flex items-center  gap-3 ">
             <svg class="w-6 h-6 mt-1 flex-none text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="flex items-center justify-end gap-2 mt-4">
-            <a  href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="text-blue-800 bg-gray-100 border border-gray-300 hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-2 py-1 text-center inline-flex items-center">
+            <a  href="{{ route('insurance.show-insurance', $insurance->slug) }}" class="text-blue-800 bg-[var(--surface-soft)] border border-[var(--line)] hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-2 py-1 text-center inline-flex items-center">
                 Mehr erfahren
                 <svg class="rtl:rotate-180 w-2.5 h-2.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>

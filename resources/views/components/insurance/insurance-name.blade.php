@@ -28,7 +28,7 @@
                 <img
                     src="{{ asset('storage/' . $insurance->logo) }}"
                     alt="Logo Versicherungs Anbieter"
-                    class="{{ $sizeClasses[$size] ?? 'h-8' }} block min-w-0 max-w-full shrink object-contain rounded"
+                    class="{{ $sizeClasses[$size] ?? 'h-8' }} block min-w-0 max-w-full shrink rounded-md bg-white p-1 object-contain"
                     loading="lazy"
                 >
                 <div class="shrink-0">
