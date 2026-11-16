@@ -4,7 +4,7 @@
         $insurancesUrl = route('insurances', $filterQuery);
         $selectedType = $selectedInsuranceTypeId ? $types->firstWhere('id', $selectedInsuranceTypeId) : null;
         $initialTypes = $types->take(4);
-        $additionalTypes = $types->slice(4, 4);
+        $additionalTypes = $types->slice(4);
         $additionalTypeSelected = $selectedType && $additionalTypes->contains('id', $selectedType->id);
     @endphp
     <div class="explorer-intro explorer-intro-compact rail-content">
@@ -73,9 +73,14 @@
             @endphp
             <article class="insurer-card" data-carousel-item data-category="all" data-insurer="{{ $insurance->name }}" role="listitem" wire:key="homepage-insurance-{{ $selectedInsuranceTypeId ?? 'all' }}-{{ $insurance->id }}">
                 <div class="insurer-core">
-                    <div class="insurer-heading">
+                    <div class="insurer-heading" @if ($insurance->logo) x-data="{ imageFailed: false }" @endif>
                         @if ($insurance->logo)
-                            <img class="insurer-logo" src="{{ asset('storage/' . $insurance->logo) }}" alt="" width="158" height="60" loading="lazy">
+                            <img class="insurer-logo" src="{{ asset('storage/' . $insurance->logo) }}" alt="" width="158" height="60" loading="lazy"
+                                x-show="!imageFailed"
+                                x-init="$nextTick(() => { if ($el.complete && !$el.naturalWidth) imageFailed = true; })"
+                                x-on:error="imageFailed = true"
+                                x-on:load="imageFailed = false">
+                            <span class="insurer-symbol" aria-hidden="true" x-show="imageFailed" x-cloak>{{ mb_strtoupper(mb_substr($insurance->initials ?: $insurance->name, 0, 4)) }}</span>
                             <x-insurance.top-insurance-banner.insurance-logo-disclaim-button />
                         @else
                             <span class="insurer-symbol" aria-hidden="true">{{ mb_strtoupper(mb_substr($insurance->initials ?: $insurance->name, 0, 4)) }}</span>

@@ -1,9 +1,9 @@
 <footer class="site-footer">
  <div class="container footer-grid">
   <div class="footer-brand">
-   <a aria-label="Regulierungs-CHECK Startseite" href="{{ route('home') }}" wire:navigate="">
-    <img alt="" class="brand-light" height="232" src="{{ asset('site-images/logo/logo-text-only.png') }}" width="671"/>
-    <img alt="" class="brand-dark" height="707" src="{{ asset('site-images/logo/logo-white-yelllow.png') }}" width="2048"/>
+   <a aria-label="Regulierungs-CHECK Startseite" class="footer-home-link" href="{{ route('home') }}" wire:navigate="">
+    <img alt="" class="footer-logo brand-light" decoding="async" height="232" loading="lazy" src="{{ asset('site-images/logo/logo-text-only.png') }}" width="671"/>
+    <img alt="" class="footer-logo brand-dark" decoding="async" height="707" loading="lazy" src="{{ asset('site-images/logo/logo-white-yelllow.png') }}" width="2048"/>
    </a>
    <p>
     Leistungs-CHECK auf Basis

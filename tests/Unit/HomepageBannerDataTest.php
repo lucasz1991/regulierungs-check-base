@@ -138,6 +138,39 @@ class HomepageBannerDataTest extends TestCase
         $this->assertSame([1, 2], $component->insurances->first()->claimRatings->modelKeys());
     }
 
+    public function test_all_available_categories_remain_selectable_beyond_the_first_eight(): void
+    {
+        foreach (range(4, 9) as $id) {
+            DB::table('insurance_types')->insert(['id' => $id, 'name' => 'Sparte '.$id, 'is_active' => true]);
+            DB::table('insurance_subtypes')->insert(['id' => $id, 'name' => 'Unterart '.$id, 'slug' => 'unterart-'.$id]);
+            DB::table('insurance_type_insurance_subtype')->insert(['insurance_type_id' => $id, 'insurance_subtype_id' => $id]);
+        }
+        foreach (range(1, 9) as $id) {
+            $this->rating($id, ['insurance_type_id' => $id, 'insurance_subtype_id' => $id]);
+        }
+
+        $component = Livewire::test(TopInsurancesByTypeBanner::class);
+        $this->assertCount(9, $component->get('types'));
+        foreach (range(1, 9) as $id) {
+            $component->assertSeeHtml('wire:key="homepage-type-'.$id.'"');
+        }
+
+        $lastCategory = $component->get('types')->last();
+        $component->call('selectInsuranceType', $lastCategory->id)
+            ->assertSet('selectedInsuranceTypeId', $lastCategory->id)
+            ->assertSee('1 Bewertung');
+
+        $document = new \DOMDocument;
+        @$document->loadHTML($component->html());
+        $selectedExtraCategory = (new \DOMXPath($document))->query('//details[contains(@class,"more-categories")][@open]//button[@aria-pressed="true"]');
+        $this->assertSame(1, $selectedExtraCategory->length);
+        $this->assertStringContainsString($lastCategory->name, $selectedExtraCategory->item(0)->textContent);
+
+        $component->call('clearInsuranceTypeFilter')
+            ->assertSet('selectedInsuranceTypeId', null)
+            ->assertSee('9 Bewertungen');
+    }
+
     public function test_livewire_refresh_restores_aggregates_and_constrained_relations(): void
     {
         $this->rating(1, ['rating_score' => 0.8]);
