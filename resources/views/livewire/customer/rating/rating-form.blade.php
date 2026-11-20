@@ -20,30 +20,33 @@
     }"
 >
     <template x-teleport="body">
-        <div x-cloak x-show="modalIsOpen"  x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"  class="fixed inset-0 z-40  bg-black/20  backdrop-blur-md sm:items-center  overflow-y-auto content-center" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+        <div x-cloak x-show="modalIsOpen" :class="{ 'is-open': modalIsOpen }" x-ref="scrollcontainer" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"  class="rc-rating-dialog fixed inset-0 z-40 bg-black/20  backdrop-blur-md sm:items-center  overflow-y-auto content-center" role="dialog" aria-modal="true" aria-label="Schadenfall melden">
             <!-- Modal Dialog -->
-            <div x-show="modalIsOpen"  x-ref="scrollTarget"   x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="relative text-center mx-auto  transform transition-all   bg-main  w-full min-h-full  overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
-                <!-- Close (Abbrechen) Button oben rechts -->
-                <button 
-                    type="button"
-                    @click="modalIsOpen = false"
-                    class="absolute top-2 right-2 z-50 p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    aria-label="Abbrechen">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-                <div class="ratingform h-[100dvh] max-h-[100dvh] grid grid-cols-1 items-stretch" >
-
+            <div x-show="modalIsOpen"  x-ref="scrollTarget"   x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="rc-rating-overlay relative text-center mx-auto transform transition-all w-full min-h-full overflow-hidden">
+                <div class="ratingform rc-rating-form">
+                    <div class="rc-rating-background">
+                        <x-app-background />
+                    </div>
+                    <div class="rc-rating-top">
+                        <span class="rc-rating-brand" aria-hidden="true">
+                            <img class="rc-rating-logo-light" src="{{ asset('site-images/logo/logo-text-only.png') }}" alt="" width="671" height="232" />
+                            <img class="rc-rating-logo-dark" src="{{ asset('site-images/logo/logo-white-yelllow.png') }}" alt="" width="2794" height="965" />
+                        </span>
+                        <button type="button" @click="modalIsOpen = false" class="rc-rating-close" aria-label="Abbrechen">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
 
                     {{-- Step 0: Versicherungs typ --}}
                     <div
                         x-show="step == 0"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        class="rc-rating-step"
                         
                     >
-                        <div class=" mb-2 flex flex-col items-center max-w-3xl mx-auto" >
+                        <div class="rc-rating-step-header">
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Jetzt Fall melden
@@ -78,7 +81,8 @@
                                             <button
                                                 type="button"
                                                 @click="pick({{ $type->id }})"
-                                                class="relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
+                                                :aria-pressed="selected == {{ $type->id }}"
+                                                class="rc-rating-choice relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
                                                     flex items-center gap-2 transition duration-200
                                                     "
                                                 :class="selected == {{ $type->id }}
@@ -144,10 +148,10 @@
                     <div
                         x-show="step == 1"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        class="rc-rating-step"
                     >
                         {{-- Header --}}
-                        <div class="mb-2 flex flex-col items-center max-w-3xl mx-auto">
+                        <div class="rc-rating-step-header">
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="100" >
                                 <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                     Versicherungsart auswählen
@@ -196,7 +200,7 @@
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="400">
                                 {{-- Fremdversicherung --}}
                                 <div x-show="thirdAllowed" x-collapse x-cloak class="mb-3">
-                                    <div class="rounded-2xl border border-gray-200 bg-white p-4">
+                                    <div class="rc-rating-switches rounded-2xl border border-gray-200 bg-white p-4">
                                         <div class="flex items-center justify-between">
                                             <div class="pr-3">
                                                 <div class="font-semibold text-sm text-gray-900">Fremdversicherung?</div>
@@ -207,8 +211,9 @@
 
                                             <button
                                                 type="button"
-                                                class="relative inline-flex h-6 w-11 items-center rounded-full transition"
+                                                class="rc-rating-switch relative inline-flex h-6 w-11 items-center rounded-full transition"
                                                 :class="thirdParty ? 'bg-rcgold' : 'bg-gray-300'"
+                                                role="switch" aria-label="Fremdversicherung" :aria-checked="thirdParty"
                                                 @click="thirdParty = !thirdParty; if(!thirdParty){ hasContact = false }"
                                             >
                                                 <span
@@ -232,8 +237,9 @@
 
                                                     <button
                                                         type="button"
-                                                        class="relative inline-flex h-6 w-11 items-center rounded-full transition"
+                                                        class="rc-rating-switch relative inline-flex h-6 w-11 items-center rounded-full transition"
                                                         :class="hasContact ? 'bg-rcgold' : 'bg-gray-300'"
+                                                        role="switch" aria-label="Kontakt zur Fremdversicherung vorhanden" :aria-checked="hasContact"
                                                         @click="hasContact = !hasContact"
                                                     >
                                                         <span
@@ -260,9 +266,10 @@
                                                 <button
                                                     type="button"
                                                     @click="pick({{ $sub->id }})"
+                                                    :aria-pressed="selected == {{ $sub->id }}"
                                                     x-show="!q || '{{ \Illuminate\Support\Str::lower($sub->name) }}'.includes(q.toLowerCase().trim())"
                                                     x-cloak
-                                                    class="relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
+                                                    class="rc-rating-choice relative w-full text-left px-3 py-4 rounded-xl mb-2 md:mb-4
                                                         flex items-center transition duration-200
                                                         "
                                                     :class="selected == {{ $sub->id }}
@@ -309,10 +316,10 @@
                     <div
                         x-show="step == 2"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        class="rc-rating-step"
                     >
                         {{-- Header --}}
-                        <div class="mb-2 flex flex-col items-center max-w-3xl mx-auto">
+                        <div class="rc-rating-step-header">
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
                             <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                 Welche Versicherungsgesellschaft?
@@ -368,9 +375,10 @@
                                                 <button
                                                     type="button"
                                                     @click="pick({{ $ins->id }})"
+                                                    :aria-pressed="selected == {{ $ins->id }}"
                                                     x-show="!q || '{{ \Illuminate\Support\Str::lower($ins->name) }}'.includes(q.toLowerCase().trim())"
                                                     x-cloak
-                                                    class="relative w-full text-left px-2 md:px-3 py-2 md:py-4 rounded-xl mb-2 md:mb-4
+                                                    class="rc-rating-choice relative w-full text-left px-2 md:px-3 py-2 md:py-4 rounded-xl mb-2 md:mb-4
                                                         flex items-center gap-3 transition duration-200 "
                                                     :class="selected == {{ $ins->id }}
                                                            ? 'bg-rcgold-light ring-1 ring-rcgold-light hover:bg-rcgold-light'
@@ -442,9 +450,9 @@
                     <div
                         x-show="step == 3"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        class="rc-rating-step"
                     >
-                        <div class=" mb-6 flex flex-col items-center max-w-3xl mx-auto">
+                        <div class="rc-rating-step-header">
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
                                 <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                     Regulierung auswählen
@@ -470,7 +478,7 @@
 
                                     <x-ui.intersectanimation.anim-container type="fade-up" delay="300">
 
-                                    <div class="h-full overflow-y-auto form-select-scroll-container flex items-center pb-10">
+                                    <div class="rc-rating-options h-full overflow-y-auto form-select-scroll-container flex">
                                         <div class="grid grid-cols-2 gap-3 md:gap-4 p-1">
                                                     <style>
                                                         svg.bicolor .a{
@@ -493,7 +501,7 @@
                                             <button
                                                 type="button"
                                                 @click="pick('vollzahlung')"
-                                                class="relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
+                                                class="rc-rating-option relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
                                                     hover:scale-[1.01] active:scale-[0.99]"
                                                 :class="selected === 'vollzahlung'
                                                     ? 'bg-rcgold-light border-rcgold ring-1 ring-rcgold'
@@ -531,7 +539,7 @@
                                             <button
                                                 type="button"
                                                 @click="pick('teilzahlung')"
-                                                class="relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
+                                                class="rc-rating-option relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
                                                     hover:scale-[1.01] active:scale-[0.99]"
                                                 :class="selected === 'teilzahlung'
                                                     ? 'bg-rcgold-light border-rcgold ring-1 ring-rcgold'
@@ -568,7 +576,7 @@
                                             <button
                                                 type="button"
                                                 @click="pick('ablehnung')"
-                                                class="relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
+                                                class="rc-rating-option relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
                                                     hover:scale-[1.01] active:scale-[0.99]"
                                                 :class="selected === 'ablehnung'
                                                     ? 'bg-rcgold-light border-rcgold ring-1 ring-rcgold'
@@ -605,7 +613,7 @@
                                             <button
                                                 type="button"
                                                 @click="pick('austehend')"
-                                                class="relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
+                                                class="rc-rating-option relative rounded-2xl p-2 md:p-5 text-center transition duration-200 border flex flex-col items-start justify-center
                                                     hover:scale-[1.01] active:scale-[0.99]"
                                                 :class="selected === 'austehend'
                                                     ? 'bg-rcgold-light border-rcgold ring-1 ring-rcgold'
@@ -653,11 +661,11 @@
                     <div
                         x-show="step == 4"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col place-items-center items-center px-6 pt-8 pb-0"
+                        class="rc-rating-step"
                     >
                         {{-- HEADER: NICHT im Scrollbereich --}}
                         <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
-                            <div class="mb-4 flex flex-col items-center">
+                            <div class="rc-rating-step-header">
                                 <h2 class="text-lg md:text-2xl font-bold mb-2 text-white text-center">
                                     @switch($regulationType)
                                         @case('vollzahlung')
@@ -803,11 +811,11 @@
                     <div
                         x-show="step == 5"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        class="rc-rating-step"
                     >
                         {{-- HEADER (nicht im Scrollbereich) --}}
                         <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
-                            <div class="mb-4 flex flex-col items-center max-w-3xl mx-auto text-center">
+                            <div class="rc-rating-step-header">
                                 <h2 class="text-lg md:text-2xl font-bold mb-2 text-white">
                                     Zusatzinfos zur Regulierung
                                 </h2>
@@ -911,11 +919,11 @@
                     <div
                         x-show="step == 6"
                         x-cloak
-                        class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0"
+                        class="rc-rating-step"
                     >
                         {{-- Header --}}
                         <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
-                            <div class="mb-6 flex flex-col items-center max-w-3xl mx-auto">
+                            <div class="rc-rating-step-header">
                                 <h2 class="text-lg md:text-2xl font-bold mb-4 text-white text-center">
                                     @if ($is_closed)
                                         In welchem Zeitraum wurde der Fall bearbeitet?
@@ -929,7 +937,7 @@
                         </x-ui.intersectanimation.anim-container>
 
                         {{-- Content (nimmt restliche Höhe ein) --}}
-                        <div class="flex-1 min-h-0 flex items-center justify-center">
+                        <div class="rc-rating-calendar-area flex-1 min-h-0 flex items-center justify-center">
                             <x-ui.intersectanimation.anim-container type="fade-up" delay="200">
 
                                 <div
@@ -1042,15 +1050,11 @@
                         <div
                             x-show="step === {{ $currentStep }}"
                             x-cloak
-                            class="relative h-full min-h-0 flex flex-col px-6 pt-8 pb-0 items-stretch"
+                            class="rc-rating-step"
                         >
                             {{-- Header --}}
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="100" class="flex-1 min-h-0">
-                                <div class="mb-8 flex flex-col items-center max-w-3xl mx-auto text-center">
-                                    <div class="text-xs md:text-sm text-white/70 mb-2">
-                                        Frage {{ $currentStep + 1 }} von {{ $totalSteps }}
-                                    </div>
-
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="100">
+                                <div class="rc-rating-step-header">
                                     <h2 class="text-lg md:text-2xl font-bold mb-4 text-white">
                                         {{ $q->question_text }}
                                     </h2>
@@ -1061,7 +1065,7 @@
                                 </div>
                             </x-ui.intersectanimation.anim-container>
                             {{-- Content --}}
-                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200" class="flex-1 min-h-0">
+                            <x-ui.intersectanimation.anim-container type="fade-up" delay="200" class="rc-rating-question-answer">
                             <div class="flex-1 min-h-0 w-full h-full max-w-3xl mx-auto flex items-center justify-center ">
 
                                 @switch($q->type)
@@ -1266,15 +1270,57 @@
                         </div>
                     @endforeach
 
-                    <div class="sticky bottom-0 z-50 flex-none shrink-0 grow-0 px-2 min-h-0 flex items-end">
-                        <div class="bg-white/95 backdrop-blur border-t px-4 py-4 rounded-t-3xl flex justify-center gap-4 w-full transition opacity-100" wire:loading.class="pointer-events-none opacity-10">
-                            <div x-show="step > 0" x-cloak>
-                                <x-buttons.backbutton wire:click="previousStep" />
+                    @php
+                        $progressStep = (int) $step + 1;
+                        // Livewire ermittelt die fallabhängigen Fragen beim Wechsel zu den Beträgen.
+                        $hasFinalStepCount = $progressStep >= 6;
+                        $progressEnd = $hasFinalStepCount ? (int) $totalSteps : (int) $standardSteps;
+                        $isFinalStep = $this->isLastStep;
+                    @endphp
+
+                    <div class="rc-rating-dock-shell">
+                        <div class="rc-rating-dock">
+                            <div
+                                class="rc-rating-dock-progress"
+                                role="progressbar"
+                                aria-label="{{ $hasFinalStepCount ? 'Fortschritt der Bewertung' : 'Fortschritt der Grundangaben' }}"
+                                aria-valuemin="1"
+                                aria-valuemax="{{ $progressEnd }}"
+                                aria-valuenow="{{ $progressStep }}"
+                                aria-valuetext="Schritt {{ $progressStep }}{{ $hasFinalStepCount ? ' von '.$progressEnd : ' der Grundangaben' }}"
+                            >
+                                <span class="rc-rating-dock-caption">
+                                    Schritt <strong>{{ $progressStep }}</strong>@if ($hasFinalStepCount) von {{ $progressEnd }}@endif
+                                </span>
+                                <span class="rc-rating-dock-track" aria-hidden="true">
+                                    @for ($segment = 1; $segment <= $progressEnd; $segment++)
+                                        <span @class(['is-complete' => $segment < $progressStep, 'is-current' => $segment === $progressStep])></span>
+                                    @endfor
+                                </span>
                             </div>
-                            <x-buttons.furtherbutton
-                                class="disabled:opacity-40 disabled:cursor-not-allowed"
-                                :action="$this->isLastStep ? 'submit' : 'nextStep'"
-                            />
+                            <div class="rc-rating-dock-actions">
+                                <button type="button" class="rc-rating-back" x-show="step > 0" x-cloak wire:click="previousStep" wire:loading.attr="disabled">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                        <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+                                    </svg>
+                                    <span>Zurück</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    class="rc-rating-forward"
+                                    wire:click="{{ $isFinalStep ? 'submit' : 'nextStep' }}"
+                                    wire:loading.attr="disabled"
+                                >
+                                    <span>{{ $isFinalStep ? 'Bewertung abgeben' : 'Weiter' }}</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                        @if ($isFinalStep)
+                                            <path d="m5 12 4 4L19 6" />
+                                        @else
+                                            <path d="M5 12h14m0 0-6-6m6 6-6 6" />
+                                        @endif
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

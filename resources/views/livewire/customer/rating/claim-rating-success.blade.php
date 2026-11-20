@@ -1,4 +1,4 @@
-<div class="app-shell app-page app-account flex min-h-[55dvh] items-center justify-center py-12">
+<div class="rc-rating-success app-shell app-page app-account flex min-h-[55dvh] items-center justify-center py-12">
     <div
         class="app-panel w-full max-w-2xl px-6 py-10 text-center sm:p-10"
         x-data="{ claimHash: $persist(null) }"
