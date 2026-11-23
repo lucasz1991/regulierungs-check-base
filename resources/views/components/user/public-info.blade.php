@@ -28,7 +28,7 @@
              class="w-8 h-8 rounded-full object-cover"
              alt="Default User bild">
     @endif
-    <span class="text-sm font-medium text-gray-800">
+    <span class="text-sm font-medium text-[var(--ink)]">
         {{ $showName ? $user->name : 'Anonym' }}
     </span>
 </div>

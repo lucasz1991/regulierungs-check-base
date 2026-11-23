@@ -6,22 +6,22 @@
     $colors = [
         'info' => [
             'border' => 'border-sky-500',
-            'bg' => 'bg-sky-50',
+            'bg' => 'bg-sky-500/10',
             'iconBg' => 'bg-sky-500/15 text-sky-500',
         ],
         'warning' => [
             'border' => 'border-yellow-500',
-            'bg' => 'bg-yellow-50',
+            'bg' => 'bg-yellow-500/10',
             'iconBg' => 'bg-yellow-500/15 text-yellow-600',
         ],
         'success' => [
             'border' => 'border-green-500',
-            'bg' => 'bg-green-50',
+            'bg' => 'bg-green-500/10',
             'iconBg' => 'bg-green-500/15 text-green-600',
         ],
         'error' => [
             'border' => 'border-red-500',
-            'bg' => 'bg-red-50',
+            'bg' => 'bg-red-500/10',
             'iconBg' => 'bg-red-500/15 text-red-600',
         ],
     ];
@@ -29,7 +29,7 @@
     $c = $colors[$mode] ?? $colors['info'];
 @endphp
 
-<div {!! $attributes->merge(['class' => "relative w-full overflow-hidden rounded-md border {$c['border']} {$c['bg']} text-on-surface md:w-fit"]) !!} role="alert">
+<div {!! $attributes->merge(['class' => "relative w-full overflow-hidden rounded-md border {$c['border']} {$c['bg']} app-alert text-[var(--ink)] md:w-fit"]) !!} role="alert">
     <div class="text-left flex w-full items-start gap-2 p-4">
         <div class="{{ $c['iconBg'] }} rounded-full p-1" aria-hidden="true">
             {{-- Info-Icon --}}

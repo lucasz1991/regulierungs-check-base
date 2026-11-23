@@ -7,7 +7,7 @@
                 <aside class="lg:w-72 lg:shrink-0">
                     <div class="app-account-sidebar app-panel w-full p-5 lg:sticky lg:top-28">
                         <div class=" text-center">
-                            <div class="w-24 aspect-square rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-2xl font-bold mx-auto"><img class="w-full aspect-square rounded-full object-cover"
+                            <div class="w-24 aspect-square rounded-full bg-[var(--surface-soft)] text-[var(--accent)] flex items-center justify-center text-2xl font-bold mx-auto"><img class="w-full aspect-square rounded-full object-cover"
                                                          src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" /></div>
                             <h2 class="mt-4 text-lg font-semibold truncate text-ellipsis ">{{ $userData->name }}</h2>
                             <p class="text-sm text-[var(--muted)]  truncate text-ellipsis">{{ $userData->email }}</p>
@@ -123,7 +123,7 @@
                                                         <p class="mt-2 text-xs leading-5 text-[var(--muted)]">Dieser Probelauf hat keine reguläre Teilnahme-ID und beeinflusst weder Gewinnkontingente noch Gutscheincodes.</p>
                                                     @endif
                                                 </div>
-                                                <span class="inline-flex w-fit rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-semibold text-[var(--ink)] ring-1 ring-inset ring-slate-200">{{ $ticketStatusLabel }}</span>
+                                                <span class="inline-flex w-fit rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-semibold text-[var(--ink)] ring-1 ring-inset ring-[var(--line)]">{{ $ticketStatusLabel }}</span>
                                             </div>
                                             @if ($ticketStatus !== 'completed')
                                                 <a href="{{ route('promotion.wheel') }}" class="mt-4 inline-flex font-semibold text-primary underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Ticket öffnen</a>
@@ -151,7 +151,7 @@
                                                     <p class="mt-1 font-semibold text-[var(--ink)]">{{ $participation->currentWin->prize_name_snapshot }}</p>
                                                     <p class="mt-3 break-all font-mono text-sm font-bold tracking-wide text-[var(--ink)]">{{ $participation->public_id }}</p>
                                                 </div>
-                                                <span class="inline-flex w-fit rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-semibold text-[var(--ink)] ring-1 ring-inset ring-slate-200">
+                                                <span class="inline-flex w-fit rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-semibold text-[var(--ink)] ring-1 ring-inset ring-[var(--line)]">
                                                     {{ $statusLabel }}
                                                 </span>
                                             </div>

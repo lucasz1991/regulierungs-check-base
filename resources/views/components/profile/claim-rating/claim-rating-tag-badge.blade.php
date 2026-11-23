@@ -17,7 +17,7 @@
     $style = "background-color: $bgColor; color: $textColor;";
 @endphp
 
-<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
-    style="{{ $style }}">
+<span class="app-tag-badge inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+    style="--tag-hue: {{ $hue }}; {{ $style }}">
     {{ $tag->name }}
 </span>

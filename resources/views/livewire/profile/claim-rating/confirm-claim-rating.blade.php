@@ -1,7 +1,7 @@
 <div  @if($claimRating != null && ($claimRating->status == 'rating' || $claimRating->status == 'pending')) wire:poll.3s @endif>
     <x-dialog-modal wire:model="openModal" :maxWidth="'4xl'">
         <x-slot name="title">
-            <h2 class="text-xl font-semibold mb-4">Bewertung veröffentlichen</h2>
+            <h2 class="text-xl font-semibold mb-4 text-[var(--ink)]">Bewertung veröffentlichen</h2>
             <x-alert class="mb-4 w-full md:w-full">
                 <p class="text-[var(--ink)] mb-2 text-sm">Bitte überprüfe die Analyse deiner Bewertung, bevor du sie veröffentlichst.</p>
                 <p class="text-[var(--ink)] mb-2 text-sm">Die Analyse kann neu durchgeführt werden, wenn du mit ihr unzufrieden bist.</p>
@@ -9,25 +9,25 @@
             </x-alert>
         </x-slot>
         <x-slot name="content">
-            @if($claimRating && $claimRating->attachments['scorings'] != null && $claimRating->status == 'rated')
-                <div class="bg-gray-200 rounded shadow p-2 md:p-6">
-                    <h2 class="text-xl md:text-xl  text-[var(--ink)] mb-4">
-                        Auswertung:
-                    </h2>
+            @if($claimRating && data_get($claimRating->attachments, 'scorings') != null && $claimRating->status == 'rated')
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface-soft)] p-3 md:p-6">
+                    <h3 class="text-lg font-semibold text-[var(--ink)] mb-4">
+                        Auswertung
+                    </h3>
                 
                     <div class="xl:flex gap-4">
-                        <div class="bg-primary-50 p-4 rounded w-full xl:w-2/3">
+                        <div class="rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4 w-full xl:w-2/3">
                             <div class="text-sm text-[var(--muted)] mb-4">
-                                <strong class="my-4">Gesammt Scoring:</strong> 
+                                <strong class="my-4 text-[var(--ink)]">Gesamt-Scoring:</strong>
                                 <x-insurance.insurance-rating-stars :score="$claimRating->score()" />
                             </div>
-                            <div class="prose max-w-full">
-                                <h2 class="text-lg font-semibold mb-2">Kommentar</h2>
-                                <p>{{ $claimRating->comment() ?: 'Kein Kommentar vorhanden.' }}</p>
+                            <div class="max-w-full">
+                                <h4 class="text-base font-semibold mb-2 text-[var(--ink)]">Kommentar</h4>
+                                <p class="text-sm leading-7 text-[var(--ink)]">{{ $claimRating->comment() ?: 'Kein Kommentar vorhanden.' }}</p>
                             </div>
                         </div>    
-                        <div class="bg-[var(--surface)] p-4 rounded w-full xl:w-1/3  items-center">
-                            <strong class="mb-4">Scorings:</strong> 
+                        <div class="mt-4 xl:mt-0 rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4 w-full xl:w-1/3 space-y-2 text-[var(--ink)]">
+                            <strong class="block mb-2">Scorings:</strong>
                             <div label="Regulations Dauer">
                                 <div class="flex items-center justify-between space-x-2">
                                     <span class="mr-4 max-sm:text-sm">Dauer:</span>
@@ -63,18 +63,18 @@
                     </div>
                 </div>
             @else
-                <div class="bg-gray-200 rounded shadow p-6 flex items-center justify-center h-20">
-                    <div class="w-6 h-6 border-4 border-t-transparent border-gray-400 rounded-full animate-spin"></div>
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface-soft)] p-6 flex items-center justify-center h-20">
+                    <div class="w-6 h-6 border-4 border-[var(--line)] border-t-[var(--accent)] rounded-full animate-spin"></div>
                     <span class="ml-3 text-[var(--ink)] text-sm">Analyse läuft …</span>
                 </div>
             @endif
         </x-slot>
         <x-slot name="footer">
                 <div class="sm:space-x-2 space-y-2">
-                    <x-button  wire:click="reanalyze" class="max-sm:w-full text-sm" wire:loading.attr="disabled" wire:target="reanalyze">
+                    <x-secondary-button wire:click="reanalyze" class="max-sm:w-full text-sm" wire:loading.attr="disabled" wire:target="reanalyze">
                         Erneut analysieren
-                    </x-button>
-                    <x-button wire:click="$set('openModal', false)" class="max-sm:w-full text-sm">Abbrechen</x-button>
+                    </x-secondary-button>
+                    <x-secondary-button wire:click="$set('openModal', false)" class="max-sm:w-full text-sm">Abbrechen</x-secondary-button>
                     <x-button wire:click="confirm" class="max-sm:w-full text-sm">Veröffentlichen</x-button>
                 </div>
         </x-slot>

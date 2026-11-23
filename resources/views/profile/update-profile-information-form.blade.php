@@ -92,9 +92,7 @@
                         <div class="mt-4 flex flex-wrap gap-2">
                             <button
                                 type="button"
-                                class="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium
-                                       bg-primary text-white shadow-lg shadow-primary/20 hover:opacity-95 transition
-                                       focus:outline-none focus:ring-2 focus:ring-primary/40"
+                                class="app-button-secondary text-sm"
                                 x-on:click.prevent="$refs.photo.click()"
                             >
                                 <i class="fal fa-upload"></i>
@@ -155,7 +153,7 @@
                 <x-input
                     id="name"
                     type="text"
-                    class="block w-full rounded-xl border-[var(--line)] p-3 pl-11
+                    class="block w-full rounded-xl border-[var(--line)] p-3
                            focus:ring-2 focus:ring-primary focus:border-primary"
                     wire:model="state.name"
                     required

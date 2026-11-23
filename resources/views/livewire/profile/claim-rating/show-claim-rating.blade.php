@@ -46,8 +46,8 @@
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center gap-2 rounded-xl px-3 py-2
-                                       bg-[var(--surface)] border border-[var(--line)] shadow
-                                       text-[var(--ink)] hover:bg-[var(--surface)] transition"
+                                       bg-[var(--surface)] border border-[var(--line)] shadow-sm
+                                       text-[var(--ink)] hover:bg-[var(--surface-soft)] transition"
                                 type="button"
                             >
                                 <i class="fal fa-ellipsis-v"></i>
@@ -107,7 +107,7 @@
         {{-- VERIFIKATIONS HINWEISE (optisch angepasst) --}}
         @if($requiresVerification && ! $canBePublished)
             @if($verification['state'] === 'pending')
-                <div class="rounded-2xl bg-white/85 border border-[var(--line)] shadow p-5">
+                <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow-sm p-5">
                     <div class="flex items-start gap-3">
                         <div class="h-11 w-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
                             <i class="fal fa-hourglass-half"></i>
@@ -120,7 +120,7 @@
                     </div>
                 </div>
             @elseif($verification['state'] === 'rejected')
-                <div class="rounded-2xl bg-white/85 border border-[var(--line)] shadow p-5">
+                <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow-sm p-5">
                     <div class="flex items-start gap-3">
                         <div class="h-11 w-11 rounded-xl bg-red-100 text-red-700 flex items-center justify-center shrink-0">
                             <i class="fal fa-times-circle"></i>
@@ -132,7 +132,7 @@
                     </div>
                 </div>
             @else
-                <div class="rounded-2xl bg-white/85 border border-[var(--line)] shadow p-5">
+                <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow-sm p-5">
                     <div class="flex items-start gap-3">
                         <div class="h-11 w-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
                             <i class="fal fa-exclamation-triangle"></i>
@@ -250,7 +250,7 @@
 
             <div class="mt-2">
                 <div class="py-2 flex items-center justify-between">
-                    <h2 class="text-lg md:text-xl font-semibold text-white flex items-center gap-2">
+                    <h2 class="text-lg md:text-xl font-semibold text-[var(--ink)] flex items-center gap-2">
                         <i class="fal fa-chart-line text-[var(--accent)]"></i>
                         <span>Auswertung</span>
                     </h2>
@@ -261,7 +261,7 @@
                     {{-- Variable Fragen --}}
                     <div class="space-y-3">
                         @forelse($claimRating->attachments['scorings']['questions'] as $question)
-                            <div class="rounded-xl border border-white/80 bg-[var(--surface)] p-4">
+                            <div class="rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4">
                                 <p class="text-sm text-[var(--muted)]">
                                     <strong>Frage:</strong> {{ $question['question_title'] }}
                                 </p>
@@ -292,7 +292,7 @@
                             <div class="text-sm text-[var(--muted)]">Keine variablen Fragen gefunden.</div>
                         @endforelse
 
-                        <div class="rounded-xl border border-white/80 bg-[var(--surface)] p-4">
+                        <div class="rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4">
                             <p class="text-sm text-[var(--ink)]">
                                 <strong>Scoring variable Fragen:</strong>
                                 @if($claimRating->attachments['scorings']['variable_questions'] != null)
@@ -303,7 +303,7 @@
                     </div>
 
                     {{-- KOMMENTAR + SCORINGS (dein Referenz-Layout) --}}
-                    <div class="rounded-2xl border-white/80 bg-[var(--surface)] p-4 md:p-6">
+                    <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 md:p-6">
                         <div class="mb-4 text-sm text-[var(--ink)]">
                             <strong class="mr-2">Gesamt Scoring:</strong>
                             <x-insurance.insurance-rating-stars-review-overview :score="$claimRating->score()" />
@@ -312,9 +312,9 @@
                         <div class="max-lg:flex-col flex gap-4">
                             {{-- Kommentar --}}
                             <div class="relative w-full lg:w-2/3 order-2 lg:order-1 lg:pr-8">
-                                <div class="prose max-w-full">
-                                    <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-                                        <i class="fal fa-comment-alt text-blue-600"></i>
+                                <div class="max-w-full">
+                                    <h2 class="text-lg font-semibold mb-2 text-[var(--ink)] flex items-center gap-2">
+                                        <i class="fal fa-comment-alt text-[var(--accent)]"></i>
                                         <span>Zusammenfassung</span>
                                     </h2>
 
@@ -328,7 +328,7 @@
                             <div class="bg-[var(--surface)] border border-[var(--line)] shadow rounded-2xl w-full lg:w-1/3 p-5 lg:mt-4 order-1 lg:order-2">
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-sm font-semibold text-[var(--ink)] flex items-center gap-2">
-                                        <i class="fal fa-chart-bar text-blue-600"></i>
+                                        <i class="fal fa-chart-bar text-[var(--accent)]"></i>
                                         <span>Scorings</span>
                                     </h3>
                                     <span class="text-xs text-[var(--muted)] rounded-full bg-[var(--surface-soft)] px-2 py-1">Ø / 5</span>
@@ -384,7 +384,7 @@
         @else
             <div class="rounded-2xl bg-[var(--surface)] border border-[var(--line)] shadow p-6">
                 <h2 class="text-lg md:text-xl font-semibold text-[var(--ink)] mb-3 flex items-center gap-2">
-                    <i class="fal fa-chart-line text-blue-600"></i>
+                    <i class="fal fa-chart-line text-[var(--accent)]"></i>
                     <span>Auswertung</span>
                 </h2>
                 <p class="text-sm text-[var(--ink)] mb-2">
