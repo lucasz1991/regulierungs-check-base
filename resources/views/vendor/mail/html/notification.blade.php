@@ -13,8 +13,16 @@
     table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
     a[x-apple-data-detectors] { color:inherit !important; text-decoration:none !important; }
     @media only screen and (max-width:600px) {
+      body { background-image:none !important; }
       .mail-space { padding:0 !important; }
+      .mail-header { padding-top:20px !important; padding-bottom:16px !important; }
+      .mail-header img { width:166px !important; }
       .mail-inner { padding-left:24px !important; padding-right:24px !important; }
+    }
+    @media only screen and (max-width:420px) {
+      .signature-brand, .signature-contacts { display:block !important; width:auto !important; border:0 !important; }
+      .signature-brand { padding:0 0 12px !important; }
+      .signature-contacts { padding:0 !important; }
     }
     @media only screen and (max-width:360px) {
       .mail-inner { padding-left:20px !important; padding-right:20px !important; }
@@ -25,8 +33,8 @@
   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background-color:transparent;color:#143b47;">
     <tr><td class="mail-space" align="center" style="padding:24px 12px 20px;text-align:center;background-color:transparent;color:#143b47;">
       <!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="border-collapse:collapse;"><tr><td><![endif]-->
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" style="width:100%;max-width:600px;margin:0 auto;border-collapse:collapse;background-color:transparent;color:#143b47;text-align:left;">
-        <tr><td class="mail-inner" align="left" style="padding:29px 36px 22px;border-bottom:1px solid #dce5df;text-align:left;background-color:transparent;color:#143b47;font-size:0;line-height:0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" style="width:100%;max-width:600px;margin:0 auto;table-layout:fixed;border-collapse:collapse;background-color:transparent;color:#143b47;text-align:left;">
+        <tr><td class="mail-inner mail-header" align="left" style="padding:29px 36px 22px;border-bottom:1px solid #dce5df;text-align:left;background-color:transparent;color:#143b47;font-size:0;line-height:0;">
           <a href="https://www.regulierungs-check.de/" style="color:#167668;text-decoration:none;"><img src="https://www.regulierungs-check.de/site-images/logo-xs.png" width="206" height="65" alt="Regulierungs-CHECK" style="display:block;width:206px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;"></a>
         </td></tr>
         <tr><td class="mail-inner" align="left" style="padding:25px 36px 0;text-align:left;background-color:transparent;color:#143b47;font-family:'Trebuchet MS',Arial,sans-serif;font-size:16px;line-height:26px;">
@@ -39,9 +47,9 @@
         </td></tr>
         @if (filled($actionText) && filled($actionUrl))
         <tr><td class="mail-inner" align="left" style="padding:25px 36px 28px;text-align:left;background-color:transparent;color:#143b47;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 auto 0 0;text-align:left;">
-            <tr><td align="left" bgcolor="#f9b029" style="padding:0;text-align:left;background-color:#f9b029;color:#143b47;border:1px solid #f9b029;border-radius:8px;">
-              <a href="{{ $actionUrl }}" style="display:inline-block;padding:14px 22px;font-family:'Trebuchet MS',Arial,sans-serif;font-size:14px;line-height:20px;font-weight:bold;color:#143b47;text-align:center;text-decoration:none;">{{ $actionText }}&nbsp;&nbsp;&#8594;</a>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;border-spacing:0;margin:0;text-align:left;">
+            <tr><td align="left" bgcolor="#f9b029" style="padding:0;text-align:left;background-color:#f9b029;color:#143b47;border:0;border-radius:8px;mso-padding-alt:12px 20px;">
+              <a href="{{ $actionUrl }}" style="display:inline-block;background-color:#f9b029;border-radius:8px;padding:12px 20px;font-family:'Trebuchet MS',Arial,sans-serif;font-size:14px;line-height:20px;font-weight:bold;color:#143b47;text-align:center;text-decoration:none;">{{ $actionText }}&nbsp;&nbsp;&#8594;</a>
             </td></tr>
           </table>
         </td></tr>
@@ -71,23 +79,22 @@
                 @endforeach
               </td></tr>
             <tr>
-              <td width="26%" valign="top" align="left" style="width:26%;padding:2px 16px 0 0;text-align:left;vertical-align:top;background-color:transparent;color:#143b47;font-size:0;line-height:0;">
+              <td class="signature-brand" width="26%" valign="top" align="left" style="width:26%;padding:2px 16px 0 0;text-align:left;vertical-align:top;background-color:transparent;color:#143b47;font-size:0;line-height:0;">
                 <a href="https://www.regulierungs-check.de/" style="color:#167668;text-decoration:none;"><img src="https://www.regulierungs-check.de/site-images/logo-xs.png" width="124" height="39" alt="Regulierungs-CHECK" style="display:block;width:124px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;"></a>
               </td>
-              <td valign="top" align="left" style="padding:0 0 0 17px;border-left:1px solid #cadbd2;text-align:left;vertical-align:top;background-color:transparent;color:#143b47;">
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="display:inline-table;width:100%;max-width:204px;vertical-align:top;border-collapse:collapse;text-align:left;">
+              <td class="signature-contacts" valign="top" align="left" style="padding:0 0 0 17px;border-left:1px solid #cadbd2;text-align:left;vertical-align:top;background-color:transparent;color:#143b47;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border-collapse:collapse;text-align:left;">
                   <tr>
-                    <td width="20" valign="top" style="width:20px;padding:0 5px 2px 0;vertical-align:top;background-color:transparent;color:#167668;font-family:Arial,sans-serif;font-size:16px;line-height:20px;">&#9993;&#65038;</td>
-                    <td align="left" style="padding:0 10px 2px 0;text-align:left;background-color:transparent;color:#143b47;font-family:'Trebuchet MS',Arial,sans-serif;font-size:12px;line-height:20px;"><a href="mailto:info@regulierungs-check.de" style="color:#143b47;text-decoration:none;">info@regulierungs-check.de</a></td>
+                    <td width="24" valign="top" style="width:24px;padding:2px 0 4px;line-height:0;"><img src="https://www.regulierungs-check.de/site-images/mail/envelope.png" width="16" height="16" alt="" style="display:block;width:16px;height:16px;border:0;"></td>
+                    <td valign="top" style="padding:0 0 4px;color:#344f58;font-family:'Trebuchet MS',Arial,sans-serif;font-size:13px;line-height:20px;overflow-wrap:break-word;"><a href="mailto:info@regulierungs-check.de" style="color:#143b47;text-decoration:none;">info@regulierungs-check.de</a></td>
                   </tr>
                   <tr>
-                    <td width="20" valign="top" style="width:20px;padding:0 5px 2px 0;vertical-align:top;background-color:transparent;color:#167668;font-family:Arial,sans-serif;font-size:17px;line-height:20px;">&#8599;</td>
-                    <td align="left" style="padding:0 10px 2px 0;text-align:left;background-color:transparent;color:#143b47;font-family:'Trebuchet MS',Arial,sans-serif;font-size:12px;line-height:20px;"><a href="https://www.regulierungs-check.de/" style="color:#167668;font-weight:bold;text-decoration:none;">regulierungs-check.de</a></td>
+                    <td width="24" valign="top" style="width:24px;padding:2px 0 4px;line-height:0;"><img src="https://www.regulierungs-check.de/site-images/mail/globe.png" width="16" height="16" alt="" style="display:block;width:16px;height:16px;border:0;"></td>
+                    <td valign="top" style="padding:0 0 4px;color:#344f58;font-family:'Trebuchet MS',Arial,sans-serif;font-size:13px;line-height:20px;overflow-wrap:break-word;"><a href="https://www.regulierungs-check.de/" style="color:#167668;font-weight:bold;text-decoration:none;">regulierungs-check.de</a></td>
                   </tr>
-                </table><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="display:inline-table;width:100%;max-width:158px;vertical-align:top;border-collapse:collapse;text-align:left;">
                   <tr>
-                    <td width="20" valign="top" style="width:20px;padding:0 6px 2px 0;vertical-align:top;background-color:transparent;color:#167668;font-family:Arial,sans-serif;font-size:17px;line-height:20px;">&#8962;</td>
-                    <td align="left" valign="top" style="padding:0 0 2px;text-align:left;vertical-align:top;background-color:transparent;color:#526c75;font-family:'Trebuchet MS',Arial,sans-serif;font-size:12px;line-height:20px;">Oldesloer Str. 63<br>22457 Hamburg</td>
+                    <td width="24" valign="top" style="width:24px;padding:2px 0 4px;line-height:0;"><img src="https://www.regulierungs-check.de/site-images/mail/location.png" width="16" height="16" alt="" style="display:block;width:16px;height:16px;border:0;"></td>
+                    <td valign="top" style="padding:0 0 4px;color:#344f58;font-family:'Trebuchet MS',Arial,sans-serif;font-size:13px;line-height:20px;overflow-wrap:break-word;">Oldesloer Str. 63<br>22457 Hamburg</td>
                   </tr>
                 </table>
               </td>
@@ -95,11 +102,11 @@
             <tr><td colspan="2" style="padding:8px 0 5px;background-color:transparent;color:#ffffff;">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border-collapse:collapse;border-top:1px solid #e1e9e4;"><tr><td style="padding:0;font-size:0;line-height:0;">&nbsp;</td></tr></table>
             </td></tr>
-            <tr><td colspan="2" align="left" style="padding:0;text-align:left;background-color:transparent;color:#526c75;font-family:'Trebuchet MS',Arial,sans-serif;font-size:10px;line-height:14px;">
+            <tr><td colspan="2" align="left" style="padding:0;text-align:left;background-color:transparent;color:#526c75;font-family:'Trebuchet MS',Arial,sans-serif;font-size:11px;line-height:16px;">
               <strong style="font-weight:normal;color:#526c75;">Regulierungs-Check RCQ GmbH</strong> · Geschäftsführer Birkan Özülkü<br>
               Amtsgericht Hamburg · HRB 193808 · USt-ID DE458707066
             </td></tr>
-            <tr><td colspan="2" align="left" style="padding:3px 0 0;text-align:left;background-color:transparent;color:#526c75;font-family:'Trebuchet MS',Arial,sans-serif;font-size:10px;line-height:14px;">
+            <tr><td colspan="2" align="left" style="padding:3px 0 0;text-align:left;background-color:transparent;color:#526c75;font-family:'Trebuchet MS',Arial,sans-serif;font-size:11px;line-height:16px;">
               <a href="https://www.regulierungs-check.de/imprint" style="color:#526c75;text-decoration:underline;">Impressum</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://www.regulierungs-check.de/privacypolicy" style="color:#526c75;text-decoration:underline;">Datenschutz</a>
             </td></tr>
           </table>

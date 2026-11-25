@@ -19,6 +19,12 @@ class NotificationTemplateTest extends TestCase
 
         $this->assertStringContainsString('#f9b029', $html);
         $this->assertStringContainsString('/site-images/logo-xs.png', $html);
+        foreach (['envelope', 'globe', 'location'] as $icon) {
+            $path = '/site-images/mail/'.$icon.'.png';
+            $this->assertStringContainsString('https://www.regulierungs-check.de'.$path, $html);
+            $this->assertSame([48, 48], array_slice(getimagesize(public_path($path)), 0, 2));
+            $this->assertStringNotContainsString($path, $text);
+        }
         $this->assertSame(2, substr_count($html, 'href="'.e($message->actionUrl).'"'));
         $this->assertStringContainsString($message->actionUrl, $text);
         foreach ([$html, $text] as $part) {

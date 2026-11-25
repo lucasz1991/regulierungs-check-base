@@ -61,7 +61,7 @@ class MailNotification extends Notification implements ShouldQueue
             $mailMessage->greeting($greeting);
         }
 
-        $mailMessage->line($body);
+        $mailMessage->lines(is_string($body) ? preg_split('/\R\h*\R/u', trim($body)) : [$body]);
 
         if (! empty($link)) {
             $mailMessage->action('Weiter', $link);
