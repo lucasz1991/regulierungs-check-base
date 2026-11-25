@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Mail;
 use App\Models\User;
 use App\Notifications\MailNotification;
+use App\Services\CustomerMailDelivery;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,6 +20,8 @@ class ProcessMailJob implements ShouldQueue
 
     public $mail;
 
+    public ?int $recipientIndex = null;
+
     /**
      * Create a new job instance.
      */
@@ -27,11 +30,23 @@ class ProcessMailJob implements ShouldQueue
         $this->mail = $mail;
     }
 
+    public function failed(\Throwable $exception): void
+    {
+        if ($this->recipientIndex !== null) {
+            app(CustomerMailDelivery::class)->jobFailed($this->mail, $this->recipientIndex);
+        }
+    }
+
     /**
      * Execute the job.
      */
     public function handle(): void
     {
+        if ($this->recipientIndex !== null) {
+            app(CustomerMailDelivery::class)->deliver($this->mail, $this->recipientIndex, $this->attempts() > 1);
+            return;
+        }
+
         $recipients = is_array($this->mail->recipients) ? $this->mail->recipients : [];
         $type = strtolower((string) $this->mail->type);
         $sendMessageTo = $type !== 'mail';

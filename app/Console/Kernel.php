@@ -12,6 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('queue:work database --queue=kundenmail --stop-when-empty --max-time=50 --tries=3')
+            ->everyMinute()->withoutOverlapping(5)->runInBackground();
+
         $schedule->command('ratings:analyze')->dailyAt('02:00');
         $schedule->command('claimratings:send-reminders')->dailyAt('12:00');
 
