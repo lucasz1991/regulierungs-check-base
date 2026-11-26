@@ -100,7 +100,7 @@ class NotificationTemplateTest extends TestCase
         $this->assertStringContainsString($message->actionUrl, $text);
     }
 
-    public function test_background_frames_the_entire_message_and_signature_keeps_three_columns(): void
+    public function test_short_mail_background_follows_content_height_and_signature_keeps_three_columns(): void
     {
         $message = (new MailNotification(['subject' => 'Test', 'body' => 'Eine kurze Nachricht.']))->toMail(new User);
         $html = (string) $message->render();
@@ -118,12 +118,6 @@ class NotificationTemplateTest extends TestCase
         }
         $xpath = new DOMXPath($document);
 
-        // Legacy Outlook uses the page background; the message itself stays in normal flow.
-        $outlookBackground = $xpath->query('//body/comment()[contains(., "<v:background")]');
-        $this->assertSame(1, $outlookBackground->length);
-        $this->assertStringContainsString('mso', $outlookBackground->item(0)->nodeValue);
-        $this->assertStringContainsString('src="'.$backgroundUrl.'"', $outlookBackground->item(0)->nodeValue);
-        $this->assertStringNotContainsString('<v:textbox', $html);
         $this->assertSame(IMAGETYPE_PNG, getimagesize(public_path($backgroundPath))[2]);
         $this->assertStringNotContainsString($backgroundUrl, $text);
 
@@ -138,6 +132,26 @@ class NotificationTemplateTest extends TestCase
         $this->assertSame(1, $frame->length);
         $this->assertMatchesRegularExpression('/max-width:\s*760px\b/i', $frame->item(0)->getAttribute('style'));
         $this->assertSame(0, $xpath->query('.//*[@background]', $frame->item(0))->length);
+
+        // Classic Outlook must end the artwork at the same footer as HTML mail clients.
+        $this->assertStringNotContainsString('<v:background', $html);
+        $shape = $xpath->query('.//comment()[contains(., "<v:rect")]', $canvas->item(0));
+        $this->assertSame(1, $shape->length);
+        $vml = $shape->item(0)->nodeValue;
+        $this->assertStringContainsString('src="'.$backgroundUrl.'"', $vml);
+        $this->assertMatchesRegularExpression('/mso-width-percent:\s*(?:9\d\d|1000)\b/i', $vml);
+        $this->assertMatchesRegularExpression('/mso-fit-shape-to-text:\s*true/i', $vml);
+        $this->assertDoesNotMatchRegularExpression('/\bheight\s*[:=]\s*["\']?\d/i', $vml);
+        $this->assertSame(1, $xpath->query('.//comment()[contains(., "</v:rect>")]', $canvas->item(0))->length);
+
+        foreach ($xpath->query('ancestor-or-self::*', $frame->item(0)) as $wrapper) {
+            $this->assertContains($wrapper->getAttribute('height'), ['', 'auto'], $wrapper->tagName);
+            $this->assertDoesNotMatchRegularExpression(
+                '/(?:^|;)\s*(?:min-)?height\s*:\s*[1-9]/i',
+                $wrapper->getAttribute('style'),
+                $wrapper->tagName.' must fit the message even when the reading pane is taller.',
+            );
+        }
 
         $row = $xpath->query('//td[contains(concat(" ", normalize-space(@class), " "), " signature-brand ")]/parent::tr');
         $this->assertSame(1, $row->length);
