@@ -75,7 +75,7 @@ class NotificationTemplateTest extends TestCase
         $this->assertStringNotContainsString('Hallo [Vorname]', $html);
     }
 
-    public function test_rendered_customer_mail_keeps_remote_background_and_growing_outlook_fallback(): void
+    public function test_long_customer_mail_preserves_all_paragraphs_and_links_in_both_parts(): void
     {
         $paragraphs = array_map(fn ($i) => 'Absatz '.$i.': '.rtrim(str_repeat('Schadenerfahrungen schaffen Transparenz. ', 12)), range(1, 25));
         $message = (new MailNotification([
@@ -86,19 +86,6 @@ class NotificationTemplateTest extends TestCase
         ]))->toMail(new User);
         $html = (string) $message->render();
         $text = (string) app(Markdown::class)->renderText($message->markdown, $message->data());
-        $background = 'https://www.regulierungs-check.de/site-images/mail/background-lines.png';
-
-        // Check the delivered Markdown/inlined HTML, rather than only the Blade source.
-        $this->assertStringContainsString('background="'.$background.'"', $html);
-        $this->assertStringContainsString('[if gte mso 9]', $html);
-        $this->assertStringContainsString('<v:fill type="frame" src="'.$background.'"', $html);
-        $this->assertStringContainsString('mso-fit-shape-to-text:true', $html);
-        $this->assertStringContainsString('width="760"', $html);
-        $this->assertStringContainsString('width:570pt', $html);
-        $this->assertStringNotContainsString('radial-gradient', $html);
-        $this->assertDoesNotMatchRegularExpression('/<v:(?:rect|textbox)\b[^>]*\bheight\s*[:=]/i', $html);
-        $this->assertSame(IMAGETYPE_PNG, getimagesize(public_path('site-images/mail/background-lines.png'))[2]);
-        $this->assertStringNotContainsString($background, $text);
 
         foreach ([$html, $text] as $part) {
             foreach ($paragraphs as $paragraph) {
@@ -111,6 +98,15 @@ class NotificationTemplateTest extends TestCase
         }
         $this->assertSame(2, substr_count($html, 'href="'.e($message->actionUrl).'"'));
         $this->assertStringContainsString($message->actionUrl, $text);
+    }
+
+    public function test_background_frames_the_entire_message_and_signature_keeps_three_columns(): void
+    {
+        $message = (new MailNotification(['subject' => 'Test', 'body' => 'Eine kurze Nachricht.']))->toMail(new User);
+        $html = (string) $message->render();
+        $text = (string) app(Markdown::class)->renderText($message->markdown, $message->data());
+        $backgroundPath = 'site-images/mail/background-curves.png';
+        $backgroundUrl = 'https://www.regulierungs-check.de/'.$backgroundPath;
 
         $document = new DOMDocument;
         $previous = libxml_use_internal_errors(true);
@@ -121,6 +117,28 @@ class NotificationTemplateTest extends TestCase
             libxml_use_internal_errors($previous);
         }
         $xpath = new DOMXPath($document);
+
+        // Legacy Outlook uses the page background; the message itself stays in normal flow.
+        $outlookBackground = $xpath->query('//body/comment()[contains(., "<v:background")]');
+        $this->assertSame(1, $outlookBackground->length);
+        $this->assertStringContainsString('mso', $outlookBackground->item(0)->nodeValue);
+        $this->assertStringContainsString('src="'.$backgroundUrl.'"', $outlookBackground->item(0)->nodeValue);
+        $this->assertStringNotContainsString('<v:textbox', $html);
+        $this->assertSame(IMAGETYPE_PNG, getimagesize(public_path($backgroundPath))[2]);
+        $this->assertStringNotContainsString($backgroundUrl, $text);
+
+        $canvas = $xpath->query('//body/table[@width="100%"]/tr/td[@background]');
+        $this->assertSame(1, $canvas->length);
+        $this->assertSame($backgroundUrl, $canvas->item(0)->getAttribute('background'));
+        $this->assertStringContainsString($backgroundUrl, $canvas->item(0)->getAttribute('style'));
+        $this->assertSame('center', $canvas->item(0)->getAttribute('align'));
+        $outlookFrame = $xpath->query('.//comment()[contains(., "mso") and contains(., \'width="760"\')]', $canvas->item(0));
+        $this->assertSame(1, $outlookFrame->length);
+        $frame = $xpath->query('.//table[@class="mail-frame"]', $canvas->item(0));
+        $this->assertSame(1, $frame->length);
+        $this->assertMatchesRegularExpression('/max-width:\s*760px\b/i', $frame->item(0)->getAttribute('style'));
+        $this->assertSame(0, $xpath->query('.//*[@background]', $frame->item(0))->length);
+
         $row = $xpath->query('//td[contains(concat(" ", normalize-space(@class), " "), " signature-brand ")]/parent::tr');
         $this->assertSame(1, $row->length);
         $cells = $xpath->query('./td', $row->item(0));
