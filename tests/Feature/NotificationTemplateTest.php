@@ -105,44 +105,38 @@ class NotificationTemplateTest extends TestCase
         $message = (new MailNotification(['subject' => 'Test', 'body' => 'Eine kurze Nachricht.']))->toMail(new User);
         $html = (string) $message->render();
         $text = (string) app(Markdown::class)->renderText($message->markdown, $message->data());
-        $backgroundPath = 'site-images/mail/background-curves.png';
-        $backgroundUrl = 'https://www.regulierungs-check.de/'.$backgroundPath;
+        $xpath = $this->parseMailHtml($html);
+        $left = $xpath->query('//body/table[@width="100%"]/tr/td[@background]');
+        $this->assertSame(1, $left->length);
+        $right = $xpath->query('.//table[@width="100%"]/tr/td[@background]', $left->item(0));
+        $this->assertSame(1, $right->length);
 
-        $document = new DOMDocument;
-        $previous = libxml_use_internal_errors(true);
-        try {
-            $document->loadHTML('<?xml encoding="UTF-8">'.$html);
-        } finally {
-            libxml_clear_errors();
-            libxml_use_internal_errors($previous);
+        foreach (['left' => 'top', 'right' => 'bottom'] as $side => $vertical) {
+            $path = "site-images/mail/background-circles-{$side}.png";
+            $url = 'https://www.regulierungs-check.de/'.$path;
+            $dimensions = getimagesize(public_path($path));
+            $this->assertSame([320, 512, IMAGETYPE_PNG], array_slice($dimensions, 0, 3));
+            $cell = $side === 'left' ? $left->item(0) : $right->item(0);
+            $this->assertSame($url, $cell->getAttribute('background'));
+            $style = $cell->getAttribute('style');
+            $this->assertStringContainsString($url, $style);
+            $this->assertMatchesRegularExpression("/background-position:\s*(?:$side $vertical|$vertical $side)\b/i", $style);
+            $this->assertMatchesRegularExpression('/background-size:\s*300px auto\b/i', $style);
+            $this->assertStringNotContainsString($url, $text);
         }
-        $xpath = new DOMXPath($document);
 
-        $this->assertSame(IMAGETYPE_PNG, getimagesize(public_path($backgroundPath))[2]);
-        $this->assertStringNotContainsString($backgroundUrl, $text);
+        $responsiveCss = $xpath->evaluate('string(//head/style)');
+        preg_match_all('/background-size:\s*([^;}]+)/i', $responsiveCss, $rules);
+        $this->assertNotEmpty($rules[1]);
+        foreach ($rules[1] as $size) {
+            $this->assertStringContainsString('auto', $size, 'Changing the artwork width must preserve its proportions.');
+        }
 
-        $canvas = $xpath->query('//body/table[@width="100%"]/tr/td[@background]');
-        $this->assertSame(1, $canvas->length);
-        $this->assertSame($backgroundUrl, $canvas->item(0)->getAttribute('background'));
-        $this->assertStringContainsString($backgroundUrl, $canvas->item(0)->getAttribute('style'));
-        $this->assertSame('center', $canvas->item(0)->getAttribute('align'));
-        $outlookFrame = $xpath->query('.//comment()[contains(., "mso") and contains(., \'width="760"\')]', $canvas->item(0));
-        $this->assertSame(1, $outlookFrame->length);
-        $frame = $xpath->query('.//table[@class="mail-frame"]', $canvas->item(0));
+        $frame = $xpath->query('.//table[@class="mail-frame"]', $right->item(0));
         $this->assertSame(1, $frame->length);
+        $this->assertSame('center', $frame->item(0)->getAttribute('align'));
         $this->assertMatchesRegularExpression('/max-width:\s*760px\b/i', $frame->item(0)->getAttribute('style'));
         $this->assertSame(0, $xpath->query('.//*[@background]', $frame->item(0))->length);
-
-        // Classic Outlook must end the artwork at the same footer as HTML mail clients.
-        $this->assertStringNotContainsString('<v:background', $html);
-        $shape = $xpath->query('.//comment()[contains(., "<v:rect")]', $canvas->item(0));
-        $this->assertSame(1, $shape->length);
-        $vml = $shape->item(0)->nodeValue;
-        $this->assertStringContainsString('src="'.$backgroundUrl.'"', $vml);
-        $this->assertMatchesRegularExpression('/mso-width-percent:\s*(?:9\d\d|1000)\b/i', $vml);
-        $this->assertMatchesRegularExpression('/mso-fit-shape-to-text:\s*true/i', $vml);
-        $this->assertDoesNotMatchRegularExpression('/\bheight\s*[:=]\s*["\']?\d/i', $vml);
-        $this->assertSame(1, $xpath->query('.//comment()[contains(., "</v:rect>")]', $canvas->item(0))->length);
 
         foreach ($xpath->query('ancestor-or-self::*', $frame->item(0)) as $wrapper) {
             $this->assertContains($wrapper->getAttribute('height'), ['', 'auto'], $wrapper->tagName);
@@ -163,5 +157,54 @@ class NotificationTemplateTest extends TestCase
         $this->assertStringNotContainsString('Oldesloer', $cells->item(1)->textContent);
         $this->assertStringContainsString('Oldesloer Str. 63', $cells->item(2)->textContent);
         $this->assertStringContainsString('22457 Hamburg', $cells->item(2)->textContent);
+    }
+
+    public function test_classic_outlook_keeps_proportional_circle_images_beside_the_message(): void
+    {
+        $mail = (new MailNotification(['subject' => 'Test', 'body' => 'Eine kurze Nachricht.']))->toMail(new User);
+        $html = (string) $mail->render();
+        $this->assertStringNotContainsString('<v:', $html);
+
+        // Parse the table markup that the conditional comments reveal to classic Outlook.
+        $classic = preg_replace('/<!--\[if !mso\]><!-->.*?<!--<!\[endif\]-->/is', '', $html);
+        $classic = preg_replace('/<!--\[if mso\]>(.*?)<!\[endif\]-->/is', '$1', $classic);
+        $xpath = $this->parseMailHtml($classic);
+        $images = $xpath->query('//img[contains(@src, "/background-circles-")]');
+        $this->assertSame(2, $images->length);
+
+        foreach (['left' => 'top', 'right' => 'bottom'] as $side => $vertical) {
+            $url = 'https://www.regulierungs-check.de/site-images/mail/background-circles-'.$side.'.png';
+            $image = $xpath->query("//img[@src='$url']")->item(0);
+            $this->assertNotNull($image);
+            $this->assertSame('65', $image->getAttribute('width'));
+            $this->assertSame('104', $image->getAttribute('height'));
+            $this->assertSame('', $image->getAttribute('alt'));
+            $cell = $xpath->query('ancestor::td[1]', $image)->item(0);
+            $this->assertSame($vertical, $cell->getAttribute('valign'));
+        }
+
+        $row = $xpath->query('ancestor::tr[1]', $images->item(0))->item(0);
+        $cells = $xpath->query('./td', $row);
+        $this->assertSame(3, $cells->length);
+        $contentWidth = (int) $cells->item(1)->getAttribute('width');
+        $artworkWidth = (int) $xpath->evaluate('sum(.//img[contains(@src, "/background-circles-")]/@width)', $row);
+        $this->assertSame(630, $contentWidth);
+        $this->assertLessThanOrEqual(760, $contentWidth + $artworkWidth, 'The artwork must fit within the mail width.');
+        $this->assertStringContainsString('Eine kurze Nachricht.', $cells->item(1)->textContent);
+        $this->assertSame(1, $xpath->query('.//img[contains(@src, "background-circles-right.png")]', $cells->item(2))->length);
+    }
+
+    private function parseMailHtml(string $html): DOMXPath
+    {
+        $document = new DOMDocument;
+        $previous = libxml_use_internal_errors(true);
+        try {
+            $document->loadHTML('<?xml encoding="UTF-8">'.$html);
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+        }
+
+        return new DOMXPath($document);
     }
 }
