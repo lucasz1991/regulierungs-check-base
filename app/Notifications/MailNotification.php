@@ -64,7 +64,9 @@ class MailNotification extends Notification implements ShouldQueue
         $mailMessage->lines(is_string($body) ? preg_split('/\R\h*\R/u', trim($body)) : [$body]);
 
         if (! empty($link)) {
-            $mailMessage->action('Weiter', $link);
+            $label = $content['button_label'] ?? '';
+            $label = is_string($label) ? trim($label) : '';
+            $mailMessage->action($label === '' ? 'Weiter' : $label, $link);
         }
 
         $mailMessage->salutation('Viele Grüße');

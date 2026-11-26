@@ -45,6 +45,40 @@ class CustomerMailDeliveryTest extends TestCase
         $this->assertSame('sent', $mail->fresh()->recipients[0]['state']);
     }
 
+    public static function actionLabels(): array
+    {
+        $link = 'https://example.test/unterlagen';
+
+        return [
+            'custom' => [['link' => $link, 'button_label' => '  Schäden & <Details>  '], 'Schäden & <Details>'],
+            'legacy order' => [['link' => $link], 'Weiter'],
+            'blank label' => [['link' => $link, 'button_label' => " \t "], 'Weiter'],
+            'numeric text' => [['link' => $link, 'button_label' => '0'], '0'],
+            'no link' => [['button_label' => 'Unterlagen ansehen'], null],
+        ];
+    }
+
+    /** @dataProvider actionLabels */
+    public function test_worker_delivers_the_saved_action_in_html_and_plain_text(array $action, ?string $expectedLabel): void
+    {
+        $mail = $this->order('mail', ['user_id' => 12, 'email' => 'person@example.test'], $action);
+        $this->runDelivery($mail);
+        $messages = Transport::mailer('array')->getSymfonyTransport()->messages();
+        $this->assertCount(1, $messages);
+        $message = $messages->first()->getOriginalMessage();
+        $html = $message->getHtmlBody();
+        $text = $message->getTextBody();
+        if ($expectedLabel === null) {
+            $this->assertStringNotContainsString($action['button_label'], $html);
+            $this->assertStringNotContainsString($action['button_label'], $text);
+            $this->assertStringNotContainsString('Falls der Button', $html);
+        } else {
+            $this->assertSame(2, substr_count($html, 'href="'.$action['link'].'"'));
+            $this->assertStringContainsString('>'.e($expectedLabel), $html);
+            $this->assertMatchesRegularExpression('~^'.preg_quote($expectedLabel, '~').'\R+'.preg_quote($action['link'], '~').'$~m', $text);
+        }
+    }
+
     public function test_customer_without_account_receives_mail_and_revoked_contact_is_skipped(): void
     {
         $contact = DB::table('contacts')->insertGetId(['name' => 'Team', 'email' => 'external@example.test', 'mail_permission' => 'allowed']);
@@ -80,10 +114,10 @@ class CustomerMailDeliveryTest extends TestCase
         $this->assertCount(1, Transport::mailer('array')->getSymfonyTransport()->messages());
     }
 
-    private function order(string $type, array $recipient): Mail
+    private function order(string $type, array $recipient, array $content = []): Mail
     {
         return Mail::withoutEvents(fn () => Mail::create(['type' => $type, 'status' => false,
-            'content' => ['subject' => 'Anfrage', 'header' => 'Hallo Alex', 'body' => 'Nachricht', 'link' => ''],
+            'content' => $content + ['subject' => 'Anfrage', 'header' => 'Hallo Alex', 'body' => 'Nachricht', 'link' => ''],
             'recipients' => [array_merge($recipient, ['state' => 'pending', 'status' => false])]]));
     }
 
