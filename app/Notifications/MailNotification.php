@@ -57,7 +57,7 @@ class MailNotification extends Notification implements ShouldQueue
             ->from(config('mail.from.address'), config('mail.from.name'))
             ->subject($subject);
 
-        if (! empty($greeting)) {
+        if (filled($greeting)) {
             $mailMessage->greeting($greeting);
         }
 
@@ -70,6 +70,10 @@ class MailNotification extends Notification implements ShouldQueue
         }
 
         $mailMessage->salutation('Viele Grüße');
+
+        if (isset($content['newsletter'])) {
+            $mailMessage->markdown('notifications::email', ['newsletter' => $content['newsletter']]);
+        }
 
         foreach ($files as $file) {
             $disk = $file->disk ?? 'private';

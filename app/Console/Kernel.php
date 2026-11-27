@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('newsletter:dispatch-due')->everyMinute()->withoutOverlapping(5);
         $schedule->command('queue:work database --queue=kundenmail --stop-when-empty --max-time=50 --tries=3')
             ->everyMinute()->withoutOverlapping(5)->runInBackground();
 

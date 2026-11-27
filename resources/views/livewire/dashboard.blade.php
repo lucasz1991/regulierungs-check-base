@@ -73,6 +73,9 @@
                     <div x-cloak x-show="selectedTab === 'settings'" x-collapse id="tabpanelGroups" role="tabpanel" aria-label="settings">
                         <div class="">
                             @livewire('profile.edit-privacy-settings')
+                            @if(\Illuminate\Support\Facades\Schema::hasTable('newsletter_subscriptions'))
+                                <div class="mt-5"><livewire:profile.newsletter-preference /></div>
+                            @endif
                         </div>
                     </div>
                     @if ($promotionTickets->isNotEmpty() || $promotionParticipations->isNotEmpty())

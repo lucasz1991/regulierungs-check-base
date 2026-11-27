@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Participant\Promotion\TicketQrController;
 use App\Http\Controllers\Participant\Promotion\TicketV2QrController;
 use App\Http\Controllers\PublicFormController;
+require __DIR__.'/newsletter-preferences.php';
 use App\Http\Middleware\PromotionPrivacyHeaders;
 use App\Livewire\Articles\Blog\BlogList;
 use App\Livewire\Articles\Blog\BlogShow;
@@ -61,6 +62,12 @@ Route::get('/blog', BlogList::class)->name('blog.index');
 Route::get('/posts/{post}', BlogShow::class)->name('post.show');
 Route::get('/news', NewsList::class)->name('news.index');
 Route::get('/news/{post:slug}', NewsShow::class)->name('news.show');
+Route::get('/news/lesen/{id}', function (int $id) {
+    abort_unless(\App\Models\Setting::enabled('webcontent', 'news_enabled'), 404);
+    $article = \App\Models\Post::whereKey($id)->where('type', 'news')->published()->firstOrFail();
+    return redirect()->route('news.show', $article->slug);
+})->whereNumber('id')->name('newsletter.article');
+Route::view('/newsletter/testansicht', 'newsletter.test-links')->name('newsletter.test-links');
 
 Route::post('/form-submit', [PublicFormController::class, 'handle'])->name('form.submit');
 

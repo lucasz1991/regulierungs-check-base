@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\AdminStorageController;
 
 
 Route::post('/admin/upload', [AdminStorageController::class, 'store']);
+Route::post('/admin/newsletter-image', [AdminStorageController::class, 'newsletterImage']);
 Route::delete('/admin/delete', [AdminStorageController::class, 'destroy']);
 
 Route::post('/admin/resolve-file-url', [AdminStorageController::class, 'resolveFileUrl']);

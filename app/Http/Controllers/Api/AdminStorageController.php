@@ -15,6 +15,27 @@ use App\Jobs\DeleteTempFile;
 
 class AdminStorageController extends Controller
 {
+    public function newsletterImage(Request $request, \App\Services\NewsletterImage $images): JsonResponse
+    {
+        $key = config('services.newsletter.api_key') ?: Setting::where('key', 'base_api_key')->value('value');
+        abort_unless(is_string($key) && $key !== '' && hash_equals($key, (string) $request->header('X-API-KEY')), 403);
+        $input = $request->validate([
+            'post_id' => ['required', 'integer', 'min:1'],
+            'focus_x' => ['required', 'integer', 'between:0,100'],
+            'focus_y' => ['required', 'integer', 'between:0,100'],
+        ]);
+        $post = \App\Models\Post::query()->where('type', 'news')->findOrFail($input['post_id']);
+        try {
+            $image = $images->prepare($post, $input['focus_x'], $input['focus_y']);
+        } catch (\RuntimeException $e) {
+            report($e);
+
+            return response()->json(['message' => 'Das Beitragsbild konnte nicht für die E-Mail vorbereitet werden.'], 422);
+        }
+
+        return response()->json(['image' => $image]);
+    }
+
     protected function buildPublicStorageUrl(string $path): string
     {
         $baseUrl = (string) (Setting::where('key', 'base_api_url')->value('value') ?? '');

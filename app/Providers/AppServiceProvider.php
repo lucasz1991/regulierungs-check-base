@@ -24,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+        \App\Models\User::saved(function (\App\Models\User $model): void {
+            if (($model->wasRecentlyCreated || $model->wasChanged('email')) && Schema::hasTable('newsletter_subscriptions')) {
+                app(\App\Services\NewsletterSubscriptions::class)->forSource('user', $model->getKey());
+            }
+        });
 
         Event::listen(CommandStarting::class, function (CommandStarting $event): void {
             if (! in_array($event->command, ['migrate:fresh', 'migrate:refresh', 'db:wipe'], true)) {
