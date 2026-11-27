@@ -69,7 +69,7 @@ class MailNotification extends Notification implements ShouldQueue
             $mailMessage->action($label === '' ? 'Weiter' : $label, $link);
         }
 
-        $mailMessage->salutation(isset($content['newsletter']) ? 'Viele Grüße,<br>Ihr Regulierungs-CHECK Team' : 'Viele Grüße');
+        $mailMessage->salutation(isset($content['newsletter']) ? 'Viele Grüße,<br>dein Regulierungs-CHECK Team' : 'Viele Grüße');
 
         if (isset($content['newsletter'])) {
             $mailMessage->markdown('notifications::email', ['newsletter' => $content['newsletter']]);
